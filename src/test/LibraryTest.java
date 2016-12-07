@@ -1,8 +1,8 @@
-package test.java;
+package test;
 
 import org.junit.Test;
 
-import main.java.Library;
+import main.Library;
 
 import static org.junit.Assert.*;
 
