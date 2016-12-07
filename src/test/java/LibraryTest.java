@@ -1,4 +1,9 @@
+package test.java;
+
 import org.junit.Test;
+
+import main.java.Library;
+
 import static org.junit.Assert.*;
 
 /*
