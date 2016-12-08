@@ -39,4 +39,23 @@ public class TypeModel {
 			return primiType.getName();
 		return classModel.getName();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof TypeModel) {
+			TypeModel o = (TypeModel) obj;
+			return classModel == o.classModel && primiType == o.primiType && dimension == o.dimension;
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() {
+		if (classModel == null)
+			return primiType.hashCode() + dimension;
+		return classModel.hashCode() + primiType.hashCode() + dimension;
+	}
+
+	public static TypeModel parse(String name) {
+		return null;
+	}
 }

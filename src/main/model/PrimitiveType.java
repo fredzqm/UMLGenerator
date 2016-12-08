@@ -27,4 +27,8 @@ public enum PrimitiveType {
 			throw new RuntimeException("PrimitiveType.getName(): We missed " + this);
 		}
 	}
+
+	public static PrimitiveType parse(String name) {
+		return null;
+	}
 }
