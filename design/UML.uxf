@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>9</zoom_level>
+  <zoom_level>5</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>270</y>
-      <w>90</w>
-      <h>27</h>
+      <x>155</x>
+      <y>195</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>Main
 </panel_attributes>
@@ -16,10 +16,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>261</x>
-      <y>216</y>
-      <w>135</w>
-      <h>27</h>
+      <x>75</x>
+      <y>165</y>
+      <w>75</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>CommandLineParser</panel_attributes>
     <additional_attributes/>
@@ -27,10 +27,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>342</y>
-      <w>189</w>
-      <h>72</h>
+      <x>175</x>
+      <y>235</y>
+      <w>110</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>/Configuration/
 --
@@ -42,35 +42,35 @@ getFormat():Format
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>459</x>
-      <y>450</y>
-      <w>198</w>
-      <h>63</h>
+      <x>175</x>
+      <y>290</y>
+      <w>110</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>CommandLineConfiguration
 --
 getClasses(): Collection&lt;String&gt;
-getFormat():Format</panel_attributes>
+getFormat(): IFormat</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>405</y>
-      <w>27</w>
-      <h>63</h>
+      <x>225</x>
+      <y>270</y>
+      <w>15</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1467</x>
-      <y>270</y>
-      <w>180</w>
-      <h>153</h>
+      <x>980</x>
+      <y>275</y>
+      <w>100</w>
+      <h>85</h>
     </coordinates>
     <panel_attributes>TypeModel
 --
@@ -87,52 +87,33 @@ isPrimative(): boolean</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1314</x>
-      <y>468</y>
-      <w>234</w>
-      <h>189</h>
+      <x>975</x>
+      <y>460</y>
+      <w>180</w>
+      <h>100</h>
     </coordinates>
-    <panel_attributes>ClassModel
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+MethodModel
 --
-boolean: important
-methods: Collection&lt;MethodModel&gt;
-fields: Collection&lt;FieldModel&gt;
-constructors: Collection&lt;MethodModel&gt;
-implements: Collection&lt;ClassModel&gt;
-extendClass: ClassModel
-modifier: Modifier
-type: ClassType
-generics: List&lt;TypeModel&gt;
-name: String
+getClassBelong(): ClassModel
+getName(): String
+getModifier(): Modifier
+getArguments(): Collection&lt;TypeModel&gt;
+getReturnType(): TypeModel
+getDependMethods(): Collection&lt;MethodModel&gt;
+getDependFields(): Collection&lt;FieldModel&gt;
 
+isFinal(): boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1377</x>
-      <y>711</y>
-      <w>261</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes>MethodModel
---
-name: String
-modifier: Modifier
-args: Collection&lt;TypeModel&gt;
-returnType: TypeModel
-dependMethods: Collection&lt;MethodModel&gt;
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1125</x>
-      <y>486</y>
-      <w>117</w>
-      <h>99</h>
+      <x>750</x>
+      <y>585</y>
+      <w>70</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
 Modifier
@@ -146,153 +127,124 @@ default</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1287</x>
-      <y>279</y>
-      <w>135</w>
-      <h>72</h>
+      <x>770</x>
+      <y>465</y>
+      <w>125</w>
+      <h>85</h>
     </coordinates>
     <panel_attributes>FieldModel
 --
+-asmFieldNode: FieldNode
+--
+classIn: ClassModel
 modifier: Modifier
 name: String
-type: TypeModel</panel_attributes>
+type: TypeModel
+
++visit(traverser: Visitor&lt;FieldModel&gt;)
++isFinal(): boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1233</x>
-      <y>513</y>
-      <w>99</w>
-      <h>27</h>
+      <x>755</x>
+      <y>410</y>
+      <w>15</w>
+      <h>185</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+    <additional_attributes>10.0;350.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1359</x>
-      <y>342</y>
-      <w>27</w>
-      <h>144</h>
+      <x>830</x>
+      <y>410</y>
+      <w>15</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>576</y>
-      <w>207</w>
-      <h>207</h>
+      <x>875</x>
+      <y>410</y>
+      <w>195</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;210.0;210.0;210.0</additional_attributes>
+    <additional_attributes>370.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1512</x>
-      <y>648</y>
-      <w>27</w>
-      <h>81</h>
+      <x>890</x>
+      <y>355</y>
+      <w>120</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>220.0;10.0;10.0;320.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1413</x>
-      <y>306</y>
-      <w>72</w>
-      <h>27</h>
+      <x>790</x>
+      <y>545</y>
+      <w>15</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>333</y>
-      <w>117</w>
-      <h>171</h>
+      <x>905</x>
+      <y>330</y>
+      <w>85</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;170.0;10.0;10.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1629</x>
-      <y>405</y>
-      <w>81</w>
-      <h>378</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>20.0;10.0;70.0;10.0;70.0;400.0;10.0;400.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1512</x>
-      <y>414</y>
-      <w>27</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1377</x>
-      <y>441</y>
-      <w>99</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes>
-    <additional_attributes>70.0;30.0;70.0;10.0;10.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1575</x>
-      <y>468</y>
-      <w>108</w>
-      <h>99</h>
+      <x>805</x>
+      <y>185</y>
+      <w>60</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
 ClassType
 --
 abstract
 interface
-concrete
-final concrete</panel_attributes>
+concrete</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1539</x>
-      <y>468</y>
-      <w>54</w>
-      <h>27</h>
+      <x>835</x>
+      <y>225</y>
+      <w>15</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1728</x>
-      <y>288</y>
-      <w>108</w>
-      <h>216</h>
+      <x>1140</x>
+      <y>285</y>
+      <w>70</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Enumeration&gt;&gt;
 PrimativeType
@@ -315,21 +267,21 @@ getName(): String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1638</x>
-      <y>342</y>
-      <w>108</w>
-      <h>27</h>
+      <x>1075</x>
+      <y>315</y>
+      <w>75</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>130.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>666</x>
-      <y>333</y>
-      <w>207</w>
-      <h>135</h>
+      <x>300</x>
+      <y>230</y>
+      <w>115</w>
+      <h>75</h>
     </coordinates>
     <panel_attributes>Engine
 --
@@ -346,40 +298,39 @@ execute(config: Configuration): void</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>360</y>
-      <w>243</w>
-      <h>81</h>
+      <x>475</x>
+      <y>245</y>
+      <w>135</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>SystemModel
 --
 priorityClasses: Map&lt;String,ClassModel&gt;
 supportTypes: Map&lt;String,TypeModel&gt;
---
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>441</x>
-      <y>531</y>
-      <w>324</w>
-      <h>63</h>
+      <x>75</x>
+      <y>340</y>
+      <w>280</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Interface&gt;&gt;
 Generator
 --
-generate(sm: SystemModel, config: Configuration): void</panel_attributes>
+generate(sm: SystemModel, config: Configuration, jobs : Collection&lt;Job&gt;): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>801</x>
-      <y>531</y>
-      <w>288</w>
-      <h>63</h>
+      <x>375</x>
+      <y>340</y>
+      <w>160</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Interface&gt;&gt;
 Analyzer
@@ -390,10 +341,10 @@ analyze(SystemModel sm): Collection&lt;Pattern&gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>387</x>
-      <y>225</y>
-      <w>45</w>
-      <h>63</h>
+      <x>145</x>
+      <y>170</y>
+      <w>25</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;30.0;10.0;30.0;50.0</additional_attributes>
@@ -401,10 +352,10 @@ analyze(SystemModel sm): Collection&lt;Pattern&gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>468</x>
-      <y>288</y>
-      <w>27</w>
-      <h>72</h>
+      <x>190</x>
+      <y>205</y>
+      <w>15</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
@@ -412,10 +363,10 @@ analyze(SystemModel sm): Collection&lt;Pattern&gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>486</x>
-      <y>279</y>
-      <w>234</w>
-      <h>72</h>
+      <x>200</x>
+      <y>200</y>
+      <w>130</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>240.0;60.0;240.0;10.0;10.0;10.0</additional_attributes>
@@ -423,33 +374,33 @@ analyze(SystemModel sm): Collection&lt;Pattern&gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>864</x>
-      <y>414</y>
-      <w>54</w>
-      <h>27</h>
+      <x>410</x>
+      <y>265</y>
+      <w>75</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>130.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1134</x>
-      <y>396</y>
-      <w>234</w>
-      <h>90</h>
+      <x>605</x>
+      <y>260</y>
+      <w>155</w>
+      <h>85</h>
     </coordinates>
     <panel_attributes>m1=0..n
 lt=&lt;-</panel_attributes>
-    <additional_attributes>220.0;80.0;220.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>290.0;150.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>459</y>
-      <w>27</w>
-      <h>90</h>
+      <x>380</x>
+      <y>300</y>
+      <w>15</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
@@ -457,45 +408,32 @@ lt=&lt;-</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>909</x>
-      <y>432</y>
-      <w>27</w>
-      <h>117</h>
+      <x>505</x>
+      <y>280</y>
+      <w>15</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>198</x>
-      <y>630</y>
-      <w>324</w>
-      <h>54</h>
+      <x>150</x>
+      <y>405</y>
+      <w>75</w>
+      <h>15</h>
     </coordinates>
-    <panel_attributes>GraphVizWriter
---
-generate(sm:SystemModel, config: Configuration): void</panel_attributes>
+    <panel_attributes>GraphVizWriter</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>306</x>
-      <y>396</y>
-      <w>162</w>
-      <h>252</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>160.0;10.0;10.0;10.0;10.0;260.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>675</x>
-      <y>459</y>
-      <w>27</w>
-      <h>90</h>
+      <x>310</x>
+      <y>300</y>
+      <w>15</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
@@ -503,18 +441,16 @@ generate(sm:SystemModel, config: Configuration): void</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>693</x>
-      <y>783</y>
-      <w>324</w>
-      <h>108</h>
+      <x>335</x>
+      <y>425</y>
+      <w>90</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Interface&gt;&gt;
 Pattern
 --
 getName(): String
-getCollection(): Map&lt;String, Collection&lt;String&gt; &gt;
-setColor(): void
-getColor(): Color
+getJobs(): Collection&lt;Job&gt;
 
 
 </panel_attributes>
@@ -523,58 +459,298 @@ getColor(): Color
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>468</x>
-      <y>585</y>
-      <w>27</w>
-      <h>63</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>738</x>
-      <y>585</y>
-      <w>27</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;220.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>828</x>
-      <y>585</y>
-      <w>27</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;220.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1413</x>
-      <y>684</y>
-      <w>99</w>
+      <x>180</x>
+      <y>370</y>
+      <w>15</w>
       <h>45</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes>
-    <additional_attributes>70.0;30.0;70.0;10.0;10.0;10.0;10.0;30.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1467</x>
-      <y>414</y>
-      <w>45</w>
-      <h>72</h>
+      <x>390</x>
+      <y>370</y>
+      <w>15</w>
+      <h>65</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>565</x>
+      <y>135</y>
+      <w>150</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ASMServiceProvider
+--
+getTypeByName(name: String): TypeModel
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>270</y>
+      <w>160</w>
+      <h>145</h>
+    </coordinates>
+    <panel_attributes>ClassModel
+--
+-asmClassNode: ClassNode
+-isFinal : boolean
+--
++getType(): ClassType
++getName(): String
++getModifier(): Modifier
+--
++isImportant(): boolean
++getSuperClass(): ClassModel
+
++getConstructors(): Iterable&lt;MethodModel&gt;
++getMethods(): Iterable&lt;MethodModel&gt;
++getFields(): Iterable&lt;FieldModel&gt;
++getInnerClasses(): Iterable&lt;ClassModel&gt;
+
++visit(traverser: Visitor&lt;ClassModel&gt;)
++isFinal(): boolean
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1090</x>
+      <y>595</y>
+      <w>90</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>OverridingMethodModel
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>975</x>
+      <y>595</y>
+      <w>90</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>TopMethodModel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1060</x>
+      <y>555</y>
+      <w>80</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1015</x>
+      <y>555</y>
+      <w>60</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>485</y>
+      <w>65</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Visitor&lt;T&gt;
+--
+visit(node: T)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>610</x>
+      <y>395</y>
+      <w>90</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Visitable&lt;T&gt;
+--
+visit(traverser: Visitor&lt;T&gt;)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>300</y>
+      <w>15</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;250.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>500</y>
+      <w>110</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Job
+--
+getName(): String
+getClasses: List&lt;String&gt;
+getFormat(): Format
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>345</x>
+      <y>470</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>370</y>
+      <w>15</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;260.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>290</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Format
+--
+getValue(key: String): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>85</x>
+      <y>255</y>
+      <w>100</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>505</x>
+      <y>370</y>
+      <w>70</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;230.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>585</x>
+      <y>425</y>
+      <w>55</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;120.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>695</x>
+      <y>405</y>
+      <w>65</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>695</x>
+      <y>405</y>
+      <w>330</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;640.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>695</x>
+      <y>405</y>
+      <w>145</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;270.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>665</x>
+      <y>165</y>
+      <w>115</w>
+      <h>115</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>165</y>
+      <w>70</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;160.0</additional_attributes>
   </element>
 </diagram>
