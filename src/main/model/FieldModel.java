@@ -7,5 +7,4 @@ public class FieldModel implements Visitable<FieldModel> {
 		visitor.visit(this);
 	}
 
-
 }

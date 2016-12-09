@@ -10,16 +10,6 @@ public class ASMParser implements ASMServiceProvider {
 	private Map<String, ClassModel> map;
 
 	@Override
-	public TypeModel getTypeByName(String name) {
-		// TODO:
-		// PrimitiveType primitive = PrimitiveType.parse(name);
-		// if (primitive != null)
-		// return primitive;
-		ClassModel model = getClassByName(name, false);
-		return new TypeModel(model, 0);
-	}
-
-	@Override
 	public ClassModel getClassByName(String className) {
 		return getClassByName(className, false);
 	}
