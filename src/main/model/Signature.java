@@ -6,8 +6,6 @@ import java.util.Objects;
 
 import org.objectweb.asm.Type;
 
-import main.model.MethodModel.MethodType;
-
 public class Signature {
 	private final TypeModel ret;
 	private final List<TypeModel> args;

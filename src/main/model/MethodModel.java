@@ -7,13 +7,19 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
+/**
+ * The method model.
+ * 
+ * @author zhang
+ *
+ */
 public class MethodModel implements Visitable<MethodModel> {
 	private final MethodNode asmMethodNode;
 	private final ClassModel belongsTo;
 
 	private final Modifier modifier;
-	private final MethodType methodtype;
 	private final boolean isFinal;
+	private final MethodType methodtype;
 	private final Signature signature;
 
 	private Collection<MethodModel> superMethods;
@@ -22,8 +28,8 @@ public class MethodModel implements Visitable<MethodModel> {
 		this.belongsTo = belongsTo;
 		this.asmMethodNode = methodNode;
 		this.modifier = Modifier.parse(methodNode.access);
+		this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
 		this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
-		this.isFinal = (asmMethodNode.access & Opcodes.ACC_FINAL) != 0;
 		this.signature = Signature.parse(belongsTo, parseMethodName(), asmMethodNode.desc);
 	}
 
@@ -39,7 +45,7 @@ public class MethodModel implements Visitable<MethodModel> {
 		}
 	}
 
-	public ClassModel getClassBelong() {
+	public ClassModel getParentClass() {
 		return belongsTo;
 	}
 

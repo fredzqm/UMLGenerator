@@ -9,6 +9,7 @@ import java.util.Map;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
@@ -16,16 +17,15 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 	private final ClassNode asmClassNode;
 
 	private final boolean important;
-	private final ClassType classType;
 	private final Modifier modifier;
 	private final boolean isFinal;
+	private final ClassType classType;
 	private final String name;
 
 	private ClassModel superClass;
 	private Collection<ClassModel> interfaces;
 
-	private Collection<FieldModel> fileds;
-
+	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> constructors;
 	private Map<Signature, MethodModel> methods;
 	private Map<Signature, MethodModel> staticMethods;
@@ -42,18 +42,15 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		this.asmServiceProvider = asmServiceProvider;
 		this.asmClassNode = asmClassNode;
 		this.important = important;
-		this.classType = ClassType.parse(asmClassNode.access);
 		this.modifier = Modifier.parse(asmClassNode.access);
-		this.isFinal = (asmClassNode.access & Opcodes.ACC_FINAL) != 0;
+		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
+		this.classType = ClassType.parse(asmClassNode.access);
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 	}
 
-	protected void tranceInheritanceChain() {
-		if (asmClassNode.superName != null)
-			superClass = getClassByName(asmClassNode.superName);
-	}
-
 	public ClassModel getSuperClass() {
+		if (superClass == null && asmClassNode.superName != null)
+			superClass = getClassByName(asmClassNode.superName);
 		return superClass;
 	}
 
@@ -127,10 +124,10 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		if (methods == null) {
 			constructors = new HashMap<>();
 			staticMethods = new HashMap<>();
-			if (superClass == null)
+			if (getSuperClass() == null)
 				methods = new HashMap<>();
 			else
-				methods = new HashMap<>(superClass.getMethodsMap());
+				methods = new HashMap<>(getSuperClass().getMethodsMap());
 
 			@SuppressWarnings("unchecked")
 			List<MethodNode> ls = asmClassNode.methods;
@@ -157,10 +154,20 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 	}
 
 	public Iterable<FieldModel> getFields() {
-		if (fileds == null) {
+		return getFieldMap().values();
+	}
 
+	private Map<String, FieldModel> getFieldMap() {
+		if (fields == null) {
+			fields = new HashMap<>();
+			@SuppressWarnings("unchecked")
+			List<FieldNode> ls = asmClassNode.fields;
+			for (FieldNode fieldNode : ls) {
+				FieldModel fieldModel = new FieldModel(this, fieldNode);
+				fields.put(fieldModel.getName(), fieldModel);
+			}
 		}
-		return fileds;
+		return fields;
 	}
 
 	public boolean isFinal() {

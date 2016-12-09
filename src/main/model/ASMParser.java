@@ -27,10 +27,8 @@ public class ASMParser implements ASMServiceProvider {
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
 			ClassModel model = new ClassModel(this, classNode, important);
 			map.put(className, model);
-			model.tranceInheritanceChain();
 			return model;
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new RuntimeException("ASM parsing of " + className + " failed.", e);
 		}
 	}

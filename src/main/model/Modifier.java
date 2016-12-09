@@ -14,4 +14,9 @@ public enum Modifier {
 			return PROTECTED;
 		return DEFAULT;
 	}
+
+	public static boolean parseIsFinal(int access) {
+		return (access & Opcodes.ACC_FINAL) != 0;
+	}
+
 }

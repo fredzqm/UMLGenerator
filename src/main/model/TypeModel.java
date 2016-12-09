@@ -61,6 +61,14 @@ public class TypeModel {
 		return new TypeModel(classModel, dimension, primiType);
 	}
 
+	public static TypeModel getInstance(ClassModel classModel) {
+		return getInstance(classModel, 0);
+	}
+
+	public static TypeModel getInstance(ClassModel classModel, int dimension) {
+		return new TypeModel(classModel, dimension, PrimitiveType.OBJECT);
+	}
+
 	public enum PrimitiveType {
 		INT, DOUBLE, FLOAT, BOOLEAN, BYTE, CHAR, SHORT, LONG, OBJECT, VOID;
 
