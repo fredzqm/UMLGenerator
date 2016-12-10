@@ -1,4 +1,4 @@
-package main.model;
+package models;
 
 import java.io.IOException;
 import java.util.Map;

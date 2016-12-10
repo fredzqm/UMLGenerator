@@ -1,4 +1,4 @@
-package main.model;
+package models;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,12 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IClassModel;
+import generator.IMethodModel;
+
+public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
 	private final ASMServiceProvider asmServiceProvider;
 	private final ClassNode asmClassNode;
 
@@ -48,7 +53,7 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 	}
 
-	public ClassModel getSuperClass() {
+	public IClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = getClassByName(asmClassNode.superName);
 		return superClass;
@@ -62,7 +67,7 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		return name;
 	}
 
-	public ClassType getType() {
+	public IClassType getType() {
 		return classType;
 	}
 
@@ -72,7 +77,7 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 
 	public Iterable<ClassModel> getInterfaces() {
 		if (interfaces == null) {
-			interfaces = new ArrayList<ClassModel>();
+			interfaces = new ArrayList<>();
 			@SuppressWarnings("unchecked")
 			List<String> ls = asmClassNode.interfaces;
 			for (String s : ls) {
@@ -80,6 +85,16 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 			}
 		}
 		return interfaces;
+	}
+
+	@Override
+	public List<IClassModel> getHasRelation() {
+		return null;
+	}
+
+	@Override
+	public List<IClassModel> getDependsRelation() {
+		return null;
 	}
 
 	public Iterable<MethodModel> getMethods() {
@@ -100,7 +115,7 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		return getStaticMethodMap().values();
 	}
 
-	public MethodModel getStaticInitializer() {
+	public IMethodModel getStaticInitializer() {
 		lazyInitializeMethods();
 		return staticConstructor;
 	}
@@ -127,7 +142,7 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 			if (getSuperClass() == null)
 				methods = new HashMap<>();
 			else
-				methods = new HashMap<>(getSuperClass().getMethodsMap());
+				methods = new HashMap<>(superClass.getMethodsMap());
 
 			@SuppressWarnings("unchecked")
 			List<MethodNode> ls = asmClassNode.methods;
@@ -174,7 +189,16 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 		return isFinal;
 	}
 
-	public enum ClassType {
+	public ClassModel getClassByName(String name) {
+		return asmServiceProvider.getClassByName(name);
+	}
+
+	@Override
+	public void visit(IVisitor<ClassModel> IVisitor) {
+		IVisitor.visit(this);
+	}
+
+	public enum ClassType implements IClassType {
 		ABSTRACT, INTERFACE, CONCRETE, ENUM;
 
 		public static ClassType parse(int access) {
@@ -186,15 +210,22 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider {
 				return ClassType.ABSTRACT;
 			return CONCRETE;
 		}
-	}
 
-	public ClassModel getClassByName(String name) {
-		return asmServiceProvider.getClassByName(name);
-	}
-
-	@Override
-	public void visit(Visitor<ClassModel> visitor) {
-		visitor.visit(this);
+		@Override
+		public void switchByCase(Switcher switcher) {
+			switch (this) {
+			case ABSTRACT:
+				switcher.ifAbstract();
+			case INTERFACE:
+				switcher.ifInterface();
+				break;
+			case CONCRETE:
+				switcher.ifConcrete();
+			case ENUM:
+				switcher.ifEnum();
+				break;
+			}
+		}
 	}
 
 }

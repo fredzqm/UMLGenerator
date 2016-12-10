@@ -1,13 +1,15 @@
-package main.model;
+package models;
 
 import org.objectweb.asm.Type;
 
+import generator.ITypeModel;
+
 /**
- * 
+ *
  * @author zhang
  *
  */
-public class TypeModel {
+public class TypeModel implements ITypeModel {
 	private final ClassModel classModel;
 	private final int dimension;
 	private final PrimitiveType primiType;
@@ -27,9 +29,15 @@ public class TypeModel {
 	}
 
 	public String getName() {
+		StringBuilder sb = new StringBuilder();
 		if (classModel != null)
-			return classModel.getName();
-		return primiType.getName();
+			sb.append(classModel.getName());
+		else
+			sb.append(primiType.getName());
+		for (int i = 0; i < dimension; i++) {
+			sb.append("[]");
+		}
+		return sb.toString();
 	}
 
 	@Override

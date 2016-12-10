@@ -1,9 +1,14 @@
-package main.model;
+package models;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
 
-public class FieldModel implements Visitable<FieldModel> {
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IFieldModel;
+import generator.ITypeModel;
+
+public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 	private final FieldNode asmFieldNode;
 	private final ClassModel belongsTo;
 
@@ -23,6 +28,11 @@ public class FieldModel implements Visitable<FieldModel> {
 		return asmFieldNode.name;
 	}
 
+	@Override
+	public ITypeModel getType() {
+		return fieldType;
+	}
+
 	public ClassModel getParentClass() {
 		return belongsTo;
 	}
@@ -40,8 +50,8 @@ public class FieldModel implements Visitable<FieldModel> {
 	}
 
 	@Override
-	public void visit(Visitor<FieldModel> visitor) {
-		visitor.visit(this);
+	public void visit(IVisitor<FieldModel> IVisitor) {
+		IVisitor.visit(this);
 	}
 
 }
