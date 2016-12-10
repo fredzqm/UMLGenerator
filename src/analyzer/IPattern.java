@@ -1,4 +1,4 @@
-package analyzers;
+package analyzer;
 
 /**
  * Created by lamd on 12/7/2016.

@@ -7,13 +7,18 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IFieldModel;
+import generator.IMethodModel;
+
 /**
  * The method model.
  * 
  * @author zhang
  *
  */
-public class MethodModel implements IVisitable<MethodModel> {
+public class MethodModel implements IVisitable<MethodModel> , IMethodModel{
 	private final MethodNode asmMethodNode;
 	private final ClassModel belongsTo;
 
@@ -102,6 +107,24 @@ public class MethodModel implements IVisitable<MethodModel> {
 		return null;
 	}
 
+	@Override
+	public void visit(IVisitor<MethodModel> IVisitor) {
+		IVisitor.visit(this);
+	}
+
+	@Override
+	public Collection<? extends IMethodModel> getDependentMethods() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<? extends IFieldModel> getDependentFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	public enum MethodType {
 		CONSTRUCTOR, STATIC_INITIALIZER, METHOD, STATIC, ABSTRACT;
 
@@ -118,11 +141,6 @@ public class MethodModel implements IVisitable<MethodModel> {
 				return METHOD;
 			}
 		}
-	}
-
-	@Override
-	public void visit(IVisitor<MethodModel> IVisitor) {
-		IVisitor.visit(this);
 	}
 
 }

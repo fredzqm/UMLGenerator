@@ -1,4 +1,4 @@
-package analyzers;
+package analyzer;
 
 import configs.IFormat;
 

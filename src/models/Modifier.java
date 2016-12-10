@@ -2,7 +2,9 @@ package models;
 
 import org.objectweb.asm.Opcodes;
 
-public enum Modifier {
+import generator.IModifier;
+
+public enum Modifier implements IModifier {
 	PUBLIC("+"), DEFAULT(""), PROTECTED("#"), PRIVATE("-");
 
 	public static Modifier parse(int access) {
@@ -25,7 +27,25 @@ public enum Modifier {
 		this.modifierValue = modifierValue;
 	}
 
-	public String getModifierValue() {
-		return this.modifierValue;
+	public String getModifierSymbol() {
+		return modifierValue;
 	}
+
+//	@Override
+//	public void switchByCase(Switcher switcher) {
+//		switch (this) {
+//		case PRIVATE:
+//			switcher.ifPrivate();
+//			break;
+//		case PUBLIC:
+//			switcher.ifPublic();
+//			break;
+//		case PROTECTED:
+//			switcher.ifProtected();
+//			break;
+//		case DEFAULT:
+//			switcher.ifDefault();
+//			break;
+//		}
+//	}
 }

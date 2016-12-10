@@ -1,4 +1,4 @@
-package models;
+package generator;
 
 import java.util.List;
 
@@ -6,5 +6,5 @@ import java.util.List;
  * Created by lamd on 12/9/2016.
  */
 public interface ISystemModel {
-    List<IClassModel> getClasses();
+    List<? extends IClassModel> getClasses();
 }

@@ -1,10 +1,10 @@
-package generators;
+package generator;
 
 import configs.Configuration;
-import analyzers.Job;
-import models.ISystemModel;
 
 import java.util.Collection;
+
+import analyzer.Job;
 
 /**
  * Created by lamd on 12/7/2016.
