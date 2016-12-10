@@ -1,5 +1,5 @@
 package models;
 
-public interface Visitor<T> {
+public interface IVisitor<T> {
 	void visit(T node);
 }

@@ -12,7 +12,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider, IClassModel{
+public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel{
 	private final ASMServiceProvider asmServiceProvider;
 	private final ClassNode asmClassNode;
 
@@ -208,8 +208,8 @@ public class ClassModel implements Visitable<ClassModel>, ASMServiceProvider, IC
 	}
 
 	@Override
-	public void visit(Visitor<ClassModel> visitor) {
-		visitor.visit(this);
+	public void visit(IVisitor<ClassModel> IVisitor) {
+		IVisitor.visit(this);
 	}
 
 }

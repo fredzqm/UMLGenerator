@@ -13,7 +13,7 @@ import org.objectweb.asm.tree.MethodNode;
  * @author zhang
  *
  */
-public class MethodModel implements Visitable<MethodModel> {
+public class MethodModel implements IVisitable<MethodModel> {
 	private final MethodNode asmMethodNode;
 	private final ClassModel belongsTo;
 
@@ -121,8 +121,8 @@ public class MethodModel implements Visitable<MethodModel> {
 	}
 
 	@Override
-	public void visit(Visitor<MethodModel> visitor) {
-		visitor.visit(this);
+	public void visit(IVisitor<MethodModel> IVisitor) {
+		IVisitor.visit(this);
 	}
 
 }
