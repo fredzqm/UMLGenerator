@@ -1,6 +1,6 @@
 package analyzers;
 
-import Utilities.IFormat;
+import configs.IFormat;
 
 import java.util.List;
 

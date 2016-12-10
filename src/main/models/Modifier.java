@@ -1,18 +1,31 @@
 package models;
 
-/**
- * Created by lamd on 12/9/2016.
- */
+import org.objectweb.asm.Opcodes;
+
 public enum Modifier {
-    PUBLIC("+"), DEFAULT(""), PROTECTED("#"), PRIVATE("-");
+	PUBLIC("+"), DEFAULT(""), PROTECTED("#"), PRIVATE("-");
 
-    private final String modifierValue;
+	public static Modifier parse(int access) {
+		if ((access & Opcodes.ACC_PUBLIC) != 0)
+			return PUBLIC;
+		if ((access & Opcodes.ACC_PRIVATE) != 0)
+			return PRIVATE;
+		if ((access & Opcodes.ACC_PROTECTED) != 0)
+			return PROTECTED;
+		return DEFAULT;
+	}
 
-    Modifier(String modifierValue) {
-        this.modifierValue = modifierValue;
-    }
+	public static boolean parseIsFinal(int access) {
+		return (access & Opcodes.ACC_FINAL) != 0;
+	}
 
-    public String getModifierValue() {
-        return this.modifierValue;
-    }
+	private final String modifierValue;
+
+	Modifier(String modifierValue) {
+		this.modifierValue = modifierValue;
+	}
+
+	public String getModifierValue() {
+		return this.modifierValue;
+	}
 }

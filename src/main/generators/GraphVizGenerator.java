@@ -1,6 +1,6 @@
 package generators;
 
-import Utilities.Configuration;
+import configs.Configuration;
 import analyzers.Job;
 import models.*;
 

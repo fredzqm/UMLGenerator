@@ -1,4 +1,4 @@
-package Utilities;
+package configs;
 
 import java.util.Collection;
 

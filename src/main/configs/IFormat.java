@@ -1,4 +1,4 @@
-package Utilities;
+package configs;
 
 /**
  * Created by lamd on 12/7/2016.

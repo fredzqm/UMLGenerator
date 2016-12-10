@@ -16,5 +16,7 @@ public class LibraryTest {
 //        assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
         // TODO: Actually write Test.
     @Test public void testSomeLibraryMethod() {
+    	assertTrue(true);
+	}
 //        Library classUnderTest = new Library();
 }
