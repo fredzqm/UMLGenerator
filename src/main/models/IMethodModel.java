@@ -8,10 +8,10 @@ import java.util.Collection;
 public interface IMethodModel {
     ClassModel getParentClass();
     String getName();
-//    Modifier getModifier();
-//    Collection<TypeModel> getArguments();
-//    TypeModel getReturnType();
-//    Collection<IMethodModel> getDependentMethods();
-//    Collection<FieldModel> getDependentFields();
+    Modifier getModifier();
+    Collection<ITypeModel> getArguments();
+    ITypeModel getReturnType();
+    Collection<IMethodModel> getDependentMethods();
+    Collection<IFieldModel> getDependentFields();
     boolean isFinal();
 }

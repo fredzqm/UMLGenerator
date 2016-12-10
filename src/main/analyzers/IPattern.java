@@ -1,4 +1,4 @@
-package models;
+package analyzers;
 
 /**
  * Created by lamd on 12/7/2016.

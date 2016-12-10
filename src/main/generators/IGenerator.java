@@ -1,8 +1,14 @@
 package generators;
 
+import Utilities.Configuration;
+import analyzers.Job;
+import models.ISystemModel;
+
+import java.util.Collection;
+
 /**
  * Created by lamd on 12/7/2016.
  */
 public interface IGenerator {
-//    generate(main.model.SystemModel sm, Configuration config, Collection<Jobs>);
+    void generate(ISystemModel sm, Configuration config, Collection<Job> jobs);
 }
