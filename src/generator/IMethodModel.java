@@ -4,34 +4,34 @@ package generator;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
-	IClassModel getParentClass();
+    IClassModel getParentClass();
 
-	IModifier getModifier();
+    IModifier getModifier();
 
-	IMethodType getMethodType();
+    IMethodType getMethodType();
 
-	boolean isFinal();
+    boolean isFinal();
 
-	String getName();
+    String getName();
 
-	ITypeModel getReturnType();
+    ITypeModel getReturnType();
 
-	Iterable<? extends ITypeModel> getArguments();
+    Iterable<? extends ITypeModel> getArguments();
 
-	public interface IMethodType {
-		void switchByCase(Switcher switcher);
+    public interface IMethodType {
+        void switchByCase(Switcher switcher);
 
-		public interface Switcher {
-			void ifConstructor();
+        public interface Switcher {
+            void ifConstructor();
 
-			void ifConcrete();
+            void ifConcrete();
 
-			void ifStatic();
+            void ifStatic();
 
-			void ifStaticInitializer();
+            void ifStaticInitializer();
 
-			void ifAbstract();
+            void ifAbstract();
 
-		}
-	}
+        }
+    }
 }

@@ -4,8 +4,6 @@ import configs.Configuration;
 
 import java.util.Collection;
 
-import analyzer.Job;
-
 /**
  * Created by lamd on 12/7/2016.
  */

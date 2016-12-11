@@ -1,18 +1,18 @@
 package generator;
 
 public interface IModifier {
-	String getModifierSymbol();
-	
-	void switchByCase(Switcher switcher);
+    String getModifierSymbol();
 
-	public interface Switcher {
-		void ifPrivate();
+    void switchByCase(Switcher switcher);
 
-		void ifPublic();
+    public interface Switcher {
+        void ifPrivate();
 
-		void ifProtected();
+        void ifPublic();
 
-		void ifDefault();
-	}
+        void ifProtected();
+
+        void ifDefault();
+    }
 
 }

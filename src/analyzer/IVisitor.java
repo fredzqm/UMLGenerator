@@ -1,5 +1,5 @@
 package analyzer;
 
 public interface IVisitor<T> {
-	void visit(T node);
+    void visit(T node);
 }

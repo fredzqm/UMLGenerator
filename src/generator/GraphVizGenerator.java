@@ -34,12 +34,12 @@ public class GraphVizGenerator implements IGenerator {
         return this.dotString.toString();
     }
 
-	private void parseSystemModel(ISystemModel sm) {
-		Iterable<? extends IClassModel> classes = sm.getClasses();
-		classes.forEach((model) -> {
-			this.classes.add(new GraphVizClass(model));
-		});
-	}
+    private void parseSystemModel(ISystemModel sm) {
+        Iterable<? extends IClassModel> classes = sm.getClasses();
+        classes.forEach((model) -> {
+            this.classes.add(new GraphVizClass(model));
+        });
+    }
 
     private void createDotString() {
         // DOT parent.

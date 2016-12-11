@@ -216,7 +216,7 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
             switch (this) {
                 case ABSTRACT:
                     switcher.ifAbstract();
-                    break; // Did you mean to fall through? If not, I added break statements.
+                    break;
                 case INTERFACE:
                     switcher.ifInterface();
                     break;
@@ -227,7 +227,7 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
                     switcher.ifEnum();
                     break;
                 default:
-                    // TODO: Handle this.
+                    // TODO: Fred: Handle this (throw some exception).
             }
         }
     }

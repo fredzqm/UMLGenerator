@@ -1,5 +1,5 @@
 package analyzer;
 
 public interface IModifier {
-	String getModifierSymbol();
+    String getModifierSymbol();
 }
