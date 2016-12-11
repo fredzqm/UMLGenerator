@@ -1,7 +1,5 @@
 package generator;
 
-import org.objectweb.asm.Opcodes;
-
 /**
  * Created by lamd on 12/9/2016.
  */
@@ -14,28 +12,28 @@ public interface IClassModel {
 	String getName();
 
 	/**
-	 * Returns the Model's ClassType enum.
+	 * Returns the Model's ClassType.
 	 *
 	 * @return ClassType
 	 */
 	IClassType getType();
 
 	/**
-	 * Returns the List of the Model's Fields.
+	 * Returns an Iterable of the Model's Fields.
 	 *
 	 * @return Fields of the Model.
 	 */
 	Iterable<? extends IFieldModel> getFields();
 
 	/**
-	 * Returns the List of the Model's Methods.
+	 * Returns an Iterable of the Model's Methods.
 	 *
 	 * @return Methods of the Model.
 	 */
 	Iterable<? extends IMethodModel> getMethods();
 
 	/**
-	 * Returns the String of the Model's superclass.
+	 * Returns the IClassModel of the Model's superclass.
 	 *
 	 * @return Model's superclass (can be null if the class is Object)
 	 */

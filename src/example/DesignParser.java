@@ -21,14 +21,13 @@ public class DesignParser {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public static void main(String[] a) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
 		// TODO: Learn how to create separate Run Configurations so you can run
 		// this code without changing the arguments each time.
 
 		// FIXME: this code has POOR DESIGN. If you keep this code as-is for
 		// your main method, you will be sad about your grade.
-		String[] args = new String[] { "java.util.ArrayList"};
 		for (String className : args) {
 			// ASM's ClassReader does the heavy lifting of parsing the compiled
 			// Java class.
