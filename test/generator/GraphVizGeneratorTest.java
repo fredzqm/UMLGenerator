@@ -13,7 +13,7 @@ public class GraphVizGeneratorTest {
 
     public static void main(String[] args) {
         List<String> classList = new ArrayList<>();
-        classList.add("java.lang.String");
+        classList.add("java.lang.Integer");
         ISystemModel systemModel = new SystemModel(classList, new ASMParser());
 
         GraphVizGenerator generator = new GraphVizGenerator();

@@ -5,4 +5,5 @@ package generator;
  */
 public interface ITypeModel {
     String getName();
+    String getQualifiedName();
 }

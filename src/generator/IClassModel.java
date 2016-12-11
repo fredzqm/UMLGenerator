@@ -12,6 +12,15 @@ public interface IClassModel {
     String getName();
 
     /**
+     * Returns the Qualified Name of the Class.
+     *
+     * Example: java.lang.String --> String
+     *
+     * @return Qualified Name
+     */
+    String getQualifiedName();
+
+    /**
      * Returns the Model's ClassType.
      *
      * @return ClassType
@@ -59,7 +68,6 @@ public interface IClassModel {
      * @return List of Classes with a Depends-On relationship with the Model.
      */
     Iterable<? extends IClassModel> getDependsRelation();
-
 
     public interface IClassType {
         void switchByCase(Switcher switcher);

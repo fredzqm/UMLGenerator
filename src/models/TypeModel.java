@@ -1,8 +1,7 @@
 package models;
 
-import org.objectweb.asm.Type;
-
 import generator.ITypeModel;
+import org.objectweb.asm.Type;
 
 /**
  * @author zhang
@@ -29,13 +28,21 @@ public class TypeModel implements ITypeModel {
     public String getName() {
         StringBuilder sb = new StringBuilder();
         if (classModel != null)
-            sb.append(classModel.getName());
+            sb.append(classModel.getQualifiedName());
         else
             sb.append(primiType.getName());
         for (int i = 0; i < dimension; i++) {
             sb.append("[]");
         }
         return sb.toString();
+    }
+
+    @Override
+    public String getQualifiedName() {
+        String name = getName();
+        int quantifiedIndex = name.lastIndexOf(".");
+
+        return (quantifiedIndex == -1) ? name : name.substring(quantifiedIndex + 1);
     }
 
     @Override
@@ -54,20 +61,20 @@ public class TypeModel implements ITypeModel {
         return classModel.hashCode() + primiType.hashCode() + dimension;
     }
 
-	public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
-		int dimension = 0;
-		if (type.getSort() == Type.ARRAY) {
-			dimension = type.getDimensions();
-			type = type.getElementType();
-		}
-		PrimitiveType primiType = PrimitiveType.parse(type);
-		ClassModel classModel;
-		if (primiType == PrimitiveType.OBJECT)
-			classModel = serviceProvider.getClassByName(type.getClassName());
-		else
-			classModel = null;
-		return new TypeModel(classModel, dimension, primiType);
-	}
+    public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
+        int dimension = 0;
+        if (type.getSort() == Type.ARRAY) {
+            dimension = type.getDimensions();
+            type = type.getElementType();
+        }
+        PrimitiveType primiType = PrimitiveType.parse(type);
+        ClassModel classModel;
+        if (primiType == PrimitiveType.OBJECT)
+            classModel = serviceProvider.getClassByName(type.getClassName());
+        else
+            classModel = null;
+        return new TypeModel(classModel, dimension, primiType);
+    }
 
     public static TypeModel getInstance(ClassModel classModel) {
         return getInstance(classModel, 0);
@@ -126,7 +133,10 @@ public class TypeModel implements ITypeModel {
                     return BYTE;
                 case Type.SHORT:
                     return SHORT;
+                case Type.FLOAT:
+                    return FLOAT;
                 case Type.ARRAY:
+                    // Should be handled before this method.
                 default:
                     throw new RuntimeException("does not suport type sort " + type.getClassName());
             }

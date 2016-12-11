@@ -101,6 +101,7 @@ public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         IVisitor.visit(this);
     }
 
+    // TODO: Implement this.
     public Collection<MethodModel> getDependentMethods() {
         return null;
     }

@@ -67,6 +67,11 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
         return name;
     }
 
+    @Override
+    public String getQualifiedName() {
+        return this.name.substring(this.name.lastIndexOf(".") + 1);
+    }
+
     public IClassType getType() {
         return classType;
     }
