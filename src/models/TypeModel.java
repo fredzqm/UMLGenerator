@@ -57,9 +57,11 @@ public class TypeModel implements ITypeModel {
 	}
 
 	public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
-		int dimension = type.getDimensions();
-		if (type.getSort() == Type.ARRAY)
+		int dimension = 0;
+		if (type.getSort() == Type.ARRAY) {
+			dimension = type.getDimensions();
 			type = type.getElementType();
+		}
 		PrimitiveType primiType = PrimitiveType.parse(type);
 		ClassModel classModel;
 		if (primiType == PrimitiveType.OBJECT)

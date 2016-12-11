@@ -11,6 +11,7 @@ public class ASMParserTest {
 		ASMServiceProvider parser = new ASMParser();
 		ClassModel model =  parser.getClassByName("java.lang.String");
 		assertEquals("java.lang.String", model.getName());
+		System.out.println(model.getFields());
 	}
 
 }
