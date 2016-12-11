@@ -54,18 +54,20 @@ public class TypeModel implements ITypeModel {
         return classModel.hashCode() + primiType.hashCode() + dimension;
     }
 
-    public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
-        int dimension = type.getDimensions();
-        if (type.getSort() == Type.ARRAY)
-            type = type.getElementType();
-        PrimitiveType primiType = PrimitiveType.parse(type);
-        ClassModel classModel;
-        if (primiType == PrimitiveType.OBJECT)
-            classModel = serviceProvider.getClassByName(type.getClassName());
-        else
-            classModel = null;
-        return new TypeModel(classModel, dimension, primiType);
-    }
+	public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
+		int dimension = 0;
+		if (type.getSort() == Type.ARRAY) {
+			dimension = type.getDimensions();
+			type = type.getElementType();
+		}
+		PrimitiveType primiType = PrimitiveType.parse(type);
+		ClassModel classModel;
+		if (primiType == PrimitiveType.OBJECT)
+			classModel = serviceProvider.getClassByName(type.getClassName());
+		else
+			classModel = null;
+		return new TypeModel(classModel, dimension, primiType);
+	}
 
     public static TypeModel getInstance(ClassModel classModel) {
         return getInstance(classModel, 0);
