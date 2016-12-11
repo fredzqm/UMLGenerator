@@ -8,7 +8,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 public class ASMParser implements ASMServiceProvider {
-	private Map<String, ClassModel> map;
+	private Map<String, ClassModel> map = new HashMap<>();
 
 	public ASMParser() {
 	    map = new HashMap<>();

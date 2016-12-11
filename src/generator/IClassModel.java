@@ -60,6 +60,7 @@ public interface IClassModel {
 	 */
 	Iterable<? extends IClassModel> getDependsRelation();
 
+	
 	public interface IClassType {
 		void switchByCase(Switcher switcher);
 

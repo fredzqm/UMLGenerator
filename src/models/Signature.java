@@ -37,21 +37,26 @@ public class Signature {
 	public boolean equals(Object obj) {
 		if (obj instanceof Signature) {
 			Signature o = (Signature) obj;
-			return Objects.equals(name, o.name) && args.equals(o.args) && ret.equals(o.ret);
+			return Objects.equals(name, o.name) && args.equals(o.args);
 		}
 		return false;
 	}
 
+	private int hashCode;
+
 	@Override
 	public int hashCode() {
-		return args.hashCode() + name == null ? 0 : name.hashCode();
+		if (hashCode == 0) {
+			hashCode = name.hashCode() * 31 + args.hashCode();
+		}
+		return hashCode;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("%s %s(%s)", ret, name, args.toString());
 	}
-	
+
 	public static Signature parse(ASMServiceProvider serviceProvider, String name, String desc) {
 		TypeModel ret = TypeModel.parse(serviceProvider, Type.getReturnType(desc));
 		List<TypeModel> args = new ArrayList<>();

@@ -1,26 +1,37 @@
 package generator;
 
-import java.util.Collection;
-
-
 /**
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
 	IClassModel getParentClass();
 
-	String getName();
-
 	IModifier getModifier();
 
-	Collection<? extends ITypeModel> getArguments();
+	IMethodType getMethodType();
+
+	boolean isFinal();
+
+	String getName();
 
 	ITypeModel getReturnType();
 
-	Collection<? extends IMethodModel> getDependentMethods();
+	Iterable<? extends ITypeModel> getArguments();
 
-	Collection<? extends IFieldModel> getDependentFields();
+	public interface IMethodType {
+		void switchByCase(Switcher switcher);
 
-	boolean isFinal();
-	
+		public interface Switcher {
+			void ifConstructor();
+
+			void ifConcrete();
+
+			void ifStatic();
+
+			void ifStaticInitializer();
+
+			void ifAbstract();
+
+		}
+	}
 }
