@@ -31,21 +31,21 @@ public enum Modifier implements IModifier {
 		return modifierValue;
 	}
 
-//	@Override
-//	public void switchByCase(Switcher switcher) {
-//		switch (this) {
-//		case PRIVATE:
-//			switcher.ifPrivate();
-//			break;
-//		case PUBLIC:
-//			switcher.ifPublic();
-//			break;
-//		case PROTECTED:
-//			switcher.ifProtected();
-//			break;
-//		case DEFAULT:
-//			switcher.ifDefault();
-//			break;
-//		}
-//	}
+	@Override
+	public void switchByCase(Switcher switcher) {
+		switch (this) {
+		case PRIVATE:
+			switcher.ifPrivate();
+			break;
+		case PUBLIC:
+			switcher.ifPublic();
+			break;
+		case PROTECTED:
+			switcher.ifProtected();
+			break;
+		case DEFAULT:
+			switcher.ifDefault();
+			break;
+		}
+	}
 }

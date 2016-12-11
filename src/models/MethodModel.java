@@ -18,7 +18,7 @@ import generator.IMethodModel;
  * @author zhang
  *
  */
-public class MethodModel implements IVisitable<MethodModel> , IMethodModel{
+public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	private final MethodNode asmMethodNode;
 	private final ClassModel belongsTo;
 
@@ -27,7 +27,7 @@ public class MethodModel implements IVisitable<MethodModel> , IMethodModel{
 	private final MethodType methodtype;
 	private final Signature signature;
 
-	private Collection<MethodModel> superMethods;
+	private List<MethodModel> superMethods;
 
 	public MethodModel(ClassModel belongsTo, MethodNode methodNode) {
 		this.belongsTo = belongsTo;
@@ -97,35 +97,20 @@ public class MethodModel implements IVisitable<MethodModel> , IMethodModel{
 		return signature.getReturnType();
 	}
 
-	public Collection<MethodModel> getDependMethods() {
-		// TODO:
-		return null;
-	}
-
-	public Collection<FieldModel> getDependFields() {
-		// TODO:
-		return null;
-	}
-
 	@Override
 	public void visit(IVisitor<MethodModel> IVisitor) {
 		IVisitor.visit(this);
 	}
 
-	@Override
-	public Collection<? extends IMethodModel> getDependentMethods() {
-		// TODO Auto-generated method stub
+	public Collection<MethodModel> getDependentMethods() {
 		return null;
 	}
 
-	@Override
-	public Collection<? extends IFieldModel> getDependentFields() {
-		// TODO Auto-generated method stub
+	public Collection<IFieldModel> getDependentFields() {
 		return null;
 	}
-	
-	
-	public enum MethodType {
+
+	public enum MethodType implements IMethodModel.IMethodType {
 		CONSTRUCTOR, STATIC_INITIALIZER, METHOD, STATIC, ABSTRACT;
 
 		public static MethodType parse(String name, int access) {
@@ -139,6 +124,27 @@ public class MethodModel implements IVisitable<MethodModel> , IMethodModel{
 				if (name.equals("<init>"))
 					return CONSTRUCTOR;
 				return METHOD;
+			}
+		}
+
+		@Override
+		public void switchByCase(Switcher switcher) {
+			switch (this) {
+			case METHOD:
+				switcher.ifConcrete();
+				break;
+			case CONSTRUCTOR:
+				switcher.ifConstructor();
+				break;
+			case ABSTRACT:
+				switcher.ifAbstract();
+				break;
+			case STATIC:
+				switcher.ifStatic();
+				break;
+			case STATIC_INITIALIZER:
+				switcher.ifStaticInitializer();
+				break;
 			}
 		}
 	}

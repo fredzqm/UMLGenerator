@@ -1,13 +1,14 @@
 package models;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 public class ASMParser implements ASMServiceProvider {
-	private Map<String, ClassModel> map;
+	private Map<String, ClassModel> map = new HashMap<>();
 
 	@Override
 	public ClassModel getClassByName(String className) {

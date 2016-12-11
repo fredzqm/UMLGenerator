@@ -1,7 +1,5 @@
 package generator;
 
-import org.objectweb.asm.Opcodes;
-
 /**
  * Created by lamd on 12/9/2016.
  */
@@ -62,6 +60,7 @@ public interface IClassModel {
 	 */
 	Iterable<? extends IClassModel> getDependsRelation();
 
+	
 	public interface IClassType {
 		void switchByCase(Switcher switcher);
 

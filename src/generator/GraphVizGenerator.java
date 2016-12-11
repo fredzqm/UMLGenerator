@@ -35,7 +35,7 @@ public class GraphVizGenerator implements IGenerator {
 	}
 
 	private void parseSystemModel(ISystemModel sm) {
-		List<? extends IClassModel> classes = sm.getClasses();
+		Iterable<? extends IClassModel> classes = sm.getClasses();
 		classes.forEach((model) -> {
 			this.classes.add(new GraphVizClass(model));
 		});
