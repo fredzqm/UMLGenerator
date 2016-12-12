@@ -20,19 +20,23 @@ public class GraphVizRunner {
         this.generator.generate(sm, config, jobs);
     }
 
-    public void execute(Configuration config) {
+    public void execute(String executablePath, String outputFormat, String outputName) {
         StringBuilder command = new StringBuilder();
-        command.append(config.getExecutable());
+        command.append(executablePath);
+        command.append(" -T");
+        command.append(outputFormat);
+        command.append(" " + outputName);
+        command.append("." + outputFormat);
 
-        p = Runtime.getRuntime().exec(config.getExecutable() + " " + );
-        p.waitFor();
-
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-        String line = "";
-        while ((line = reader.readLine())!= null) {
-            sb.append(line + "\n");
-        }
+//        p = Runtime.getRuntime().exec(command.toString());
+//        p.waitFor();
+//
+//        BufferedReader reader =
+//                new BufferedReader(new InputStreamReader(p.getInputStream()));
+//
+//        String line = "";
+//        while ((line = reader.readLine())!= null) {
+//            sb.append(line + "\n");
+//        }
     }
 }

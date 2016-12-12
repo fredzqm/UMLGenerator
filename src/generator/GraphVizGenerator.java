@@ -1,7 +1,6 @@
 package generator;
 
 import analyzer.Job;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import configs.Configuration;
 
 import java.io.File;
