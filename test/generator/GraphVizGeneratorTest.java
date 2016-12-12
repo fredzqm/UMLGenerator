@@ -90,6 +90,7 @@ public class GraphVizGeneratorTest {
      */
     private class DummyConfig implements IConfiguration {
         private String fileName, outputDirectory, outputFormat;
+        private double nodeSep;
 
         /**
          * Constructs a basic DummyConfig object.
@@ -98,6 +99,7 @@ public class GraphVizGeneratorTest {
             this.outputDirectory = "./output";
             this.fileName = "test";
             this.outputFormat = "png";
+            this.nodeSep = 1.0;
         }
 
         @Override
@@ -138,6 +140,16 @@ public class GraphVizGeneratorTest {
         @Override
         public void setOutputFormat(String outputFormat) {
             this.outputFormat = outputFormat;
+        }
+
+        @Override
+        public double getNodeSep() {
+            return this.nodeSep;
+        }
+
+        @Override
+        public void setNodeSep(double nodeSep) {
+            this.nodeSep = nodeSep;
         }
     }
 }

@@ -71,4 +71,12 @@ public interface IConfiguration {
      * @return Node Separation.
      */
     double getNodeSep();
+
+    /**
+     * Sets the Node Separation.
+     *
+     * @param nodeSep New Node Separation.
+     */
+    void setNodeSep(double nodeSep);
+
 }
