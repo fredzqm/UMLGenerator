@@ -2,7 +2,6 @@ package generator;
 
 /**
  * An Interface for Access Modifers.
- *
  */
 public interface IModifier {
     /**

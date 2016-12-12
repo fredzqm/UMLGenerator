@@ -10,6 +10,7 @@ public class Signature {
     private final TypeModel ret;
     private final List<TypeModel> args;
     private final String name;
+    private int hashCode;
 
     public Signature(TypeModel returnType, List<TypeModel> argumentList, String name) {
         if (returnType == null)
@@ -19,6 +20,15 @@ public class Signature {
         this.ret = returnType;
         this.args = argumentList;
         this.name = name;
+    }
+
+    public static Signature parse(ASMServiceProvider serviceProvider, String name, String desc) {
+        TypeModel ret = TypeModel.parse(serviceProvider, Type.getReturnType(desc));
+        List<TypeModel> args = new ArrayList<>();
+        for (Type argType : Type.getArgumentTypes(desc)) {
+            args.add(TypeModel.parse(serviceProvider, argType));
+        }
+        return new Signature(ret, args, name);
     }
 
     public TypeModel getReturnType() {
@@ -42,8 +52,6 @@ public class Signature {
         return false;
     }
 
-    private int hashCode;
-
     @Override
     public int hashCode() {
         if (hashCode == 0) {
@@ -55,15 +63,6 @@ public class Signature {
     @Override
     public String toString() {
         return String.format("%s %s(%s)", ret, name, args.toString());
-    }
-
-    public static Signature parse(ASMServiceProvider serviceProvider, String name, String desc) {
-        TypeModel ret = TypeModel.parse(serviceProvider, Type.getReturnType(desc));
-        List<TypeModel> args = new ArrayList<>();
-        for (Type argType : Type.getArgumentTypes(desc)) {
-            args.add(TypeModel.parse(serviceProvider, argType));
-        }
-        return new Signature(ret, args, name);
     }
 
 }

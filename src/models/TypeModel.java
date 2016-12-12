@@ -19,6 +19,29 @@ public class TypeModel implements ITypeModel {
         this.primiType = primiType;
     }
 
+    public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
+        int dimension = 0;
+        if (type.getSort() == Type.ARRAY) {
+            dimension = type.getDimensions();
+            type = type.getElementType();
+        }
+        PrimitiveType primiType = PrimitiveType.parse(type);
+        ClassModel classModel;
+        if (primiType == PrimitiveType.OBJECT)
+            classModel = serviceProvider.getClassByName(type.getClassName());
+        else
+            classModel = null;
+        return new TypeModel(classModel, dimension, primiType);
+    }
+
+    public static TypeModel getInstance(ClassModel classModel) {
+        return getInstance(classModel, 0);
+    }
+
+    public static TypeModel getInstance(ClassModel classModel, int dimension) {
+        return new TypeModel(classModel, dimension, PrimitiveType.OBJECT);
+    }
+
     public ClassModel getClassModel() {
         return classModel;
     }
@@ -55,57 +78,8 @@ public class TypeModel implements ITypeModel {
         return classModel.hashCode() + primiType.hashCode() + dimension;
     }
 
-    public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
-        int dimension = 0;
-        if (type.getSort() == Type.ARRAY) {
-            dimension = type.getDimensions();
-            type = type.getElementType();
-        }
-        PrimitiveType primiType = PrimitiveType.parse(type);
-        ClassModel classModel;
-        if (primiType == PrimitiveType.OBJECT)
-            classModel = serviceProvider.getClassByName(type.getClassName());
-        else
-            classModel = null;
-        return new TypeModel(classModel, dimension, primiType);
-    }
-
-    public static TypeModel getInstance(ClassModel classModel) {
-        return getInstance(classModel, 0);
-    }
-
-    public static TypeModel getInstance(ClassModel classModel, int dimension) {
-        return new TypeModel(classModel, dimension, PrimitiveType.OBJECT);
-    }
-
     public enum PrimitiveType {
         INT, DOUBLE, FLOAT, BOOLEAN, BYTE, CHAR, SHORT, LONG, OBJECT, VOID;
-
-        String getName() {
-            switch (this) {
-                case VOID:
-                    return "void";
-                case INT:
-                    return "int";
-                case DOUBLE:
-                    return "double";
-                case FLOAT:
-                    return "float";
-                case BOOLEAN:
-                    return "boolean";
-                case BYTE:
-                    return "byte";
-                case CHAR:
-                    return "char";
-                case SHORT:
-                    return "short";
-                case LONG:
-                    return "long";
-                case OBJECT:
-                default:
-                    throw new RuntimeException(" getName(): We missed " + this);
-            }
-        }
 
         public static PrimitiveType parse(Type type) {
             switch (type.getSort()) {
@@ -133,6 +107,32 @@ public class TypeModel implements ITypeModel {
                     // Should be handled before this method.
                 default:
                     throw new RuntimeException("does not suport type sort " + type.getClassName());
+            }
+        }
+
+        String getName() {
+            switch (this) {
+                case VOID:
+                    return "void";
+                case INT:
+                    return "int";
+                case DOUBLE:
+                    return "double";
+                case FLOAT:
+                    return "float";
+                case BOOLEAN:
+                    return "boolean";
+                case BYTE:
+                    return "byte";
+                case CHAR:
+                    return "char";
+                case SHORT:
+                    return "short";
+                case LONG:
+                    return "long";
+                case OBJECT:
+                default:
+                    throw new RuntimeException(" getName(): We missed " + this);
             }
         }
     }

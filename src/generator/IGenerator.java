@@ -1,7 +1,7 @@
 package generator;
 
 import analyzer.Job;
-import configs.Configuration;
+import configs.IConfiguration;
 
 import java.util.Collection;
 
@@ -15,8 +15,10 @@ public interface IGenerator {
      * Creates a file formatted to display classes.
      *
      * @param sm     SystemModel containing all class information to diagram.
-     * @param config Configuration for the Generator to follow.
+     * @param config IConfiguration for the Generator to follow.
      * @param jobs   A Collection of Patterns recognized.
      */
-    void generate(ISystemModel sm, Configuration config, Collection<Job> jobs);
+    void generate(ISystemModel sm, IConfiguration config, Collection<Job> jobs);
+
+    String getOutputString();
 }

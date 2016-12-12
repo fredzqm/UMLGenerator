@@ -2,7 +2,7 @@ package generator;
 
 /**
  * An Interface of the Method Models.
- *
+ * <p>
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {

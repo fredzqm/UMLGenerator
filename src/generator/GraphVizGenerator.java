@@ -1,7 +1,7 @@
 package generator;
 
 import analyzer.Job;
-import configs.Configuration;
+import configs.IConfiguration;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -56,7 +56,7 @@ public class GraphVizGenerator implements IGenerator {
         });
 
         // Superclass Relations
-        this.dotString.append("\tedge [arrowhead=onormal]\n"); // TODO:
+        this.dotString.append("\tedge [arrowhead=onormal];\n"); // TODO:
         // Configurable.
         this.classes.forEach((vizClass) -> {
             this.dotString.append("\t");
@@ -107,16 +107,21 @@ public class GraphVizGenerator implements IGenerator {
 
     @Override
     // TODO: figure out what to pull out of the configuration and jobs.
-    public void generate(ISystemModel sm, Configuration config, Collection<Job> jobs) {
+    public void generate(ISystemModel sm, IConfiguration config, Collection<Job> jobs) {
         parseSystemModel(sm);
         createDotString();
         try {
-            // Configuration should be normalize if files they do not have extenions.
+            // IConfiguration should be normalize if files they do not have extenions.
             // TODO: make this rely on the config.
-            writeDotString("./output", "animals.dot");
+            writeDotString(config.getOutputDirectory(), config.getFileName() + ".dot");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getOutputString() {
+        return getDotString();
     }
 
     /**
