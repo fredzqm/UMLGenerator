@@ -7,8 +7,18 @@ package configs;
  * Created by lamd on 12/7/2016.
  */
 public interface IConfiguration {
+    /**
+     * Returns an Iterable of the classes.
+     *
+     * @return
+     */
     Iterable<String> getClasses();
 
+    /**
+     * Returns the Format of the Configuration.
+     *
+     * @return
+     */
     IFormat getFormat();
 
     /**

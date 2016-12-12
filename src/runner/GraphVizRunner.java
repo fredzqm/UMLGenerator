@@ -24,6 +24,8 @@ public class GraphVizRunner implements IRunner {
 
     public void execute(String executablePath, String outputDirectory, String outputFormat, String outputName) throws IOException, InterruptedException {
         StringBuilder command = new StringBuilder();
+
+        // Create command "<executablePath> -T<outputFormat> <outputDirectory>/<outputName>.dot -o <outputDirectory>/<ouputName>.<outputFormat>
         command.append(executablePath);
         command.append(" -T");
         command.append(outputFormat);
@@ -31,6 +33,7 @@ public class GraphVizRunner implements IRunner {
         command.append(" -o ");
         command.append(outputDirectory + "/" + outputName + "." + outputFormat);
 
+        // Execute the command line process.
         Process process = Runtime.getRuntime().exec(command.toString());
         process.waitFor();
     }

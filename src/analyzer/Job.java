@@ -20,6 +20,4 @@ public class Job {
     public IFormat getFormat() {
         return this.format;
     }
-
-//    public Job(String name
 }

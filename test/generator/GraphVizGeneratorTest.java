@@ -18,16 +18,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * The GraphVizGenerator and GraphVizRunner Test.
+ * <p>
  * Created by lamd on 12/11/2016.
  */
 public class GraphVizGeneratorTest {
-    @Test
-    public void generate() throws Exception {
+    private ISystemModel setupSystemModel() {
         List<String> classList = new ArrayList<>();
         classList.add("java.lang.String");
-        ISystemModel systemModel = new SystemModel(classList, new ASMParser());
+        return new SystemModel(classList, new ASMParser());
+    }
+
+    @Test
+    public void generate() throws Exception {
+        // Set up the system model and config.
+        ISystemModel systemModel = setupSystemModel();
         IConfiguration config = new DummyConfig();
 
+        // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator();
         generator.generate(systemModel, config, null);
         String expected = "digraph GraphVizGeneratedDOT {\n" +
@@ -52,16 +60,20 @@ public class GraphVizGeneratorTest {
 
     @Test
     public void write() throws IOException {
+        // Create a TemporaryFolder that will be deleted after the test runs.
         TemporaryFolder folder = new TemporaryFolder();
         folder.create();
 
+        // Set up a System Model.
         List<String> classList = new ArrayList<>();
         classList.add("java.lang.String");
         ISystemModel systemModel = new SystemModel(classList, new ASMParser());
         IConfiguration config = new DummyConfig();
 
+        // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(folder.getRoot().toString());
 
+        // Create the runner
         IRunner runner = new GraphVizRunner(systemModel, config, null);
         try {
             // FIXME: Replace this with the dot.exe path.
@@ -71,14 +83,18 @@ public class GraphVizGeneratorTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
+    /**
+     * A Dummy Configuration Object used for testing.
+     */
     private class DummyConfig implements IConfiguration {
         private String fileName, outputDirectory, outputFormat;
 
-        public DummyConfig() {
+        /**
+         * Constructs a basic DummyConfig object.
+         */
+        DummyConfig() {
             this.outputDirectory = "./output";
             this.fileName = "test";
             this.outputFormat = "png";
