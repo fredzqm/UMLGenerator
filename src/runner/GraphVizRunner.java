@@ -6,6 +6,7 @@ import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
 
+import java.io.BufferedReader;
 import java.util.Collection;
 
 /**
@@ -19,5 +20,19 @@ public class GraphVizRunner {
         this.generator.generate(sm, config, jobs);
     }
 
-//    public void
+    public void execute(Configuration config) {
+        StringBuilder command = new StringBuilder();
+        command.append(config.getExecutable());
+
+        p = Runtime.getRuntime().exec(config.getExecutable() + " " + );
+        p.waitFor();
+
+        BufferedReader reader =
+                new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        String line = "";
+        while ((line = reader.readLine())!= null) {
+            sb.append(line + "\n");
+        }
+    }
 }
