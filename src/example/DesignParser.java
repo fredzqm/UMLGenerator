@@ -1,12 +1,18 @@
 package example;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-
-import java.io.IOException;
-import java.util.List;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 // FIXME: everything about this class is completely terribly designed.
 // If your code even remotely resembles this class, you will be sad.
@@ -28,7 +34,7 @@ public class DesignParser {
 
 		// FIXME: this code has POOR DESIGN. If you keep this code as-is for
 		// your main method, you will be sad about your grade.
-		String[] args = new String[] { "java.util.ArrayList"};
+		String[] args = new String[] { "java.lang.String"};
 		for (String className : args) {
 			// ASM's ClassReader does the heavy lifting of parsing the compiled
 			// Java class.
