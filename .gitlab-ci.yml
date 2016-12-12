@@ -4,7 +4,7 @@ stages:
 build:
   stage: build
   script:
-    - ./gradlew build
+    - sudo ./gradlew build
   tags:
     - gradle
     - java
