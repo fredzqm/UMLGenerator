@@ -1,21 +1,16 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IClassModel;
+import generator.IMethodModel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import generator.IClassModel;
-import generator.IMethodModel;
+import java.util.*;
 
 public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
     private final ASMServiceProvider asmServiceProvider;

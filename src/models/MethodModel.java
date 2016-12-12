@@ -1,16 +1,15 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.MethodNode;
-
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IFieldModel;
 import generator.IMethodModel;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.MethodNode;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * The method model.

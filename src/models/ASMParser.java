@@ -1,11 +1,11 @@
 package models;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.tree.ClassNode;
 
 public class ASMParser implements ASMServiceProvider {
     private Map<String, ClassModel> map = new HashMap<>();

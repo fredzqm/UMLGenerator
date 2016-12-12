@@ -1,8 +1,7 @@
 package models;
 
-import org.objectweb.asm.Opcodes;
-
 import generator.IModifier;
+import org.objectweb.asm.Opcodes;
 
 public enum Modifier implements IModifier {
 	PUBLIC("+"), DEFAULT(""), PROTECTED("#"), PRIVATE("-");

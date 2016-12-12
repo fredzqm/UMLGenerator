@@ -1,10 +1,10 @@
 package models;
 
+import org.objectweb.asm.Type;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.objectweb.asm.Type;
 
 public class Signature {
     private final TypeModel ret;

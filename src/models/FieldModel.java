@@ -1,12 +1,11 @@
 package models;
 
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.FieldNode;
-
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IFieldModel;
 import generator.ITypeModel;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.FieldNode;
 
 public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     private final FieldNode asmFieldNode;

@@ -6,7 +6,6 @@ import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
 
-import java.io.BufferedReader;
 import java.util.Collection;
 
 /**
