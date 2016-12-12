@@ -3,6 +3,9 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: Fred and all public methods.
+ */
 public class SystemModel implements generator.ISystemModel {
     private ASMServiceProvider asmServiceProvider;
 

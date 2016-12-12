@@ -1,6 +1,8 @@
 package generator;
 
 /**
+ * An interface for Class Models.
+ * <p>
  * Created by lamd on 12/9/2016.
  */
 public interface IClassModel {
@@ -13,7 +15,7 @@ public interface IClassModel {
 
     /**
      * Returns the Qualified Name of the Class.
-     *
+     * <p>
      * Example: java.lang.String --> String
      *
      * @return Qualified Name
@@ -69,10 +71,13 @@ public interface IClassModel {
      */
     Iterable<? extends IClassModel> getDependsRelation();
 
-    public interface IClassType {
+    /**
+     * TODO: Fred
+     */
+    interface IClassType {
         void switchByCase(Switcher switcher);
 
-        public interface Switcher {
+        interface Switcher {
             void ifAbstract();
 
             void ifConcrete();

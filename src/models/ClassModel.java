@@ -94,12 +94,12 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 
     @Override
     public List<IClassModel> getHasRelation() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public List<IClassModel> getDependsRelation() {
-        return null;
+        return new ArrayList<>();
     }
 
     public Iterable<MethodModel> getMethods() {

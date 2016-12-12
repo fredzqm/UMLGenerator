@@ -1,5 +1,6 @@
 package generator;
 
+import analyzer.Job;
 import configs.Configuration;
 
 import java.io.File;
@@ -8,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import analyzer.Job;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -115,7 +114,7 @@ public class GraphVizGenerator implements IGenerator {
             // TODO: make this rely on the config.
             writeDotString("./output", "animals.dot");
         } catch (IOException e) {
-            e.printStackTrace(); // TODO
+            e.printStackTrace();
         }
     }
 
@@ -201,7 +200,7 @@ public class GraphVizGenerator implements IGenerator {
          *
          * @return Interfaces DOT format.
          */
-        public String getInterfaceVizDescription() {
+        String getInterfaceVizDescription() {
             return this.interfaceVizDescription.toString();
         }
 
@@ -211,7 +210,7 @@ public class GraphVizGenerator implements IGenerator {
          *
          * @return Has-A relationship DOT format.
          */
-        public String getHasRelationVizDescription() {
+        String getHasRelationVizDescription() {
             return this.hasRelationVizDescription.toString();
         }
 
@@ -230,7 +229,7 @@ public class GraphVizGenerator implements IGenerator {
          *
          * @return SuperClass in DOT format.
          */
-        public String getSuperClassVizDescription() {
+        String getSuperClassVizDescription() {
             return this.superClassVizDescription.toString();
         }
 
@@ -240,7 +239,7 @@ public class GraphVizGenerator implements IGenerator {
          *
          * @return Class in DOT format.
          */
-        public String getClassVizDescription() {
+        String getClassVizDescription() {
             return this.classVizDescription.toString();
         }
 
@@ -296,7 +295,7 @@ public class GraphVizGenerator implements IGenerator {
             // Add the arguments.
             int methodLengthBefore = this.methods.length();
             method.getArguments().forEach((type) -> {
-                this.methods.append(type.getQualifiedName());
+                this.methods.append(type.getName());
                 // Java does not keep track of variable names.
 //                this.methods.append(" : ");
 //                this.methods.append(type.getName());
@@ -312,7 +311,7 @@ public class GraphVizGenerator implements IGenerator {
 
             // Add the return type.
             this.methods.append(" : ");
-            this.methods.append(method.getReturnType().getQualifiedName());
+            this.methods.append(method.getReturnType().getName());
             this.methods.append("\\l ");
         }
 
@@ -355,40 +354,59 @@ public class GraphVizGenerator implements IGenerator {
 
         private void generateSuperClassVizDescription(String superClass) {
             setupDependencyVizDescription(this.superClassVizDescription);
-            this.superClassVizDescription.append(superClass);
+
+            if (superClass != null) {
+                this.superClassVizDescription.append(superClass);
+            }
             this.superClassVizDescription.append("};\n");
         }
 
-        private void closeDependencyVizDescription(StringBuilder vizDescription) {
+        private void closeDependencyVizDescription(StringBuilder vizDescription, int lengthBefore) {
             int length = vizDescription.length();
-            vizDescription.replace(length - 2, length, "};\n");
+
+            // Ensure that it has changed.
+            if (lengthBefore == length) {
+                vizDescription.append("}");
+            } else {
+                vizDescription.replace(length - 2, length, "};\n");
+            }
         }
 
         private void generateInterfaceVizDescription(Iterable<? extends IClassModel> iterable) {
             setupDependencyVizDescription(this.interfaceVizDescription);
+            int interfaceLengthBefore = this.interfaceVizDescription.length();
+
             iterable.forEach((interfaceModel) -> {
-                this.interfaceVizDescription.append(interfaceModel.getQualifiedName());
+                this.interfaceVizDescription.append(interfaceModel.getName());
                 this.interfaceVizDescription.append(", ");
             });
-            closeDependencyVizDescription(this.interfaceVizDescription);
+
+            // If it is empty close the braces without replacing characters.
+            closeDependencyVizDescription(this.interfaceVizDescription, interfaceLengthBefore);
         }
 
         private void generateHasRelationVizDescription(Iterable<? extends IClassModel> iterable) {
             setupDependencyVizDescription(this.hasRelationVizDescription);
+            int hasALengthBefore = this.hasRelationVizDescription.length();
+
             iterable.forEach((has) -> {
-                this.hasRelationVizDescription.append(has.getQualifiedName());
+                this.hasRelationVizDescription.append(has.getName());
                 this.hasRelationVizDescription.append(", ");
             });
-            closeDependencyVizDescription(this.hasRelationVizDescription);
+
+            closeDependencyVizDescription(this.hasRelationVizDescription, hasALengthBefore);
         }
 
         private void generateDependsRelationVizDescription(Iterable<? extends IClassModel> iterable) {
             setupDependencyVizDescription(this.dependsRelationVizDescription);
+            int dependencyLengthBefore = this.dependsRelationVizDescription.length();
+
             iterable.forEach((dependency) -> {
-                this.dependsRelationVizDescription.append(dependency.getQualifiedName());
+                this.dependsRelationVizDescription.append(dependency.getName());
                 this.dependsRelationVizDescription.append(", ");
             });
-            closeDependencyVizDescription(this.dependsRelationVizDescription);
+
+            closeDependencyVizDescription(this.dependsRelationVizDescription, dependencyLengthBefore);
         }
 
         private void parseModel(IClassModel model) {
@@ -401,9 +419,8 @@ public class GraphVizGenerator implements IGenerator {
             generateClassVizDescription();
             generateSuperClassVizDescription(model.getSuperClass().getQualifiedName());
             generateInterfaceVizDescription(model.getInterfaces());
-            // TODO: Waiting for Fred to implement the methods.
-//            generateHasRelationVizDescription(model.getHasRelation());
-//            generateDependsRelationVizDescription(model.getDependsRelation());
+            generateHasRelationVizDescription(model.getHasRelation());
+            generateDependsRelationVizDescription(model.getDependsRelation());
         }
     }
 }

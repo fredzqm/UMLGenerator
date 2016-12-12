@@ -4,6 +4,8 @@ import generator.ITypeModel;
 import org.objectweb.asm.Type;
 
 /**
+ * TODO: Fred. Also add javadoc for all public methods.
+ *
  * @author zhang
  */
 public class TypeModel implements ITypeModel {
@@ -35,14 +37,6 @@ public class TypeModel implements ITypeModel {
             sb.append("[]");
         }
         return sb.toString();
-    }
-
-    @Override
-    public String getQualifiedName() {
-        String name = getName();
-        int quantifiedIndex = name.lastIndexOf(".");
-
-        return (quantifiedIndex == -1) ? name : name.substring(quantifiedIndex + 1);
     }
 
     @Override
