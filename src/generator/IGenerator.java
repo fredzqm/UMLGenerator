@@ -3,6 +3,7 @@ package generator;
 import analyzer.Job;
 import configs.IConfiguration;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**

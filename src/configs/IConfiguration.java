@@ -64,4 +64,11 @@ public interface IConfiguration {
      * @param outputFormat New Output Format.
      */
     void setOutputFormat(String outputFormat);
+
+    /**
+     * Returns the Node Separation.
+     *
+     * @return Node Separation.
+     */
+    double getNodeSep();
 }

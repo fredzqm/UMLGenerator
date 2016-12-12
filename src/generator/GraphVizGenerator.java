@@ -3,9 +3,6 @@ package generator;
 import analyzer.Job;
 import configs.IConfiguration;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,24 +26,22 @@ public class GraphVizGenerator implements IGenerator {
         return this.classes;
     }
 
-    public String getDotString() {
+    private String getDotString() {
         return this.dotString.toString();
     }
 
     private void parseSystemModel(ISystemModel sm) {
         Iterable<? extends IClassModel> classes = sm.getClasses();
-        classes.forEach((model) -> {
-            this.classes.add(new GraphVizClass(model));
-        });
+        classes.forEach((model) -> this.classes.add(new GraphVizClass(model)));
     }
 
-    private void createDotString() {
+    private void createDotString(IConfiguration config) {
         // DOT parent.
         this.dotString.append("digraph GraphVizGeneratedDOT {\n");
 
         // TODO: This can be configurable.
         // Basic Configurations.
-        this.dotString.append("\tnodesep=1.0;\n");
+        this.dotString.append("\tnodesep=").append(config.getNodeSep()).append(";\n");
         this.dotString.append("\tnode [shape=record];\n");
 
         // Basic UML Boxes.
@@ -56,7 +51,7 @@ public class GraphVizGenerator implements IGenerator {
         });
 
         // Superclass Relations
-        this.dotString.append("\tedge [arrowhead=onormal];\n"); // TODO:
+        this.dotString.append("\tedge [arrowhead=onormal];\n");
         // Configurable.
         this.classes.forEach((vizClass) -> {
             this.dotString.append("\t");
@@ -91,32 +86,11 @@ public class GraphVizGenerator implements IGenerator {
         this.dotString.append("}");
     }
 
-    private void writeDotString(String outputDirectory, String outputName) throws IOException {
-        File file = new File(outputDirectory);
-        file.mkdirs();
-
-        try {
-            FileWriter writer = new FileWriter(outputDirectory + "/" + outputName);
-            writer.write(this.dotString.toString());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IOException("[ ERROR ]: Unable to create file.");
-        }
-    }
-
     @Override
     // TODO: figure out what to pull out of the configuration and jobs.
     public void generate(ISystemModel sm, IConfiguration config, Collection<Job> jobs) {
         parseSystemModel(sm);
-        createDotString();
-        try {
-            // IConfiguration should be normalize if files they do not have extenions.
-            // TODO: make this rely on the config.
-            writeDotString(config.getOutputDirectory(), config.getFileName() + ".dot");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        createDotString(config);
     }
 
     @Override
@@ -226,7 +200,7 @@ public class GraphVizGenerator implements IGenerator {
          *
          * @return Depends-On relationship DOT format.
          */
-        public String getDependsRelationVizDescription() {
+        String getDependsRelationVizDescription() {
             return this.dependsRelationVizDescription.toString();
         }
 
@@ -336,7 +310,7 @@ public class GraphVizGenerator implements IGenerator {
         private void generateClassVizDescription() {
             // Set Description block.
             this.classVizDescription.append("\t");
-            this.classVizDescription.append("\"" + this.name + "\"");
+            this.classVizDescription.append("\"").append(this.name).append("\"");
             this.classVizDescription.append(" [\n");
             // TODO: This may change with the configuration
 
@@ -361,7 +335,7 @@ public class GraphVizGenerator implements IGenerator {
         private void setupDependencyVizDescription(StringBuilder visDescription) {
             final String VIZ_ARROW = " -> ";
 
-            visDescription.append("\"" + this.name + "\"");
+            visDescription.append("\"").append(this.name).append("\"");
             visDescription.append(VIZ_ARROW);
             visDescription.append("{");
         }
@@ -370,7 +344,7 @@ public class GraphVizGenerator implements IGenerator {
             setupDependencyVizDescription(this.superClassVizDescription);
 
             if (superClass != null) {
-                this.superClassVizDescription.append("\"" + superClass + "\"");
+                this.superClassVizDescription.append("\"").append(superClass).append("\"");
             }
             this.superClassVizDescription.append("};\n");
         }
@@ -391,7 +365,7 @@ public class GraphVizGenerator implements IGenerator {
             int interfaceLengthBefore = this.interfaceVizDescription.length();
 
             iterable.forEach((interfaceModel) -> {
-                this.interfaceVizDescription.append("\"" + interfaceModel.getName() + "\"");
+                this.interfaceVizDescription.append("\"").append(interfaceModel.getName()).append("\"");
                 this.interfaceVizDescription.append(", ");
             });
 
@@ -404,7 +378,7 @@ public class GraphVizGenerator implements IGenerator {
             int hasALengthBefore = this.hasRelationVizDescription.length();
 
             iterable.forEach((has) -> {
-                this.hasRelationVizDescription.append("\"" + has.getName() + "\"");
+                this.hasRelationVizDescription.append("\"").append(has.getName()).append("\"");
                 this.hasRelationVizDescription.append(", ");
             });
 
@@ -416,7 +390,7 @@ public class GraphVizGenerator implements IGenerator {
             int dependencyLengthBefore = this.dependsRelationVizDescription.length();
 
             iterable.forEach((dependency) -> {
-                this.dependsRelationVizDescription.append("\"" + dependency.getName() + "\"");
+                this.dependsRelationVizDescription.append("\"").append(dependency.getName()).append("\"");
                 this.dependsRelationVizDescription.append(", ");
             });
 
