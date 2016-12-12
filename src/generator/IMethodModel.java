@@ -1,37 +1,77 @@
 package generator;
 
 /**
+ * An Interface of the Method Models.
+ *
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
-	IClassModel getParentClass();
+    /**
+     * Returns the Parent Class this method belongs to.
+     *
+     * @return Parent Class Model.
+     */
+    IClassModel getParentClass();
 
-	IModifier getModifier();
+    /**
+     * Returns the access Modifier of this method.
+     *
+     * @return Access Modifier.
+     */
+    IModifier getModifier();
 
-	IMethodType getMethodType();
+    /**
+     * Returns the Method Type (Abstract, Contructor, Static, Static Initializer, Method).
+     *
+     * @return Method Type.
+     */
+    IMethodType getMethodType();
 
-	boolean isFinal();
+    /**
+     * Returns true if the Method is final.
+     *
+     * @return true if Final.
+     */
+    boolean isFinal();
 
-	String getName();
+    /**
+     * Returns the name of the Method.
+     *
+     * @return Name of the Method.
+     */
+    String getName();
 
-	ITypeModel getReturnType();
+    /**
+     * Returns the return type Type Model of the Method.
+     *
+     * @return Type Model of the Return Type.
+     */
+    ITypeModel getReturnType();
 
-	Iterable<? extends ITypeModel> getArguments();
+    /**
+     * Returns an Iterable of Type Models of the arguments of the Method.
+     *
+     * @return Iterable of Type Model of Arguments.
+     */
+    Iterable<? extends ITypeModel> getArguments();
 
-	public interface IMethodType {
-		void switchByCase(Switcher switcher);
+    /**
+     * TODO: Fred
+     */
+    interface IMethodType {
+        void switchByCase(Switcher switcher);
 
-		public interface Switcher {
-			void ifConstructor();
+        interface Switcher {
+            void ifConstructor();
 
-			void ifConcrete();
+            void ifConcrete();
 
-			void ifStatic();
+            void ifStatic();
 
-			void ifStaticInitializer();
+            void ifStaticInitializer();
 
-			void ifAbstract();
+            void ifAbstract();
 
-		}
-	}
+        }
+    }
 }

@@ -18,214 +18,218 @@ import generator.IClassModel;
 import generator.IMethodModel;
 
 public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
-	private final ASMServiceProvider asmServiceProvider;
-	private final ClassNode asmClassNode;
+    private final ASMServiceProvider asmServiceProvider;
+    private final ClassNode asmClassNode;
 
-	private final boolean important;
-	private final Modifier modifier;
-	private final boolean isFinal;
-	private final ClassType classType;
-	private final String name;
+    private final boolean important;
+    private final Modifier modifier;
+    private final boolean isFinal;
+    private final ClassType classType;
+    private final String name;
 
-	private ClassModel superClass;
-	private Collection<ClassModel> interfaces;
+    private ClassModel superClass;
+    private Collection<ClassModel> interfaces;
 
-	private Map<String, FieldModel> fields;
-	private Map<Signature, MethodModel> constructors;
-	private Map<Signature, MethodModel> methods;
-	private Map<Signature, MethodModel> staticMethods;
-	private MethodModel staticConstructor;
+    private Map<String, FieldModel> fields;
+    private Map<Signature, MethodModel> constructors;
+    private Map<Signature, MethodModel> methods;
+    private Map<Signature, MethodModel> staticMethods;
+    private MethodModel staticConstructor;
 
-	/**
-	 * Creates an ClassModel and assign its basic properties.
-	 * 
-	 * @param asmServiceProvider
-	 * @param asmClassNode
-	 * @param important
-	 */
-	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode, boolean important) {
-		this.asmServiceProvider = asmServiceProvider;
-		this.asmClassNode = asmClassNode;
-		this.important = important;
-		this.modifier = Modifier.parse(asmClassNode.access);
-		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
-		this.classType = ClassType.parse(asmClassNode.access);
-		this.name = Type.getObjectType(asmClassNode.name).getClassName();
-	}
+    /**
+     * Creates an ClassModel and assign its basic properties.
+     *
+     * @param asmServiceProvider
+     * @param asmClassNode
+     * @param important
+     */
+    public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode, boolean important) {
+        this.asmServiceProvider = asmServiceProvider;
+        this.asmClassNode = asmClassNode;
+        this.important = important;
+        this.modifier = Modifier.parse(asmClassNode.access);
+        this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
+        this.classType = ClassType.parse(asmClassNode.access);
+        this.name = Type.getObjectType(asmClassNode.name).getClassName();
+    }
 
-	public IClassModel getSuperClass() {
-		if (superClass == null && asmClassNode.superName != null)
-			superClass = getClassByName(asmClassNode.superName);
-		return superClass;
-	}
+    public IClassModel getSuperClass() {
+        if (superClass == null && asmClassNode.superName != null)
+            superClass = getClassByName(asmClassNode.superName);
+        return superClass;
+    }
 
-	public boolean isImportant() {
-		return important;
-	}
+    public boolean isImportant() {
+        return important;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public IClassType getType() {
-		return classType;
-	}
+    public IClassType getType() {
+        return classType;
+    }
 
-	public Modifier getModifier() {
-		return modifier;
-	}
+    public Modifier getModifier() {
+        return modifier;
+    }
 
-	public Iterable<ClassModel> getInterfaces() {
-		if (interfaces == null) {
-			interfaces = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			List<String> ls = asmClassNode.interfaces;
-			for (String s : ls) {
-				interfaces.add(getClassByName(s));
-			}
-		}
-		return interfaces;
-	}
+    public Iterable<ClassModel> getInterfaces() {
+        if (interfaces == null) {
+            interfaces = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            List<String> ls = asmClassNode.interfaces;
+            for (String s : ls) {
+                interfaces.add(getClassByName(s));
+            }
+        }
+        return interfaces;
+    }
 
-	@Override
-	public List<IClassModel> getHasRelation() {
-		return null;
-	}
+    @Override
+    public List<IClassModel> getHasRelation() {
+        return new ArrayList<>();
+    }
 
-	@Override
-	public List<IClassModel> getDependsRelation() {
-		return null;
-	}
+    @Override
+    public List<IClassModel> getDependsRelation() {
+        return new ArrayList<>();
+    }
 
-	public Iterable<MethodModel> getMethods() {
-		return getMethodsMap().values();
-	}
+    public Iterable<MethodModel> getMethods() {
+        return getMethodsMap().values();
+    }
 
-	public MethodModel getMethodBySignature(Signature signature) {
-		if (methods.containsKey(signature))
-			return methods.get(signature);
-		return null;
-	}
+    public MethodModel getMethodBySignature(Signature signature) {
+        if (methods.containsKey(signature))
+            return methods.get(signature);
+        return null;
+    }
 
-	public Iterable<MethodModel> getConstructors() {
-		return getConstructorMap().values();
-	}
+    public Iterable<MethodModel> getConstructors() {
+        return getConstructorMap().values();
+    }
 
-	public Iterable<MethodModel> getStaticMethods() {
-		return getStaticMethodMap().values();
-	}
+    public Iterable<MethodModel> getStaticMethods() {
+        return getStaticMethodMap().values();
+    }
 
-	public IMethodModel getStaticInitializer() {
-		lazyInitializeMethods();
-		return staticConstructor;
-	}
+    public IMethodModel getStaticInitializer() {
+        lazyInitializeMethods();
+        return staticConstructor;
+    }
 
-	private Map<Signature, MethodModel> getMethodsMap() {
-		lazyInitializeMethods();
-		return methods;
-	}
+    private Map<Signature, MethodModel> getMethodsMap() {
+        lazyInitializeMethods();
+        return methods;
+    }
 
-	private Map<Signature, MethodModel> getConstructorMap() {
-		lazyInitializeMethods();
-		return constructors;
-	}
+    private Map<Signature, MethodModel> getConstructorMap() {
+        lazyInitializeMethods();
+        return constructors;
+    }
 
-	private Map<Signature, MethodModel> getStaticMethodMap() {
-		lazyInitializeMethods();
-		return staticMethods;
-	}
+    private Map<Signature, MethodModel> getStaticMethodMap() {
+        lazyInitializeMethods();
+        return staticMethods;
+    }
 
-	private void lazyInitializeMethods() {
-		if (methods == null) {
-			constructors = new HashMap<>();
-			staticMethods = new HashMap<>();
-			if (getSuperClass() == null)
-				methods = new HashMap<>();
-			else
-				methods = new HashMap<>(superClass.getMethodsMap());
+    private void lazyInitializeMethods() {
+        if (methods == null) {
+            constructors = new HashMap<>();
+            staticMethods = new HashMap<>();
+            if (getSuperClass() == null)
+                methods = new HashMap<>();
+            else
+                methods = new HashMap<>(superClass.getMethodsMap());
 
-			@SuppressWarnings("unchecked")
-			List<MethodNode> ls = asmClassNode.methods;
-			for (MethodNode methodNode : ls) {
-				MethodModel methodModel = new MethodModel(this, methodNode);
-				Signature signature = methodModel.getSignature();
-				switch (methodModel.getMethodType()) {
-				case METHOD:
-				case ABSTRACT:
-					methods.put(signature, methodModel);
-					break;
-				case CONSTRUCTOR:
-					constructors.put(signature, methodModel);
-					break;
-				case STATIC:
-					staticMethods.put(signature, methodModel);
-					break;
-				case STATIC_INITIALIZER:
-					staticConstructor = methodModel;
-					break;
-				}
-			}
-		}
-	}
+            @SuppressWarnings("unchecked")
+            List<MethodNode> ls = asmClassNode.methods;
+            for (MethodNode methodNode : ls) {
+                MethodModel methodModel = new MethodModel(this, methodNode);
+                Signature signature = methodModel.getSignature();
+                switch (methodModel.getMethodType()) {
+                    case METHOD:
+                    case ABSTRACT:
+                        methods.put(signature, methodModel);
+                        break;
+                    case CONSTRUCTOR:
+                        constructors.put(signature, methodModel);
+                        break;
+                    case STATIC:
+                        staticMethods.put(signature, methodModel);
+                        break;
+                    case STATIC_INITIALIZER:
+                        staticConstructor = methodModel;
+                        break;
+                }
+            }
+        }
+    }
 
-	public Iterable<FieldModel> getFields() {
-		return getFieldMap().values();
-	}
+    public Iterable<FieldModel> getFields() {
+        return getFieldMap().values();
+    }
 
-	private Map<String, FieldModel> getFieldMap() {
-		if (fields == null) {
-			fields = new HashMap<>();
-			@SuppressWarnings("unchecked")
-			List<FieldNode> ls = asmClassNode.fields;
-			for (FieldNode fieldNode : ls) {
-				FieldModel fieldModel = new FieldModel(this, fieldNode);
-				fields.put(fieldModel.getName(), fieldModel);
-			}
-		}
-		return fields;
-	}
+    private Map<String, FieldModel> getFieldMap() {
+        if (fields == null) {
+            fields = new HashMap<>();
+            @SuppressWarnings("unchecked")
+            List<FieldNode> ls = asmClassNode.fields;
+            for (FieldNode fieldNode : ls) {
+                FieldModel fieldModel = new FieldModel(this, fieldNode);
+                fields.put(fieldModel.getName(), fieldModel);
+            }
+        }
+        return fields;
+    }
 
-	public boolean isFinal() {
-		return isFinal;
-	}
+    public boolean isFinal() {
+        return isFinal;
+    }
 
-	public ClassModel getClassByName(String name) {
-		return asmServiceProvider.getClassByName(name);
-	}
+    public ClassModel getClassByName(String name) {
+        return asmServiceProvider.getClassByName(name);
+    }
 
-	@Override
-	public void visit(IVisitor<ClassModel> IVisitor) {
-		IVisitor.visit(this);
-	}
+    @Override
+    public void visit(IVisitor<ClassModel> IVisitor) {
+        IVisitor.visit(this);
+    }
 
-	public enum ClassType implements IClassType {
-		ABSTRACT, INTERFACE, CONCRETE, ENUM;
+    public enum ClassType implements IClassType {
+        ABSTRACT, INTERFACE, CONCRETE, ENUM;
 
-		public static ClassType parse(int access) {
-			if ((access & Opcodes.ACC_ENUM) != 0)
-				return ClassType.ENUM;
-			if ((access & Opcodes.ACC_INTERFACE) != 0)
-				return ClassType.INTERFACE;
-			if ((access & Opcodes.ACC_ABSTRACT) != 0)
-				return ClassType.ABSTRACT;
-			return CONCRETE;
-		}
+        public static ClassType parse(int access) {
+            if ((access & Opcodes.ACC_ENUM) != 0)
+                return ClassType.ENUM;
+            if ((access & Opcodes.ACC_INTERFACE) != 0)
+                return ClassType.INTERFACE;
+            if ((access & Opcodes.ACC_ABSTRACT) != 0)
+                return ClassType.ABSTRACT;
+            return CONCRETE;
+        }
 
-		@Override
-		public void switchByCase(Switcher switcher) {
-			switch (this) {
-			case ABSTRACT:
-				switcher.ifAbstract();
-			case INTERFACE:
-				switcher.ifInterface();
-				break;
-			case CONCRETE:
-				switcher.ifConcrete();
-			case ENUM:
-				switcher.ifEnum();
-				break;
-			}
-		}
-	}
+        @Override
+        public void switchByCase(Switcher switcher) {
+            switch (this) {
+                case ABSTRACT:
+                    switcher.ifAbstract();
+                    break;
+                case INTERFACE:
+                    switcher.ifInterface();
+                    break;
+                case CONCRETE:
+                    switcher.ifConcrete();
+                    break;
+                case ENUM:
+                    switcher.ifEnum();
+                    break;
+                default:
+                    // TODO: Fred: Handle this (throw some exception).
+            }
+        }
+    }
 
 }

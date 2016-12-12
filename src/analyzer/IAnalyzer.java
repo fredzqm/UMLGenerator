@@ -1,5 +1,7 @@
 package analyzer;
 
+import generator.ISystemModel;
+
 import java.util.Collection;
 
 /**

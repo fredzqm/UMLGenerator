@@ -6,5 +6,6 @@ package configs;
  */
 public interface Configuration {
     Iterable<String> getClasses();
+
     IFormat getFormat();
 }
