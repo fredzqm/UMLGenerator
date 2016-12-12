@@ -14,15 +14,6 @@ public interface IClassModel {
     String getName();
 
     /**
-     * Returns the Qualified Name of the Class.
-     * <p>
-     * Example: java.lang.String --> String
-     *
-     * @return Qualified Name
-     */
-    String getQualifiedName();
-
-    /**
      * Returns the Model's ClassType.
      *
      * @return ClassType

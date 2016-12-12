@@ -30,7 +30,7 @@ public class TypeModel implements ITypeModel {
     public String getName() {
         StringBuilder sb = new StringBuilder();
         if (classModel != null)
-            sb.append(classModel.getQualifiedName());
+            sb.append(classModel.getName());
         else
             sb.append(primiType.getName());
         for (int i = 0; i < dimension; i++) {

@@ -1,6 +1,7 @@
 package generator;
 
 import analyzer.Job;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import configs.Configuration;
 
 import java.io.File;
@@ -52,6 +53,7 @@ public class GraphVizGenerator implements IGenerator {
         // Basic UML Boxes.
         this.classes.forEach((vizClass) -> {
             this.dotString.append(vizClass.getClassVizDescription());
+            this.dotString.append("\n");
         });
 
         // Superclass Relations
@@ -248,24 +250,32 @@ public class GraphVizGenerator implements IGenerator {
                 @Override
                 public void ifInterface() {
                     GraphVizClass.this.steroType = "\\<\\<Interface\\>\\>\\n";
+                    GraphVizClass.this.name = className;
+                    GraphVizClass.this.header.append(GraphVizClass.this.steroType);
+                    GraphVizClass.this.header.append(GraphVizClass.this.name);
                 }
 
                 @Override
                 public void ifConcrete() {
                     GraphVizClass.this.name = className;
-                    GraphVizClass.this.header.append(name);
+                    GraphVizClass.this.steroType = null;
+                    GraphVizClass.this.header.append(GraphVizClass.this.name);
                 }
 
                 @Override
                 public void ifAbstract() {
                     GraphVizClass.this.steroType = "\\<\\<Abstract\\>\\>\\n";
+                    GraphVizClass.this.name = className;
+                    GraphVizClass.this.header.append(steroType);
+                    GraphVizClass.this.header.append(GraphVizClass.this.name);
                 }
 
                 @Override
                 public void ifEnum() {
+                    GraphVizClass.this.steroType = "\\<\\<Enumeration\\>\\>\n";
                     GraphVizClass.this.name = className;
-                    GraphVizClass.this.header.append(steroType);
-                    GraphVizClass.this.header.append(name);
+                    GraphVizClass.this.header.append(GraphVizClass.this.steroType);
+                    GraphVizClass.this.header.append(GraphVizClass.this.name);
                 }
             });
         }
@@ -322,7 +332,7 @@ public class GraphVizGenerator implements IGenerator {
         private void generateClassVizDescription() {
             // Set Description block.
             this.classVizDescription.append("\t");
-            this.classVizDescription.append(this.name);
+            this.classVizDescription.append("\"" + this.name + "\"");
             this.classVizDescription.append(" [\n");
             // TODO: This may change with the configuration
 
@@ -347,7 +357,7 @@ public class GraphVizGenerator implements IGenerator {
         private void setupDependencyVizDescription(StringBuilder visDescription) {
             final String VIZ_ARROW = " -> ";
 
-            visDescription.append(this.name);
+            visDescription.append("\"" + this.name + "\"");
             visDescription.append(VIZ_ARROW);
             visDescription.append("{");
         }
@@ -356,7 +366,7 @@ public class GraphVizGenerator implements IGenerator {
             setupDependencyVizDescription(this.superClassVizDescription);
 
             if (superClass != null) {
-                this.superClassVizDescription.append(superClass);
+                this.superClassVizDescription.append("\"" + superClass + "\"");
             }
             this.superClassVizDescription.append("};\n");
         }
@@ -377,7 +387,7 @@ public class GraphVizGenerator implements IGenerator {
             int interfaceLengthBefore = this.interfaceVizDescription.length();
 
             iterable.forEach((interfaceModel) -> {
-                this.interfaceVizDescription.append(interfaceModel.getName());
+                this.interfaceVizDescription.append("\"" + interfaceModel.getName() + "\"");
                 this.interfaceVizDescription.append(", ");
             });
 
@@ -390,7 +400,7 @@ public class GraphVizGenerator implements IGenerator {
             int hasALengthBefore = this.hasRelationVizDescription.length();
 
             iterable.forEach((has) -> {
-                this.hasRelationVizDescription.append(has.getName());
+                this.hasRelationVizDescription.append("\"" + has.getName() + "\"");
                 this.hasRelationVizDescription.append(", ");
             });
 
@@ -402,7 +412,7 @@ public class GraphVizGenerator implements IGenerator {
             int dependencyLengthBefore = this.dependsRelationVizDescription.length();
 
             iterable.forEach((dependency) -> {
-                this.dependsRelationVizDescription.append(dependency.getName());
+                this.dependsRelationVizDescription.append("\"" + dependency.getName() + "\"");
                 this.dependsRelationVizDescription.append(", ");
             });
 
@@ -411,13 +421,13 @@ public class GraphVizGenerator implements IGenerator {
 
         private void parseModel(IClassModel model) {
             // Get Class information.
-            generateHeader(model.getType(), model.getQualifiedName());
+            generateHeader(model.getType(), model.getName());
             generateFields(model.getFields());
             generateMethods(model.getMethods());
 
             // Setup the VizDescriptions.
             generateClassVizDescription();
-            generateSuperClassVizDescription(model.getSuperClass().getQualifiedName());
+            generateSuperClassVizDescription(model.getSuperClass().getName());
             generateInterfaceVizDescription(model.getInterfaces());
             generateHasRelationVizDescription(model.getHasRelation());
             generateDependsRelationVizDescription(model.getDependsRelation());
