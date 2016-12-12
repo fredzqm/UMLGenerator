@@ -1,18 +1,31 @@
 package generator;
 
+/**
+ * An Interface for Access Modifers.
+ */
 public interface IModifier {
-	String getModifierSymbol();
-	
-	void switchByCase(Switcher switcher);
+    /**
+     * Returns the Modifier Symbol.
+     *
+     * @return String of the Modifier Symbol.
+     */
+    String getModifierSymbol();
 
-	public interface Switcher {
-		void ifPrivate();
+    /**
+     * TODO: Fred
+     *
+     * @param switcher
+     */
+    void switchByCase(Switcher switcher);
 
-		void ifPublic();
+    interface Switcher {
+        void ifPrivate();
 
-		void ifProtected();
+        void ifPublic();
 
-		void ifDefault();
-	}
+        void ifProtected();
+
+        void ifDefault();
+    }
 
 }

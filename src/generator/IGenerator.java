@@ -1,13 +1,24 @@
 package generator;
 
-import java.util.Collection;
-
-import analyzer.Job;
-import configuration.Configuration;
-
 /**
+ * An Interface for Generators.
+ * <p>
  * Created by lamd on 12/7/2016.
  */
 public interface IGenerator {
-    void generate(ISystemModel sm, Configuration config, Collection<Job> jobs);
+
+	/**
+	 * 
+	 * Creates a file formatted to display classes.
+	 *
+	 * @param sm
+	 *            SystemModel containing all class information to diagram.
+	 * @param config
+	 *            IConfiguration for the Generator to follow.
+	 * @param jobs
+	 *            A Collection of Patterns recognized.
+	 * @return the Graphvis file String
+	 */
+	String generate(ISystemModel sm, IConfiguration config, Iterable<IJob> jobs);
+
 }

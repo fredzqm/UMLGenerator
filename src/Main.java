@@ -1,7 +1,7 @@
 
 
-import configuration.Configuration;
-import parser.CommandLineParser;
+import config.CommandLineParser;
+import config.Configuration;
 
 public class Main {
 

@@ -4,15 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import analyzer.Job;
-import configuration.Configuration;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
- *
+ * <p>
  * Created by lamd on 12/7/2016.
  */
 public class GraphVizGenerator implements IGenerator {
@@ -52,11 +48,12 @@ public class GraphVizGenerator implements IGenerator {
 		// Basic UML Boxes.
 		this.classes.forEach((vizClass) -> {
 			this.dotString.append(vizClass.getClassVizDescription());
+			this.dotString.append("\n");
 		});
 
 		// Superclass Relations
-		this.dotString.append("\tedge [arrowhead=onormal]\n"); // TODO:
-																// Configurable.
+		this.dotString.append("\tedge [arrowhead=onormal];\n"); // TODO:
+		// Configurable.
 		this.classes.forEach((vizClass) -> {
 			this.dotString.append("\t");
 			this.dotString.append(vizClass.getSuperClassVizDescription());
@@ -71,13 +68,23 @@ public class GraphVizGenerator implements IGenerator {
 			this.dotString.append("\n");
 		});
 
-		// Depends Relations.
+		// Has-A Relations.
 		this.dotString.append("\tedge [arrowhead=vee];\n");
+		this.classes.forEach((vizClass) -> {
+			this.dotString.append("\t");
+			this.dotString.append(vizClass.getHasRelationVizDescription());
+			this.dotString.append("\n");
+		});
+
+		// Depend-On Relations.
+		this.dotString.append("\tedge [arrowhead=vee style=dashed];\n");
 		this.classes.forEach((vizClass) -> {
 			this.dotString.append("\t");
 			this.dotString.append(vizClass.getDependsRelationVizDescription());
 			this.dotString.append("\n");
 		});
+
+		this.dotString.append("}");
 	}
 
 	private void writeDotString(String outputDirectory, String outputName) throws IOException {
@@ -95,28 +102,21 @@ public class GraphVizGenerator implements IGenerator {
 	}
 
 	@Override
-	public void generate(ISystemModel sm, Configuration config, Collection<Job> jobs) { // TODO:
-																						// figure
-																						// out
-																						// what
-																						// to
-																						// pull
-																						// out
-																						// of
-																						// the
-																						// configuration
-																						// and
-																						// jobs.
+	// TODO: figure out what to pull out of the configuration and jobs.
+	public String generate(ISystemModel sm, IConfiguration config, Iterable<IJob> jobs) {
 		parseSystemModel(sm);
 		createDotString();
 		try {
-			writeDotString("./output", "animals.dot"); // Configuration should
-														// normalize if files do
-														// not have extenions.
+			// IConfiguration should be normalize if files they do not have
+			// extenions.
+			// TODO: make this rely on the config.
+			writeDotString(config.getOutputDirectory(), config.getFileName() + ".dot");
 		} catch (IOException e) {
-			e.printStackTrace(); // TODO
+			e.printStackTrace();
 		}
+		return getDotString();
 	}
+
 
 	/**
 	 * An Inner class that represents a single class in the DOT language.
@@ -200,7 +200,7 @@ public class GraphVizGenerator implements IGenerator {
 		 *
 		 * @return Interfaces DOT format.
 		 */
-		public String getInterfaceVizDescription() {
+		String getInterfaceVizDescription() {
 			return this.interfaceVizDescription.toString();
 		}
 
@@ -210,7 +210,7 @@ public class GraphVizGenerator implements IGenerator {
 		 *
 		 * @return Has-A relationship DOT format.
 		 */
-		public String getHasRelationVizDescription() {
+		String getHasRelationVizDescription() {
 			return this.hasRelationVizDescription.toString();
 		}
 
@@ -229,7 +229,7 @@ public class GraphVizGenerator implements IGenerator {
 		 *
 		 * @return SuperClass in DOT format.
 		 */
-		public String getSuperClassVizDescription() {
+		String getSuperClassVizDescription() {
 			return this.superClassVizDescription.toString();
 		}
 
@@ -239,7 +239,7 @@ public class GraphVizGenerator implements IGenerator {
 		 *
 		 * @return Class in DOT format.
 		 */
-		public String getClassVizDescription() {
+		String getClassVizDescription() {
 			return this.classVizDescription.toString();
 		}
 
@@ -247,30 +247,37 @@ public class GraphVizGenerator implements IGenerator {
 			type.switchByCase(new IClassModel.IClassType.Switcher() {
 				@Override
 				public void ifInterface() {
-					steroType = "\\<\\<Interface\\>\\>\\n";
+					GraphVizClass.this.steroType = "\\<\\<Interface\\>\\>\\n";
+					GraphVizClass.this.name = className;
+					GraphVizClass.this.header.append(GraphVizClass.this.steroType);
+					GraphVizClass.this.header.append(GraphVizClass.this.name);
 				}
 
 				@Override
 				public void ifConcrete() {
-					name = className;
-					header.append(steroType);
-					header.append(name);
+					GraphVizClass.this.name = className;
+					GraphVizClass.this.steroType = null;
+					GraphVizClass.this.header.append(GraphVizClass.this.name);
 				}
 
 				@Override
 				public void ifAbstract() {
-					steroType = "\\<\\<Abstract\\>\\>\\n";
+					GraphVizClass.this.steroType = "\\<\\<Abstract\\>\\>\\n";
+					GraphVizClass.this.name = className;
+					GraphVizClass.this.header.append(steroType);
+					GraphVizClass.this.header.append(GraphVizClass.this.name);
 				}
 
 				@Override
 				public void ifEnum() {
-					name = className;
-					header.append(steroType);
-					header.append(name);
+					GraphVizClass.this.steroType = "\\<\\<Enumeration\\>\\>\n";
+					GraphVizClass.this.name = className;
+					GraphVizClass.this.header.append(GraphVizClass.this.steroType);
+					GraphVizClass.this.header.append(GraphVizClass.this.name);
 				}
 			});
 		}
-		
+
 		private void generateField(IFieldModel field) {
 			this.fields.append(field.getModifier().getModifierSymbol());
 			this.fields.append(" ");
@@ -294,19 +301,25 @@ public class GraphVizGenerator implements IGenerator {
 			this.methods.append("(");
 
 			// Add the arguments.
+			int methodLengthBefore = this.methods.length();
 			method.getArguments().forEach((type) -> {
 				this.methods.append(type.getName());
-				this.methods.append(" : ");
-				this.methods.append(type.getName());
+				// Java does not keep track of variable names.
+				// this.methods.append(" : ");
+				// this.methods.append(type.getName());
 				this.methods.append(", ");
 			});
 
 			// Remove the ", " and end method with parenthesis.
-			this.methods.replace(this.methods.length() - 2, this.methods.length(), ")");
+			if (methodLengthBefore != this.methods.length()) {
+				this.methods.replace(this.methods.length() - 2, this.methods.length(), ")");
+			} else {
+				this.methods.append(")");
+			}
 
 			// Add the return type.
 			this.methods.append(" : ");
-			this.methods.append(method.getReturnType());
+			this.methods.append(method.getReturnType().getName());
 			this.methods.append("\\l ");
 		}
 
@@ -317,9 +330,8 @@ public class GraphVizGenerator implements IGenerator {
 		private void generateClassVizDescription() {
 			// Set Description block.
 			this.classVizDescription.append("\t");
-			this.classVizDescription.append(this.name);
+			this.classVizDescription.append("\"" + this.name + "\"");
 			this.classVizDescription.append(" [\n");
-			// this.classVizDescription.append("\t\tshape=\"record\",\n"); //
 			// TODO: This may change with the configuration
 
 			// Set the header.
@@ -343,47 +355,66 @@ public class GraphVizGenerator implements IGenerator {
 		private void setupDependencyVizDescription(StringBuilder visDescription) {
 			final String VIZ_ARROW = " -> ";
 
-			visDescription.append(this.name);
+			visDescription.append("\"" + this.name + "\"");
 			visDescription.append(VIZ_ARROW);
 			visDescription.append("{");
 		}
 
 		private void generateSuperClassVizDescription(String superClass) {
 			setupDependencyVizDescription(this.superClassVizDescription);
-			this.superClassVizDescription.append(superClass);
+
+			if (superClass != null) {
+				this.superClassVizDescription.append("\"" + superClass + "\"");
+			}
 			this.superClassVizDescription.append("};\n");
 		}
 
-		private void closeDependencyVizDescription(StringBuilder vizDescription) {
+		private void closeDependencyVizDescription(StringBuilder vizDescription, int lengthBefore) {
 			int length = vizDescription.length();
-			vizDescription.replace(length - 2, length, "};\n");
+
+			// Ensure that it has changed.
+			if (lengthBefore == length) {
+				vizDescription.append("}");
+			} else {
+				vizDescription.replace(length - 2, length, "};\n");
+			}
 		}
 
 		private void generateInterfaceVizDescription(Iterable<? extends IClassModel> iterable) {
 			setupDependencyVizDescription(this.interfaceVizDescription);
+			int interfaceLengthBefore = this.interfaceVizDescription.length();
+
 			iterable.forEach((interfaceModel) -> {
-				this.interfaceVizDescription.append(interfaceModel.getName());
+				this.interfaceVizDescription.append("\"" + interfaceModel.getName() + "\"");
 				this.interfaceVizDescription.append(", ");
 			});
-			closeDependencyVizDescription(this.interfaceVizDescription);
+
+			// If it is empty close the braces without replacing characters.
+			closeDependencyVizDescription(this.interfaceVizDescription, interfaceLengthBefore);
 		}
 
 		private void generateHasRelationVizDescription(Iterable<? extends IClassModel> iterable) {
 			setupDependencyVizDescription(this.hasRelationVizDescription);
+			int hasALengthBefore = this.hasRelationVizDescription.length();
+
 			iterable.forEach((has) -> {
-				this.hasRelationVizDescription.append(has.getName());
+				this.hasRelationVizDescription.append("\"" + has.getName() + "\"");
 				this.hasRelationVizDescription.append(", ");
 			});
-			closeDependencyVizDescription(this.hasRelationVizDescription);
+
+			closeDependencyVizDescription(this.hasRelationVizDescription, hasALengthBefore);
 		}
 
 		private void generateDependsRelationVizDescription(Iterable<? extends IClassModel> iterable) {
 			setupDependencyVizDescription(this.dependsRelationVizDescription);
+			int dependencyLengthBefore = this.dependsRelationVizDescription.length();
+
 			iterable.forEach((dependency) -> {
-				this.dependsRelationVizDescription.append(dependency.getName());
+				this.dependsRelationVizDescription.append("\"" + dependency.getName() + "\"");
 				this.dependsRelationVizDescription.append(", ");
 			});
-			closeDependencyVizDescription(this.dependsRelationVizDescription);
+
+			closeDependencyVizDescription(this.dependsRelationVizDescription, dependencyLengthBefore);
 		}
 
 		private void parseModel(IClassModel model) {
