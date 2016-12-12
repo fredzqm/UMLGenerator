@@ -1,4 +1,4 @@
-package main;
+
 
 import configuration.Configuration;
 import parser.CommandLineParser;

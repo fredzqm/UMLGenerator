@@ -1,4 +1,4 @@
-package test;
+package model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,10 +7,10 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import models.ASMParser;
-import models.ASMServiceProvider;
-import models.ClassModel;
-import models.FieldModel;
+import model.ASMParser;
+import model.ASMServiceProvider;
+import model.ClassModel;
+import model.FieldModel;
 
 public class ASMParserTest {
 
