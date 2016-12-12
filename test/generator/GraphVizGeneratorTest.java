@@ -12,10 +12,11 @@ import runner.IRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -25,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 public class GraphVizGeneratorTest {
     private ISystemModel setupSystemModel() {
         List<String> classList = new ArrayList<>();
-        classList.add("java.lang.String");
+        classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
         return new SystemModel(classList, new ASMParser());
     }
 
@@ -38,24 +39,43 @@ public class GraphVizGeneratorTest {
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator();
         generator.generate(systemModel, config, null);
-        String expected = "digraph GraphVizGeneratedDOT {\n" +
-                "\tnodesep=1.0;\n" +
-                "\tnode [shape=record];\n" +
-                "\t\"java.lang.String\" [\n" +
-                "\t\tlabel = \"{java.lang.String | - serialPersistentFields : java.io.ObjectStreamField[]\\l+ CASE_INSENSITIVE_ORDER : java.util.Comparator\\l- serialVersionUID : long\\l- value : char[]\\l- hash : int\\l | + getBytes(java.nio.charset.Charset) : byte[]\\l + split(java.lang.String) : java.lang.String[]\\l + replaceAll(java.lang.String, java.lang.String) : java.lang.String\\l + toUpperCase(java.util.Locale) : java.lang.String\\l + indexOf(int) : int\\l + trim() : java.lang.String\\l + indexOf(int, int) : int\\l + compareTo(java.lang.String) : int\\l + toUpperCase() : java.lang.String\\l + getBytes(int, int, byte[], int) : void\\l # finalize() : void\\l + wait() : void\\l + equalsIgnoreCase(java.lang.String) : boolean\\l + offsetByCodePoints(int, int) : int\\l + intern() : java.lang.String\\l + codePointBefore(int) : int\\l + subSequence(int, int) : java.lang.CharSequence\\l + regionMatches(int, java.lang.String, int, int) : boolean\\l + lastIndexOf(java.lang.String, int) : int\\l + hashCode() : int\\l + toLowerCase() : java.lang.String\\l + wait(long) : void\\l + isEmpty() : boolean\\l + toString() : java.lang.String\\l - indexOfSupplementary(int, int) : int\\l + equals(java.lang.Object) : boolean\\l + compareTo(java.lang.Object) : int\\l + indexOf(java.lang.String) : int\\l + notify() : void\\l + replace(java.lang.CharSequence, java.lang.CharSequence) : java.lang.String\\l + wait(long, int) : void\\l + getChars(int, int, char[], int) : void\\l + getBytes(java.lang.String) : byte[]\\l + concat(java.lang.String) : java.lang.String\\l - nonSyncContentEquals(java.lang.AbstractStringBuilder) : boolean\\l + compareToIgnoreCase(java.lang.String) : int\\l + codePointAt(int) : int\\l + split(java.lang.String, int) : java.lang.String[]\\l + toLowerCase(java.util.Locale) : java.lang.String\\l + lastIndexOf(int, int) : int\\l - lastIndexOfSupplementary(int, int) : int\\l + lastIndexOf(int) : int\\l + contains(java.lang.CharSequence) : boolean\\l # clone() : java.lang.Object\\l + replaceFirst(java.lang.String, java.lang.String) : java.lang.String\\l + codePointCount(int, int) : int\\l + getClass() : java.lang.Class\\l + lastIndexOf(java.lang.String) : int\\l + getBytes() : byte[]\\l + substring(int) : java.lang.String\\l + length() : int\\l + contentEquals(java.lang.StringBuffer) : boolean\\l + contentEquals(java.lang.CharSequence) : boolean\\l + startsWith(java.lang.String, int) : boolean\\l + indexOf(java.lang.String, int) : int\\l + endsWith(java.lang.String) : boolean\\l + startsWith(java.lang.String) : boolean\\l + notifyAll() : void\\l + regionMatches(boolean, int, java.lang.String, int, int) : boolean\\l + toCharArray() : char[]\\l + matches(java.lang.String) : boolean\\l  getChars(char[], int) : void\\l + substring(int, int) : java.lang.String\\l + replace(char, char) : java.lang.String\\l + charAt(int) : char\\l }\"\n" +
-                "\t];\n" +
-                "\tedge [arrowhead=onormal];\n" +
-                "\t\"java.lang.String\" -> {\"java.lang.Object\"};\n" +
-                "\n" +
-                "\tedge [arrowhead=onormal, style=dashed];\n" +
-                "\t\"java.lang.String\" -> {\"java.io.Serializable\", \"java.lang.Comparable\", \"java.lang.CharSequence\"};\n" +
-                "\n" +
-                "\tedge [arrowhead=vee];\n" +
-                "\t\"java.lang.String\" -> {}\n" +
-                "\tedge [arrowhead=vee style=dashed];\n" +
-                "\t\"java.lang.String\" -> {}\n" +
-                "}";
-        assertEquals("Generator Output String is not equal", expected, generator.getOutputString());
+
+        String actual = generator.getOutputString();
+
+        // Test if it has the basic DOT file styling.
+        assertTrue(actual.contains("\tnodesep=1.0;\n"));
+        assertTrue(actual.contains("\tnode [shape=record];\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" [\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {\"java.lang.Object\"};\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {}\n"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal]"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
+
+        // Count how many relations there are. TODO: When Fred implements Has-A and Depends-On update this test.
+        int relationsCount = 0;
+        int index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n");
+        while (index != -1) {
+            relationsCount++;
+            index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n", index + 1);
+        }
+        assertEquals("Number of Relations not equal", 3, relationsCount);
+
+        String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String", "- privateString : java.lang.String", "+ publicInt : int"};
+        String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int", "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double"};
+
+        Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
+        Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
+
+        // Test if it has the Fields viewable in the class file.
+        expectedFieldStream.forEach((field) -> {
+            assertTrue(actual.contains(field));
+        });
+
+        // Test if it has the Methods viewable in the class file.
+        expectedMethodStream.forEach((method) -> {
+            assertTrue(actual.contains(method));
+        });
     }
 
     @Test
@@ -65,9 +85,7 @@ public class GraphVizGeneratorTest {
         folder.create();
 
         // Set up a System Model.
-        List<String> classList = new ArrayList<>();
-        classList.add("java.lang.String");
-        ISystemModel systemModel = new SystemModel(classList, new ASMParser());
+        ISystemModel systemModel = setupSystemModel();
         IConfiguration config = new DummyConfig();
 
         // Set the output directory to the root of the Temporary Folder.
@@ -81,6 +99,7 @@ public class GraphVizGeneratorTest {
             File file = new File(config.getOutputDirectory() + "/" + config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
+            fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
             e.printStackTrace();
         }
     }

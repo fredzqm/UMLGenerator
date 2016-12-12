@@ -68,7 +68,8 @@ test {
     }
 }
 
-test.finalizedBy(jacocoTestReport)
+//test.finalizedBy(jacocoTestReport)
+//jacocoTestReport.mustRunAfter(test)
 
 task codeCoverageInfo (dependsOn: jacocoTestReport) {
     ext.srcFile = file("${reportsDir}/jacoco/test/jacocoTestReport.xml")
@@ -92,7 +93,8 @@ task codeCoverageInfo (dependsOn: jacocoTestReport) {
         }
     }
 }
-jacocoTestReport.finalizedBy(codeCoverageInfo)
+//jacocoTestReport.finalizedBy(codeCoverageInfo)
+//codeCoverageInfo.mustRunAfter(jacocoTestReport)
 
 jar {
     manifest {
