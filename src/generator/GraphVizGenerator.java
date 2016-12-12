@@ -1,7 +1,5 @@
 package generator;
 
-import configs.Configuration;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 import analyzer.Job;
+import configuration.Configuration;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.

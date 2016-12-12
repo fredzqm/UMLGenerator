@@ -1,8 +1,8 @@
 package analyzer;
 
-import configs.IFormat;
-
 import java.util.List;
+
+import configuration.IFormat;
 
 /**
  * Created by lamd on 12/7/2016.

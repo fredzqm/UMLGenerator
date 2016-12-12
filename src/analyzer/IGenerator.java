@@ -1,10 +1,8 @@
 package analyzer;
 
-import configs.Configuration;
-
 import java.util.Collection;
 
-import analyzer.Job;
+import configuration.Configuration;
 
 /**
  * Created by lamd on 12/7/2016.
