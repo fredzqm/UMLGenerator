@@ -1,11 +1,13 @@
 package generator;
 
+import configs.IConfiguration;
+
 /**
  * An Interface for Generator Configuration.
  * <p>
  * Created by lamd on 12/12/2016.
  */
-public interface IGeneratorConfiguration {
+public interface IGeneratorConfiguration extends IConfiguration {
     /**
      * Returns the Node Seperation.
      *
