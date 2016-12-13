@@ -14,7 +14,7 @@ build:
 test:
   stage: test
   script:
-    - java test/AllTests
+    - java ./test/TestRunner
   tags:
     - java
     - linux
