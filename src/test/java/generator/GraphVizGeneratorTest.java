@@ -103,8 +103,7 @@ public class GraphVizGeneratorTest {
         try {
             // FIXME: Replace this with the dot.exe path.
             runner.execute(config, graphVizString);
-            File file = new File(
-                    config.getOutputDirectory() + "/" + config.getFileName() + "." + config.getOutputFormat());
+            File file = new File(directory, config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
             fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
