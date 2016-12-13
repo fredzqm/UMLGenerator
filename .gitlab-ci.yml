@@ -1,10 +1,21 @@
 stages:
   - build
+  - test
 
 build:
   stage: build
   script:
-    - ./gradlew build
+    - gradle build
   tags:
     - gradle
     - java
+    - linux
+
+test:
+  stage: test
+  script:
+    - gradle test
+  tags:
+    - gradle
+    - java
+    - linux
