@@ -1,15 +1,14 @@
-package main.java.model;
+package model;
 
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IClassModel;
+import generator.IMethodModel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-
-import main.java.analyzer.IVisitable;
-import main.java.analyzer.IVisitor;
-import main.java.generator.IClassModel;
-import main.java.generator.IMethodModel;
 
 import java.util.*;
 

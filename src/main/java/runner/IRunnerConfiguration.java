@@ -1,4 +1,4 @@
-package main.java.runner;
+package runner;
 
 /**
  * Created by lamd on 12/12/2016.

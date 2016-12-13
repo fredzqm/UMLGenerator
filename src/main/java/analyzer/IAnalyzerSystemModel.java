@@ -1,4 +1,4 @@
-package main.java.analyzer;
+package analyzer;
 
 public interface IAnalyzerSystemModel {
 

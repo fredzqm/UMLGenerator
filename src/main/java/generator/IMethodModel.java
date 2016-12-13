@@ -1,4 +1,4 @@
-package main.java.generator;
+package generator;
 
 /**
  * An Interface of the Method Models.
@@ -6,74 +6,74 @@ package main.java.generator;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
-	
-	/**
-	 * Returns the Parent Class this method belongs to.
-	 *
-	 * @return Parent Class Model.
-	 */
-	IClassModel getParentClass();
 
-	/**
-	 * Returns the access Modifier of this method.
-	 *
-	 * @return Access Modifier.
-	 */
-	IModifier getModifier();
+    /**
+     * Returns the Parent Class this method belongs to.
+     *
+     * @return Parent Class Model.
+     */
+    IClassModel getParentClass();
 
-	/**
-	 * Returns the Method Type (Abstract, Contructor, Static, Static
-	 * Initializer, Method).
-	 *
-	 * @return Method Type.
-	 */
-	IMethodType getMethodType();
+    /**
+     * Returns the access Modifier of this method.
+     *
+     * @return Access Modifier.
+     */
+    IModifier getModifier();
 
-	/**
-	 * Returns true if the Method is final.
-	 *
-	 * @return true if Final.
-	 */
-	boolean isFinal();
+    /**
+     * Returns the Method Type (Abstract, Contructor, Static, Static
+     * Initializer, Method).
+     *
+     * @return Method Type.
+     */
+    IMethodType getMethodType();
 
-	/**
-	 * Returns the name of the Method.
-	 *
-	 * @return Name of the Method.
-	 */
-	String getName();
+    /**
+     * Returns true if the Method is final.
+     *
+     * @return true if Final.
+     */
+    boolean isFinal();
 
-	/**
-	 * Returns the return type Type Model of the Method.
-	 *
-	 * @return Type Model of the Return Type.
-	 */
-	ITypeModel getReturnType();
+    /**
+     * Returns the name of the Method.
+     *
+     * @return Name of the Method.
+     */
+    String getName();
 
-	/**
-	 * Returns an Iterable of Type Models of the arguments of the Method.
-	 *
-	 * @return Iterable of Type Model of Arguments.
-	 */
-	Iterable<? extends ITypeModel> getArguments();
+    /**
+     * Returns the return type Type Model of the Method.
+     *
+     * @return Type Model of the Return Type.
+     */
+    ITypeModel getReturnType();
 
-	/**
-	 * Type of method
-	 */
-	interface IMethodType {
-		void switchByCase(Switcher switcher);
+    /**
+     * Returns an Iterable of Type Models of the arguments of the Method.
+     *
+     * @return Iterable of Type Model of Arguments.
+     */
+    Iterable<? extends ITypeModel> getArguments();
 
-		interface Switcher {
-			void ifConstructor();
+    /**
+     * Type of method
+     */
+    interface IMethodType {
+        void switchByCase(Switcher switcher);
 
-			void ifConcrete();
+        interface Switcher {
+            void ifConstructor();
 
-			void ifStatic();
+            void ifConcrete();
 
-			void ifStaticInitializer();
+            void ifStatic();
 
-			void ifAbstract();
+            void ifStaticInitializer();
 
-		}
-	}
+            void ifAbstract();
+
+        }
+    }
 }

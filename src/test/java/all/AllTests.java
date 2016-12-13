@@ -1,12 +1,14 @@
-package test.java;
+package all;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import test.java.generator.GraphVizGeneratorTest;
-import test.java.model.ASMParserTest;
+import generator.GraphVizGeneratorTest;
+import model.ASMParserTest;
 
 /**
+ * Runs all test suite.
+ *
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)

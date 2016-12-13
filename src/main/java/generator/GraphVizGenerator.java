@@ -1,4 +1,4 @@
-package main.java.generator;
+package generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class GraphVizGenerator implements IGenerator {
         createDotString(config);
         return this.dotString.toString();
     }
-	
+
     /**
      * An Inner class that represents a single class in the DOT language.
      */

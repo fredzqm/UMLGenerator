@@ -1,4 +1,4 @@
-package main.java.generator;
+package generator;
 
 /**
  * An Interface for Generator Configuration.
@@ -7,11 +7,11 @@ package main.java.generator;
  */
 public interface IGeneratorConfiguration {
 
-	/**
-	 * Returns the Node Seperation.
-	 *
-	 * @return Node Separation value.
-	 */
-	double getNodeSep();
+    /**
+     * Returns the Node Seperation.
+     *
+     * @return Node Separation value.
+     */
+    double getNodeSep();
 
 }

@@ -1,12 +1,11 @@
-package main.java.config;
+package config;
 
 
 public interface ConfigurationFactory {
 
-	/**
-	 * 
-	 * @return create the configuration
-	 * @throws Exception
-	 */
-	Configuration create() throws Exception;
+    /**
+     * @return create the configuration
+     * @throws Exception
+     */
+    Configuration create() throws Exception;
 }

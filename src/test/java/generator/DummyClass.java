@@ -1,4 +1,4 @@
-package test.java.generator;
+package generator;
 
 /**
  * A Dummy Class used for testing.

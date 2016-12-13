@@ -1,4 +1,4 @@
-package main.java.generator;
+package generator;
 
 /**
  * An Interface for System Models.

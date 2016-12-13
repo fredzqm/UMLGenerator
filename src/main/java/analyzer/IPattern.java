@@ -1,4 +1,4 @@
-package main.java.analyzer;
+package analyzer;
 
 /**
  * An Interface for a Pattern.

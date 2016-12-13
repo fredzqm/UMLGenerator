@@ -1,15 +1,17 @@
-package main.java;
+
 
 import java.io.IOException;
 
-import main.java.config.Configuration;
-import main.java.generator.GraphVizGenerator;
-import main.java.generator.IGenerator;
-import main.java.model.ASMParser;
-import main.java.model.ASMServiceProvider;
-import main.java.model.SystemModel;
-import main.java.runner.GraphVizRunner;
-import main.java.runner.IRunner;
+import config.Configuration;
+import generator.GraphVizGenerator;
+import generator.IGenerator;
+import model.ASMParser;
+import model.ASMServiceProvider;
+import model.SystemModel;
+import runner.GraphVizRunner;
+import runner.IRunner;
+
+
 
 public class UMLEngine implements Runnable {
 	private Configuration config;

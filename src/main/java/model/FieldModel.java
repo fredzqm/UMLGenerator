@@ -1,12 +1,11 @@
-package main.java.model;
+package model;
 
+import analyzer.IVisitable;
+import analyzer.IVisitor;
+import generator.IFieldModel;
+import generator.ITypeModel;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
-
-import main.java.analyzer.IVisitable;
-import main.java.analyzer.IVisitor;
-import main.java.generator.IFieldModel;
-import main.java.generator.ITypeModel;
 
 public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     private final FieldNode asmFieldNode;

@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public interface ASMServiceProvider {
     ClassModel getClassByName(String name);

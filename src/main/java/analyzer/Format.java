@@ -1,12 +1,12 @@
-package main.java.analyzer;
+package analyzer;
 
-import main.java.generator.IFormat;
+import generator.IFormat;
 
 public class Format implements IFormat {
 
-	@Override
-	public String getValue(String key) {
-		return null;
-	}
+    @Override
+    public String getValue(String key) {
+        return null;
+    }
 
 }

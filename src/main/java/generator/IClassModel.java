@@ -1,4 +1,4 @@
-package main.java.generator;
+package generator;
 
 /**
  * An interface for Class Models.
@@ -6,84 +6,83 @@ package main.java.generator;
  * Created by lamd on 12/9/2016.
  */
 public interface IClassModel {
-	
-	/**
-	 * Returns the String of the Model's Class Name.
-	 *
-	 * @return Class Name.
-	 */
-	String getName();
 
-	/**
-	 * Returns the Model's ClassType.
-	 *
-	 * @return ClassType
-	 */
-	IClassType getType();
+    /**
+     * Returns the String of the Model's Class Name.
+     *
+     * @return Class Name.
+     */
+    String getName();
 
-	/**
-	 * Returns an Iterable of the Model's Fields.
-	 *
-	 * @return Fields of the Model.
-	 */
-	Iterable<? extends IFieldModel> getFields();
+    /**
+     * Returns the Model's ClassType.
+     *
+     * @return ClassType
+     */
+    IClassType getType();
 
-	/**
-	 * Returns an Iterable of the Model's Methods.
-	 *
-	 * @return Methods of the Model.
-	 */
-	Iterable<? extends IMethodModel> getMethods();
+    /**
+     * Returns an Iterable of the Model's Fields.
+     *
+     * @return Fields of the Model.
+     */
+    Iterable<? extends IFieldModel> getFields();
 
-	/**
-	 * Returns the IClassModel of the Model's superclass.
-	 *
-	 * @return Model's superclass (can be null if the class is Object)
-	 */
-	IClassModel getSuperClass();
+    /**
+     * Returns an Iterable of the Model's Methods.
+     *
+     * @return Methods of the Model.
+     */
+    Iterable<? extends IMethodModel> getMethods();
 
-	/**
-	 * Returns the List of classes the Model inherits from.
-	 *
-	 * @return Intefaces the model inherits.
-	 */
-	Iterable<? extends IClassModel> getInterfaces();
+    /**
+     * Returns the IClassModel of the Model's superclass.
+     *
+     * @return Model's superclass (can be null if the class is Object)
+     */
+    IClassModel getSuperClass();
 
-	/**
-	 * Returns the List of the Model's Has-A relation.
-	 *
-	 * @return List of Classes with a Has-A relationship with the Model.
-	 */
-	Iterable<? extends IClassModel> getHasRelation();
+    /**
+     * Returns the List of classes the Model inherits from.
+     *
+     * @return Intefaces the model inherits.
+     */
+    Iterable<? extends IClassModel> getInterfaces();
 
-	/**
-	 * Returns the List of the Model's Depends-On Relation.
-	 *
-	 * @return List of Classes with a Depends-On relationship with the Model.
-	 */
-	Iterable<? extends IClassModel> getDependsRelation();
+    /**
+     * Returns the List of the Model's Has-A relation.
+     *
+     * @return List of Classes with a Has-A relationship with the Model.
+     */
+    Iterable<? extends IClassModel> getHasRelation();
 
-	/**
-	 * 
-	 * @return the super class name
-	 */
-	String getSuperClassName();
+    /**
+     * Returns the List of the Model's Depends-On Relation.
+     *
+     * @return List of Classes with a Depends-On relationship with the Model.
+     */
+    Iterable<? extends IClassModel> getDependsRelation();
 
-	/**
-	 * Type of class
-	 */
-	interface IClassType {
-		void switchByCase(Switcher switcher);
+    /**
+     * @return the super class name
+     */
+    String getSuperClassName();
 
-		interface Switcher {
-			void ifAbstract();
+    /**
+     * Type of class
+     */
+    interface IClassType {
+        void switchByCase(Switcher switcher);
 
-			void ifConcrete();
+        interface Switcher {
+            void ifAbstract();
 
-			void ifInterface();
+            void ifConcrete();
 
-			void ifEnum();
-		}
-	}
+            void ifInterface();
+
+            void ifEnum();
+        }
+    }
 
 }

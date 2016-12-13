@@ -1,5 +1,5 @@
-package main.java.generator;
+package generator;
 
-//public class IGeneratorClassModel {
-
-//}
+public interface IGeneratorClassModel {
+    // TODO: Add methods as needed.
+}

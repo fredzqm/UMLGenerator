@@ -1,4 +1,4 @@
-package main.java.runner;
+package runner;
 
 import java.io.File;
 import java.io.FileWriter;
