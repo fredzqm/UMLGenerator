@@ -1,6 +1,6 @@
 package generator;
 
-import configs.IConfiguration;
+import config.IConfiguration;
 
 /**
  * An Interface for Generator Configuration.

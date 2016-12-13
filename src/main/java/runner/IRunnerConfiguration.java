@@ -1,6 +1,6 @@
 package runner;
 
-import configs.IConfiguration;
+import config.IConfiguration;
 import generator.IGeneratorConfiguration;
 
 /**

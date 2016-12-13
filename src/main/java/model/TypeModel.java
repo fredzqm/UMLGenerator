@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import generator.ITypeModel;
 import org.objectweb.asm.Type;

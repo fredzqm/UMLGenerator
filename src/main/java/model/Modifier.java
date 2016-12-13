@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import generator.IModifier;
 import org.objectweb.asm.Opcodes;

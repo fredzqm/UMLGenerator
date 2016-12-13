@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;

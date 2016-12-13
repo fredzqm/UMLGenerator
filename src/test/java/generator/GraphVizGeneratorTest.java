@@ -1,9 +1,9 @@
 package generator;
 
-import configs.IConfiguration;
-import configs.IFormat;
-import models.ASMParser;
-import models.SystemModel;
+import config.IConfiguration;
+import config.IFormat;
+import model.ASMParser;
+import model.SystemModel;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;

@@ -1,4 +1,4 @@
-package configs;
+package config;
 
 /**
  * Created by lamd on 12/7/2016.
