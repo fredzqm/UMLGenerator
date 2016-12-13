@@ -1,31 +1,31 @@
-package generator;
+package main.java.generator;
 
 /**
  * An Interface for Access Modifers.
  */
 public interface IModifier {
-    /**
-     * Returns the Modifier Symbol.
-     *
-     * @return String of the Modifier Symbol.
-     */
-    String getModifierSymbol();
+	/**
+	 * Returns the Modifier Symbol.
+	 *
+	 * @return String of the Modifier Symbol.
+	 */
+	String getModifierSymbol();
 
-    /**
-     * TODO: Fred
-     *
-     * @param switcher
-     */
-    void switchByCase(Switcher switcher);
+	/**
+	 * Make if possible to switch without accessing the ENUM internal
+	 * 
+	 * @param switcher
+	 */
+	void switchByCase(Switcher switcher);
 
-    interface Switcher {
-        void ifPrivate();
+	interface Switcher {
+		void ifPrivate();
 
-        void ifPublic();
+		void ifPublic();
 
-        void ifProtected();
+		void ifProtected();
 
-        void ifDefault();
-    }
+		void ifDefault();
+	}
 
 }

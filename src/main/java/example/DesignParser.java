@@ -1,4 +1,4 @@
-package example;
+package main.java.example;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +35,7 @@ public class DesignParser {
 		// FIXME: this code has POOR DESIGN. If you keep this code as-is for
 		// your main method, you will be sad about your grade.
 		String[] args = new String[] { "java.lang.String"};
+		
 		for (String className : args) {
 			// ASM's ClassReader does the heavy lifting of parsing the compiled
 			// Java class.

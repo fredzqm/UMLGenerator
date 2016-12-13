@@ -1,16 +1,30 @@
-package generator;
+package main.java.generator;
 
 import java.util.List;
 
 /**
+ * The IJob interface for analyzer.
+ * 
  * Created by lamd on 12/7/2016.
  */
 public interface IJob {
-	
-	public String getName();
 
-	public List<String> getClasses();
+	/**
+	 * 
+	 * @return names
+	 */
+	String getName();
 
-	public IFormat getFormat();
+	/**
+	 * 
+	 * @return classes
+	 */
+	List<String> getClasses();
+
+	/**
+	 * 
+	 * @return format
+	 */
+	IFormat getFormat();
 
 }

@@ -1,7 +1,7 @@
+package main.java;
 
-
-import config.CommandLineParser;
-import config.Configuration;
+import main.java.config.CommandLineParser;
+import main.java.config.Configuration;
 
 public class Main {
 

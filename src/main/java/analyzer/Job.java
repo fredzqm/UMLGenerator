@@ -1,34 +1,33 @@
-package analyzer;
+package main.java.analyzer;
 
 import java.util.List;
 
-import generator.IJob;
+import main.java.generator.IJob;
 
 /**
  * Created by lamd on 12/7/2016.
  */
-public class Job implements IJob{
-	private final String name;
-	private final List<String> classes;
-	private final Format format;
+public class Job implements IJob {
+	private String name;
+	private List<String> classes;
+	private Format format;
 
-	public Job(String name, List<String> classes, Format format) {
-		super();
+	public Job(String name, List<String> classes) {
 		this.name = name;
 		this.classes = classes;
-		this.format = format;
 	}
 
+	public Format getFormat() {
+		return this.format;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public List<String> getClasses() {
 		return classes;
 	}
-
-	public Format getFormat() {
-		return format;
-	}
-
 }

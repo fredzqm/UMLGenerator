@@ -33,6 +33,18 @@ repositories {
     }
 }
 
+test {
+    testLogging.showStandardStreams = true
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced: " + event.message)
+    }
+}
+
 // Code coverage analyzer
 jacoco {
     toolVersion = "0.7.+"
@@ -71,7 +83,8 @@ test {
     }
 }
 
-test.finalizedBy(jacocoTestReport)
+//test.finalizedBy(jacocoTestReport)
+//jacocoTestReport.mustRunAfter(test)
 
 task codeCoverageInfo (dependsOn: jacocoTestReport) {
     ext.srcFile = file("${reportsDir}/jacoco/test/jacocoTestReport.xml")
@@ -95,7 +108,8 @@ task codeCoverageInfo (dependsOn: jacocoTestReport) {
         }
     }
 }
-jacocoTestReport.finalizedBy(codeCoverageInfo)
+//jacocoTestReport.finalizedBy(codeCoverageInfo)
+//codeCoverageInfo.mustRunAfter(jacocoTestReport)
 
 jar {
     manifest {

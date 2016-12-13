@@ -1,4 +1,4 @@
-package runner;
+package main.java.runner;
 
 import java.io.IOException;
 
@@ -8,5 +8,15 @@ import java.io.IOException;
  * Created by lamd on 12/11/2016.
  */
 public interface IRunner {
-	void execute(IConfiguration config) throws IOException, InterruptedException;
+
+	/**
+	 * Executes the Program that will generate files.
+	 *
+	 * @throws IOException
+	 *             if it is unable to write.
+	 * @throws InterruptedException
+	 *             if the write process is interrupted.
+	 */
+	void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
+
 }

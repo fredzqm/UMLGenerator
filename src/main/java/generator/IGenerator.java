@@ -1,4 +1,4 @@
-package generator;
+package main.java.generator;
 
 /**
  * An Interface for Generators.
@@ -8,17 +8,16 @@ package generator;
 public interface IGenerator {
 
 	/**
-	 * 
 	 * Creates a file formatted to display classes.
 	 *
 	 * @param sm
 	 *            SystemModel containing all class information to diagram.
 	 * @param config
-	 *            IConfiguration for the Generator to follow.
+	 *            {@link IGeneratorConfiguration} for the Generator to follow.
 	 * @param jobs
 	 *            A Collection of Patterns recognized.
-	 * @return the Graphvis file String
+	 * @return the UML String.
 	 */
-	String generate(ISystemModel sm, IConfiguration config, Iterable<IJob> jobs);
-
+	String generate(IGeneratorSystemModel sm, IGeneratorConfiguration config, Iterable<IJob> jobs);
+	
 }

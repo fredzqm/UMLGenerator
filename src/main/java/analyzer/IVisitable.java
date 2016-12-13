@@ -1,4 +1,4 @@
-package analyzer;
+package main.java.analyzer;
 
 public interface IVisitable<T> {
     void visit(IVisitor<T> IVisitor);

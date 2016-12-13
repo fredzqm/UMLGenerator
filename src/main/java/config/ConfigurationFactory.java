@@ -1,8 +1,12 @@
-package config;
+package main.java.config;
 
-import generator.IConfiguration;
 
 public interface ConfigurationFactory {
 
-	IConfiguration create() throws Exception;
+	/**
+	 * 
+	 * @return create the configuration
+	 * @throws Exception
+	 */
+	Configuration create() throws Exception;
 }

@@ -1,4 +1,4 @@
-package config;
+package main.java.config;
 
 import java.util.Arrays;
 import java.util.Iterator;

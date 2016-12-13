@@ -1,7 +1,7 @@
-package example;
+package main.java.example;
 
-import config.CommandLineParser;
-import config.Configuration;
+import main.java.config.CommandLineParser;
+import main.java.config.Configuration;
 
 public class TestingCLP {
 	

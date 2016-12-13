@@ -1,11 +1,12 @@
-package config;
+package main.java.config;
 
-import generator.IFormat;
+import main.java.generator.IGeneratorConfiguration;
+import main.java.runner.IRunnerConfiguration;
 
 /**
  * Created by lamd on 12/7/2016.
  */
-public class Configuration implements generator.IConfiguration, runner.IConfiguration {
+public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration {
 
 	private Iterable<String> classes;
 	private String buildPath;
@@ -70,12 +71,6 @@ public class Configuration implements generator.IConfiguration, runner.IConfigur
 	}
 
 	@Override
-	public IFormat getFormat() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getFileName() {
 		// TODO Auto-generated method stub
 		return null;
@@ -89,6 +84,18 @@ public class Configuration implements generator.IConfiguration, runner.IConfigur
 
 	@Override
 	public String getOutputFormat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getNodeSep() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getExecutablePath() {
 		// TODO Auto-generated method stub
 		return null;
 	}

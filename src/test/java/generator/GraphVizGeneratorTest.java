@@ -1,87 +1,132 @@
-package generator;
+package test.java.generator;
 
-import model.ASMParser;
-import model.SystemModel;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import runner.GraphVizRunner;
-import runner.IRunner;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import main.java.generator.GraphVizGenerator;
+import main.java.generator.IGenerator;
+import main.java.generator.IGeneratorConfiguration;
+import main.java.generator.IGeneratorSystemModel;
+import main.java.model.ASMParser;
+import main.java.model.SystemModel;
+import main.java.runner.GraphVizRunner;
+import main.java.runner.IRunner;
+import main.java.runner.IRunnerConfiguration;
 
 /**
+ * The GraphVizGenerator and GraphVizRunner Test.
+ * <p>
  * Created by lamd on 12/11/2016.
  */
 public class GraphVizGeneratorTest {
-	@Test
-	public void generate() throws Exception {
+	private IGeneratorSystemModel setupSystemModel() {
 		List<String> classList = new ArrayList<>();
-		classList.add("java.lang.String");
-		SystemModel systemModel = new SystemModel(classList, new ASMParser());
-		DummyConfig config = new DummyConfig();
+		classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
+		return new SystemModel(classList, new ASMParser());
+	}
 
+	@Test
+	public void generate() throws IOException {
+		// Set up the system model and config.
+		IGeneratorSystemModel systemModel = setupSystemModel();
+		IGeneratorConfiguration config = new DummyConfig();
+
+		// Create GraphVizGenerator.
 		IGenerator generator = new GraphVizGenerator();
 
-		String expected = "digraph GraphVizGeneratedDOT {\n" + "\tnodesep=1.0;\n" + "\tnode [shape=record];\n"
-				+ "\t\"java.lang.String\" [\n"
-				+ "\t\tlabel = \"{java.lang.String | - serialPersistentFields : java.io.ObjectStreamField[]\\l+ CASE_INSENSITIVE_ORDER : java.util.Comparator\\l- serialVersionUID : long\\l- value : char[]\\l- hash : int\\l | + codePointAt(int) : int\\l + getBytes(java.nio.charset.Charset) : byte[]\\l + indexOf(java.lang.String, int) : int\\l + equalsIgnoreCase(java.lang.String) : boolean\\l + lastIndexOf(int) : int\\l + trim() : java.lang.String\\l + endsWith(java.lang.String) : boolean\\l + replace(java.lang.CharSequence, java.lang.CharSequence) : java.lang.String\\l + contentEquals(java.lang.StringBuffer) : boolean\\l + indexOf(int, int) : int\\l + compareTo(java.lang.Object) : int\\l + toUpperCase() : java.lang.String\\l + replace(char, char) : java.lang.String\\l # finalize() : void\\l + wait() : void\\l + intern() : java.lang.String\\l + matches(java.lang.String) : boolean\\l + subSequence(int, int) : java.lang.CharSequence\\l + hashCode() : int\\l + toLowerCase() : java.lang.String\\l + lastIndexOf(java.lang.String) : int\\l + isEmpty() : boolean\\l + toString() : java.lang.String\\l + toLowerCase(java.util.Locale) : java.lang.String\\l + split(java.lang.String, int) : java.lang.String[]\\l + notify() : void\\l + contains(java.lang.CharSequence) : boolean\\l + substring(int, int) : java.lang.String\\l + split(java.lang.String) : java.lang.String[]\\l + lastIndexOf(java.lang.String, int) : int\\l + equals(java.lang.Object) : boolean\\l + startsWith(java.lang.String, int) : boolean\\l + lastIndexOf(int, int) : int\\l + wait(long) : void\\l + indexOf(int) : int\\l + compareToIgnoreCase(java.lang.String) : int\\l + codePointCount(int, int) : int\\l # clone() : java.lang.Object\\l + contentEquals(java.lang.CharSequence) : boolean\\l - lastIndexOfSupplementary(int, int) : int\\l + getClass() : java.lang.Class\\l + getBytes(java.lang.String) : byte[]\\l + getChars(int, int, char[], int) : void\\l + codePointBefore(int) : int\\l - nonSyncContentEquals(java.lang.AbstractStringBuilder) : boolean\\l + concat(java.lang.String) : java.lang.String\\l + getBytes() : byte[]\\l + substring(int) : java.lang.String\\l + getBytes(int, int, byte[], int) : void\\l + length() : int\\l - indexOfSupplementary(int, int) : int\\l + indexOf(java.lang.String) : int\\l + offsetByCodePoints(int, int) : int\\l + toUpperCase(java.util.Locale) : java.lang.String\\l + compareTo(java.lang.String) : int\\l + regionMatches(boolean, int, java.lang.String, int, int) : boolean\\l + regionMatches(int, java.lang.String, int, int) : boolean\\l + replaceFirst(java.lang.String, java.lang.String) : java.lang.String\\l  getChars(char[], int) : void\\l + startsWith(java.lang.String) : boolean\\l + notifyAll() : void\\l + toCharArray() : char[]\\l + charAt(int) : char\\l + replaceAll(java.lang.String, java.lang.String) : java.lang.String\\l + wait(long, int) : void\\l }\"\n"
-				+ "\t];\n" + "\tedge [arrowhead=onormal];\n" + "\t\"java.lang.String\" -> {\"java.lang.Object\"};\n"
-				+ "\n" + "\tedge [arrowhead=onormal, style=dashed];\n"
-				+ "\t\"java.lang.String\" -> {\"java.io.Serializable\", \"java.lang.Comparable\", \"java.lang.CharSequence\"};\n"
-				+ "\n" + "\tedge [arrowhead=vee];\n" + "\t\"java.lang.String\" -> {}\n"
-				+ "\tedge [arrowhead=vee style=dashed];\n" + "\t\"java.lang.String\" -> {}\n" + "}";
-		assertEquals("Generator Output String is not equal", expected, generator.generate(systemModel, config, null));
+		String actual = generator.generate(systemModel, config, null);
+
+		// Test if it has the basic DOT file styling.
+		assertTrue(actual.contains("\tnodesep=1.0;\n"));
+		assertTrue(actual.contains("\tnode [shape=record];\n"));
+		assertTrue(actual.contains("\t\"test.java.generator.DummyClass\" [\n"));
+		assertTrue(actual.contains("\t\"test.java.generator.DummyClass\" -> {\"java.lang.Object\"};\n"));
+		assertTrue(actual.contains("\t\"test.java.generator.DummyClass\" -> {}\n"));
+		assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
+		assertTrue(actual.contains("edge [arrowhead=onormal]"));
+		assertTrue(actual.contains("\"test.java.generator.DummyClass\" -> {\"java.lang.Object\"}"));
+
+		// Count how many relations there are. TODO: When Fred implements Has-A
+		// and Depends-On update this test.
+		int relationsCount = 0;
+		int index = actual.indexOf("\t\"test.java.generator.DummyClass\" -> {}\n");
+		while (index != -1) {
+			relationsCount++;
+			index = actual.indexOf("\t\"test.java.generator.DummyClass\" -> {}\n", index + 1);
+		}
+		assertEquals("Number of Relations not equal", 3, relationsCount);
+
+		String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
+				"- privateString : java.lang.String", "+ publicInt : int" };
+		String[] expectedMethods = { "- printPrivateString() : void", "getPublicInt() : int",
+				"+ getPublicString() : java.lang.String", "# someProtectedMethod() : double" };
+
+		Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
+		Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
+
+		// Test if it has the Fields viewable in the class file.
+		expectedFieldStream.forEach((field) -> assertTrue(actual.contains(field)));
+
+		// Test if it has the Methods viewable in the class file.
+		expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
 	}
 
 	@Test
 	public void write() throws IOException {
+		// Create a TemporaryFolder that will be deleted after the test runs.
 		TemporaryFolder folder = new TemporaryFolder();
 		folder.create();
 
-		List<String> classList = new ArrayList<>();
-		classList.add("java.lang.String");
-		ISystemModel systemModel = new SystemModel(classList, new ASMParser());
+		// Set up a System Model.
+		IGeneratorSystemModel systemModel = setupSystemModel();
 		DummyConfig config = new DummyConfig();
 
-		config.outputDirectory = folder.getRoot().toString();
+		// Set the output directory to the root of the Temporary Folder.
+		config.setOutputDirectory(folder.getRoot().toString());
 
+		// Create the runner
 		IRunner runner = new GraphVizRunner();
+		IGenerator generator = new GraphVizGenerator();
+		String graphVisStr = generator.generate(systemModel, config, null);
+
 		try {
 			// FIXME: Replace this with the dot.exe path.
-			runner.execute(config);
+			runner.execute(config, graphVisStr);
 			File file = new File(
 					config.getOutputDirectory() + "/" + config.getFileName() + "." + config.getOutputFormat());
 			assertTrue(file.exists());
 		} catch (Exception e) {
+			fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 
-	private class DummyConfig implements runner.IConfiguration, generator.IConfiguration {
+	/**
+	 * A Dummy Configuration Object used for testing.
+	 */
+	private class DummyConfig implements IRunnerConfiguration, IGeneratorConfiguration {
+		String executablePath;
 		String fileName, outputDirectory, outputFormat;
+		double nodeSep;
 
-		public DummyConfig() {
+		/**
+		 * Constructs a basic DummyConfig object.
+		 */
+		DummyConfig() {
 			this.outputDirectory = "./output";
 			this.fileName = "test";
 			this.outputFormat = "png";
-		}
-
-		@Override
-		public Iterable<String> getClasses() {
-			return null;
-		}
-
-		@Override
-		public IFormat getFormat() {
-			return null;
+			this.nodeSep = 1.0;
+			this.executablePath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
 		}
 
 		@Override
@@ -89,9 +134,17 @@ public class GraphVizGeneratorTest {
 			return this.fileName;
 		}
 
+		public void setFileName(String name) {
+			this.fileName = name;
+		}
+
 		@Override
 		public String getOutputDirectory() {
 			return this.outputDirectory;
+		}
+
+		public void setOutputDirectory(String outputDirectory) {
+			this.outputDirectory = outputDirectory;
 		}
 
 		@Override
@@ -99,15 +152,26 @@ public class GraphVizGeneratorTest {
 			return this.outputFormat;
 		}
 
-		@Override
-		public String getExecutionPath() {
-			return "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
+		public void setOutputFormat(String outputFormat) {
+			this.outputFormat = outputFormat;
 		}
 
 		@Override
-		public String getOutputName() {
-			return fileName;
+		public String getExecutablePath() {
+			return this.executablePath;
 		}
 
+		public void setExecutablePath(String executablePath) {
+			this.executablePath = executablePath;
+		}
+
+		@Override
+		public double getNodeSep() {
+			return this.nodeSep;
+		}
+
+		public void setNodeSep(double nodeSep) {
+			this.nodeSep = nodeSep;
+		}
 	}
 }

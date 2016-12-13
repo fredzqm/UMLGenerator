@@ -1,6 +1,6 @@
-package analyzer;
+package main.java.analyzer;
 
-import generator.IFormat;
+import main.java.generator.IFormat;
 
 public class Format implements IFormat {
 

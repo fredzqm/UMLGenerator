@@ -1,4 +1,4 @@
-package generator;
+package main.java.generator;
 
 /**
  * An interface for Class Models.
@@ -6,6 +6,7 @@ package generator;
  * Created by lamd on 12/9/2016.
  */
 public interface IClassModel {
+	
 	/**
 	 * Returns the String of the Model's Class Name.
 	 *
@@ -63,7 +64,13 @@ public interface IClassModel {
 	Iterable<? extends IClassModel> getDependsRelation();
 
 	/**
-	 * TODO: Fred
+	 * 
+	 * @return the super class name
+	 */
+	String getSuperClassName();
+
+	/**
+	 * Type of class
 	 */
 	interface IClassType {
 		void switchByCase(Switcher switcher);
