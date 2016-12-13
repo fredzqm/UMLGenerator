@@ -33,11 +33,15 @@ repositories {
     }
 }
 
-sourceSets {
-    test {
-        java {
-            srcDirs = ["test/TestRunner"]
-        }
+test {
+    testLogging.showStandardStreams = true
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced: " + event.message)
     }
 }
 
