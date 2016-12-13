@@ -33,6 +33,14 @@ repositories {
     }
 }
 
+sourceSets {
+    test {
+        java {
+            srcDirs = ["test/TestRunner"]
+        }
+    }
+}
+
 // Code coverage analyzer
 jacoco {
     toolVersion = "0.7.+"

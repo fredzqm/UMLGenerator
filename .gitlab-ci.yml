@@ -14,7 +14,8 @@ build:
 test:
   stage: test
   script:
-    - java ./test/TestRunner
+    - gradle test
   tags:
+    - gradle
     - java
     - linux
