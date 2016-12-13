@@ -2,6 +2,7 @@ package generator;
 
 import model.ASMParser;
 import model.SystemModel;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;
@@ -10,8 +11,12 @@ import runner.IRunnerConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,6 +28,9 @@ import static org.junit.Assert.*;
  * Created by lamd on 12/11/2016.
  */
 public class GraphVizGeneratorTest {
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     private IGeneratorSystemModel setupSystemModel() {
         List<String> classList = new ArrayList<>();
         classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
@@ -78,24 +86,23 @@ public class GraphVizGeneratorTest {
     @Test
     public void graphVizWrite() throws IOException {
         // Create a TemporaryFolder that will be deleted after the test runs.
-        TemporaryFolder folder = new TemporaryFolder();
-        folder.create();
+        File directory = this.folder.newFolder("testDirectory");
 
         // Set up a System Model.
         IGeneratorSystemModel systemModel = setupSystemModel();
         DummyConfig config = new DummyConfig();
 
         // Set the output directory to the root of the Temporary Folder.
-        config.setOutputDirectory(folder.getRoot().toString());
+        config.setOutputDirectory(directory.toString());
 
         // Create the runner
         IRunner runner = new GraphVizRunner();
         IGenerator generator = new GraphVizGenerator();
-        String graphVisStr = generator.generate(systemModel, config, null);
+        String graphVizString = generator.generate(systemModel, config, null);
 
         try {
             // FIXME: Replace this with the dot.exe path.
-            runner.execute(config, graphVisStr);
+            runner.execute(config, graphVizString);
             File file = new File(
                     config.getOutputDirectory() + "/" + config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
