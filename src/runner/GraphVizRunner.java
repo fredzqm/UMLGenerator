@@ -1,7 +1,6 @@
 package runner;
 
 import analyzer.Job;
-import configs.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
@@ -17,29 +16,35 @@ import java.util.Collection;
  * Created by lamd on 12/11/2016.
  */
 public class GraphVizRunner implements IRunner {
+    private final String OUTPUT_FILE_EXTENSION = ".dot";
+
 
     private IGenerator generator;
+    private IRunnerConfiguration config;
 
     /**
      * Constructs a GraphVizRunner.
      *
-     * @param sm SystemModel
+     * @param sm     SystemModel
      * @param config Configuration
-     * @param jobs Jobs of Detected Patterns.
+     * @param jobs   Jobs of Detected Patterns.
      * @throws IOException if it is unable to
      */
-    public GraphVizRunner(ISystemModel sm, IConfiguration config, Collection<Job> jobs) throws IOException {
+    public GraphVizRunner(ISystemModel sm, IRunnerConfiguration config, Collection<Job> jobs) throws IOException {
         this.generator = new GraphVizGenerator();
+        this.config = config;
         this.generator.generate(sm, config, jobs);
     }
 
-    private void write(String outputDirectory, String outputName, String data) throws IOException {
-        File file = new File(outputDirectory);
+    private void write() throws IOException {
+        String outputDirectory = this.config.getOutputDirectory();
+        String outputFile = outputDirectory + "/" + this.config.getFileName() + OUTPUT_FILE_EXTENSION;
+        File file = new File(this.config.getOutputDirectory());
         file.mkdirs();
 
         try {
-            FileWriter writer = new FileWriter(outputDirectory + "/" + outputName);
-            writer.write(data);
+            FileWriter writer = new FileWriter(outputFile);
+            writer.write(getOutputString());
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,14 +52,16 @@ public class GraphVizRunner implements IRunner {
         }
     }
 
-    public void execute(String executablePath, String outputDirectory, String outputFormat, String outputName) throws IOException, InterruptedException {
-        final String OUTPUT_FILE_EXTENSION = ".dot";
-        write(outputDirectory, outputName + OUTPUT_FILE_EXTENSION, getOutputString());
+    public void execute() throws IOException, InterruptedException {
+        write();
 
         StringBuilder command = new StringBuilder();
+        String outputDirectory = this.config.getOutputDirectory();
+        String outputFormat = this.config.getOutputFormat();
+        String outputName = config.getFileName();
 
         // Create command "<executablePath> -T<outputFormat> <outputDirectory>/<outputName>.dot -o <outputDirectory>/<ouputName>.<outputFormat>
-        command.append(executablePath);
+        command.append(this.config.getExecutablePath());
         command.append(" -T");
         command.append(outputFormat);
         command.append(" ").append(outputDirectory).append("/").append(outputName).append(OUTPUT_FILE_EXTENSION).append(" ");

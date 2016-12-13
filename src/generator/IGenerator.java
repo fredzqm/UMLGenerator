@@ -1,9 +1,7 @@
 package generator;
 
 import analyzer.Job;
-import configs.IConfiguration;
 
-import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -19,7 +17,7 @@ public interface IGenerator {
      * @param config IConfiguration for the Generator to follow.
      * @param jobs   A Collection of Patterns recognized.
      */
-    void generate(ISystemModel sm, IConfiguration config, Collection<Job> jobs);
+    void generate(ISystemModel sm, IGeneratorConfiguration config, Collection<Job> jobs);
 
     String getOutputString();
 }

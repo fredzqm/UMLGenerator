@@ -1,7 +1,6 @@
 package generator;
 
 import analyzer.Job;
-import configs.IConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +34,7 @@ public class GraphVizGenerator implements IGenerator {
         classes.forEach((model) -> this.classes.add(new GraphVizClass(model)));
     }
 
-    private void createDotString(IConfiguration config) {
+    private void createDotString(IGeneratorConfiguration config) {
         // DOT parent.
         this.dotString.append("digraph GraphVizGeneratedDOT {\n");
 
@@ -87,8 +86,7 @@ public class GraphVizGenerator implements IGenerator {
     }
 
     @Override
-    // TODO: figure out what to pull out of the configuration and jobs.
-    public void generate(ISystemModel sm, IConfiguration config, Collection<Job> jobs) {
+    public void generate(ISystemModel sm, IGeneratorConfiguration config, Collection<Job> jobs) {
         parseSystemModel(sm);
         createDotString(config);
     }
@@ -405,7 +403,7 @@ public class GraphVizGenerator implements IGenerator {
 
             // Setup the VizDescriptions.
             generateClassVizDescription();
-            generateSuperClassVizDescription(model.getSuperClass().getName());
+            generateSuperClassVizDescription(model.getSuperClassName());
             generateInterfaceVizDescription(model.getInterfaces());
             generateHasRelationVizDescription(model.getHasRelation());
             generateDependsRelationVizDescription(model.getDependsRelation());

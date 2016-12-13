@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;
 import runner.IRunner;
+import runner.IRunnerConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class GraphVizGeneratorTest {
     public void generate() throws IOException {
         // Set up the system model and config.
         ISystemModel systemModel = setupSystemModel();
-        IConfiguration config = new DummyConfig();
+        IGeneratorConfiguration config = new DummyConfig();
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator();
@@ -68,14 +69,10 @@ public class GraphVizGeneratorTest {
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
         // Test if it has the Fields viewable in the class file.
-        expectedFieldStream.forEach((field) -> {
-            assertTrue(actual.contains(field));
-        });
+        expectedFieldStream.forEach((field) -> assertTrue(actual.contains(field)));
 
         // Test if it has the Methods viewable in the class file.
-        expectedMethodStream.forEach((method) -> {
-            assertTrue(actual.contains(method));
-        });
+        expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
     }
 
     @Test
@@ -86,7 +83,7 @@ public class GraphVizGeneratorTest {
 
         // Set up a System Model.
         ISystemModel systemModel = setupSystemModel();
-        IConfiguration config = new DummyConfig();
+        IRunnerConfiguration config = new DummyConfig();
 
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(folder.getRoot().toString());
@@ -95,7 +92,7 @@ public class GraphVizGeneratorTest {
         IRunner runner = new GraphVizRunner(systemModel, config, null);
         try {
             // FIXME: Replace this with the dot.exe path.
-            runner.execute("C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe", config.getOutputDirectory(), config.getOutputFormat(), config.getFileName());
+            runner.execute();
             File file = new File(config.getOutputDirectory() + "/" + config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
@@ -107,7 +104,8 @@ public class GraphVizGeneratorTest {
     /**
      * A Dummy Configuration Object used for testing.
      */
-    private class DummyConfig implements IConfiguration {
+    private class DummyConfig implements IConfiguration, IRunnerConfiguration, IGeneratorConfiguration {
+        private String executablePath;
         private String fileName, outputDirectory, outputFormat;
         private double nodeSep;
 
@@ -119,6 +117,7 @@ public class GraphVizGeneratorTest {
             this.fileName = "test";
             this.outputFormat = "png";
             this.nodeSep = 1.0;
+            this.executablePath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
         }
 
         @Override
@@ -159,6 +158,16 @@ public class GraphVizGeneratorTest {
         @Override
         public void setOutputFormat(String outputFormat) {
             this.outputFormat = outputFormat;
+        }
+
+        @Override
+        public String getExecutablePath() {
+            return this.executablePath;
+        }
+
+        @Override
+        public void setExecutablePath(String executablePath) {
+            this.executablePath = executablePath;
         }
 
         @Override

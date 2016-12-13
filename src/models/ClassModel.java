@@ -92,11 +92,16 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
         return new ArrayList<>();
     }
 
+    @Override
+    public String getSuperClassName() {
+        return this.superClass.getName();
+    }
+
     public Iterable<MethodModel> getMethods() {
         return getMethodsMap().values();
     }
 
-    public MethodModel getMethodBySignature(Signature signature) {
+    MethodModel getMethodBySignature(Signature signature) {
         if (methods.containsKey(signature))
             return methods.get(signature);
         return null;

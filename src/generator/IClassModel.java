@@ -63,6 +63,13 @@ public interface IClassModel {
     Iterable<? extends IClassModel> getDependsRelation();
 
     /**
+     * Returns the Super Class' name
+     *
+     * @return Super Class's name.
+     */
+    String getSuperClassName();
+
+    /**
      * TODO: Fred
      */
     interface IClassType {
