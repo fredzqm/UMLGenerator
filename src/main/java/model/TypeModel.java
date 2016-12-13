@@ -1,7 +1,8 @@
-package model;
+package main.java.model;
 
-import generator.ITypeModel;
 import org.objectweb.asm.Type;
+
+import main.java.generator.ITypeModel;
 
 /**
  * TODO: Fred. Also add javadoc for all public methods.

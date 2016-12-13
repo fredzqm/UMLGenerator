@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;

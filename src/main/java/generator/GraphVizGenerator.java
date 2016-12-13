@@ -1,9 +1,6 @@
-package generator;
-
-import analyzer.Job;
+package main.java.generator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,11 +22,7 @@ public class GraphVizGenerator implements IGenerator {
         return this.classes;
     }
 
-    private String getDotString() {
-        return this.dotString.toString();
-    }
-
-    private void parseSystemModel(ISystemModel sm) {
+    private void parseSystemModel(IGeneratorSystemModel sm) {
         Iterable<? extends IClassModel> classes = sm.getClasses();
         classes.forEach((model) -> this.classes.add(new GraphVizClass(model)));
     }
@@ -86,16 +79,12 @@ public class GraphVizGenerator implements IGenerator {
     }
 
     @Override
-    public void generate(ISystemModel sm, IGeneratorConfiguration config, Collection<Job> jobs) {
+    public String generate(IGeneratorSystemModel sm, IGeneratorConfiguration config, Iterable<IJob> jobs) {
         parseSystemModel(sm);
         createDotString(config);
+        return this.dotString.toString();
     }
-
-    @Override
-    public String getOutputString() {
-        return getDotString();
-    }
-
+	
     /**
      * An Inner class that represents a single class in the DOT language.
      */
@@ -409,4 +398,5 @@ public class GraphVizGenerator implements IGenerator {
             generateDependsRelationVizDescription(model.getDependsRelation());
         }
     }
+
 }
