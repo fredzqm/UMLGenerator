@@ -10,6 +10,7 @@ build:
     - gradle
     - java
     - linux
+    - graphviz
 
 test:
   stage: test
@@ -19,3 +20,4 @@ test:
     - gradle
     - java
     - linux
+    - graphviz
