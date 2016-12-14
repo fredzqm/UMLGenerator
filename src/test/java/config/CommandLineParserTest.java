@@ -1,15 +1,14 @@
 package config;
 
-import static org.junit.Assert.*;
+import model.Modifier;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
-
-import model.Modifier;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CommandLineParserTest {
-
 	@Test
 	public void testCommandAll() {
 		String[] args = "-e exepath -d outdir -o outfile -x extension -f public -n 10 -r me".split(" ");
@@ -99,5 +98,4 @@ public class CommandLineParserTest {
 		assertTrue(!conf.getFilters().contains(Modifier.PROTECTED));
 		assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
 	}
-
 }

@@ -1,11 +1,13 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import generator.IGeneratorConfiguration;
 import generator.IModifier;
 import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by lamd on 12/7/2016.
@@ -21,13 +23,14 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private double nodesep;
     private Collection<IModifier> filters;
     private boolean isRecursive;
-    
+
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
-        conf.setOutputFormat(".png");
+        conf.setOutputFormat("png");
         conf.setFileName("out");
         conf.setNodesep(1);
-        conf.setClasses(new ArrayList<String>());
+        conf.setClasses(new ArrayList<>());
+        conf.setFilters(new HashSet<>());
 
         return conf;
     }
