@@ -10,81 +10,58 @@ import java.util.List;
  * Created by lamd on 12/7/2016.
  */
 public class GraphVizGenerator implements IGenerator {
-	private List<GraphVizClass> classes;
+	private IGeneratorConfiguration config;
+	private IParser<IClassModel> classParser, extendsRelParser, implementsRelParser, hasRelPraser, dependsOnRelParser;
 
-	private StringBuilder dotString;
+	public GraphVizGenerator(IGeneratorConfiguration config) {
+		Collection<IModifier> filters = config.getFilters();
+		this.config = config;
 
-	public GraphVizGenerator() {
-		this.classes = new ArrayList<>();
-		this.dotString = new StringBuilder();
-	}
+		// parsing class
+		this.classParser = new GraphVizClassParser(filters);
 
-	public List<GraphVizClass> getClasses() {
-		return this.classes;
-	}
-
-	private void parseSystemModel(IGeneratorSystemModel sm, Collection<IModifier> filters) {
-		Iterable<? extends IClassModel> classes = sm.getClasses();
-		classes.forEach((model) -> this.classes.add(new GraphVizClass(model, filters)));
-	}
-
-	private void createDotString(IGeneratorConfiguration config) {
-		// DOT parent.
-		this.dotString.append("digraph GraphVizGeneratedDOT {\n");
-
-		// TODO: This can be configurable.
-		// Basic Configurations.
-		this.dotString.append("\tnodesep=").append(config.getNodeSep()).append(";\n");
-		this.dotString.append("\tnode [shape=record];\n");
-
-		// Basic UML Boxes.
-		this.classes.forEach((vizClass) -> {
-			this.dotString.append(vizClass.getClassVizDescription());
-			this.dotString.append("\n");
-		});
-
-		// Superclass Relations
-		this.dotString.append("\tedge [arrowhead=onormal];\n");
-		// Configurable.
-		this.classes.forEach((vizClass) -> {
-			this.dotString.append("\t");
-			this.dotString.append(vizClass.getSuperClassVizDescription());
-			this.dotString.append("\n");
-		});
-
-		// Inheritance Relations.
-		this.dotString.append("\tedge [arrowhead=onormal, style=dashed];\n");
-		this.classes.forEach((vizClass) -> {
-			this.dotString.append("\t");
-			this.dotString.append(vizClass.getInterfaceVizDescription());
-			this.dotString.append("\n");
-		});
-
-		// Has-A Relations.
-		this.dotString.append("\tedge [arrowhead=vee];\n");
-		this.classes.forEach((vizClass) -> {
-			this.dotString.append("\t");
-			this.dotString.append(vizClass.getHasRelationVizDescription());
-			this.dotString.append("\n");
-		});
-
-		// Depend-On Relations.
-		this.dotString.append("\tedge [arrowhead=vee style=dashed];\n");
-		this.classes.forEach((vizClass) -> {
-			this.dotString.append("\t");
-			this.dotString.append(vizClass.getDependsRelationVizDescription());
-			this.dotString.append("\n");
-		});
-
-		this.dotString.append("}");
+		// parsing class relationship
+		this.extendsRelParser = new GraphizExtendsRelParser(filters);
+		this.implementsRelParser = new GraphVizInterfaceParser();
+		this.hasRelPraser = new GraphVizHasParser(filters);
+		this.dependsOnRelParser = new GraphVizDependsOnParser(filters);
 	}
 
 	@Override
-	public String generate(IGeneratorSystemModel sm, IGeneratorConfiguration config, Iterable<IJob> jobs) {
-		parseSystemModel(sm, config.getFilters());
-		createDotString(config);
-		return this.dotString.toString();
-	}
+	public String generate(ISystemModel sm, Iterable<IJob> jobs) {
+		// DOT parent.
+		Iterable<? extends IClassModel> classes = sm.getClasses();
+		StringBuilder dotString = new StringBuilder();
+		dotString.append("digraph GraphVizGeneratedDOT {\n");
 
+		// TODO: This can be configurable.
+		// Basic Configurations.
+		dotString.append("\tnodesep=").append(config.getNodeSep()).append(";\n");
+		dotString.append("\tnode [shape=record];\n");
+
+		// Basic UML Boxes.
+		dotString.append(classParser.parse(classes));
+
+		// Superclass Relations
+		dotString.append("\tedge [arrowhead=onormal];\n");
+		// Configurable.
+		dotString.append(extendsRelParser.parse(classes));
+
+		// Inheritance Relations.
+		dotString.append("\tedge [arrowhead=onormal, style=dashed];\n");
+		dotString.append(implementsRelParser.parse(classes));
+
+		// Has-A Relations.
+		dotString.append("\tedge [arrowhead=vee];\n");
+		dotString.append(hasRelPraser.parse(classes));
+
+		// Depend-On Relations.
+		dotString.append("\tedge [arrowhead=vee style=dashed];\n");
+		dotString.append(dependsOnRelParser.parse(classes));
+
+		dotString.append("}");
+
+		return dotString.toString();
+	}
 
 }
