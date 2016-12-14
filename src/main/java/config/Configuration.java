@@ -1,103 +1,100 @@
 package config;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import generator.IGeneratorConfiguration;
+import generator.IModifier;
+import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
 
 /**
  * Created by lamd on 12/7/2016.
+ * Edited by fineral on 12/13/2016
  */
-public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration {
+public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration {
 
     private Iterable<String> classes;
-    private String buildPath;
-    private String executionPath;
-    private String outputExtension;
-    private String outputName;
-
+    private String executablePath;
+    private String outputFormat;
+    private String outputDirectory;
+    private String fileName;
+    private double nodesep;
+    private Collection<IModifier> filters;
+    private boolean isRecursive;
+    
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
-        conf.setOutputExtension(".png");
-        conf.setOutputName("out");
+        conf.setOutputFormat(".png");
+        conf.setFileName("out");
+        conf.setNodesep(1);
+        conf.setClasses(new ArrayList<String>());
 
         return conf;
     }
-
+    
     public Iterable<String> getClasses() {
-        if (this.executionPath == null)
-            throw new RuntimeException("Configuration.class: class list is null");
-        return this.classes;
-    }
+		return classes;
+	}
 
-    public void setClasses(Iterable<String> classes) {
-        this.classes = classes;
-    }
+	public void setClasses(Iterable<String> classes) {
+		this.classes = classes;
+	}
 
-    public String getBuildPath() {
-        return this.buildPath;
-    }
+	public String getExecutablePath() {
+		return executablePath;
+	}
 
-    public void setBuildPath(String buildPath) {
-        this.buildPath = buildPath;
-    }
+	public void setExecutablePath(String executablePath) {
+		this.executablePath = executablePath;
+	}
 
-    public String getExecutionPath() {
-        if (this.executionPath == null)
-            throw new RuntimeException("Configuration.class: execution path is null");
-        return this.executionPath;
-    }
+	public String getOutputFormat() {
+		return outputFormat;
+	}
 
-    public void setExecutionPath(String executionPath) {
-        this.executionPath = executionPath;
-    }
+	public void setOutputFormat(String outputExtension) {
+		this.outputFormat = outputExtension;
+	}
 
-    public String getOutputExtension() {
-        if (this.executionPath == null)
-            throw new RuntimeException("Configuration.class: output extension is null");
-        return this.outputExtension;
-    }
+	public String getOutputDirectory() {
+		return outputDirectory;
+	}
 
-    public void setOutputExtension(String outputExtension) {
-        this.outputExtension = outputExtension;
-    }
+	public void setOutputDirectory(String outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
 
-    public String getOutputName() {
-        if (this.executionPath == null)
-            throw new RuntimeException("Configuration.class: output file name is null");
-        return this.outputName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public void setOutputName(String outputName) {
-        this.outputName = outputName;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    @Override
-    public String getFileName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public double getNodeSep() {
+		return nodesep;
+	}
 
-    @Override
-    public String getOutputDirectory() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public void setNodesep(double nodesep) {
+		this.nodesep = nodesep;
+	}
 
-    @Override
-    public String getOutputFormat() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public boolean isRecursive() {
+		return isRecursive;
+	}
 
-    @Override
-    public double getNodeSep() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	public void setRecursive(boolean isRecursive) {
+		this.isRecursive = isRecursive;
+	}
 
-    @Override
-    public String getExecutablePath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+	public Collection<IModifier> getFilters() {
+		return this.filters;
+	}
+	
+	public void setFilters(Collection<IModifier> filters) {
+		this.filters = filters;
+	}
 }
+
+    
