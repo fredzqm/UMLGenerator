@@ -1,5 +1,8 @@
 package generator;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  * An Interface for Generator Configuration.
  * <p>
@@ -14,4 +17,10 @@ public interface IGeneratorConfiguration {
      */
     double getNodeSep();
 
+    /**
+     * Return the set of Method Access Filters.
+     *
+     * @return Set of Method Access Filters.
+     */
+    Collection<IModifier> getFilters();
 }

@@ -11,13 +11,7 @@ import runner.IRunnerConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
@@ -101,7 +95,6 @@ public class GraphVizGeneratorTest {
         String graphVizString = generator.generate(systemModel, config, null);
 
         try {
-            // FIXME: Replace this with the dot.exe path.
             runner.execute(config, graphVizString);
             File file = new File(directory, config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
@@ -118,16 +111,19 @@ public class GraphVizGeneratorTest {
         String executablePath;
         String fileName, outputDirectory, outputFormat;
         double nodeSep;
+        Collection<IModifier> filters;
 
         /**
          * Constructs a basic DummyConfig object.
          */
         DummyConfig() {
+            System.out.println("[ INFO ]: Make sure that the GraphViz bin is in your environment variables.");
             this.outputDirectory = "./output";
             this.fileName = "test";
             this.outputFormat = "png";
             this.nodeSep = 1.0;
             this.executablePath = "dot";
+            this.filters = new HashSet<>();
         }
 
         @Override
@@ -169,6 +165,11 @@ public class GraphVizGeneratorTest {
         @Override
         public double getNodeSep() {
             return this.nodeSep;
+        }
+
+        @Override
+        public Collection<IModifier> getFilters() {
+            return this.filters;
         }
 
         public void setNodeSep(double nodeSep) {

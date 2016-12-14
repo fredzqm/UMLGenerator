@@ -1,7 +1,11 @@
 package config;
 
 import generator.IGeneratorConfiguration;
+import generator.IModifier;
 import runner.IRunnerConfiguration;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by lamd on 12/7/2016.
@@ -92,6 +96,12 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     public double getNodeSep() {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public Collection<IModifier> getFilters() {
+        // TODO
+        return new HashSet<>();
     }
 
     @Override
