@@ -90,7 +90,9 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 			@SuppressWarnings("unchecked")
 			List<String> ls = asmClassNode.interfaces;
 			for (String s : ls) {
-				interfaces.add(getClassByName(s));
+				ClassModel m = getClassByName(s);
+				if (m != null)
+					interfaces.add(m);
 			}
 		}
 		return interfaces;

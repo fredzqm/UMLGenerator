@@ -19,8 +19,10 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 
 	public AbstractASMParser(Iterable<String> importClassesList) {
 		map = new HashMap<>();
-		for (String importantClass : importClassesList) {
-			getClassByName(importantClass, true);
+		if (importClassesList != null) {
+			for (String importantClass : importClassesList) {
+				getClassByName(importantClass, true);
+			}
 		}
 	}
 

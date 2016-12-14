@@ -1,5 +1,3 @@
-package application;
-
 import config.CommandLineParser;
 import config.Configuration;
 

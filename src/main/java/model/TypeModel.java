@@ -83,7 +83,7 @@ public class TypeModel implements ITypeModel {
 		return getName();
 	}
 
-	public enum PrimitiveType {
+	private enum PrimitiveType {
 		INT, DOUBLE, FLOAT, BOOLEAN, BYTE, CHAR, SHORT, LONG, OBJECT, VOID;
 
 		public static PrimitiveType parse(Type type) {
@@ -136,6 +136,7 @@ public class TypeModel implements ITypeModel {
 			case LONG:
 				return "long";
 			case OBJECT:
+				return "Object";
 			default:
 				throw new RuntimeException(" getName(): We missed " + this);
 			}

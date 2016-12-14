@@ -25,7 +25,7 @@ public class ASMParser extends AbstractASMParser {
 	 * create an ASM parser with empty important class list.
 	 */
 	public ASMParser() {
-		this(new ArrayList<>());
+		this(null);
 	}
 
 	@Override
