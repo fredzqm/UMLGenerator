@@ -46,11 +46,11 @@ public class GraphVizGeneratorTest {
         String actual = generator.generate(systemModel, null);
 
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("\tnodesep=1.0;\n"));
-        assertTrue(actual.contains("\tnode [shape=record];\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" [\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {\"java.lang.Object\"};\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {}\n"));
+        assertTrue(actual.contains("nodesep=1.0;"));
+        assertTrue(actual.contains("node [shape=record];"));
+        assertTrue(actual.contains("\"generator.DummyClass\""));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
         assertTrue(actual.contains("edge [arrowhead=onormal]"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
@@ -58,10 +58,10 @@ public class GraphVizGeneratorTest {
         // Count how many relations there are.
         // TODO: When Fred implements Has-A and Depends-On update this test.
         int relationsCount = 0;
-        int index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n");
+        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
         while (index != -1) {
             relationsCount++;
-            index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n", index + 1);
+            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
         }
         assertEquals("Number of Relations not equal", 3, relationsCount);
 
@@ -97,13 +97,15 @@ public class GraphVizGeneratorTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
-
+        
+        System.out.print(actual);
+        
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("\tnodesep=1.0;\n"));
-        assertTrue(actual.contains("\tnode [shape=record];\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" [\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {\"java.lang.Object\"};\n"));
-        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {}\n"));
+        assertTrue(actual.contains("nodesep=1.0;"));
+        assertTrue(actual.contains("node [shape=record];"));
+        assertTrue(actual.contains("\"generator.DummyClass\""));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
         assertTrue(actual.contains("edge [arrowhead=onormal]"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
@@ -111,10 +113,10 @@ public class GraphVizGeneratorTest {
         // Count how many relations there are.
         // TODO: When Fred implements Has-A and Depends-On update this test.
         int relationsCount = 0;
-        int index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n");
+        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
         while (index != -1) {
             relationsCount++;
-            index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n", index + 1);
+            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
         }
         assertEquals("Number of Relations not equal", 3, relationsCount);
 
