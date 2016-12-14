@@ -69,6 +69,13 @@ public interface IClassModel {
     String getSuperClassName();
 
     /**
+     * Returns the Modifier of the Class Model.
+     *
+     * @return
+     */
+    IModifier getModifier();
+
+    /**
      * Type of class
      */
     interface IClassType {

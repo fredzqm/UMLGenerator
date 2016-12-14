@@ -1,6 +1,7 @@
 package generator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,9 +23,9 @@ public class GraphVizGenerator implements IGenerator {
         return this.classes;
     }
 
-    private void parseSystemModel(IGeneratorSystemModel sm) {
+    private void parseSystemModel(IGeneratorSystemModel sm, Collection<IModifier> filters) {
         Iterable<? extends IClassModel> classes = sm.getClasses();
-        classes.forEach((model) -> this.classes.add(new GraphVizClass(model)));
+        classes.forEach((model) -> this.classes.add(new GraphVizClass(model, filters)));
     }
 
     private void createDotString(IGeneratorConfiguration config) {
@@ -80,7 +81,7 @@ public class GraphVizGenerator implements IGenerator {
 
     @Override
     public String generate(IGeneratorSystemModel sm, IGeneratorConfiguration config, Iterable<IJob> jobs) {
-        parseSystemModel(sm);
+        parseSystemModel(sm, config.getFilters());
         createDotString(config);
         return this.dotString.toString();
     }
@@ -99,7 +100,7 @@ public class GraphVizGenerator implements IGenerator {
         private StringBuilder dependsRelationVizDescription;
         private StringBuilder superClassVizDescription;
 
-        private GraphVizClass(IClassModel model) {
+        private GraphVizClass(IClassModel model, Collection<IModifier> filters) {
             this.name = model.getName();
             this.header = new StringBuilder();
             this.fields = new StringBuilder();
@@ -111,7 +112,7 @@ public class GraphVizGenerator implements IGenerator {
             this.classVizDescription = new StringBuilder();
             this.superClassVizDescription = new StringBuilder();
 
-            parseModel(model);
+            parseModel(model, filters);
         }
 
         /**
@@ -254,8 +255,12 @@ public class GraphVizGenerator implements IGenerator {
             this.fields.append("\\l");
         }
 
-        private void generateFields(Iterable<? extends IFieldModel> iterable) {
-            iterable.forEach(this::generateField);
+        private void generateFields(Iterable<? extends IFieldModel> iterable, Collection<IModifier> filters) {
+            iterable.forEach((field) -> {
+                if (!filters.contains(field.getModifier())) {
+                    this.generateField(field);
+                }
+            });
         }
 
         private void generateMethod(IMethodModel method) {
@@ -290,8 +295,12 @@ public class GraphVizGenerator implements IGenerator {
             this.methods.append("\\l ");
         }
 
-        private void generateMethods(Iterable<? extends IMethodModel> iterable) {
-            iterable.forEach(this::generateMethod);
+        private void generateMethods(Iterable<? extends IMethodModel> iterable, Collection<IModifier> filters) {
+            iterable.forEach((method) -> {
+                if (!filters.contains(method.getModifier())) {
+                    this.generateMethod(method);
+                }
+            });
         }
 
         private void generateClassVizDescription() {
@@ -327,12 +336,16 @@ public class GraphVizGenerator implements IGenerator {
             visDescription.append("{");
         }
 
-        private void generateSuperClassVizDescription(String superClass) {
+        private void generateSuperClassVizDescription(IClassModel superClass, Collection<IModifier> filters) {
+            // Ensure the superclass is not null and the filter does not exclude it.
+            // Uses shortcircuiting.
+            if (superClass == null || filters.contains(superClass.getModifier())) {
+                return;
+            }
+
             setupDependencyVizDescription(this.superClassVizDescription);
 
-            if (superClass != null) {
-                this.superClassVizDescription.append("\"").append(superClass).append("\"");
-            }
+            this.superClassVizDescription.append("\"").append(superClass.getName()).append("\"");
             this.superClassVizDescription.append("};\n");
         }
 
@@ -360,42 +373,49 @@ public class GraphVizGenerator implements IGenerator {
             closeDependencyVizDescription(this.interfaceVizDescription, interfaceLengthBefore);
         }
 
-        private void generateHasRelationVizDescription(Iterable<? extends IClassModel> iterable) {
+        private void generateHasRelationVizDescription(Iterable<? extends IClassModel> iterable, Collection<IModifier> filters) {
             setupDependencyVizDescription(this.hasRelationVizDescription);
             int hasALengthBefore = this.hasRelationVizDescription.length();
 
             iterable.forEach((has) -> {
-                this.hasRelationVizDescription.append("\"").append(has.getName()).append("\"");
-                this.hasRelationVizDescription.append(", ");
+                if (!filters.contains(has.getModifier())) {
+                    this.hasRelationVizDescription.append("\"").append(has.getName()).append("\"");
+                    this.hasRelationVizDescription.append(", ");
+                }
             });
 
             closeDependencyVizDescription(this.hasRelationVizDescription, hasALengthBefore);
         }
 
-        private void generateDependsRelationVizDescription(Iterable<? extends IClassModel> iterable) {
+        private void generateDependsRelationVizDescription(Iterable<? extends IClassModel> iterable, Collection<IModifier> filters) {
             setupDependencyVizDescription(this.dependsRelationVizDescription);
             int dependencyLengthBefore = this.dependsRelationVizDescription.length();
 
             iterable.forEach((dependency) -> {
-                this.dependsRelationVizDescription.append("\"").append(dependency.getName()).append("\"");
-                this.dependsRelationVizDescription.append(", ");
+                if (!filters.contains(dependency.getModifier())) {
+                    this.dependsRelationVizDescription.append("\"").append(dependency.getName()).append("\"");
+                    this.dependsRelationVizDescription.append(", ");
+                }
             });
 
             closeDependencyVizDescription(this.dependsRelationVizDescription, dependencyLengthBefore);
         }
 
-        private void parseModel(IClassModel model) {
+        private void parseModel(IClassModel model, Collection<IModifier> filters) {
+            if (filters.contains(model.getModifier())) {
+                return;
+            }
             // Get Class information.
             generateHeader(model.getType(), model.getName());
-            generateFields(model.getFields());
-            generateMethods(model.getMethods());
+            generateFields(model.getFields(), filters);
+            generateMethods(model.getMethods(), filters);
 
             // Setup the VizDescriptions.
             generateClassVizDescription();
-            generateSuperClassVizDescription(model.getSuperClassName());
+            generateSuperClassVizDescription(model.getSuperClass(), filters);
             generateInterfaceVizDescription(model.getInterfaces());
-            generateHasRelationVizDescription(model.getHasRelation());
-            generateDependsRelationVizDescription(model.getDependsRelation());
+            generateHasRelationVizDescription(model.getHasRelation(), filters);
+            generateDependsRelationVizDescription(model.getDependsRelation(), filters);
         }
     }
 

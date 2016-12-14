@@ -16,10 +16,11 @@ public interface IGeneratorConfiguration {
      * @return Node Separation value.
      */
     double getNodeSep();
-    
+
     /**
-     * 
-     * @return returns a list of all modifiers to ignore
+     * Return the set of Method Access Filters.
+     *
+     * @return Set of Method Access Filters.
      */
-    public Collection<IModifier> getFilters();
+    Collection<IModifier> getFilters();
 }
