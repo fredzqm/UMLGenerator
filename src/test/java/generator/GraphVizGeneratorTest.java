@@ -94,8 +94,6 @@ public class GraphVizGeneratorTest {
         config.setOutputFormat("png");
         config.setExecutablePath("C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe");
 
-        
-        System.out.println(config.getExecutablePath());
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(directory.toString());
 
@@ -114,75 +112,4 @@ public class GraphVizGeneratorTest {
             e.printStackTrace();
         }
     }
-
-//    /**
-//     * A Dummy Configuration Object used for testing.
-//     */
-//    private class DummyConfig implements IRunnerConfiguration, IGeneratorConfiguration {
-//        String executablePath;
-//        String fileName, outputDirectory, outputFormat;
-//        double nodeSep;
-//
-//        /**
-//         * Constructs a basic DummyConfig object.
-//         */
-//        DummyConfig() {
-//            this.outputDirectory = "./output";
-//            this.fileName = "test";
-//            this.outputFormat = "png";
-//            this.nodeSep = 1.0;
-//            this.executablePath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
-//        }
-//
-//        @Override
-//        public String getFileName() {
-//            return this.fileName;
-//        }
-//
-//        public void setFileName(String name) {
-//            this.fileName = name;
-//        }
-//
-//        @Override
-//        public String getOutputDirectory() {
-//            return this.outputDirectory;
-//        }
-//
-//        public void setOutputDirectory(String outputDirectory) {
-//            this.outputDirectory = outputDirectory;
-//        }
-//
-//        @Override
-//        public String getOutputFormat() {
-//            return this.outputFormat;
-//        }
-//
-//        public void setOutputFormat(String outputFormat) {
-//            this.outputFormat = outputFormat;
-//        }
-//
-//        @Override
-//        public String getExecutablePath() {
-//            return this.executablePath;
-//        }
-//
-//        public void setExecutablePath(String executablePath) {
-//            this.executablePath = executablePath;
-//        }
-//
-//        @Override
-//        public double getNodeSep() {
-//            return this.nodeSep;
-//        }
-//
-//        public void setNodeSep(double nodeSep) {
-//            this.nodeSep = nodeSep;
-//        }
-//
-//		@Override
-//		public boolean isOnlyPublic() {
-//			// TODO Auto-generated method stub
-//			return false;
-//		}
-//    }
 }

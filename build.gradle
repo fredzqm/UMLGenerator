@@ -83,8 +83,8 @@ test {
     }
 }
 
-//test.finalizedBy(jacocoTestReport)
-//jacocoTestReport.mustRunAfter(test)
+test.finalizedBy(jacocoTestReport)
+jacocoTestReport.mustRunAfter(test)
 
 task codeCoverageInfo (dependsOn: jacocoTestReport) {
     ext.srcFile = file("${reportsDir}/jacoco/test/jacocoTestReport.xml")
@@ -108,12 +108,16 @@ task codeCoverageInfo (dependsOn: jacocoTestReport) {
         }
     }
 }
-//jacocoTestReport.finalizedBy(codeCoverageInfo)
-//codeCoverageInfo.mustRunAfter(jacocoTestReport)
+jacocoTestReport.finalizedBy(codeCoverageInfo)
+codeCoverageInfo.mustRunAfter(jacocoTestReport)
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'Rose-Hulman Reverse Engineered Design Application',
                    'Implementation-Version': '${version}'
     }
+}
+
+task wraper(type: Wrapper) {
+    gradleVersion = "3.2.1"
 }
