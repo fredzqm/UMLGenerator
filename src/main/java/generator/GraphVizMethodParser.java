@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizMethodParser extends AbstractParser<IMethodModel> {
+public class GraphVizMethodParser implements IParser<IMethodModel> {
 	private Collection<IModifier> filters;
 
 	public GraphVizMethodParser(Collection<IModifier> filters) {

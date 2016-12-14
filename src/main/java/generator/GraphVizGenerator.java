@@ -92,25 +92,27 @@ public class GraphVizGenerator implements IGenerator {
 	private class GraphVizClass {
 		private String name;
 		private IClassModel model;
-		private Collection<IModifier> filters;
 		private IGraphVizHeader headerParser;
-		private IGraphVizParser superClass, classs, interfaces, hasRelation, dependsOn;
-		private AbstractParser<IFieldModel> fieldParser;
-		private AbstractParser<IMethodModel> methodParser;
+		private IParser<IFieldModel> fieldParser;
+		private IParser<IMethodModel> methodParser;
+		private IRelationParser extendsRel, implementsRel;
 
+		private IGraphVizParser hasRelation, dependsOn;
+		
 		private GraphVizClass(IClassModel model, Collection<IModifier> filters) {
 			this.name = model.getName();
 			this.model = model;
-			this.filters = filters;
 
 			this.headerParser = new GraphVizHeaderParser(model.getType(), this.name);
 
+			// class properties
 			this.fieldParser = new GraphVizFieldParser(filters);
 			this.methodParser = new GraphVizMethodParser(filters);
 
-			this.superClass = new GraphVizSuperClassParser(model.getSuperClass(), filters, this.name);
-			this.classs = new GraphVizClassParser(this.name, getHeader(), getFields(), getMethods());
-			this.interfaces = new GraphVizInterfaceParser(model.getInterfaces(), this.name);
+			// class relationship
+			this.extendsRel = new GraphizExtendsRelParser(filters);
+			this.implementsRel = new GraphVizInterfaceParser();
+			// TODO: has not refactor yet
 			this.hasRelation = new GraphVizHasParser(model.getHasRelation(), filters, this.name);
 			this.dependsOn = new GraphVizDependsOnParser(model.getDependsRelation(), filters, this.name);
 		}
@@ -169,7 +171,7 @@ public class GraphVizGenerator implements IGenerator {
 		 * @return Interfaces DOT format.
 		 */
 		String getInterfaceVizDescription() {
-			return this.interfaces.getOutput();
+			return this.implementsRel.parse(model, model.getInterfaces());
 		}
 
 		/**
@@ -198,7 +200,7 @@ public class GraphVizGenerator implements IGenerator {
 		 * @return SuperClass in DOT format.
 		 */
 		String getSuperClassVizDescription() {
-			return this.superClass.getOutput();
+			return extendsRel.parse(model, model.getSuperClass());
 		}
 
 		/**
@@ -208,7 +210,32 @@ public class GraphVizGenerator implements IGenerator {
 		 * @return Class in DOT format.
 		 */
 		String getClassVizDescription() {
-			return this.classs.getOutput();
+			// Set Description block.
+			StringBuilder sb = new StringBuilder();
+			sb.append("\t");
+			sb.append("\"").append(this.name).append("\"");
+			sb.append(" [\n");
+			// TODO: This may change with the configuration
+
+			// Set the header.
+			sb.append("\t\tlabel = \"");
+			sb.append("{");
+			sb.append(getHeader());
+			sb.append(" | ");
+
+			// Set the fields.
+			// Check to avoid double lines if there are no fields.
+			if (!getFields().isEmpty()) {
+				sb.append(getFields());
+				sb.append(" | ");
+			}
+
+			// Set the methods.
+			if (!getMethods().isEmpty()) {
+				sb.append(getMethods());
+				sb.append("}\"\n\t];");
+			}
+			return sb.toString();
 		}
 	}
 
