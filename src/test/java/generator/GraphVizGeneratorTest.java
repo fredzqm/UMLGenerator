@@ -127,7 +127,7 @@ public class GraphVizGeneratorTest {
             this.fileName = "test";
             this.outputFormat = "png";
             this.nodeSep = 1.0;
-            this.executablePath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
+            this.executablePath = "dot";
         }
 
         @Override
