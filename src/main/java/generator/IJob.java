@@ -7,22 +7,21 @@ import java.util.List;
  * <p>
  * Created by lamd on 12/7/2016.
  */
-public interface
-IJob {
+public interface IJob {
 
-    /**
-     * @return names
-     */
-    String getName();
+	/**
+	 * @return names
+	 */
+	String getName();
 
-    /**
-     * @return classes
-     */
-    List<String> getClasses();
+	/**
+	 * @return classes
+	 */
+	List<String> getClasses();
 
-    /**
-     * @return format
-     */
-    IFormat getFormat();
+	/**
+	 * @return format
+	 */
+	IFormat getFormat();
 
 }
