@@ -1,30 +1,28 @@
 package generator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
  * <p>
  * Created by lamd on 12/7/2016.
  */
-public class GraphVizGenerator implements IGenerator {
+public class Ggenerator implements IGenerator {
 	private IGeneratorConfiguration config;
 	private IParser<IClassModel> classParser, extendsRelParser, implementsRelParser, hasRelPraser, dependsOnRelParser;
 
-	public GraphVizGenerator(IGeneratorConfiguration config) {
+	public Ggenerator(IGeneratorConfiguration config) {
 		Collection<IModifier> filters = config.getFilters();
 		this.config = config;
 
 		// parsing class
-		this.classParser = new GraphVizClassParser(filters);
+		this.classParser = new GClassParser(filters);
 
 		// parsing class relationship
-		this.extendsRelParser = new GraphizExtendsRelParser(filters);
-		this.implementsRelParser = new GraphVizInterfaceParser();
-		this.hasRelPraser = new GraphVizHasParser(filters);
-		this.dependsOnRelParser = new GraphVizDependsOnParser(filters);
+		this.extendsRelParser = new GSuperClassRelParser(filters);
+		this.implementsRelParser = new GInterfaceParser();
+		this.hasRelPraser = new GHasRelParser(filters);
+		this.dependsOnRelParser = new GDependsOnRelParser(filters);
 	}
 
 	@Override

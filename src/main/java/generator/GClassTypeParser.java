@@ -2,7 +2,7 @@ package generator;
 
 import generator.IClassModel.IClassType;
 
-public class GraphVizClassTypeParser implements IParser<IClassType> {
+public class GClassTypeParser implements IParser<IClassType> {
 
 	@Override
 	public String parse(IClassType clasType) {

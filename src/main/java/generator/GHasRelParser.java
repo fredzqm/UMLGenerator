@@ -1,27 +1,25 @@
 package generator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
- * A GraphVizParser for the model's depends on Relationship.
+ * A GraphVizParser for the model's HasRelations.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependsOnParser implements IParser<IClassModel> {
+public class GHasRelParser implements IParser<IClassModel> {
 	private Collection<IModifier> filters;
 
-	public GraphVizDependsOnParser(Collection<IModifier> filters) {
+	public GHasRelParser(Collection<IModifier> filters) {
 		this.filters = filters;
 	}
 
 	@Override
 	public String parse(IClassModel thisClass) {
-		Iterable<? extends IClassModel> otherClassLs = thisClass.getDependsRelation();
+		Iterable<? extends IClassModel> otherClassLs = thisClass.getHasRelation();
 
 		StringBuilder sb = new StringBuilder();
-		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		GDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		int hasALengthBefore = sb.length();
 		otherClassLs.forEach((has) -> {
 			if (!filters.contains(has.getModifier())) {
@@ -29,7 +27,9 @@ public class GraphVizDependsOnParser implements IParser<IClassModel> {
 				sb.append(", ");
 			}
 		});
-		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+		GDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+
+		sb.append("\n\t");
 		return sb.toString();
 	}
 

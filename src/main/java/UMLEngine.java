@@ -1,7 +1,7 @@
 
 
 import config.Configuration;
-import generator.GraphVizGenerator;
+import generator.Ggenerator;
 import generator.IGenerator;
 import model.SystemModel;
 import runner.GraphVizRunner;
@@ -25,7 +25,7 @@ public class UMLEngine implements Runnable {
 		
 		
 		// generate
-		IGenerator generator = new GraphVizGenerator(config);
+		IGenerator generator = new Ggenerator(config);
 		String graphVisStr = generator.generate(systemModel, null);
 		
 		// run graphiz to generate the image

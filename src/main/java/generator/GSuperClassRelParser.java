@@ -7,10 +7,10 @@ import java.util.Collection;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphizExtendsRelParser implements IParser<IClassModel> {
+public class GSuperClassRelParser implements IParser<IClassModel> {
 	private Collection<IModifier> filters;
 
-	public GraphizExtendsRelParser(Collection<IModifier> filters) {
+	public GSuperClassRelParser(Collection<IModifier> filters) {
 		this.filters = filters;
 	}
 
@@ -22,7 +22,7 @@ public class GraphizExtendsRelParser implements IParser<IClassModel> {
 		}
 		StringBuilder sb = new StringBuilder();
 
-		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		GDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		sb.append("\"").append(superClass.getName()).append("\"");
 		sb.append("};\n");
 		sb.append("\n\t");
