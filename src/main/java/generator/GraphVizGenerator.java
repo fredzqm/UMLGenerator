@@ -94,20 +94,22 @@ public class GraphVizGenerator implements IGenerator {
 		private IClassModel model;
 		private Collection<IModifier> filters;
 		private IGraphVizHeader headerParser;
-		private IGraphVizParser method, superClass, classs, interfaces, hasRelation, dependsOn;
+		private IGraphVizParser superClass, classs, interfaces, hasRelation, dependsOn;
 		private AbstractParser<IFieldModel> fieldParser;
+		private AbstractParser<IMethodModel> methodParser;
 
 		private GraphVizClass(IClassModel model, Collection<IModifier> filters) {
 			this.name = model.getName();
 			this.model = model;
 			this.filters = filters;
-			
+
 			this.headerParser = new GraphVizHeaderParser(model.getType(), this.name);
 
 			this.fieldParser = new GraphVizFieldParser(filters);
-			this.method = new GraphVizMethodParser(model.getMethods(), filters);
+			this.methodParser = new GraphVizMethodParser(filters);
+
 			this.superClass = new GraphVizSuperClassParser(model.getSuperClass(), filters, this.name);
-			this.classs = new GraphVizClassParser(this.name, headerParser.getOutput(), getFields(), method.getOutput());
+			this.classs = new GraphVizClassParser(this.name, getHeader(), getFields(), getMethods());
 			this.interfaces = new GraphVizInterfaceParser(model.getInterfaces(), this.name);
 			this.hasRelation = new GraphVizHasParser(model.getHasRelation(), filters, this.name);
 			this.dependsOn = new GraphVizDependsOnParser(model.getDependsRelation(), filters, this.name);
@@ -158,7 +160,7 @@ public class GraphVizGenerator implements IGenerator {
 		 * @return Methods DOT format.
 		 */
 		public String getMethods() {
-			return this.method.getOutput();
+			return methodParser.parse(model.getMethods());
 		}
 
 		/**
