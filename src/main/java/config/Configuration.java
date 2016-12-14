@@ -1,7 +1,9 @@
 package config;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import generator.IGeneratorConfiguration;
+import generator.IModifier;
 import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
 
@@ -17,9 +19,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private String outputDirectory;
     private String fileName;
     private double nodesep;
-    private boolean noPublic;
-    private boolean noPrivate;
-    private boolean noProtected;
+    private Collection<IModifier> filters;
     private boolean isRecursive;
     
     public static Configuration getInstance() {
@@ -88,28 +88,12 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 		this.isRecursive = isRecursive;
 	}
 
-	public boolean isNoPublic() {
-		return noPublic;
+	public Collection<IModifier> getFilters() {
+		return this.filters;
 	}
-
-	public void setNoPublic(boolean noPublic) {
-		this.noPublic = noPublic;
-	}
-
-	public boolean isNoPrivate() {
-		return noPrivate;
-	}
-
-	public void setNoPrivate(boolean noPrivate) {
-		this.noPrivate = noPrivate;
-	}
-
-	public boolean isNoProtected() {
-		return noProtected;
-	}
-
-	public void setNoProtected(boolean noProtected) {
-		this.noProtected = noProtected;
+	
+	public void setFilters(Collection<IModifier> filters) {
+		this.filters = filters;
 	}
 }
 

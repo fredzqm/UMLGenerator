@@ -6,6 +6,9 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
 
+import generator.IModifier;
+import model.Modifier;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -26,14 +29,12 @@ public class CommandLineParser implements ConfigurationFactory {
         
         jsap = new JSAP();
 
-        FlaggedOption opt1 = new FlaggedOption("class")
+        UnflaggedOption opt1 = new UnflaggedOption("class")
                 .setStringParser(JSAP.STRING_PARSER)
                 .setDefault("java.lang.String")
                 .setRequired(true)
-                .setLongFlag("class")
-                .setShortFlag('c')
-                .setListSeparator(',');
-        opt1.setHelp("desc: the name of the classes you want the UML for\n");
+                .setGreedy(true);
+        opt1.setHelp("desc: space separated list of the name of the classes you want the UML for\n");
         try {
 			jsap.registerParameter(opt1);
 		} catch (Exception e) {
@@ -98,8 +99,11 @@ public class CommandLineParser implements ConfigurationFactory {
         		.setLongFlag("filters")
         		.setRequired(false)
         		.setStringParser(JSAP.STRING_PARSER)
-        		.setListSeparator(',');
-        opt6.setHelp("desc: use this flag if you want to filter out public, private, and/or protected\n");
+        		.setDefault("private");
+        opt6.setHelp("desc: use this flag if you want to filter out\n"
+        		+ "if public, you filter out protected and private\n"
+        		+ "if protected, you filter out private\n"
+        		+ "if blank or private, you filter out nothing\n");
         try {
 			jsap.registerParameter(opt6);
 		} catch (Exception e) {
@@ -168,10 +172,21 @@ public class CommandLineParser implements ConfigurationFactory {
         conf.setFileName(config.getString("outputfile"));
         conf.setNodesep(config.getDouble("nodeseparationvalue"));
         
-        List<String> filters = Arrays.asList(config.getString("filters").split(","));
-        conf.setNoPrivate(filters.contains("private"));
-        conf.setNoPublic(filters.contains("public"));
-        conf.setNoProtected(filters.contains("protected"));
+        List<IModifier> filters = new ArrayList<IModifier>();
+        switch (config.getString("filters")){
+	        case "public":
+	        	filters.add(Modifier.PRIVATE);
+	        	filters.add(Modifier.PROTECTED);
+	        	break;
+	        case "protected":
+	        	filters.add(Modifier.PRIVATE);
+	        	break;
+	        case "private":
+	        	break;
+	        default:
+	        	System.err.println("modifier not found");
+        }
+        conf.setFilters(filters);
         conf.setRecursive(config.getBoolean("recursive"));
 
         return conf;

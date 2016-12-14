@@ -1,5 +1,7 @@
 package generator;
 
+import java.util.Collection;
+
 /**
  * An Interface for Generator Configuration.
  * <p>
@@ -17,19 +19,7 @@ public interface IGeneratorConfiguration {
     
     /**
      * 
-     * @return true if you should ignore public entities
+     * @return returns a list of all modifiers to ignore
      */
-    public boolean isNoPublic();
-
-    /**
-     * 
-     * @return true if you should ignore private entities
-     */
-	public boolean isNoPrivate();
-	
-	/**
-	 * 
-	 * @return true if you should ignore protected entities
-	 */
-	public boolean isNoProtected();
+    public Collection<IModifier> getFilters();
 }
