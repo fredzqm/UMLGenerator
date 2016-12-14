@@ -116,7 +116,7 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setShortFlag('n')
                 .setLongFlag("nodesep")
                 .setDefault("1");
-        opt7.setHelp("desc: the node seperation value\n");
+        opt7.setHelp("desc: the node seperation value which is greater than 0\n");
         try {
 			jsap.registerParameter(opt7);
 		} catch (Exception e) {
@@ -165,7 +165,7 @@ public class CommandLineParser implements ConfigurationFactory {
         }
 
         Configuration conf = Configuration.getInstance();
-        conf.setClasses(Arrays.asList(config.getString("class").split(",")));
+        conf.setClasses(Arrays.asList(config.getStringArray("class")));
         conf.setExecutablePath(config.getString("path"));
         conf.setOutputFormat(config.getString("extension"));
         conf.setOutputDirectory(config.getString("outputDirectory"));
