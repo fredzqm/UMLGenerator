@@ -6,10 +6,10 @@ import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import config.Configuration;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import runner.IRunnerConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +36,9 @@ public class GraphVizGeneratorTest {
     public void graphVizGenerate() throws IOException {
         // Set up the system model and config.
         IGeneratorSystemModel systemModel = setupSystemModel();
-        IGeneratorConfiguration config = new DummyConfig();
+
+        Configuration config = Configuration.getInstance();
+        config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator();
@@ -83,9 +85,13 @@ public class GraphVizGeneratorTest {
         // Set up the system model and config.
         IGeneratorSystemModel systemModel = setupSystemModel();
 
-        DummyConfig config = new DummyConfig();
-        config.addFilter(Modifier.PROTECTED);
-        config.addFilter(Modifier.PRIVATE);
+        // Set up config.
+        Configuration config = Configuration.getInstance();
+        Set<IModifier> filters = new HashSet<>();
+        filters.add(Modifier.PROTECTED);
+        filters.add(Modifier.PRIVATE);
+        config.setFilters(filters);
+        config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator();
@@ -130,10 +136,14 @@ public class GraphVizGeneratorTest {
     public void graphVizWrite() throws IOException {
         // Create a TemporaryFolder that will be deleted after the test runs.
         File directory = this.folder.newFolder("testDirectory");
-
+        
         // Set up a System Model.
         IGeneratorSystemModel systemModel = setupSystemModel();
-        DummyConfig config = new DummyConfig();
+        Configuration config = Configuration.getInstance();
+        config.setFileName("test");
+        config.setOutputDirectory("./output");
+        config.setOutputFormat("png");
+        config.setExecutablePath("dot");
 
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(directory.toString());
@@ -144,89 +154,13 @@ public class GraphVizGeneratorTest {
         String graphVizString = generator.generate(systemModel, config, null);
 
         try {
+            System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             runner.execute(config, graphVizString);
             File file = new File(directory, config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
             fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * A Dummy Configuration Object used for testing.
-     */
-    private class DummyConfig implements IRunnerConfiguration, IGeneratorConfiguration {
-        String executablePath;
-        String fileName, outputDirectory, outputFormat;
-        double nodeSep;
-        Collection<IModifier> filters;
-
-        /**
-         * Constructs a basic DummyConfig object.
-         */
-        DummyConfig() {
-            System.out.println("[ INFO ]: Make sure that the GraphViz bin is in your environment variables.");
-            this.outputDirectory = "./output";
-            this.fileName = "test";
-            this.outputFormat = "png";
-            this.nodeSep = 1.0;
-            this.executablePath = "dot";
-            this.filters = new HashSet<>();
-        }
-
-        @Override
-        public String getFileName() {
-            return this.fileName;
-        }
-
-        public void setFileName(String name) {
-            this.fileName = name;
-        }
-
-        @Override
-        public String getOutputDirectory() {
-            return this.outputDirectory;
-        }
-
-        public void setOutputDirectory(String outputDirectory) {
-            this.outputDirectory = outputDirectory;
-        }
-
-        @Override
-        public String getOutputFormat() {
-            return this.outputFormat;
-        }
-
-        public void setOutputFormat(String outputFormat) {
-            this.outputFormat = outputFormat;
-        }
-
-        @Override
-        public String getExecutablePath() {
-            return this.executablePath;
-        }
-
-        public void setExecutablePath(String executablePath) {
-            this.executablePath = executablePath;
-        }
-
-        @Override
-        public double getNodeSep() {
-            return this.nodeSep;
-        }
-
-        @Override
-        public Collection<IModifier> getFilters() {
-            return this.filters;
-        }
-
-        public void setNodeSep(double nodeSep) {
-            this.nodeSep = nodeSep;
-        }
-
-        public void addFilter(Modifier filter) {
-            this.filters.add(filter);
         }
     }
 }
