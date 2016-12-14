@@ -1,36 +1,41 @@
 package generator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A GraphVizParser for the model's HasRelations.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizHasParser implements IGraphVizParser {
-    private StringBuilder hasRelationVizDescription;
+public class GraphVizHasParser implements IRelationParser {
+	private Collection<IModifier> filters;
 
-    public GraphVizHasParser(Iterable<? extends IClassModel> hasRelations, Collection<IModifier> filters, String className) {
-        this.hasRelationVizDescription = new StringBuilder();
-        generateHasRelationVizDescription(hasRelations, filters, className);
-    }
+	public GraphVizHasParser(Collection<IModifier> filters) {
+		this.filters = filters;
+	}
 
-    @Override
-    public String getOutput() {
-        return this.hasRelationVizDescription.toString();
-    }
+	@Override
+	public String parse(IClassModel thisClass, IClassModel otherClass) {
+		List<IClassModel> ls = new ArrayList<>();
+		ls.add(otherClass);
+		return parse(thisClass, ls);
+	}
 
-    private void generateHasRelationVizDescription(Iterable<? extends IClassModel> hasRelations, Collection<IModifier> filters, String name) {
-        GraphVizDependencyFormatter.setupDependencyVizDescription(this.hasRelationVizDescription, name);
-        int hasALengthBefore = this.hasRelationVizDescription.length();
+	@Override
+	public String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
+		StringBuilder sb = new StringBuilder();
+		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		int hasALengthBefore = sb.length();
+		otherClassLs.forEach((has) -> {
+			if (!filters.contains(has.getModifier())) {
+				sb.append("\"").append(has.getName()).append("\"");
+				sb.append(", ");
+			}
+		});
+		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+		return sb.toString();
+	}
 
-        hasRelations.forEach((has) -> {
-            if (!filters.contains(has.getModifier())) {
-                this.hasRelationVizDescription.append("\"").append(has.getName()).append("\"");
-                this.hasRelationVizDescription.append(", ");
-            }
-        });
-
-        GraphVizDependencyFormatter.closeDependencyVizDescription(this.hasRelationVizDescription, hasALengthBefore);
-    }
 }

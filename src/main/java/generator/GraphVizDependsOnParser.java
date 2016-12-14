@@ -1,36 +1,41 @@
 package generator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A GraphVizParser for the model's depends on Relationship.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependsOnParser implements IGraphVizParser {
-    private StringBuilder dependsOnVizDescription;
+public class GraphVizDependsOnParser implements IRelationParser {
+	private Collection<IModifier> filters;
 
-    public GraphVizDependsOnParser(Iterable<? extends IClassModel> dependencies, Collection<IModifier> filters, String className) {
-        this.dependsOnVizDescription = new StringBuilder();
-        generateDependsRelationVizDescription(dependencies, filters, className);
-    }
+	public GraphVizDependsOnParser(Collection<IModifier> filters) {
+		this.filters = filters;
+	}
 
-    public String getOutput() {
-        return this.dependsOnVizDescription.toString();
-    }
+	@Override
+	public String parse(IClassModel thisClass, IClassModel otherClass) {
+		List<IClassModel> ls = new ArrayList<>();
+		ls.add(otherClass);
+		return parse(thisClass, ls);
+	}
 
-    private void generateDependsRelationVizDescription(Iterable<? extends IClassModel> dependencies, Collection<IModifier> filters, String className) {
-        GraphVizDependencyFormatter.setupDependencyVizDescription(this.dependsOnVizDescription, className);
+	@Override
+	public String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
+		StringBuilder sb = new StringBuilder();
+		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		int hasALengthBefore = sb.length();
+		otherClassLs.forEach((has) -> {
+			if (!filters.contains(has.getModifier())) {
+				sb.append("\"").append(has.getName()).append("\"");
+				sb.append(", ");
+			}
+		});
+		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+		return sb.toString();
+	}
 
-        int dependencyLengthBefore = this.dependsOnVizDescription.length();
-
-        dependencies.forEach((dependency) -> {
-            if (!filters.contains(dependency.getModifier())) {
-                this.dependsOnVizDescription.append("\"").append(dependency.getName()).append("\"");
-                this.dependsOnVizDescription.append(", ");
-            }
-        });
-
-        GraphVizDependencyFormatter.closeDependencyVizDescription(this.dependsOnVizDescription, dependencyLengthBefore);
-    }
 }
