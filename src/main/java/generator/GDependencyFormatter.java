@@ -7,7 +7,7 @@ package generator;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependencyFormatter {
+public class GDependencyFormatter {
     public static void setupDependencyVizDescription(StringBuilder visDescription, String name) {
         final String VIZ_ARROW = " -> ";
 
