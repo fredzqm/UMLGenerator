@@ -1,6 +1,8 @@
 package generator;
 
+import config.Configuration;
 import model.ASMParser;
+import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -76,6 +78,54 @@ public class GraphVizGeneratorTest {
         // Test if it has the Methods viewable in the class file.
         expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
     }
+
+    @Test
+    public void graphVizGeneratorFilter() {
+        // Set up the system model and config.
+        IGeneratorSystemModel systemModel = setupSystemModel();
+
+        DummyConfig config = new DummyConfig();
+        config.addFilter(Modifier.PROTECTED);
+        config.addFilter(Modifier.PRIVATE);
+
+        // Create GraphVizGenerator.
+        IGenerator generator = new GraphVizGenerator();
+
+        String actual = generator.generate(systemModel, config, null);
+
+        // Test if it has the basic DOT file styling.
+        assertTrue(actual.contains("\tnodesep=1.0;\n"));
+        assertTrue(actual.contains("\tnode [shape=record];\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" [\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {\"java.lang.Object\"};\n"));
+        assertTrue(actual.contains("\t\"generator.DummyClass\" -> {}\n"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal]"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
+
+        // Count how many relations there are.
+        // TODO: When Fred implements Has-A and Depends-On update this test.
+        int relationsCount = 0;
+        int index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n");
+        while (index != -1) {
+            relationsCount++;
+            index = actual.indexOf("\t\"generator.DummyClass\" -> {}\n", index + 1);
+        }
+        assertEquals("Number of Relations not equal", 3, relationsCount);
+
+        String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
+        String[] expectedMethods = {"getPublicInt() : int",
+                "+ getPublicString() : java.lang.String"};
+
+        Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
+        Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
+
+        // Test if it has the Fields viewable in the class file.
+        expectedFieldStream.forEach((field) -> assertTrue(actual.contains(field)));
+
+        // Test if it has the Methods viewable in the class file.
+        expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
+        }
 
     @Test
     public void graphVizWrite() throws IOException {
@@ -174,6 +224,10 @@ public class GraphVizGeneratorTest {
 
         public void setNodeSep(double nodeSep) {
             this.nodeSep = nodeSep;
+        }
+
+        public void addFilter(Modifier filter) {
+            this.filters.add(filter);
         }
     }
 }
