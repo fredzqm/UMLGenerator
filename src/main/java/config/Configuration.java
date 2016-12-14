@@ -29,75 +29,75 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setOutputFormat("png");
         conf.setFileName("out");
         conf.setNodesep(1);
-        conf.setClasses(new ArrayList<String>());
+        conf.setClasses(new ArrayList<>());
         conf.setFilters(new HashSet<>());
 
         return conf;
     }
-
+    
     public Iterable<String> getClasses() {
-        return classes;
-    }
+		return classes;
+	}
 
-    public void setClasses(Iterable<String> classes) {
-        this.classes = classes;
-    }
+	public void setClasses(Iterable<String> classes) {
+		this.classes = classes;
+	}
 
-    public String getExecutablePath() {
-        return executablePath;
-    }
+	public String getExecutablePath() {
+		return executablePath;
+	}
 
-    public void setExecutablePath(String executablePath) {
-        this.executablePath = executablePath;
-    }
+	public void setExecutablePath(String executablePath) {
+		this.executablePath = executablePath;
+	}
 
-    public String getOutputFormat() {
-        return outputFormat;
-    }
+	public String getOutputFormat() {
+		return outputFormat;
+	}
 
-    public void setOutputFormat(String outputExtension) {
-        this.outputFormat = outputExtension;
-    }
+	public void setOutputFormat(String outputExtension) {
+		this.outputFormat = outputExtension;
+	}
 
-    public String getOutputDirectory() {
-        return outputDirectory;
-    }
+	public String getOutputDirectory() {
+		return outputDirectory;
+	}
 
-    public void setOutputDirectory(String outputDirectory) {
-        this.outputDirectory = outputDirectory;
-    }
+	public void setOutputDirectory(String outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
 
-    public String getFileName() {
-        return fileName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    public double getNodeSep() {
-        return nodesep;
-    }
+	public double getNodeSep() {
+		return nodesep;
+	}
 
-    public void setNodesep(double nodesep) {
-        this.nodesep = nodesep;
-    }
+	public void setNodesep(double nodesep) {
+		this.nodesep = nodesep;
+	}
 
-    public boolean isRecursive() {
-        return isRecursive;
-    }
+	public boolean isRecursive() {
+		return isRecursive;
+	}
 
-    public void setRecursive(boolean isRecursive) {
-        this.isRecursive = isRecursive;
-    }
+	public void setRecursive(boolean isRecursive) {
+		this.isRecursive = isRecursive;
+	}
 
-    public Collection<IModifier> getFilters() {
-        return this.filters;
-    }
-
-    public void setFilters(Collection<IModifier> filters) {
-        this.filters = filters;
-    }
+	public Collection<IModifier> getFilters() {
+		return this.filters;
+	}
+	
+	public void setFilters(Collection<IModifier> filters) {
+		this.filters = filters;
+	}
 }
 
     

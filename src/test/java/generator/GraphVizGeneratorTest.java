@@ -1,15 +1,15 @@
 package generator;
 
+import config.Configuration;
 import model.ASMParser;
 import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
-import config.Configuration;
 import runner.GraphVizRunner;
 import runner.IRunner;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -130,13 +130,13 @@ public class GraphVizGeneratorTest {
 
         // Test if it has the Methods viewable in the class file.
         expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
-        }
+    }
 
     @Test
     public void graphVizWrite() throws IOException {
         // Create a TemporaryFolder that will be deleted after the test runs.
         File directory = this.folder.newFolder("testDirectory");
-        
+
         // Set up a System Model.
         IGeneratorSystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();

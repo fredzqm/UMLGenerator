@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * The method model.
+ * Representing method in java program
  *
  * @author zhang
  */
@@ -93,6 +93,11 @@ public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 
     public TypeModel getReturnType() {
         return signature.getReturnType();
+    }
+    
+    @Override
+    public String toString() {
+    	return getSignature().toString();
     }
 
     @Override

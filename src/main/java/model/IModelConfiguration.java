@@ -2,8 +2,15 @@ package model;
 
 public interface IModelConfiguration {
 
-    Iterable<String> getClasses();
+	/**
+	 * return the name of classes that the model needs to analyzer
+	 */
+	Iterable<String> getClasses();
 
-    boolean isRecursive();
+	/**
+	 * 
+	 * @return true if the Model should recursively explore related classes
+	 */
+	boolean isRecursive();
 
 }
