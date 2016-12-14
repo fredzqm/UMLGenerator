@@ -5,28 +5,29 @@ package generator;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizInterfaceParser implements IGraphVizParser {
-    private StringBuilder interfaceVizDescription;
+public class GraphVizInterfaceParser implements IRelationParser {
 
-    public GraphVizInterfaceParser(Iterable<? extends IClassModel> interfaces, String className) {
-        this.interfaceVizDescription = new StringBuilder();
-        generateInterfaceVizDescription(interfaces, className);
-    }
+	@Override
+	public String parse(IClassModel thisClass, IClassModel otherClass) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\"").append(otherClass.getName()).append("\"");
+		sb.append(", ");
+		return sb.toString();
+	}
 
-    public String getOutput() {
-        return this.interfaceVizDescription.toString();
-    }
+	@Override
+	public String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
+		StringBuilder sb = new StringBuilder();
+		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		int interfaceLengthBefore = sb.length();
 
-    private void generateInterfaceVizDescription(Iterable<? extends IClassModel> interfaces, String className) {
-        GraphVizDependencyFormatter.setupDependencyVizDescription(this.interfaceVizDescription, className);
-        int interfaceLengthBefore = this.interfaceVizDescription.length();
+		otherClassLs.forEach((interfaceModel) -> {
+			sb.append(parse(thisClass, interfaceModel));
+		});
 
-        interfaces.forEach((interfaceModel) -> {
-            this.interfaceVizDescription.append("\"").append(interfaceModel.getName()).append("\"");
-            this.interfaceVizDescription.append(", ");
-        });
+		// If it is empty close the braces without replacing characters.
+		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
+		return sb.toString();
+	}
 
-        // If it is empty close the braces without replacing characters.
-        GraphVizDependencyFormatter.closeDependencyVizDescription(this.interfaceVizDescription, interfaceLengthBefore);
-    }
 }
