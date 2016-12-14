@@ -7,29 +7,24 @@ import java.util.Collection;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizFieldParser implements IGraphVizParser {
-    private StringBuilder classFields;
+public class GraphVizFieldParser extends AbstractParser<IFieldModel> {
+	private Collection<IModifier> filters;
 
-    public GraphVizFieldParser(Iterable<? extends IFieldModel> fields, Collection<IModifier> filters) {
-        this.classFields = new StringBuilder();
-        generateFields(fields, filters);
-    }
+	public GraphVizFieldParser(Collection<IModifier> filters) {
+		this.filters = filters;
+	}
 
-    @Override
-    public String getOutput() {
-        return this.classFields.toString();
-    }
-
-    private void generateFields(Iterable<? extends IFieldModel> fields, Collection<IModifier> filters) {
-        fields.forEach((field) -> {
-            if (!filters.contains(field.getModifier())) {
-                this.classFields.append(field.getModifier().getModifierSymbol());
-                this.classFields.append(" ");
-                this.classFields.append(field.getName());
-                this.classFields.append(" : ");
-                this.classFields.append(field.getType().getName());
-                this.classFields.append("\\l");
-            }
-        });
-    }
+	@Override
+	public String parse(IFieldModel field) {
+		StringBuilder classFields = new StringBuilder();
+		if (!filters.contains(field.getModifier())) {
+			classFields.append(field.getModifier().getModifierSymbol());
+			classFields.append(" ");
+			classFields.append(field.getName());
+			classFields.append(" : ");
+			classFields.append(field.getType().getName());
+			classFields.append("\\l");
+		}
+		return classFields.toString();
+	}
 }
