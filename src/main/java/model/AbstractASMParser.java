@@ -43,4 +43,8 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 		return map.containsKey(className);
 	}
 
+	@Override
+	public String toString() {
+		return map.toString();
+	}
 }

@@ -21,6 +21,9 @@ public class ASMParser extends AbstractASMParser {
 		super(importClassesList);
 	}
 
+	/**
+	 * create an ASM parser with empty important class list.
+	 */
 	public ASMParser() {
 		this(new ArrayList<>());
 	}

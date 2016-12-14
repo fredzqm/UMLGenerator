@@ -1,14 +1,14 @@
 package model;
 
 import analyzer.IAnalyzerSystemModel;
-import config.Configuration;
 import generator.IGeneratorSystemModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: Fred and all public methods.
+ * This class representing the entire model of a java program
+ * 
  */
 public class SystemModel implements IGeneratorSystemModel, IAnalyzerSystemModel {
 	private ASMServiceProvider asmServiceProvider;
