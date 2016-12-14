@@ -12,10 +12,7 @@ public class GraphVizClass implements IParser<IClassModel> {
 	private IParser<IClassModel.IClassType> classTypeParser;
 	private IParser<IFieldModel> fieldParser;
 	private IParser<IMethodModel> methodParser;
-	private IRelationParser extendsRel, implementsRel;
-
-	// TODO:
-	private IGraphVizParser hasRelation, dependsOn;
+	private IRelationParser extendsRel, implementsRel, hasRel, dependsOnRel;
 
 	GraphVizClass(IClassModel model, Collection<IModifier> filters) {
 		this.name = model.getName();
@@ -32,13 +29,17 @@ public class GraphVizClass implements IParser<IClassModel> {
 		this.extendsRel = new GraphizExtendsRelParser(filters);
 		this.implementsRel = new GraphVizInterfaceParser();
 		// TODO: has not refactor yet
-		this.hasRelation = new GraphVizHasParser(model.getHasRelation(), filters, this.name);
-		this.dependsOn = new GraphVizDependsOnParser(model.getDependsRelation(), filters, this.name);
+		// this.hasRelation = new GraphVizHasParser(model.getHasRelation(),
+		// filters, this.name);
+		this.hasRel = new GraphVizHasParser(filters);
+		// this.dependsOnRel = new
+		// GraphVizDependsOnParser(model.getDependsRelation(), filters,
+		// this.name);
+		this.dependsOnRel = new GraphVizDependsOnParser(filters);
 	}
 
 	@Override
 	public String parse(IClassModel data) {
-
 		return null;
 	}
 
@@ -85,7 +86,7 @@ public class GraphVizClass implements IParser<IClassModel> {
 	 * @return Has-A relationship DOT format.
 	 */
 	String getHasRelationVizDescription() {
-		return this.hasRelation.getOutput();
+		return hasRel.parse(model, model.getHasRelation());
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class GraphVizClass implements IParser<IClassModel> {
 	 * @return Depends-On relationship DOT format.
 	 */
 	String getDependsRelationVizDescription() {
-		return this.dependsOn.getOutput();
+		return dependsOnRel.parse(model, model.getDependsRelation());
 	}
 
 	/**
