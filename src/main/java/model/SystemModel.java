@@ -1,7 +1,7 @@
 package model;
 
 import analyzer.IAnalyzerSystemModel;
-import generator.IGeneratorSystemModel;
+import generator.ISystemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * This class representing the entire model of a java program
  * 
  */
-public class SystemModel implements IGeneratorSystemModel, IAnalyzerSystemModel {
+public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
 	private ASMServiceProvider asmServiceProvider;
 	private List<ClassModel> importantClasses;
 

@@ -26,7 +26,7 @@ public class GraphVizGeneratorTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private IGeneratorSystemModel setupSystemModel() {
+    private ISystemModel setupSystemModel() {
         List<String> classList = new ArrayList<>();
         classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
         return new SystemModel(classList, new ASMParser());
@@ -35,15 +35,15 @@ public class GraphVizGeneratorTest {
     @Test
     public void graphVizGenerate() throws IOException {
         // Set up the system model and config.
-        IGeneratorSystemModel systemModel = setupSystemModel();
+        ISystemModel systemModel = setupSystemModel();
 
         Configuration config = Configuration.getInstance();
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator();
+        IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel, config, null);
+        String actual = generator.generate(systemModel, null);
 
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("\tnodesep=1.0;\n"));
@@ -83,7 +83,7 @@ public class GraphVizGeneratorTest {
     @Test
     public void graphVizGeneratorFilter() {
         // Set up the system model and config.
-        IGeneratorSystemModel systemModel = setupSystemModel();
+        ISystemModel systemModel = setupSystemModel();
 
         // Set up config.
         Configuration config = Configuration.getInstance();
@@ -94,9 +94,9 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator();
+        IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel, config, null);
+        String actual = generator.generate(systemModel, null);
 
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("\tnodesep=1.0;\n"));
@@ -138,7 +138,7 @@ public class GraphVizGeneratorTest {
         File directory = this.folder.newFolder("testDirectory");
 
         // Set up a System Model.
-        IGeneratorSystemModel systemModel = setupSystemModel();
+        ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
         config.setFileName("test");
         config.setOutputDirectory("./output");
@@ -150,8 +150,8 @@ public class GraphVizGeneratorTest {
 
         // Create the runner
         IRunner runner = new GraphVizRunner();
-        IGenerator generator = new GraphVizGenerator();
-        String graphVizString = generator.generate(systemModel, config, null);
+        IGenerator generator = new GraphVizGenerator(config);
+        String graphVizString = generator.generate(systemModel, null);
 
         try {
             System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");

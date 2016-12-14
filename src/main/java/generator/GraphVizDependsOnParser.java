@@ -9,7 +9,7 @@ import java.util.List;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependsOnParser implements IRelationParser {
+public class GraphVizDependsOnParser implements IParser<IClassModel> {
 	private Collection<IModifier> filters;
 
 	public GraphVizDependsOnParser(Collection<IModifier> filters) {
@@ -17,14 +17,9 @@ public class GraphVizDependsOnParser implements IRelationParser {
 	}
 
 	@Override
-	public String parse(IClassModel thisClass, IClassModel otherClass) {
-		List<IClassModel> ls = new ArrayList<>();
-		ls.add(otherClass);
-		return parse(thisClass, ls);
-	}
+	public String parse(IClassModel thisClass) {
+		Iterable<? extends IClassModel> otherClassLs = thisClass.getDependsRelation();
 
-	@Override
-	public String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
 		StringBuilder sb = new StringBuilder();
 		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		int hasALengthBefore = sb.length();

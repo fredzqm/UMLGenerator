@@ -5,28 +5,23 @@ package generator;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizInterfaceParser implements IRelationParser {
+public class GraphVizInterfaceParser implements IParser<IClassModel> {
 
 	@Override
-	public String parse(IClassModel thisClass, IClassModel otherClass) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("\"").append(otherClass.getName()).append("\"");
-		sb.append(", ");
-		return sb.toString();
-	}
+	public String parse(IClassModel thisClass) {
+		Iterable<? extends IClassModel> otherClassLs = thisClass.getInterfaces();
 
-	@Override
-	public String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
 		StringBuilder sb = new StringBuilder();
 		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		int interfaceLengthBefore = sb.length();
 
 		otherClassLs.forEach((interfaceModel) -> {
-			sb.append(parse(thisClass, interfaceModel));
+			sb.append("\"").append(interfaceModel.getName()).append("\"");
+			sb.append(", ");
 		});
-
 		// If it is empty close the braces without replacing characters.
 		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
+		sb.append("\n\t");
 		return sb.toString();
 	}
 
