@@ -30,9 +30,9 @@ public class SystemModel implements IGeneratorSystemModel, IAnalyzerSystemModel 
 	public static SystemModel getInstance(IModelConfiguration config) {
 		ASMServiceProvider asmParser;
 		if (config.isRecursive())
-			asmParser = ASMParser.getInstance(config.getClasses());
+			asmParser = new ASMParser(config.getClasses());
 		else
-			asmParser = NonRecursiveASMParser.getInstance(config.getClasses());
+			asmParser = new NonRecursiveASMParser(config.getClasses());
 
 		return new SystemModel(config.getClasses(), asmParser);
 	}

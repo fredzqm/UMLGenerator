@@ -1,19 +1,21 @@
 package model;
 
-public class NonRecursiveASMParser implements ASMServiceProvider {
+public class NonRecursiveASMParser extends AbstractASMParser {
 
-	public NonRecursiveASMParser(Iterable<String> classes) {
-		// TODO Auto-generated constructor stub
+	/**
+	 * 
+	 * @param importClassesList
+	 *            important classes for this parser
+	 * @return ASMParser instance that already parsed the important classes.
+	 */
+	public NonRecursiveASMParser(Iterable<String> importClassesList) {
+		super(importClassesList);
 	}
 
 	@Override
 	public ClassModel getClassByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static ASMServiceProvider getInstance(Iterable<String> classes) {
-		// TODO Auto-generated method stub
+		if (hasAlreadyParse(name))
+			return getClassByName(name, false);
 		return null;
 	}
 
