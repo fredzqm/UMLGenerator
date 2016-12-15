@@ -3,9 +3,6 @@ package model;
 import analyzer.IAnalyzerSystemModel;
 import generator.ISystemModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class representing the entire model of a java program
  * 

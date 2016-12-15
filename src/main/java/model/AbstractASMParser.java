@@ -6,10 +6,7 @@ import org.objectweb.asm.tree.ClassNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.management.modelmbean.ModelMBeanOperationInfo;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -52,6 +49,6 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 	}
 
 	public Iterable<ClassModel> getImportantClasses() {
-		return new ArrayList(map.values());
+		return new ArrayList<ClassModel>(map.values());
 	}
 }
