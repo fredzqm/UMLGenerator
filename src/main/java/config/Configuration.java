@@ -23,6 +23,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private double nodesep;
     private Collection<IModifier> filters;
     private boolean isRecursive;
+    private String rankDir;
 
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
@@ -97,6 +98,14 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 	
 	public void setFilters(Collection<IModifier> filters) {
 		this.filters = filters;
+	}
+
+	public String getRankDir() {
+		return rankDir;
+	}
+
+	public void setRankDir(String rankDir) {
+		this.rankDir = rankDir;
 	}
 }
 
