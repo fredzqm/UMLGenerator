@@ -108,6 +108,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 		this.rankDir = rankDir;
 	}
 	
+	@Override
 	public String toString() {
 		return    "Classes:                   " + classes + "\n"
 				+ "Executable Path:           " + executablePath + "\n"

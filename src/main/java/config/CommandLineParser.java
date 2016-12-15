@@ -14,7 +14,7 @@ import java.util.List;
  * Edited by fineral on 12/13/2016
  * 
  * Usage: java config.CommandLineParser
-                class1 class2 ... classN [(-e|--executable) <path>] (-d|--directory) <outputDirectory> (-o|--outputfile) <outputfile> (-x|--extension) <extension> [(-f|--filters) <filters>] (-n|--nodesep) <nodeseparationvalue> [-r|--recursive] [-k|--direction]
+                class1 class2 ... classN [(-e|--executable) <path>] (-d|--directory) <outputDirectory> (-o|--outputfile) <outputfile> [(-x|--extension) <extension>] [(-f|--filters) <filters>] [(-n|--nodesep) <nodeseparationvalue>] [-r|--recursive] [-k|--direction]
 
   class1 class2 ... classN
         desc: space separated list of the name of the classes you want the UML
@@ -23,17 +23,17 @@ import java.util.List;
 
   [(-e|--executable) <path>]
         desc: the name of the executable path for graphviz on your machine
-        (default: )
+        (default: dot)
 
   (-d|--directory) <outputDirectory>
         desc: the name of the directory which you want output to go to
-        (default: dot)
+        (default: output)
 
   (-o|--outputfile) <outputfile>
         desc: the name of the output file
         (default: output)
 
-  (-x|--extension) <extension>
+  [(-x|--extension) <extension>]
         desc: the name extension of the output file without the dot
         (default: png)
 
@@ -44,7 +44,7 @@ import java.util.List;
         if blank or private, you filter out nothing
         (default: private)
 
-  (-n|--nodesep) <nodeseparationvalue>
+  [(-n|--nodesep) <nodeseparationvalue>]
         desc: the node seperation value which is greater than 0
         (default: 1)
 
@@ -74,7 +74,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         FlaggedOption opt2 = new FlaggedOption("path")
                 .setStringParser(JSAP.STRING_PARSER)
-                .setDefault("")
+                .setDefault("dot")
                 .setRequired(false)
                 .setShortFlag('e')
                 .setLongFlag("executable");
@@ -83,7 +83,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         FlaggedOption opt3 = new FlaggedOption("outputDirectory")
                 .setStringParser(JSAP.STRING_PARSER)
-                .setDefault("dot")
+                .setDefault("output")
                 .setRequired(true)
                 .setShortFlag('d')
                 .setLongFlag("directory");
@@ -102,7 +102,7 @@ public class CommandLineParser implements ConfigurationFactory {
         FlaggedOption opt5 = new FlaggedOption("extension")
                 .setStringParser(JSAP.STRING_PARSER)
                 .setDefault("png")
-                .setRequired(true)
+                .setRequired(false)
                 .setShortFlag('x')
                 .setLongFlag("extension");
         opt5.setHelp("desc: the name extension of the output file without the dot\n");
@@ -122,7 +122,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         FlaggedOption opt7 = new FlaggedOption("nodeseparationvalue")
                 .setStringParser(JSAP.DOUBLE_PARSER)
-                .setRequired(true)
+                .setRequired(false)
                 .setShortFlag('n')
                 .setLongFlag("nodesep")
                 .setDefault("1");
@@ -142,6 +142,11 @@ public class CommandLineParser implements ConfigurationFactory {
         addOption(opt9);
     }
 
+    /**
+     * 
+     * This method creates a new configuration based on the arguments passed into the constructor
+     * 
+     */
     @Override
     public Configuration create() {
 
@@ -205,6 +210,11 @@ public class CommandLineParser implements ConfigurationFactory {
         return conf;
     }
     
+    /**
+     * Adds the specified option to the commanLineParser
+     * 
+     * @param opt- option to add to the commandLineParser
+     */
     public void addOption(Parameter opt) {
     	try {
 			jsap.registerParameter(opt);
