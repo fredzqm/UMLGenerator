@@ -98,7 +98,7 @@ public class GraphVizGeneratorTest {
 
         String actual = generator.generate(systemModel, null);
 
-        internalRunner(systemModel, config, "testFilter");
+        internalRunner(systemModel, config, "testFilter"); 
 
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
@@ -143,11 +143,19 @@ public class GraphVizGeneratorTest {
         internalRunner(systemModel, config, "test");
     }
 
+    /**
+     * An internal runner method that will execute and output to the ./output directory for testing purposes.
+     *
+     * @param systemModel
+     * @param config
+     * @param testName
+     */
     private void internalRunner(ISystemModel systemModel, Configuration config, String testName) {
         try {
             // Create a TemporaryFolder that will be deleted after the test runs.
             File directory = this.folder.newFolder("testDirectory");
 
+            // Comment out "./output" for CI.
             config.setOutputDirectory(directory.toString()); // For CI.
             config.setOutputDirectory("./output"); // For local testing.
             config.setFileName(testName);
