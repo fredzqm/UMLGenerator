@@ -19,7 +19,13 @@ public class GraphVizMethodParser implements IParser<IMethodModel> {
         StringBuilder classMethod = new StringBuilder();
         if (!filters.contains(method.getModifier())) {
             // Add the modifier.
-            classMethod.append(method.getModifier().getModifierSymbol());
+            String modifierSymbol = method.getModifier().getModifierSymbol();
+            // We need to escape the space for default methods.
+            if (modifierSymbol.equals(" ")) {
+                classMethod.append(" \\").append(modifierSymbol);
+            } else {
+                classMethod.append(modifierSymbol);
+            }
             classMethod.append(" ");
 
             // Add the name.
@@ -43,9 +49,7 @@ public class GraphVizMethodParser implements IParser<IMethodModel> {
             }
 
             // Add the return type.
-            classMethod.append(" : ");
-            classMethod.append(method.getReturnType().getName());
-            classMethod.append("\\l ");
+            classMethod.append(String.format(" : %s \\l", method.getReturnType().getName()));
         }
 
         return classMethod.toString();
