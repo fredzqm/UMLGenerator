@@ -2,6 +2,7 @@ package generator;
 
 import config.Configuration;
 import model.ASMParser;
+import model.IModelConfiguration;
 import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
@@ -27,9 +28,11 @@ public class GraphVizGeneratorTest {
 	public TemporaryFolder folder = new TemporaryFolder();
 
 	private ISystemModel setupSystemModel() {
+		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
 		classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
-		return new SystemModel(classList, new ASMParser());
+		config.setClasses(classList);
+		return SystemModel.getInstance(config);
 	}
 
 	@Test

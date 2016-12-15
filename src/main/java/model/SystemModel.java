@@ -11,24 +11,19 @@ import java.util.List;
  * 
  */
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
-	private ASMServiceProvider asmServiceProvider;
-	private List<ClassModel> importantClasses;
+	private AbstractASMParser asmServiceProvider;
 
-	public SystemModel(Iterable<String> classList, ASMServiceProvider asmParser) {
+	public SystemModel(Iterable<String> classList, AbstractASMParser asmParser) {
 		asmServiceProvider = asmParser;
-		importantClasses = new ArrayList<>();
-		for (String className : classList) {
-			importantClasses.add(asmServiceProvider.getClassByName(className));
-		}
 	}
 
 	@Override
-	public List<ClassModel> getClasses() {
-		return importantClasses;
+	public Iterable<ClassModel> getClasses() {
+		return asmServiceProvider.getImportantClasses();
 	}
 
 	public static SystemModel getInstance(IModelConfiguration config) {
-		ASMServiceProvider asmParser;
+		AbstractASMParser asmParser;
 		if (config.isRecursive())
 			asmParser = new ASMParser(config.getClasses());
 		else

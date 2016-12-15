@@ -24,7 +24,7 @@ public class NonRecursiveASMParser extends AbstractASMParser {
 	@Override
 	public ClassModel getClassByName(String name) {
 		if (importantLs.contains(name))
-			return getClassByName(name, false);
+			return parseClass(name);
 		return null;
 	}
 
