@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
@@ -14,22 +15,34 @@ public class NonRecursiveASMParserTest {
 
 	@Test
 	public void asmParserString() {
-		ASMServiceProvider parser = new NonRecursiveASMParser(Arrays.asList("java/lang/String"));
-		ClassModel model = parser.getClassByName("java/lang/String");
-		assertEquals("java.lang.String", model.getName());
-		assertNull(parser.getClassByName("java.lang.Object"));
+		ASMClassTracker parser = new ASMParser();
+		parser.addClasses(Arrays.asList("java/lang/String"));
+		
+		Iterator<ClassModel> itr = parser.getClasses().iterator();
+		assertTrue(itr.hasNext());
+		itr.next();
+		assertFalse(itr.hasNext());
 	}
 
 	@Test
 	public void asmParserStringInterface() {
-		ASMServiceProvider parser = new NonRecursiveASMParser(
-				Arrays.asList("java.lang.String", "java/io/Serializable", "java/lang/Comparable"));
+		ASMClassTracker parser = ASMParser.getInstance(new IModelConfiguration() {
+			@Override
+			public boolean isRecursive() {
+				return false;
+			}
+			
+			@Override
+			public Iterable<String> getClasses() {
+				return Arrays.asList("java.lang.String", "java/io/Serializable", "java/lang/Comparable");
+			}
+		});
 		ClassModel model = parser.getClassByName("java/lang/String");
 		assertEquals("java.lang.String", model.getName());
 
 		Set<String> acutalInterfaces = new HashSet<>();
 		Set<String> expectInterfaces = new HashSet<>();
-
+		
 		expectInterfaces.add("java.io.Serializable");
 		expectInterfaces.add("java.lang.Comparable");
 
@@ -41,7 +54,8 @@ public class NonRecursiveASMParserTest {
 
 	@Test
 	public void lab_1_AmazonParser() {
-		ASMServiceProvider parser = new NonRecursiveASMParser(Arrays.asList("problem.AmazonLineParser", "problem.ILineParser"));
+		ASMClassTracker parser = new ASMParser();
+		parser.addClasses(Arrays.asList("problem.AmazonLineParser", "problem.ILineParser"));
 		ClassModel model = parser.getClassByName("problem/AmazonLineParser");
 		assertEquals("problem.AmazonLineParser", model.getName());
 

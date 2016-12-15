@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import analyzer.IAnalyzerSystemModel;
 import generator.ISystemModel;
 
@@ -8,25 +11,25 @@ import generator.ISystemModel;
  * 
  */
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
-	private AbstractASMParser asmServiceProvider;
+	private Iterable<ClassModel> importantList;
 
-	private SystemModel(AbstractASMParser asmParser) {
-		asmServiceProvider = asmParser;
+	private SystemModel(Iterable<ClassModel> importantList) {
+		this.importantList = importantList;
 	}
 
 	@Override
 	public Iterable<ClassModel> getClasses() {
-		return asmServiceProvider.getClasses();
+		return importantList;
 	}
 
 	public static SystemModel getInstance(IModelConfiguration config) {
-		AbstractASMParser asmParser;
-		if (config.isRecursive())
-			asmParser = new ASMParser(config.getClasses());
-		else
-			asmParser = new NonRecursiveASMParser(config.getClasses());
+		ASMClassTracker asmParser = ASMParser.getInstance(config);
 
-		return new SystemModel(asmParser);
+		List<ClassModel> ls = new ArrayList<>();
+		asmParser.getClasses().forEach((c) -> {
+			ls.add(c);
+		});
+		return new SystemModel(ls);
 	}
 
 }

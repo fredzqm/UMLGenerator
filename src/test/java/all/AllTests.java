@@ -7,7 +7,6 @@ import config.CommandLineParserTest;
 import generator.GraphVizGeneratorTest;
 import model.ASMParserTest;
 import model.NonRecursiveASMParserTest;
-import model.SystemModel;
 import model.SystemModelTest;
 
 /**
