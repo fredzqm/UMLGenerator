@@ -30,6 +30,7 @@ public class GraphVizGeneratorTest {
 		List<String> classList = new ArrayList<>();
 		classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
 		config.setClasses(classList);
+		config.setRecursive(true);
 		return SystemModel.getInstance(config);
 	}
 
@@ -93,7 +94,8 @@ public class GraphVizGeneratorTest {
 		filters.add(Modifier.PRIVATE);
 		config.setFilters(filters);
 		config.setNodesep(1.0);
-
+		config.setRecursive(true);
+		
 		// Create GraphVizGenerator.
 		IGenerator generator = new GraphVizGenerator(config);
 

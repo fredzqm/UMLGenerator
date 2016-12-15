@@ -22,12 +22,12 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 		map = new HashMap<>();
 		if (importClassesList != null) {
 			for (String importantClass : importClassesList) {
-				parseClass(importantClass);
+				getClassByName(importantClass, true);
 			}
 		}
 	}
 
-	protected ClassModel parseClass(String className) {
+	protected ClassModel getClassByName(String className, boolean important) {
 		className = className.replace(".", "/");
 		if (map.containsKey(className))
 			return map.get(className);
@@ -35,7 +35,7 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 			ClassReader reader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-			ClassModel model = new ClassModel(this, classNode, false);
+			ClassModel model = new ClassModel(this, classNode, important);
 			map.put(className, model);
 			return model;
 		} catch (IOException e) {

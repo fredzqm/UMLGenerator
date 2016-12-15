@@ -6,6 +6,8 @@ public class ClassModelTest {
 
 	@Test
 	public void classModelTest() {
+		ASMParser parser = new ASMParser();
+		
 	}
 
 }

@@ -28,7 +28,7 @@ public class ASMParser extends AbstractASMParser {
 
 	@Override
 	public ClassModel getClassByName(String className) {
-		ClassModel model = parseClass(className);
+		ClassModel model = getClassByName(className, false);
 		model.getSuperClass();
 		return model;
 	}

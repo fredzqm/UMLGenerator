@@ -32,7 +32,6 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setNodesep(1);
         conf.setClasses(new ArrayList<>());
         conf.setFilters(new HashSet<>());
-        conf.setRecursive(true);
         return conf;
     }
     
