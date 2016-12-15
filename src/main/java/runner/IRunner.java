@@ -16,7 +16,8 @@ public interface IRunner {
 	 *             if it is unable to write.
 	 * @throws InterruptedException
 	 *             if the write process is interrupted.
+	 * @return output path of image
 	 */
-	void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
+	String execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
 
 }

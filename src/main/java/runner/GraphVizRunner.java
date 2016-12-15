@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 public class GraphVizRunner implements IRunner {
 	private static final String OUTPUT_FILE_EXTENSION = "dot";
 
-	public void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException {
+	public String execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException {
 		String outputFilePath = config.getOutputDirectory() + "/" + config.getFileName();
 		String outputFilePathDot = outputFilePath + "." + OUTPUT_FILE_EXTENSION;
 		String outputFilePathImage = outputFilePath + "." + config.getOutputFormat();
@@ -43,39 +43,7 @@ public class GraphVizRunner implements IRunner {
 				outputFilePathDot, outputFilePathImage);
 		Process process = Runtime.getRuntime().exec(command.toString());
 		process.waitFor();
-
-		// Display
-		JFrame frame = new Display(outputFilePathImage);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
-	@SuppressWarnings("serial")
-	public static class Display extends JFrame {
-		private BufferedImage image;
-		private JPanel canvas;
-
-		public Display(String imagePath) {
-			try {
-				this.image = ImageIO.read(new File(imagePath));
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-
-			this.canvas = new JPanel() {
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					g.drawImage(image, 0, 0, null);
-				}
-			};
-			canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-			JScrollPane sp = new JScrollPane(canvas);
-			setLayout(new BorderLayout());
-			add(sp, BorderLayout.CENTER);
-		}
-
+		return outputFilePathImage;
 	}
 
 }
