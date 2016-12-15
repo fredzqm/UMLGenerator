@@ -27,6 +27,11 @@ public class GraphVizClassParser implements IParser<IClassModel> {
     public String parse(IClassModel model) {
         StringBuilder sb = new StringBuilder();
         String name = model.getName();
+        // TODO: for interfaces here.
+//        if (name.equals("java.io.Serializable")) {
+//            System.out.println("Serializable");
+//        }
+
         IClassModel.IClassType classType = model.getType();
 
         // Set Description block.

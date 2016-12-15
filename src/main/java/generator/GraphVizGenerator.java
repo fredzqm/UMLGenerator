@@ -41,12 +41,12 @@ public class GraphVizGenerator implements IGenerator {
 
         // Basic UML Boxes.
         dotString.append(classParser.parse(classes));
+        dotString.append("\n");
 
         // Superclass Relations
-        dotString.append("\n");
         dotString.append("\tedge [arrowhead=onormal];\n");
-        // Configurable.
         dotString.append(extendsRelParser.parse(classes));
+        dotString.append("\n");
 
         // Inheritance Relations.
         dotString.append("\tedge [arrowhead=onormal, style=dashed];\n");

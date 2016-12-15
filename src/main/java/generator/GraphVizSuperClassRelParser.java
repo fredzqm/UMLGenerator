@@ -23,7 +23,7 @@ public class GraphVizSuperClassRelParser implements IParser<IClassModel> {
 
         StringBuilder sb = new StringBuilder();
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
-        sb.append(String.format("\"%s\"};\n\n\t", superClass.getName()));
+        sb.append(String.format("\"%s\"};\n", superClass.getName()));
 
         return sb.toString();
     }
