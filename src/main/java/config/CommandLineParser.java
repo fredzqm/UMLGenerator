@@ -29,24 +29,16 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setRequired(true)
                 .setGreedy(true);
         opt1.setHelp("desc: space separated list of the name of the classes you want the UML for\n");
-        try {
-            jsap.registerParameter(opt1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt1);
 
         FlaggedOption opt2 = new FlaggedOption("path")
                 .setStringParser(JSAP.STRING_PARSER)
                 .setDefault("")
                 .setRequired(false)
                 .setShortFlag('e')
-                .setLongFlag("executablepath");
+                .setLongFlag("executable");
         opt2.setHelp("desc: the name of the executable path for graphviz on your machine\n");
-        try {
-            jsap.registerParameter(opt2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt2);
 
         FlaggedOption opt3 = new FlaggedOption("outputDirectory")
                 .setStringParser(JSAP.STRING_PARSER)
@@ -54,13 +46,8 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setRequired(true)
                 .setShortFlag('d')
                 .setLongFlag("directory");
-
         opt3.setHelp("desc: the name of the directory which you want output to go to\n");
-        try {
-            jsap.registerParameter(opt3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt3);
 
         FlaggedOption opt4 = new FlaggedOption("outputfile")
                 .setStringParser(JSAP.STRING_PARSER)
@@ -69,11 +56,7 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setShortFlag('o')
                 .setLongFlag("outputfile");
         opt4.setHelp("desc: the name of the output file\n");
-        try {
-            jsap.registerParameter(opt4);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt4);
 
         FlaggedOption opt5 = new FlaggedOption("extension")
                 .setStringParser(JSAP.STRING_PARSER)
@@ -82,11 +65,7 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setShortFlag('x')
                 .setLongFlag("extension");
         opt5.setHelp("desc: the name extension of the output file without the dot\n");
-        try {
-            jsap.registerParameter(opt5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt5);
 
         FlaggedOption opt6 = new FlaggedOption("filters")
                 .setShortFlag('f')
@@ -98,11 +77,7 @@ public class CommandLineParser implements ConfigurationFactory {
                 + "if public, you filter out protected and private\n"
                 + "if protected, you filter out private\n"
                 + "if blank or private, you filter out nothing\n");
-        try {
-            jsap.registerParameter(opt6);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt6);
 
         FlaggedOption opt7 = new FlaggedOption("nodeseparationvalue")
                 .setStringParser(JSAP.DOUBLE_PARSER)
@@ -111,22 +86,19 @@ public class CommandLineParser implements ConfigurationFactory {
                 .setLongFlag("nodesep")
                 .setDefault("1");
         opt7.setHelp("desc: the node seperation value which is greater than 0\n");
-        try {
-            jsap.registerParameter(opt7);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt7);
 
         Switch opt8 = new Switch("recursive")
                 .setShortFlag('r')
                 .setLongFlag("recursive");
         opt8.setHelp("desc: use this flag if you want to recursively create the UML\n");
-        try {
-            jsap.registerParameter(opt8);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        addOption(opt8);
 
+        Switch opt9 = new Switch("rankdir")
+        		.setShortFlag('k')
+        		.setLongFlag("direction");
+        opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
+        addOption(opt9);
     }
 
     @Override
@@ -182,23 +154,22 @@ public class CommandLineParser implements ConfigurationFactory {
         }
         conf.setFilters(filters);
         conf.setRecursive(config.getBoolean("recursive"));
+        
+        if(config.getBoolean("rankdir")){
+        	conf.setRankDir("TB");
+        }else {
+        	conf.setRankDir("BT");
+        }
 
         return conf;
     }
-
-    public void addOption(UnflaggedOption opt) {
-        try {
-            jsap.registerParameter(opt);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addOption(FlaggedOption opt) {
-        try {
-            jsap.registerParameter(opt);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    
+    public void addOption(Parameter opt) {
+    	try {
+			jsap.registerParameter(opt);
+		} catch (JSAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

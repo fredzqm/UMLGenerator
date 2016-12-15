@@ -11,8 +11,8 @@ import model.Modifier;
 public class CommandLineParserTest {
 
 	@Test
-	public void testCommandAll() {
-		String[] args = "-e exepath -d outdir -o outfile -x extension -f public -n 10 -r me".split(" ");
+	public void testCommandAllShortFlags() {
+		String[] args = "-e exepath -d outdir -o outfile -x extension -f public -k -n 10 -r me".split(" ");
 		
 		CommandLineParser com = new CommandLineParser(args);
 		
@@ -29,6 +29,29 @@ public class CommandLineParserTest {
 		assertEquals("outdir",conf.getOutputDirectory());
 		assertEquals(10,Math.round(conf.getNodeSep()));
 		assertEquals("extension",conf.getOutputFormat());
+		assertEquals("TB",conf.getRankDir());
+	}
+	
+	@Test
+	public void testCommandAllLongFlags() {
+		String[] args = "--executable exepath --directory outdir --outputfile outfile --extension extension --filters public --direction --nodesep 10 --recursive me".split(" ");
+		
+		CommandLineParser com = new CommandLineParser(args);
+		
+		Configuration conf = com.create();
+		
+		assertTrue(conf.getFilters().contains(Modifier.PRIVATE));
+		assertTrue(conf.getFilters().contains(Modifier.PROTECTED));
+		assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+		assertTrue(conf.isRecursive());
+		for(String cla: conf.getClasses())
+			assertEquals("me",cla);
+		assertEquals("exepath",conf.getExecutablePath());
+		assertEquals("outfile",conf.getFileName());
+		assertEquals("outdir",conf.getOutputDirectory());
+		assertEquals(10,Math.round(conf.getNodeSep()));
+		assertEquals("extension",conf.getOutputFormat());
+		assertEquals("TB",conf.getRankDir());
 	}
 	
 	@Test
@@ -134,6 +157,17 @@ public class CommandLineParserTest {
 		assertTrue(!conf.getFilters().contains(Modifier.PRIVATE));
 		assertTrue(!conf.getFilters().contains(Modifier.PROTECTED));
 		assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+	}
+	
+	@Test
+	public void testRankDirDefault() {
+		String[] args = "-e exepath -d outdir -o outfile -x extension -n 10 -r me".split(" ");
+		
+		CommandLineParser com = new CommandLineParser(args);
+		
+		Configuration conf = com.create();
+		
+		assertEquals("BT",conf.getRankDir());
 	}
 
 }

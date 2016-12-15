@@ -1,7 +1,6 @@
 package generator;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An Interface for Generator Configuration.
@@ -23,5 +22,13 @@ public interface IGeneratorConfiguration {
 	 * @return Set of Method Access Filters.
 	 */
 	Collection<IModifier> getFilters();
+	
+	/**
+	 * Returns either BT or TB depending on how you want the 
+	 * UML to show
+	 * 
+	 * @return BT or TB
+	 */
+	String getRankDir();
 
 }
