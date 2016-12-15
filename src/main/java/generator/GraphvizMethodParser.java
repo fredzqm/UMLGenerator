@@ -7,10 +7,10 @@ import java.util.Collection;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GMethodParser implements IParser<IMethodModel> {
+public class GraphvizMethodParser implements IParser<IMethodModel> {
 	private Collection<IModifier> filters;
 
-	public GMethodParser(Collection<IModifier> filters) {
+	public GraphvizMethodParser(Collection<IModifier> filters) {
 		this.filters = filters;
 	}
 

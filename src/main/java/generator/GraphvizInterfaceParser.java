@@ -5,14 +5,14 @@ package generator;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GInterfaceParser implements IParser<IClassModel> {
+public class GraphvizInterfaceParser implements IParser<IClassModel> {
 
 	@Override
 	public String parse(IClassModel thisClass) {
 		Iterable<? extends IClassModel> otherClassLs = thisClass.getInterfaces();
 
 		StringBuilder sb = new StringBuilder();
-		GDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		GraphvizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		int interfaceLengthBefore = sb.length();
 
 		otherClassLs.forEach((interfaceModel) -> {
@@ -20,7 +20,7 @@ public class GInterfaceParser implements IParser<IClassModel> {
 			sb.append(", ");
 		});
 		// If it is empty close the braces without replacing characters.
-		GDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
+		GraphvizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
 		sb.append("\n\t");
 		return sb.toString();
 	}

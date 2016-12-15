@@ -41,7 +41,7 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new Ggenerator(config);
+        IGenerator generator = new Graphvizgenerator(config);
 
         String actual = generator.generate(systemModel, null);
 
@@ -94,7 +94,7 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new Ggenerator(config);
+        IGenerator generator = new Graphvizgenerator(config);
 
         String actual = generator.generate(systemModel, null);
         
@@ -149,7 +149,7 @@ public class GraphVizGeneratorTest {
 
         // Create the runner
         IRunner runner = new GraphVizRunner();
-        IGenerator generator = new Ggenerator(config);
+        IGenerator generator = new Graphvizgenerator(config);
         String graphVizString = generator.generate(systemModel, null);
 
         try {

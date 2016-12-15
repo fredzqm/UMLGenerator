@@ -5,16 +5,16 @@ import java.util.Collection;
 /**
  * Representing a single class in the DOT language.
  */
-public class GClassParser implements IParser<IClassModel> {
+public class GraphvizClassParser implements IParser<IClassModel> {
 	private IParser<IClassModel.IClassType> classTypeParser;
 	private IParser<IFieldModel> fieldParser;
 	private IParser<IMethodModel> methodParser;
 
-	public GClassParser(Collection<IModifier> filters) {
+	public GraphvizClassParser(Collection<IModifier> filters) {
 		// this.header = new GraphVizHeaderParser(model.getType(), this.name);
-		this.classTypeParser = new GClassTypeParser();
-		this.fieldParser = new GFieldParser(filters);
-		this.methodParser = new GMethodParser(filters);
+		this.classTypeParser = new GraphvizClassTypeParser();
+		this.fieldParser = new GraphvizFieldParser(filters);
+		this.methodParser = new GraphvizMethodParser(filters);
 	}
 
 	/**

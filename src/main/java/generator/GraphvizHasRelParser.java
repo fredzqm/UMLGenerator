@@ -7,10 +7,10 @@ import java.util.Collection;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GHasRelParser implements IParser<IClassModel> {
+public class GraphvizHasRelParser implements IParser<IClassModel> {
 	private Collection<IModifier> filters;
 
-	public GHasRelParser(Collection<IModifier> filters) {
+	public GraphvizHasRelParser(Collection<IModifier> filters) {
 		this.filters = filters;
 	}
 
@@ -19,7 +19,7 @@ public class GHasRelParser implements IParser<IClassModel> {
 		Iterable<? extends IClassModel> otherClassLs = thisClass.getHasRelation();
 
 		StringBuilder sb = new StringBuilder();
-		GDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		GraphvizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		int hasALengthBefore = sb.length();
 		otherClassLs.forEach((has) -> {
 			if (!filters.contains(has.getModifier())) {
@@ -27,7 +27,7 @@ public class GHasRelParser implements IParser<IClassModel> {
 				sb.append(", ");
 			}
 		});
-		GDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+		GraphvizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
 
 		sb.append("\n\t");
 		return sb.toString();

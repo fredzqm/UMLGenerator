@@ -22,7 +22,7 @@ public class GSuperClassRelParser implements IParser<IClassModel> {
 		}
 		StringBuilder sb = new StringBuilder();
 
-		GDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		GraphvizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
 		sb.append("\"").append(superClass.getName()).append("\"");
 		sb.append("};\n");
 		sb.append("\n\t");
