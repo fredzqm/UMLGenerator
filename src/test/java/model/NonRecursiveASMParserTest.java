@@ -1,49 +1,37 @@
 package model;
 
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 import generator.IClassModel;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-
-public class ASMParserTest {
+public class NonRecursiveASMParserTest {
 
 	@Test
 	public void asmParserString() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ASMServiceProvider parser = new NonRecursiveASMParser(Arrays.asList("java/lang/String"));
+		ClassModel model = parser.getClassByName("java/lang/String");
 		assertEquals("java.lang.String", model.getName());
-
-		Set<String> fields = new HashSet<>();
-		Set<String> actfields = new HashSet<>();
-
-		actfields.add("value");
-		actfields.add("hash");
-		actfields.add("serialVersionUID");
-		actfields.add("serialPersistentFields");
-		actfields.add("CASE_INSENSITIVE_ORDER");
-
-		for (FieldModel field : model.getFields())
-			fields.add(field.getName());
-
-		assertEquals(actfields, fields);
+		assertNull(parser.getClassByName("java.lang.Object"));
 	}
 
 	@Test
 	public void asmParserStringInterface() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ASMServiceProvider parser = new NonRecursiveASMParser(
+				Arrays.asList("java.lang.String", "java/io/Serializable", "java/lang/Comparable"));
+		ClassModel model = parser.getClassByName("java/lang/String");
 		assertEquals("java.lang.String", model.getName());
-		
+
 		Set<String> acutalInterfaces = new HashSet<>();
 		Set<String> expectInterfaces = new HashSet<>();
 
 		expectInterfaces.add("java.io.Serializable");
 		expectInterfaces.add("java.lang.Comparable");
-		expectInterfaces.add("java.lang.CharSequence");
 
 		for (IClassModel interf : model.getInterfaces())
 			acutalInterfaces.add(interf.getName());
@@ -53,10 +41,10 @@ public class ASMParserTest {
 
 	@Test
 	public void lab_1_AmazonParser() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("problem.AmazonLineParser");
+		ASMServiceProvider parser = new NonRecursiveASMParser(Arrays.asList("problem.AmazonLineParser", "problem.ILineParser"));
+		ClassModel model = parser.getClassByName("problem/AmazonLineParser");
 		assertEquals("problem.AmazonLineParser", model.getName());
-		
+
 		Set<String> acutalInterfaces = new HashSet<>();
 		Set<String> expectInterfaces = new HashSet<>();
 
@@ -67,5 +55,4 @@ public class ASMParserTest {
 
 		assertEquals(expectInterfaces, acutalInterfaces);
 	}
-	
 }

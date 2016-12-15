@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.modelmbean.ModelMBeanOperationInfo;
+
 /**
  * The concrete ASM service provider that will recursively parse all related
  * classes request. {@see NonRecursiveASMParser}
@@ -34,15 +36,13 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 			ClassNode classNode = new ClassNode();
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
 			ClassModel model = new ClassModel(this, classNode, important);
-			map.put(className, model);
+			String a = className.replace(".", "/"), b = className.replace("/", ".");
+			map.put(a, model);
+			map.put(b, model);
 			return model;
 		} catch (IOException e) {
 			throw new RuntimeException("ASM parsing of " + className + " failed.", e);
 		}
-	}
-
-	protected boolean hasAlreadyParse(String className) {
-		return map.containsKey(className);
 	}
 
 	@Override

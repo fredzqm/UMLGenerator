@@ -247,8 +247,6 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 			case ENUM:
 				switcher.ifEnum();
 				break;
-			default:
-				// TODO: Fred: Handle this (throw some exception).
 			}
 		}
 	}
