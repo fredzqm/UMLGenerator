@@ -107,6 +107,18 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 	public void setRankDir(String rankDir) {
 		this.rankDir = rankDir;
 	}
+	
+	public String toString() {
+		return    "Classes:                   " + classes + "\n"
+				+ "Executable Path:           " + executablePath + "\n"
+				+ "Output Extension:          " + outputFormat + "\n"
+				+ "Output Directory:          " + outputDirectory + "\n"
+				+ "Output file name:          " + fileName + "\n"
+				+ "Node seperation value:     " + nodesep + "\n"
+				+ "Filters:                   " + filters + "\n"
+				+ "Recursive?:                " + isRecursive + "\n"
+				+ "Rank Dir:                  " + rankDir;
+	}
 }
 
     
