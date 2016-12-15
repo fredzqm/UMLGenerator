@@ -1,34 +1,35 @@
 package model;
 
-import analyzer.IAnalyzerSystemModel;
-import generator.ISystemModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import analyzer.IAnalyzerSystemModel;
+import generator.ISystemModel;
+
 /**
  * This class representing the entire model of a java program
- *
+ * 
  */
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
-	private AbstractASMParser asmServiceProvider;
+	private Iterable<ClassModel> importantList;
 
-	public SystemModel(Iterable<String> classList, AbstractASMParser asmParser) {
-		asmServiceProvider = asmParser;
+	private SystemModel(Iterable<ClassModel> importantList) {
+		this.importantList = importantList;
 	}
 
 	@Override
 	public Iterable<ClassModel> getClasses() {
-		return asmServiceProvider.getImportantClasses();
+		return importantList;
 	}
 
 	public static SystemModel getInstance(IModelConfiguration config) {
-		AbstractASMParser asmParser;
-		if (config.isRecursive())
-			asmParser = new ASMParser(config.getClasses());
-		else
-			asmParser = new NonRecursiveASMParser(config.getClasses());
+		ASMClassTracker asmParser = ASMParser.getInstance(config);
 
-		return new SystemModel(config.getClasses(), asmParser);
+		List<ClassModel> ls = new ArrayList<>();
+		asmParser.getClasses().forEach((c) -> {
+			ls.add(c);
+		});
+		return new SystemModel(ls);
 	}
+
 }

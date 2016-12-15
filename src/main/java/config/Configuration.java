@@ -32,7 +32,6 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setNodesep(1);
         conf.setClasses(new ArrayList<>());
         conf.setFilters(new HashSet<>());
-        conf.setRecursive(true);
         return conf;
     }
     
@@ -107,7 +106,8 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     public void setRankDir(String rankDir) {
         this.rankDir = rankDir;
     }
-	public String toString() {
+
+    public String toString() {
 		return    "Classes:                   " + classes + "\n"
 				+ "Executable Path:           " + executablePath + "\n"
 				+ "Output Extension:          " + outputFormat + "\n"
@@ -119,5 +119,3 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 				+ "Rank Dir:                  " + rankDir;
 	}
 }
-
-    

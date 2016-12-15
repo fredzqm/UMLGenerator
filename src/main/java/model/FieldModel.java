@@ -9,8 +9,9 @@ import org.objectweb.asm.tree.FieldNode;
 
 /**
  * Representing field in java programs
- *
+ * 
  * @author zhang
+ *
  */
 public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     private final FieldNode asmFieldNode;
@@ -53,11 +54,11 @@ public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
         return fieldType;
     }
 
-    @Override
-    public String toString() {
-        return getName();
-    }
-
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
     @Override
     public void visit(IVisitor<FieldModel> IVisitor) {
         IVisitor.visit(this);

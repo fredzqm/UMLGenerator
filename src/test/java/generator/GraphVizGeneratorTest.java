@@ -1,21 +1,25 @@
 package generator;
 
-import config.Configuration;
-import model.ASMParser;
-import model.Modifier;
-import model.SystemModel;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import runner.GraphVizRunner;
-import runner.IRunner;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import config.Configuration;
+import model.Modifier;
+import model.SystemModel;
+import runner.GraphVizRunner;
+import runner.IRunner;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -26,44 +30,47 @@ public class GraphVizGeneratorTest {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-    private ISystemModel setupSystemModel() {
-        List<String> classList = new ArrayList<>();
-        classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
-        return new SystemModel(classList, new ASMParser());
-    }
+	private ISystemModel setupSystemModel() {
+		Configuration config = Configuration.getInstance();
+		List<String> classList = new ArrayList<>();
+		classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
+		config.setClasses(classList);
+		config.setRecursive(true);
+		return SystemModel.getInstance(config);
+	}
 
-    @Test
-    public void graphVizGenerate() throws IOException {
-        // Set up the system model and config.
-        ISystemModel systemModel = setupSystemModel();
+	@Test
+	public void graphVizGenerate() throws IOException {
+		// Set up the system model and config.
+		ISystemModel systemModel = setupSystemModel();
 
 		Configuration config = Configuration.getInstance();
 		config.setNodesep(1.0);
 
-        // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+		// Create GraphVizGenerator.
+		IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel, null);
+		String actual = generator.generate(systemModel, null);
 
-        // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
-        assertTrue(actual.contains("node [shape=record];"));
-        assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
+		// Test if it has the basic DOT file styling.
+		assertTrue(actual.contains("nodesep=1.0;"));
+		assertTrue(actual.contains("node [shape=record];"));
+		assertTrue(actual.contains("\"generator.DummyClass\""));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
+		assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
+		assertTrue(actual.contains("edge [arrowhead=onormal]"));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
 
-        // Count how many relations there are.
-        // TODO: When Fred implements Has-A and Depends-On update this test.
-        int relationsCount = 0;
-        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
-        while (index != -1) {
-            relationsCount++;
-            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
-        }
-        assertEquals("Number of Relations not equal", 3, relationsCount);
+		// Count how many relations there are.
+		// TODO: When Fred implements Has-A and Depends-On update this test.
+		int relationsCount = 0;
+		int index = actual.indexOf("\"generator.DummyClass\" -> {}");
+		while (index != -1) {
+			relationsCount++;
+			index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
+		}
+		assertEquals("Number of Relations not equal", 3, relationsCount);
 
 		String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
 				"- privateString : java.lang.String", "+ publicInt : int" };
@@ -80,10 +87,10 @@ public class GraphVizGeneratorTest {
 		expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
 	}
 
-    @Test
-    public void graphVizGeneratorFilter() {
-        // Set up the system model and config.
-        ISystemModel systemModel = setupSystemModel();
+	@Test
+	public void graphVizGeneratorFilter() {
+		// Set up the system model and config.
+		ISystemModel systemModel = setupSystemModel();
 
 		// Set up config.
 		Configuration config = Configuration.getInstance();
@@ -92,33 +99,32 @@ public class GraphVizGeneratorTest {
 		filters.add(Modifier.PRIVATE);
 		config.setFilters(filters);
 		config.setNodesep(1.0);
+		config.setRecursive(true);
 
-        // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+		// Create GraphVizGenerator.
+		IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel, null);
+		String actual = generator.generate(systemModel, null);
 
-        internalRunner(systemModel, config, "testFilter"); 
+		// Test if it has the basic DOT file styling.
+		assertTrue(actual.contains("nodesep=1.0;"));
+		assertTrue(actual.contains("node [shape=record];"));
+		assertTrue(actual.contains("\"generator.DummyClass\""));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
+		assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
+		assertTrue(actual.contains("edge [arrowhead=onormal]"));
+		assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
 
-        // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
-        assertTrue(actual.contains("node [shape=record];"));
-        assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
-
-        // Count how many relations there are.
-        // TODO: When Fred implements Has-A and Depends-On update this test.
-        int relationsCount = 0;
-        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
-        while (index != -1) {
-            relationsCount++;
-            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
-        }
-        assertEquals("Number of Relations not equal", 3, relationsCount);
+		// Count how many relations there are.
+		// TODO: When Fred implements Has-A and Depends-On update this test.
+		int relationsCount = 0;
+		int index = actual.indexOf("\"generator.DummyClass\" -> {}");
+		while (index != -1) {
+			relationsCount++;
+			index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
+		}
+		assertEquals("Number of Relations not equal", 3, relationsCount);
 
 		String[] expectedFields = { "+ publicString : java.lang.String", "+ publicInt : int" };
 		String[] expectedMethods = { "getPublicInt() : int", "+ getPublicString() : java.lang.String" };
@@ -133,48 +139,35 @@ public class GraphVizGeneratorTest {
 		expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
 	}
 
-    @Test
-    public void graphVizWrite() throws IOException {
-        // Set up a System Model.
-        ISystemModel systemModel = setupSystemModel();
-        Configuration config = Configuration.getInstance();
+	@Test
+	public void graphVizWrite() throws IOException {
+		// Create a TemporaryFolder that will be deleted after the test runs.
+		File directory = this.folder.newFolder("testDirectory");
 
-        internalRunner(systemModel, config, "test");
-    }
+		// Set up a System Model.
+		ISystemModel systemModel = setupSystemModel();
+		Configuration config = Configuration.getInstance();
+		config.setFileName("test");
+		config.setOutputFormat("png");
+		config.setExecutablePath("dot");
 
-    /**
-     * An internal runner method that will execute and output to the ./output directory for testing purposes.
-     *
-     * @param systemModel
-     * @param config
-     * @param testName
-     */
-    private void internalRunner(ISystemModel systemModel, Configuration config, String testName) {
-        try {
-            // Create a TemporaryFolder that will be deleted after the test runs.
-            File directory = this.folder.newFolder("testDirectory");
+		// Set the output directory to the root of the Temporary Folder.
+		config.setOutputDirectory(directory.toString());
 
-            // Comment out "./output" for CI.
-            config.setOutputDirectory(directory.toString()); // For CI.
-            config.setOutputDirectory("./output"); // For local testing.
-            config.setFileName(testName);
-            config.setOutputFormat("png");
-            config.setExecutablePath("dot");
-            config.setRankDir("BT");
+		// generate the string
+		IGenerator generator = new GraphVizGenerator(config);
+		String graphVizString = generator.generate(systemModel, null);
 
-            // Create the runner
-            IRunner runner = new GraphVizRunner();
-            IGenerator generator = new GraphVizGenerator(config);
-            String graphVizString = generator.generate(systemModel, null);
-
-            // Execute and check for existence.
-            runner.execute(config, graphVizString);
-            File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
-            assertTrue(file.exists());
-        } catch (Exception e) {
-            System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
-            fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+		// Create the runner
+		IRunner runner = new GraphVizRunner();
+		try {
+			runner.execute(config, graphVizString);
+			File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
+			assertTrue(file.exists());
+		} catch (Exception e) {
+			System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
+			fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }
