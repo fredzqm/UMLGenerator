@@ -169,5 +169,26 @@ public class CommandLineParserTest {
 		
 		assertEquals("BT",conf.getRankDir());
 	}
+	
+	@Test
+	public void testToString() {
+		String[] args = "-e exepath -d outdir -o outfile -x extension -f public -k -n 10 -r me".split(" ");
+		
+		CommandLineParser com = new CommandLineParser(args);
+		
+		Configuration conf = com.create();
+		
+		String out = "Classes:                   [me]\n"
+				+ "Executable Path:           exepath\n"
+				+ "Output Extension:          extension\n"
+				+ "Output Directory:          outdir\n"
+				+ "Output file name:          outfile\n"
+				+ "Node seperation value:     10.0\n"
+				+ "Filters:                   [PRIVATE, PROTECTED]\n"
+				+ "Recursive?:                true\n"
+				+ "Rank Dir:                  TB";
+		
+		assertEquals(out, conf.toString());
+	}
 
 }
