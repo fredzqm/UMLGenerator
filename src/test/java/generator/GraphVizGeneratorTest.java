@@ -1,8 +1,6 @@
 package generator;
 
 import config.Configuration;
-import model.ASMParser;
-import model.IModelConfiguration;
 import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
@@ -44,7 +42,7 @@ public class GraphVizGeneratorTest {
 		config.setNodesep(1.0);
 
 		// Create GraphVizGenerator.
-		IGenerator generator = new Graphvizgenerator(config);
+		IGenerator generator = new GraphVizGenerator(config);
 
 		String actual = generator.generate(systemModel, null);
 
@@ -97,7 +95,7 @@ public class GraphVizGeneratorTest {
 		config.setNodesep(1.0);
 
 		// Create GraphVizGenerator.
-		IGenerator generator = new Graphvizgenerator(config);
+		IGenerator generator = new GraphVizGenerator(config);
 
 		String actual = generator.generate(systemModel, null);
 
@@ -150,7 +148,7 @@ public class GraphVizGeneratorTest {
 		config.setOutputDirectory(directory.toString());
 
 		// generate the string
-		IGenerator generator = new Graphvizgenerator(config);
+		IGenerator generator = new GraphVizGenerator(config);
 		String graphVizString = generator.generate(systemModel, null);
 
 		// Create the runner

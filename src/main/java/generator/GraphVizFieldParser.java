@@ -7,10 +7,10 @@ import java.util.Collection;
  *
  * Created by lamd on 12/14/2016.
  */
-public class GraphvizFieldParser implements IParser<IFieldModel> {
+public class GraphVizFieldParser implements IParser<IFieldModel> {
 	private Collection<IModifier> filters;
 
-	public GraphvizFieldParser(Collection<IModifier> filters) {
+	public GraphVizFieldParser(Collection<IModifier> filters) {
 		this.filters = filters;
 	}
 
