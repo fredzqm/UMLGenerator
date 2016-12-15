@@ -9,7 +9,7 @@
       <w>140</w>
       <h>42</h>
     </coordinates>
-    <panel_attributes>application.Main
+    <panel_attributes>application.application.Main
 </panel_attributes>
     <additional_attributes/>
   </element>

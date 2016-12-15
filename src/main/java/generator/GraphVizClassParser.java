@@ -10,7 +10,7 @@ public class GraphVizClassParser implements IParser<IClassModel> {
 	private IParser<IFieldModel> fieldParser;
 	private IParser<IMethodModel> methodParser;
 
-	public GraphVizClassParser(Collection<IModifier> filters) {
+	GraphVizClassParser(Collection<IModifier> filters) {
 		// this.header = new GraphVizHeaderParser(model.getType(), this.name);
 		this.classTypeParser = new GraphVizClassTypeParser();
 		this.fieldParser = new GraphVizFieldParser(filters);

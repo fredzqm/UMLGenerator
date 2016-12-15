@@ -94,10 +94,10 @@ public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
     public TypeModel getReturnType() {
         return signature.getReturnType();
     }
-    
+
     @Override
     public String toString() {
-    	return getSignature().toString();
+        return getSignature().toString();
     }
 
     @Override

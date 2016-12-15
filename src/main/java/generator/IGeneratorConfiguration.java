@@ -9,26 +9,26 @@ import java.util.Collection;
  */
 public interface IGeneratorConfiguration {
 
-	/**
-	 * Returns the Node Seperation.
-	 *
-	 * @return Node Separation value.
-	 */
-	double getNodeSep();
+    /**
+     * Returns the Node Seperation.
+     *
+     * @return Node Separation value.
+     */
+    double getNodeSep();
 
-	/**
-	 * Return the set of Method Access Filters.
-	 *
-	 * @return Set of Method Access Filters.
-	 */
-	Collection<IModifier> getFilters();
-	
-	/**
-	 * Returns either BT or TB depending on how you want the 
-	 * UML to show
-	 * 
-	 * @return BT or TB
-	 */
-	String getRankDir();
+    /**
+     * Return the set of Method Access Filters.
+     *
+     * @return Set of Method Access Filters.
+     */
+    Collection<IModifier> getFilters();
+
+    /**
+     * Returns either BT or TB depending on how you want the
+     * UML to show
+     *
+     * @return BT or TB
+     */
+    String getRankDir();
 
 }
