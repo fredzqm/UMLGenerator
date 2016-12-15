@@ -62,6 +62,42 @@ public class CommandLineParserTest {
 	}
 	
 	@Test
+	public void testEmptyClasses() {
+		String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r".split(" ");
+		
+		CommandLineParser com = new CommandLineParser(args);
+		
+		Configuration conf = com.create();
+		
+		ArrayList<String> classes = new ArrayList<String>();
+		for(String cla: conf.getClasses())
+			classes.add(cla);
+		
+		assertEquals(1, classes.size());
+		assertTrue(classes.contains("java.lang.String"));
+	}
+	
+	@Test
+	public void testRecus() {
+		String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r me".split(" ");
+		
+		CommandLineParser com = new CommandLineParser(args);
+		
+		Configuration conf = com.create();
+		
+		assertTrue(conf.isRecursive());
+		
+		args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 me".split(" ");
+		
+		com = new CommandLineParser(args);
+		
+		conf = com.create();
+		
+		assertTrue(!conf.isRecursive());
+	}
+	
+	
+	@Test
 	public void testPrivate() {
 		String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r me".split(" ");
 		
