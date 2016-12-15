@@ -6,8 +6,6 @@ import java.util.Collection;
  * Representing a single class in the DOT language.
  */
 public class GClassParser implements IParser<IClassModel> {
-	private String name;
-
 	private IParser<IClassModel.IClassType> classTypeParser;
 	private IParser<IFieldModel> fieldParser;
 	private IParser<IMethodModel> methodParser;
@@ -30,9 +28,8 @@ public class GClassParser implements IParser<IClassModel> {
 		// Set Description block.
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t");
-		sb.append("\"").append(this.name).append("\"");
+		sb.append("\"").append(model.getName()).append("\"");
 		sb.append(" [\n");
-		// TODO: This may change with the configuration
 
 		// Set the header.
 		sb.append("\t\tlabel = \"");
