@@ -98,8 +98,6 @@ public class GraphVizGeneratorTest {
 
         String actual = generator.generate(systemModel, null);
         
-        System.out.print(actual);
-        
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -143,12 +141,11 @@ public class GraphVizGeneratorTest {
         ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
         config.setFileName("test");
-        config.setOutputDirectory("./output");
         config.setOutputFormat("png");
         config.setExecutablePath("dot");
 
         // Set the output directory to the root of the Temporary Folder.
-        config.setOutputDirectory(directory.toString());
+        config.setOutputDirectory("./output");
 
         // Create the runner
         IRunner runner = new GraphVizRunner();
@@ -158,7 +155,7 @@ public class GraphVizGeneratorTest {
         try {
             System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             runner.execute(config, graphVizString);
-            File file = new File(directory, config.getFileName() + "." + config.getOutputFormat());
+            File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
             fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
