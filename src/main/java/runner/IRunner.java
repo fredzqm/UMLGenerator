@@ -9,14 +9,12 @@ import java.io.IOException;
  */
 public interface IRunner {
 
-	/**
-	 * Executes the Program that will generate files.
-	 *
-	 * @throws IOException
-	 *             if it is unable to write.
-	 * @throws InterruptedException
-	 *             if the write process is interrupted.
-	 */
-	void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
+    /**
+     * Executes the Program that will generate files.
+     *
+     * @throws IOException          if it is unable to write.
+     * @throws InterruptedException if the write process is interrupted.
+     */
+    void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
 
 }

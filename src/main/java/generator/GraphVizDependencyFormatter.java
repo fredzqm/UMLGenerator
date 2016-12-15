@@ -7,16 +7,14 @@ package generator;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependencyFormatter {
-    public static void setupDependencyVizDescription(StringBuilder visDescription, String name) {
+class GraphVizDependencyFormatter {
+    static void setupDependencyVizDescription(StringBuilder vizDescription, String name) {
         final String VIZ_ARROW = " -> ";
 
-        visDescription.append("\"").append(name).append("\"");
-        visDescription.append(VIZ_ARROW);
-        visDescription.append("{");
+        vizDescription.append(String.format("\"%s\"%s{", name, VIZ_ARROW));
     }
 
-    public static void closeDependencyVizDescription(StringBuilder vizDescription, int lengthBefore) {
+    static void closeDependencyVizDescription(StringBuilder vizDescription, int lengthBefore) {
         int length = vizDescription.length();
 
         // Ensure that it has changed.

@@ -1,7 +1,6 @@
 package generator;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An Interface for Generator Configuration.
@@ -10,18 +9,24 @@ import java.util.List;
  */
 public interface IGeneratorConfiguration {
 
-	/**
-	 * Returns the Node Seperation.
-	 *
-	 * @return Node Separation value.
-	 */
-	double getNodeSep();
+    /**
+     * Returns the Node Seperation.
+     *
+     * @return Node Separation value.
+     */
+    double getNodeSep();
 
-	/**
-	 * Return the set of Method Access Filters.
-	 *
-	 * @return Set of Method Access Filters.
-	 */
-	Collection<IModifier> getFilters();
+    /**
+     * Return the set of Method Access Filters.
+     *
+     * @return Set of Method Access Filters.
+     */
+    Collection<IModifier> getFilters();
 
+    /**
+     * Returns the String of the Rank Direction.
+     *
+     * @return Rank Direction.
+     */
+    String getRankDir();
 }

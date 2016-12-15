@@ -41,7 +41,7 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizgenerator(config);
+        IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
 
@@ -94,10 +94,12 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizgenerator(config);
+        IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
-        
+
+        internalRunner(systemModel, config, "testFilter");
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -134,30 +136,36 @@ public class GraphVizGeneratorTest {
 
     @Test
     public void graphVizWrite() throws IOException {
-        // Create a TemporaryFolder that will be deleted after the test runs.
-        File directory = this.folder.newFolder("testDirectory");
-
         // Set up a System Model.
         ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
-        config.setFileName("test");
-        config.setOutputFormat("png");
-        config.setExecutablePath("dot");
 
-        // Set the output directory to the root of the Temporary Folder.
-        config.setOutputDirectory("./output");
+        internalRunner(systemModel, config, "test");
+    }
 
-        // Create the runner
-        IRunner runner = new GraphVizRunner();
-        IGenerator generator = new GraphVizgenerator(config);
-        String graphVizString = generator.generate(systemModel, null);
-
+    private void internalRunner(ISystemModel systemModel, Configuration config, String testName) {
         try {
-            System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
+            // Create a TemporaryFolder that will be deleted after the test runs.
+            File directory = this.folder.newFolder("testDirectory");
+
+            config.setOutputDirectory(directory.toString()); // For CI.
+            config.setOutputDirectory("./output"); // For local testing.
+            config.setFileName(testName);
+            config.setOutputFormat("png");
+            config.setExecutablePath("dot");
+            config.setRankDir("BT");
+
+            // Create the runner
+            IRunner runner = new GraphVizRunner();
+            IGenerator generator = new GraphVizGenerator(config);
+            String graphVizString = generator.generate(systemModel, null);
+
+            // Execute and check for existence.
             runner.execute(config, graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {
+            System.out.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
             e.printStackTrace();
         }
