@@ -12,14 +12,14 @@ public interface IRelationParser {
 
     /**
      * parse a data list of relationship and append them together
+     * TODO: Fred fix this.
      *
      * @param dataList
      * @return
      */
-    default String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassLs) {
+    default String parse(IClassModel thisClass, Iterable<? extends IClassModel> otherClassList) {
         StringBuilder sb = new StringBuilder();
-        for (IClassModel d : otherClassLs)
-            sb.append(parse(thisClass, d));
+        otherClassList.forEach((data) -> sb.append(parse(thisClass, data)));
         return sb.toString();
     }
 
@@ -31,8 +31,7 @@ public interface IRelationParser {
 
     default String parse(Iterable<? extends IClassModel> classes) {
         StringBuilder sb = new StringBuilder();
-        for (IClassModel d : classes)
-            sb.append(parse(d));
+        classes.forEach((classModel) -> sb.append(parse(classModel)));
         return sb.toString();
     }
 
