@@ -12,6 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import config.Configuration;
+import generator.IGenerator;
+import runner.IRunner;
+import runner.IRunnerConfiguration;
+
 @SuppressWarnings("serial")
 public class Display extends JFrame {
 	private BufferedImage image;
@@ -37,8 +42,11 @@ public class Display extends JFrame {
 		add(sp, BorderLayout.CENTER);
 	}
 
-	public static void showWindown(String outputPath) {
-		JFrame frame = new Display(outputPath);
+	public static void showWindown(IRunnerConfiguration config) {
+		String outputFilePathImage = config.getOutputDirectory() + "/" + config.getFileName() + "."
+				+ config.getOutputFormat();
+
+		JFrame frame = new Display(outputFilePathImage);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

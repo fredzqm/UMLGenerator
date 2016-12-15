@@ -28,15 +28,14 @@ public class UMLEngine implements Runnable {
 
 		// run graphviz to generate the image
 		IRunner runner = new GraphVizRunner();
-		String outputPath;
 		try {
-			outputPath = runner.execute(config, graphVisStr);
+			runner.execute(config, graphVisStr);
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 
 		// Display a small window
-		Display.showWindown(outputPath);
+		Display.showWindown(config);
 
 	}
 

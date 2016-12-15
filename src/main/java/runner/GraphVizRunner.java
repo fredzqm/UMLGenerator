@@ -1,16 +1,8 @@
 package runner;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  * A GraphViz Process Runner.
@@ -20,7 +12,7 @@ import javax.swing.JScrollPane;
 public class GraphVizRunner implements IRunner {
 	private static final String OUTPUT_FILE_EXTENSION = "dot";
 
-	public String execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException {
+	public void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException {
 		String outputFilePath = config.getOutputDirectory() + "/" + config.getFileName();
 		String outputFilePathDot = outputFilePath + "." + OUTPUT_FILE_EXTENSION;
 		String outputFilePathImage = outputFilePath + "." + config.getOutputFormat();
@@ -43,7 +35,6 @@ public class GraphVizRunner implements IRunner {
 				outputFilePathDot, outputFilePathImage);
 		Process process = Runtime.getRuntime().exec(command.toString());
 		process.waitFor();
-		return outputFilePathImage;
 	}
 
 }
