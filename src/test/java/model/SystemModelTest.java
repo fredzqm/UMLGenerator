@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JComponent;
+
 import org.junit.Test;
 
 import generator.IClassModel;
@@ -29,7 +31,8 @@ public class SystemModelTest {
 
 		Set<String> acutal = new HashSet<>();
 		Set<String> expect = new HashSet<>(Arrays.asList("javax.swing.JComponent", "java.awt.Container",
-				"java.awt.Component", "java.lang.Object"));
+				"java.awt.Component", "java.lang.Object", "java.awt.image.ImageObserver", "java.awt.MenuContainer",
+				"java.io.Serializable", "javax.swing.TransferHandler$HasGetTransferHandler"));
 
 		for (IClassModel x : sys.getClasses())
 			acutal.add(x.getName());
