@@ -10,7 +10,7 @@ import java.util.Collection;
 public class GraphVizMethodParser implements IParser<IMethodModel> {
     private Collection<IModifier> filters;
 
-    public GraphVizMethodParser(Collection<IModifier> filters) {
+    GraphVizMethodParser(Collection<IModifier> filters) {
         this.filters = filters;
     }
 
@@ -19,7 +19,13 @@ public class GraphVizMethodParser implements IParser<IMethodModel> {
         StringBuilder classMethod = new StringBuilder();
         if (!filters.contains(method.getModifier())) {
             // Add the modifier.
-            classMethod.append(method.getModifier().getModifierSymbol());
+            String modifierSymbol = method.getModifier().getModifierSymbol();
+            // We need to escape the space for default methods.
+            if (modifierSymbol.equals(" ")) {
+                classMethod.append(" \\").append(modifierSymbol);
+            } else {
+                classMethod.append(modifierSymbol);
+            }
             classMethod.append(" ");
 
             // Add the name.
@@ -29,11 +35,10 @@ public class GraphVizMethodParser implements IParser<IMethodModel> {
             // Add the arguments.
             int methodLengthBefore = classMethod.length();
             method.getArguments().forEach((type) -> {
-                classMethod.append(type.getName());
                 // Java does not keep track of variable names.
                 // classMethod.append(" : ");
                 // classMethod.append(type.getName());
-                classMethod.append(", ");
+                classMethod.append(String.format("%s, ", type.getName()));
             });
 
             // Remove the ", " and end method with parenthesis.
@@ -44,11 +49,9 @@ public class GraphVizMethodParser implements IParser<IMethodModel> {
             }
 
             // Add the return type.
-            classMethod.append(" : ");
-            classMethod.append(method.getReturnType().getName());
-            classMethod.append("\\l ");
+            classMethod.append(String.format(" : %s \\l", method.getReturnType().getName()));
         }
+
         return classMethod.toString();
     }
-
 }

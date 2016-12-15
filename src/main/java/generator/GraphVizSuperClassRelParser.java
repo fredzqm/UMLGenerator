@@ -10,7 +10,7 @@ import java.util.Collection;
 public class GraphVizSuperClassRelParser implements IParser<IClassModel> {
     private Collection<IModifier> filters;
 
-    public GraphVizSuperClassRelParser(Collection<IModifier> filters) {
+    GraphVizSuperClassRelParser(Collection<IModifier> filters) {
         this.filters = filters;
     }
 
@@ -20,12 +20,11 @@ public class GraphVizSuperClassRelParser implements IParser<IClassModel> {
         if (superClass == null || filters.contains(superClass.getModifier())) {
             return "";
         }
-        StringBuilder sb = new StringBuilder();
 
+        StringBuilder sb = new StringBuilder();
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
-        sb.append("\"").append(superClass.getName()).append("\"");
-        sb.append("};\n");
-        sb.append("\n\t");
+        sb.append(String.format("\"%s\"};\n\n\t", superClass.getName()));
+
         return sb.toString();
     }
 

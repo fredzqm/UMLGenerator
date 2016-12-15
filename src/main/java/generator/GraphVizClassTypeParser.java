@@ -5,9 +5,9 @@ import generator.IClassModel.IClassType;
 public class GraphVizClassTypeParser implements IParser<IClassType> {
 
     @Override
-    public String parse(IClassType clasType) {
+    public String parse(IClassType classType) {
         StringBuilder steroType = new StringBuilder();
-        clasType.switchByCase(new IClassModel.IClassType.Switcher() {
+        classType.switchByCase(new IClassModel.IClassType.Switcher() {
             @Override
             public void ifInterface() {
                 steroType.append("\\<\\<Interface\\>\\>\\n");
