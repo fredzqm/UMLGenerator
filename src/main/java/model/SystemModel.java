@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * This class representing the entire model of a java program
+ *
  */
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
 	private AbstractASMParser asmServiceProvider;
@@ -28,9 +29,6 @@ public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
 		else
 			asmParser = new NonRecursiveASMParser(config.getClasses());
 
-    @Override
-    public List<ClassModel> getClasses() {
-        return importantClasses;
-    }
-
+		return new SystemModel(config.getClasses(), asmParser);
+	}
 }

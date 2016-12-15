@@ -1,6 +1,7 @@
 package generator;
 
 import config.Configuration;
+import model.ASMParser;
 import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
