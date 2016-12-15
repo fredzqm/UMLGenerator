@@ -10,13 +10,13 @@ import generator.ISystemModel;
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
 	private AbstractASMParser asmServiceProvider;
 
-	public SystemModel(Iterable<String> classList, AbstractASMParser asmParser) {
+	private SystemModel(AbstractASMParser asmParser) {
 		asmServiceProvider = asmParser;
 	}
 
 	@Override
 	public Iterable<ClassModel> getClasses() {
-		return asmServiceProvider.getImportantClasses();
+		return asmServiceProvider.getClasses();
 	}
 
 	public static SystemModel getInstance(IModelConfiguration config) {
@@ -26,7 +26,7 @@ public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
 		else
 			asmParser = new NonRecursiveASMParser(config.getClasses());
 
-		return new SystemModel(config.getClasses(), asmParser);
+		return new SystemModel(asmParser);
 	}
 
 }

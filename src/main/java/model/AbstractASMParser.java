@@ -16,18 +16,21 @@ import java.util.Map;
  *
  */
 public abstract class AbstractASMParser implements ASMServiceProvider {
-	private Map<String, ClassModel> map = new HashMap<>();
+	private Map<String, ClassModel> map;
 
-	public AbstractASMParser(Iterable<String> importClassesList) {
+	public AbstractASMParser() {
 		map = new HashMap<>();
+	}
+
+	protected void addImportantClasses(Iterable<String> importClassesList) {
 		if (importClassesList != null) {
 			for (String importantClass : importClassesList) {
-				getClassByName(importantClass, true);
+				getClassByName(importantClass);
 			}
 		}
 	}
 
-	protected ClassModel getClassByName(String className, boolean important) {
+	protected ClassModel parseClass(String className) {
 		className = className.replace(".", "/");
 		if (map.containsKey(className))
 			return map.get(className);
@@ -35,7 +38,7 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 			ClassReader reader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-			ClassModel model = new ClassModel(this, classNode, important);
+			ClassModel model = new ClassModel(this, classNode);
 			map.put(className, model);
 			return model;
 		} catch (IOException e) {
@@ -48,7 +51,7 @@ public abstract class AbstractASMParser implements ASMServiceProvider {
 		return map.toString();
 	}
 
-	public Iterable<ClassModel> getImportantClasses() {
+	public Iterable<ClassModel> getClasses() {
 		return new ArrayList<ClassModel>(map.values());
 	}
 }

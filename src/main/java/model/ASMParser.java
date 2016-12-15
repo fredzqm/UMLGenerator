@@ -11,12 +11,13 @@ public class ASMParser extends AbstractASMParser {
 
 	/**
 	 * 
-	 * @param importClassesList
+	 * @param importantList
 	 *            important classes for this parser
 	 * @return ASMParser instance that already parsed the important classes.
 	 */
-	public ASMParser(Iterable<String> importClassesList) {
-		super(importClassesList);
+	public ASMParser(Iterable<String> importantList) {
+		super();
+		addImportantClasses(importantList);
 	}
 
 	/**
@@ -28,7 +29,7 @@ public class ASMParser extends AbstractASMParser {
 
 	@Override
 	public ClassModel getClassByName(String className) {
-		ClassModel model = getClassByName(className, false);
+		ClassModel model = parseClass(className);
 		model.getSuperClass();
 		return model;
 	}

@@ -15,8 +15,7 @@ import java.util.*;
 /**
  * Representing classes in java program
  * 
- * This class handles inheritance, dependency relationship among classes. If
- * {@link #isImportant()} returns true, this class is the focus of the analyzes.
+ * This class handles inheritance, dependency relationship among classes. 
  * 
  * 
  * A class may have four different type of methods -- constructor, instance
@@ -30,7 +29,6 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	private final ASMServiceProvider asmServiceProvider;
 	private final ClassNode asmClassNode;
 
-	private final boolean important;
 	private final Modifier modifier;
 	private final boolean isFinal;
 	private final ClassType classType;
@@ -52,10 +50,9 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	 * @param asmClassNode
 	 * @param important
 	 */
-	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode, boolean important) {
+	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode) {
 		this.asmServiceProvider = asmServiceProvider;
 		this.asmClassNode = asmClassNode;
-		this.important = important;
 		this.modifier = Modifier.parse(asmClassNode.access);
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
 		this.classType = ClassType.parse(asmClassNode.access);
@@ -66,10 +63,6 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = getClassByName(asmClassNode.superName);
 		return superClass;
-	}
-
-	public boolean isImportant() {
-		return important;
 	}
 
 	public String getName() {
