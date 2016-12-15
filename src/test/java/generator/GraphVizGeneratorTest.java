@@ -41,6 +41,7 @@ public class GraphVizGeneratorTest {
 
         Configuration config = Configuration.getInstance();
         config.setNodesep(1.0);
+        config.setRankDir("BT");
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator(config);
@@ -50,6 +51,7 @@ public class GraphVizGeneratorTest {
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
+        assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\"generator.DummyClass\""));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
@@ -95,6 +97,7 @@ public class GraphVizGeneratorTest {
         config.setFilters(filters);
         config.setNodesep(1.0);
         config.setRecursive(true);
+        config.setRankDir("BT");
 
         // FIXME: Remove test code.
         config.setOutputDirectory("./output");
@@ -111,6 +114,7 @@ public class GraphVizGeneratorTest {
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
+        assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\"generator.DummyClass\""));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));

@@ -34,9 +34,10 @@ public class GraphVizGenerator implements IGenerator {
 
         // TODO: This can be configurable.
         // Basic Configurations.
-        dotString.append("\tnodesep=").append(config.getNodeSep()).append(";\n");
-        dotString.append("\tnode [shape=record];");
-        dotString.append("\n\n");
+        dotString.append(String.format("\tnodesep=%s;\n", config.getNodeSep()));
+        dotString.append("\tnode [shape=record];\n");
+        dotString.append(String.format("\trankdir=%s;\n", config.getRankDir()));
+        dotString.append("\n");
 
         // Basic UML Boxes.
         dotString.append(classParser.parse(classes));
