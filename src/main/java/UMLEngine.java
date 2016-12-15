@@ -23,7 +23,6 @@ public class UMLEngine implements Runnable {
 
 		// analyze
 		
-		
 		// generate
 		IGenerator generator = new Graphvizgenerator(config);
 		String graphVisStr = generator.generate(systemModel, null);
@@ -36,8 +35,6 @@ public class UMLEngine implements Runnable {
 			e.printStackTrace();
 		}
 		
-		
-
 	}
 
 }

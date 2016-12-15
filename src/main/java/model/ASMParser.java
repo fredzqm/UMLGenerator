@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 /**
  * The concrete ASM service provider that will recursively parse all related
  * classes request. {@see NonRecursiveASMParser}
