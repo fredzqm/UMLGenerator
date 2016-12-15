@@ -231,25 +231,23 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
             return CONCRETE;
         }
 
-        @Override
-        public void switchByCase(Switcher switcher) {
-            switch (this) {
-                case ABSTRACT:
-                    switcher.ifAbstract();
-                    break;
-                case INTERFACE:
-                    switcher.ifInterface();
-                    break;
-                case CONCRETE:
-                    switcher.ifConcrete();
-                    break;
-                case ENUM:
-                    switcher.ifEnum();
-                    break;
-                default:
-                    // TODO: Fred: Handle this (throw some exception).
-            }
-        }
-    }
+		@Override
+		public void switchByCase(Switcher switcher) {
+			switch (this) {
+			case ABSTRACT:
+				switcher.ifAbstract();
+				break;
+			case INTERFACE:
+				switcher.ifInterface();
+				break;
+			case CONCRETE:
+				switcher.ifConcrete();
+				break;
+			case ENUM:
+				switcher.ifEnum();
+				break;
+			}
+		}
+	}
 
 }

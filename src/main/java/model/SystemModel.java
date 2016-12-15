@@ -10,26 +10,23 @@ import java.util.List;
  * This class representing the entire model of a java program
  */
 public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
-    private ASMServiceProvider asmServiceProvider;
-    private List<ClassModel> importantClasses;
+	private AbstractASMParser asmServiceProvider;
 
-    public SystemModel(Iterable<String> classList, ASMServiceProvider asmParser) {
-        asmServiceProvider = asmParser;
-        importantClasses = new ArrayList<>();
-        for (String className : classList) {
-            importantClasses.add(asmServiceProvider.getClassByName(className));
-        }
-    }
+	public SystemModel(Iterable<String> classList, AbstractASMParser asmParser) {
+		asmServiceProvider = asmParser;
+	}
 
-    public static SystemModel getInstance(IModelConfiguration config) {
-        ASMServiceProvider asmParser;
-        if (config.isRecursive())
-            asmParser = new ASMParser(config.getClasses());
-        else
-            asmParser = new NonRecursiveASMParser(config.getClasses());
+	@Override
+	public Iterable<ClassModel> getClasses() {
+		return asmServiceProvider.getImportantClasses();
+	}
 
-        return new SystemModel(config.getClasses(), asmParser);
-    }
+	public static SystemModel getInstance(IModelConfiguration config) {
+		AbstractASMParser asmParser;
+		if (config.isRecursive())
+			asmParser = new ASMParser(config.getClasses());
+		else
+			asmParser = new NonRecursiveASMParser(config.getClasses());
 
     @Override
     public List<ClassModel> getClasses() {
