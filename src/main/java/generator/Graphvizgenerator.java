@@ -7,22 +7,22 @@ import java.util.Collection;
  * <p>
  * Created by lamd on 12/7/2016.
  */
-public class Ggenerator implements IGenerator {
+public class Graphvizgenerator implements IGenerator {
 	private IGeneratorConfiguration config;
 	private IParser<IClassModel> classParser, extendsRelParser, implementsRelParser, hasRelPraser, dependsOnRelParser;
 
-	public Ggenerator(IGeneratorConfiguration config) {
+	public Graphvizgenerator(IGeneratorConfiguration config) {
 		Collection<IModifier> filters = config.getFilters();
 		this.config = config;
 
 		// parsing class
-		this.classParser = new GClassParser(filters);
+		this.classParser = new GraphvizClassParser(filters);
 
 		// parsing class relationship
 		this.extendsRelParser = new GSuperClassRelParser(filters);
-		this.implementsRelParser = new GInterfaceParser();
-		this.hasRelPraser = new GHasRelParser(filters);
-		this.dependsOnRelParser = new GDependsOnRelParser(filters);
+		this.implementsRelParser = new GraphvizInterfaceParser();
+		this.hasRelPraser = new GraphvizHasRelParser(filters);
+		this.dependsOnRelParser = new GraphvizDependsOnRelParser(filters);
 	}
 
 	@Override
