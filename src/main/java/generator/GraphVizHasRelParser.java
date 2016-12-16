@@ -10,26 +10,26 @@ import java.util.Collection;
 public class GraphVizHasRelParser implements IParser<IClassModel> {
     private Collection<IModifier> filters;
 
-    public GraphVizHasRelParser(Collection<IModifier> filters) {
+    GraphVizHasRelParser(Collection<IModifier> filters) {
         this.filters = filters;
     }
 
     @Override
     public String parse(IClassModel thisClass) {
-        Iterable<? extends IClassModel> otherClassLs = thisClass.getHasRelation();
+        Iterable<? extends IClassModel> otherClassList = thisClass.getHasRelation();
 
         StringBuilder sb = new StringBuilder();
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
         int hasALengthBefore = sb.length();
-        otherClassLs.forEach((has) -> {
+
+        otherClassList.forEach((has) -> {
             if (!filters.contains(has.getModifier())) {
-                sb.append("\"").append(has.getName()).append("\"");
-                sb.append(", ");
+                sb.append(String.format("\"%s\", ", has.getName()));
             }
         });
+
         GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
 
-        sb.append("\n\t");
         return sb.toString();
     }
 

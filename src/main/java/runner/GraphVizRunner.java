@@ -18,6 +18,17 @@ public class GraphVizRunner implements IRunner {
         String outputFilePathImage = outputFilePath + "." + config.getOutputFormat();
 
         // write dot string into the file system
+        writeDOTFile(config, dotString, outputFilePathDot);
+
+        // execute command to create the image file
+        // Create command "<execPath> -T<format> <input> -o <output>
+        String command = String.format("%s -T%s %s -o %s", config.getExecutablePath(), config.getOutputFormat(),
+                outputFilePathDot, outputFilePathImage);
+        Process process = Runtime.getRuntime().exec(command.toString());
+        process.waitFor();
+    }
+
+    private void writeDOTFile(IRunnerConfiguration config, String dotString, String outputFilePathDot) throws IOException {
         File outputDir = new File(config.getOutputDirectory());
         outputDir.mkdirs();
         try {
@@ -28,13 +39,6 @@ public class GraphVizRunner implements IRunner {
             e.printStackTrace();
             throw new IOException("[ ERROR ]: Unable to create file.");
         }
-
-        // execute command to create the image file
-        // Create command "<execPath> -T<format> <input> -o <output>
-        String command = String.format("%s -T%s %s -o %s", config.getExecutablePath(), config.getOutputFormat(),
-                outputFilePathDot, outputFilePathImage);
-        Process process = Runtime.getRuntime().exec(command.toString());
-        process.waitFor();
     }
 
 }
