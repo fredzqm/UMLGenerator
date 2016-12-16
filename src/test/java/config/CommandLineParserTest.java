@@ -1,7 +1,8 @@
 package config;
 
 import generator.IModifier;
-import model.Modifier;
+import utility.Modifier;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -2,11 +2,13 @@ package generator;
 
 import java.util.Collection;
 
+import utility.ClassType;
+
 /**
  * Representing a single class in the DOT language.
  */
 public class GraphVizClassParser implements IParser<IClassModel> {
-    private IParser<IClassModel.IClassType> classTypeParser;
+    private IParser<ClassType> classTypeParser;
     private IParser<IFieldModel> fieldParser;
     private IParser<IMethodModel> methodParser;
 
@@ -32,7 +34,7 @@ public class GraphVizClassParser implements IParser<IClassModel> {
 //            System.out.println("Serializable");
 //        }
 
-        IClassModel.IClassType classType = model.getType();
+        ClassType classType = model.getType();
 
         // Set Description block.
         sb.append(String.format("\t\"%s\" [\n", name));

@@ -5,10 +5,10 @@ import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.IModifier;
 import generator.ISystemModel;
-import model.Modifier;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
+import utility.Modifier;
 
 import java.util.ArrayList;
 import java.util.HashSet;

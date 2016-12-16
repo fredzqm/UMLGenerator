@@ -2,7 +2,7 @@ package config;
 
 import com.martiansoftware.jsap.*;
 import generator.IModifier;
-import model.Modifier;
+import utility.Modifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;

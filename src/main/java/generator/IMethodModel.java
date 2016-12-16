@@ -1,5 +1,7 @@
 package generator;
 
+import utility.MethodType;
+
 /**
  * An Interface of the Method Models.
  * <p>
@@ -27,7 +29,7 @@ public interface IMethodModel {
      *
      * @return Method Type.
      */
-    IMethodType getMethodType();
+    MethodType getMethodType();
 
     /**
      * Returns true if the Method is final.

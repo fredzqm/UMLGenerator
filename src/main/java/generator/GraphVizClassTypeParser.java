@@ -1,33 +1,23 @@
 package generator;
 
-import generator.IClassModel.IClassType;
+import utility.ClassType;
 
-public class GraphVizClassTypeParser implements IParser<IClassType> {
+public class GraphVizClassTypeParser implements IParser<ClassType> {
 
-    @Override
-    public String parse(IClassType classType) {
-        StringBuilder steroType = new StringBuilder();
-        classType.switchByCase(new IClassModel.IClassType.Switcher() {
-            @Override
-            public void ifInterface() {
-                steroType.append("\\<\\<Interface\\>\\>\\n");
-            }
-
-            @Override
-            public void ifConcrete() {
-            }
-
-            @Override
-            public void ifAbstract() {
-                steroType.append("\\<\\<Abstract\\>\\>\\n");
-            }
-
-            @Override
-            public void ifEnum() {
-                steroType.append("\\<\\<Enumeration\\>\\>\n");
-            }
-        });
-        return steroType.toString();
-    }
+	@Override
+	public String parse(ClassType classType) {
+		switch (classType) {
+		case INTERFACE:
+			return "\\<\\<Interface\\>\\>\\n";
+		case CONCRETE:
+			return "";
+		case ABSTRACT:
+			return "\\<\\<Abstract\\>\\>\\n";
+		case ENUM:
+			return "\\<\\<Enumeration\\>\\>\n";
+		default:
+			throw new RuntimeException("We are missing classType enum " + classType);
+		}
+	}
 
 }

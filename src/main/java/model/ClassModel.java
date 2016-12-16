@@ -3,7 +3,9 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
-import org.objectweb.asm.Opcodes;
+import utility.ClassType;
+import utility.Modifier;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -64,7 +66,7 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		return name;
 	}
 
-	public IClassType getType() {
+	public ClassType getType() {
 		return classType;
 	}
 
@@ -161,36 +163,5 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		IVisitor.visit(this);
 	}
 
-	public enum ClassType implements IClassType {
-		ABSTRACT, INTERFACE, CONCRETE, ENUM;
-
-		public static ClassType parse(int access) {
-			if ((access & Opcodes.ACC_ENUM) != 0)
-				return ClassType.ENUM;
-			if ((access & Opcodes.ACC_INTERFACE) != 0)
-				return ClassType.INTERFACE;
-			if ((access & Opcodes.ACC_ABSTRACT) != 0)
-				return ClassType.ABSTRACT;
-			return CONCRETE;
-		}
-
-		@Override
-		public void switchByCase(Switcher switcher) {
-			switch (this) {
-			case ABSTRACT:
-				switcher.ifAbstract();
-				break;
-			case INTERFACE:
-				switcher.ifInterface();
-				break;
-			case CONCRETE:
-				switcher.ifConcrete();
-				break;
-			case ENUM:
-				switcher.ifEnum();
-				break;
-			}
-		}
-	}
 
 }
