@@ -2,6 +2,7 @@ package generator;
 
 import java.util.Collection;
 
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -23,7 +24,7 @@ public interface IGeneratorConfiguration {
      *
      * @return Set of Method Access Filters.
      */
-    Collection<Modifier> getFilters();
+    IFilter<Modifier> getModifierFilter();
 
     /**
      * Returns either BT or TB depending on how you want the

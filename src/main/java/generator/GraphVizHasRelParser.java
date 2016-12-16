@@ -2,6 +2,7 @@ package generator;
 
 import java.util.Collection;
 
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -10,29 +11,29 @@ import utility.Modifier;
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizHasRelParser implements IParser<IClassModel> {
-    private Collection<Modifier> filters;
+	private IFilter<Modifier> modifierFilter;
 
-    GraphVizHasRelParser(Collection<Modifier> filters) {
-        this.filters = filters;
-    }
+	GraphVizHasRelParser(IFilter<Modifier> filter) {
+		this.modifierFilter = filter;
+	}
 
-    @Override
-    public String parse(IClassModel thisClass) {
-        Iterable<? extends IClassModel> otherClassList = thisClass.getHasRelation();
+	@Override
+	public String parse(IClassModel thisClass) {
+		Iterable<? extends IClassModel> otherClassList = thisClass.getHasRelation();
 
-        StringBuilder sb = new StringBuilder();
-        GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
-        int hasALengthBefore = sb.length();
+		StringBuilder sb = new StringBuilder();
+		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
+		int hasALengthBefore = sb.length();
 
-        otherClassList.forEach((has) -> {
-            if (!filters.contains(has.getModifier())) {
-                sb.append(String.format("\"%s\", ", has.getName()));
-            }
-        });
+		otherClassList.forEach((has) -> {
+			if (modifierFilter.filter(has.getModifier())) {
+				sb.append(String.format("\"%s\", ", has.getName()));
+			}
+		});
 
-        GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
+		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
 
-        return sb.toString();
-    }
+		return sb.toString();
+	}
 
 }

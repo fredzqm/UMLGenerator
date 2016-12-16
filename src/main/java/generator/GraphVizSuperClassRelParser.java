@@ -2,6 +2,7 @@ package generator;
 
 import java.util.Collection;
 
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -10,16 +11,16 @@ import utility.Modifier;
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizSuperClassRelParser implements IParser<IClassModel> {
-    private Collection<Modifier> filters;
+    private IFilter<Modifier> modifierFilter;
 
-    GraphVizSuperClassRelParser(Collection<Modifier> filters) {
-        this.filters = filters;
+    GraphVizSuperClassRelParser(IFilter<Modifier> filters2) {
+        this.modifierFilter = filters2;
     }
 
     @Override
     public String parse(IClassModel thisClass) {
         IClassModel superClass = thisClass.getSuperClass();
-        if (superClass == null || filters.contains(superClass.getModifier())) {
+		if (superClass == null || !modifierFilter.filter(superClass.getModifier())) {
             return "";
         }
 
