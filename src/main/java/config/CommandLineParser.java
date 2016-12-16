@@ -1,7 +1,6 @@
 package config;
 
 import com.martiansoftware.jsap.*;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.util.ArrayList;
@@ -175,27 +174,21 @@ public class CommandLineParser implements ConfigurationFactory {
         conf.setFileName(config.getString("outputfile"));
         conf.setNodesep(config.getDouble("nodeseparationvalue"));
 
-        List<Modifier> filters = new ArrayList<Modifier>();
-		switch (config.getString("filters")) {
-		case "public":
-			filters.add(Modifier.PRIVATE);
-			filters.add(Modifier.PROTECTED);
-			break;
-		case "protected":
-			filters.add(Modifier.PRIVATE);
-			break;
-		case "private":
-			break;
-		default:
-			System.err.println("modifier not found");
-		}
-		conf.setFilters(new IFilter<Modifier>() {
-			@Override
-			public boolean filter(Modifier data) {
-				return !filters.contains(data);
-			}
-
-		});
+        List<Modifier> filters = new ArrayList<>();
+        switch (config.getString("filters")) {
+            case "public":
+                filters.add(Modifier.PRIVATE);
+                filters.add(Modifier.PROTECTED);
+                break;
+            case "protected":
+                filters.add(Modifier.PRIVATE);
+                break;
+            case "private":
+                break;
+            default:
+                System.err.println("modifier not found");
+        }
+        conf.setFilters(data -> !filters.contains(data));
         conf.setRecursive(config.getBoolean("recursive"));
 
         if (config.getBoolean("rankdir")) {
@@ -212,7 +205,7 @@ public class CommandLineParser implements ConfigurationFactory {
      *
      * @param opt- option to add to the commandLineParser
      */
-    public void addOption(Parameter opt) {
+    private void addOption(Parameter opt) {
         try {
             jsap.registerParameter(opt);
         } catch (JSAPException e) {

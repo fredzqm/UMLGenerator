@@ -25,11 +25,9 @@ public interface IGeneratorConfiguration {
     IFilter<Modifier> getModifierFilter();
 
     /**
-     * Returns either BT or TB depending on how you want the
-     * UML to show
      *
-     * @return BT or TB
      */
     String getRankDir();
 
+    IFormat getFormat();
 }

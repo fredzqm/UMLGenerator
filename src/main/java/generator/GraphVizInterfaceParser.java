@@ -15,9 +15,7 @@ class GraphVizInterfaceParser implements IParser<IClassModel> {
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
         int interfaceLengthBefore = sb.length();
 
-        otherClassList.forEach((interfaceModel) -> {
-            sb.append(String.format("\"%s\" ", interfaceModel.getName()));
-        });
+        otherClassList.forEach((interfaceModel) -> sb.append(String.format("\"%s\" ", interfaceModel.getName())));
 
         // If it is empty close the braces without replacing characters.
         GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);

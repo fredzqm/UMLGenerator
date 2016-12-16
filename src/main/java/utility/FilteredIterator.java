@@ -10,42 +10,41 @@ import java.util.Iterator;
  * @author zhang
  */
 class FilteredIterator<T> implements Iterator<T> {
-	private Iterator<? extends T> iterator;
-	private IFilter<T> filter;
-	private T data;
-	private boolean hasNext;
+    private Iterator<? extends T> iterator;
+    private IFilter<T> filter;
+    private T data;
+    private boolean hasNext;
 
-	/**
-	 * Construct a Filtered Iterator.
-	 *
-	 * @param filter
-	 *            the filter used to filter the iterable
-	 * @param iterable
-	 */
-	FilteredIterator(IFilter<T> filter, Iterable<? extends T> iterable) {
-		this.iterator = iterable.iterator();
-		this.filter = filter;
-		advance();
-	}
+    /**
+     * Construct a Filtered Iterator.
+     *
+     * @param filter   the filter used to filter the iterable
+     * @param iterable An iterable to iterate through. // TODO: FRED DOCS!!
+     */
+    FilteredIterator(IFilter<T> filter, Iterable<? extends T> iterable) {
+        this.iterator = iterable.iterator();
+        this.filter = filter;
+        advance();
+    }
 
-	private void advance() {
-		hasNext = false;
-		while (iterator.hasNext() && !hasNext) {
-			data = iterator.next();
-			hasNext = filter.filter(data);
-		}
-	}
+    private void advance() {
+        hasNext = false;
+        while (iterator.hasNext() && !hasNext) {
+            data = iterator.next();
+            hasNext = filter.filter(data);
+        }
+    }
 
-	@Override
-	public boolean hasNext() {
-		return hasNext;
-	}
+    @Override
+    public boolean hasNext() {
+        return hasNext;
+    }
 
-	@Override
-	public T next() {
-		T ret = data;
-		advance();
-		return ret;
-	}
+    @Override
+    public T next() {
+        T ret = data;
+        advance();
+        return ret;
+    }
 
 }

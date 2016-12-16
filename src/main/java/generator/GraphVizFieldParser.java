@@ -11,7 +11,7 @@ import utility.Modifier;
 class GraphVizFieldParser implements IParser<IFieldModel> {
     private IFilter<Modifier> enumFilter;
 
-    public GraphVizFieldParser(IFilter<Modifier> filters2) {
+    GraphVizFieldParser(IFilter<Modifier> filters2) {
         this.enumFilter = filters2;
     }
 
