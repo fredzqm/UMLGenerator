@@ -9,6 +9,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import generator.IClassModel;
+import util.IFilter;
 
 public class ClassModelTest {
 
@@ -43,7 +44,19 @@ public class ClassModelTest {
 				"contains", "replaceFirst", "replaceAll", "replace", "split", "toLowerCase", "toUpperCase", "trim",
 				"toCharArray", "toString", "intern"));
 
-		for (MethodModel x : model.getMethods())
+		IFilter<MethodModel> getInstanceMethod = new IFilter<MethodModel>() {
+			@Override
+			public boolean filter(MethodModel data) {
+				switch (data.getMethodType()) {
+				case METHOD:
+					return true;
+				default:
+					return false;
+				}
+			}
+		};
+
+		for (MethodModel x : getInstanceMethod.filter(model.getMethods()))
 			actual.add(x.getName());
 
 		assertEquals(expected, actual);

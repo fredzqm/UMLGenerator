@@ -3,7 +3,6 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
-import generator.IMethodModel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -37,10 +36,7 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	private Collection<ClassModel> interfaces;
 
 	private Map<String, FieldModel> fields;
-	private Map<Signature, MethodModel> constructors;
 	private Map<Signature, MethodModel> methods;
-	private Map<Signature, MethodModel> staticMethods;
-	private MethodModel staticConstructor;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -115,38 +111,8 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		return null;
 	}
 
-	public Iterable<MethodModel> getConstructors() {
-		return getConstructorMap().values();
-	}
-
-	public Iterable<MethodModel> getStaticMethods() {
-		return getStaticMethodMap().values();
-	}
-
-	public IMethodModel getStaticInitializer() {
-		lazyInitializeMethods();
-		return staticConstructor;
-	}
-
 	private Map<Signature, MethodModel> getMethodsMap() {
-		lazyInitializeMethods();
-		return methods;
-	}
-
-	private Map<Signature, MethodModel> getConstructorMap() {
-		lazyInitializeMethods();
-		return constructors;
-	}
-
-	private Map<Signature, MethodModel> getStaticMethodMap() {
-		lazyInitializeMethods();
-		return staticMethods;
-	}
-
-	private void lazyInitializeMethods() {
 		if (methods == null) {
-			constructors = new HashMap<>();
-			staticMethods = new HashMap<>();
 			methods = new HashMap<>();
 
 			@SuppressWarnings("unchecked")
@@ -154,23 +120,10 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 			for (MethodNode methodNode : ls) {
 				MethodModel methodModel = new MethodModel(this, methodNode);
 				Signature signature = methodModel.getSignature();
-				switch (methodModel.getMethodType()) {
-				case METHOD:
-				case ABSTRACT:
-					methods.put(signature, methodModel);
-					break;
-				case CONSTRUCTOR:
-					constructors.put(signature, methodModel);
-					break;
-				case STATIC:
-					staticMethods.put(signature, methodModel);
-					break;
-				case STATIC_INITIALIZER:
-					staticConstructor = methodModel;
-					break;
-				}
+				methods.put(signature, methodModel);
 			}
 		}
+		return methods;
 	}
 
 	public Iterable<FieldModel> getFields() {
