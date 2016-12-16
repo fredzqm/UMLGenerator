@@ -32,17 +32,10 @@ public class ClassModelTest {
 	@Test
 	public void testGetMethods() {
 		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
-		assertEquals("java.lang.String", model.getName());
+		ClassModel model = parser.getClassByName("model.Dummy");
 
 		Set<String> actual = new HashSet<>();
-		Set<String> expected = new HashSet<>(Arrays.asList("length", "isEmpty", "charAt", "codePointAt",
-				"codePointBefore", "codePointCount", "offsetByCodePoints", "getChars", "getBytes", "equals",
-				"contentEquals", "nonSyncContentEquals", "equalsIgnoreCase", "compareTo", "compareToIgnoreCase",
-				"regionMatches", "startsWith", "endsWith", "hashCode", "indexOf", "indexOfSupplementary", "lastIndexOf",
-				"lastIndexOfSupplementary", "lastIndexOf", "substring", "subSequence", "concat", "replace", "matches",
-				"contains", "replaceFirst", "replaceAll", "replace", "split", "toLowerCase", "toUpperCase", "trim",
-				"toCharArray", "toString", "intern"));
+		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "publicMethod2"));
 
 		IFilter<MethodModel> getInstanceMethod = new IFilter<MethodModel>() {
 			@Override
