@@ -1,6 +1,5 @@
 package generator;
 
-import utility.ClassType;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -8,57 +7,50 @@ import utility.Modifier;
  * Representing a single class in the DOT language.
  */
 class GraphVizClassParser implements IParser<IClassModel> {
-    private IParser<ClassType> classTypeParser;
-    private IParser<IFieldModel> fieldParser;
-    private IParser<IMethodModel> methodParser;
+	private IParser<IClassModel> header;
 
-    GraphVizClassParser(IFilter<Modifier> filters) {
-        // this.header = new GraphVizHeaderParser(model.getType(), this.name);
-        this.classTypeParser = new GraphVizClassTypeParser();
-        this.fieldParser = new GraphVizFieldParser(filters);
-        this.methodParser = new GraphVizMethodParser(filters);
-    }
+	private IFilter<IFieldModel> fieldFilter;
+	private IParser<IFieldModel> fieldParser;
 
-    /**
-     * Returns the String of the Class (header, fields, methods) in DOT file
-     * format.
-     *
-     * @return Class in DOT format.
-     */
-    @Override
-    public String parse(IClassModel model) {
-        StringBuilder sb = new StringBuilder();
-        String name = model.getName();
-        // TODO: for interfaces here.
-//        if (name.equals("java.io.Serializable")) {
-//            System.out.println("Serializable");
-//        }
+	private IFilter<IMethodModel> methodFilter;
+	private IParser<IMethodModel> methodParser;
 
-        ClassType classType = model.getType();
+	GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilter, IFilter<IMethodModel> methodFilter) {
+		this.fieldFilter = fieldFilter;
+		this.methodFilter = methodFilter;
+		this.header = new GraphVizHeaderParser(new GraphVizClassTypeParser());
+		this.fieldParser = new GraphVizFieldParser(filters);
+		this.methodParser = new GraphVizMethodParser(filters);
+	}
 
-        // Set Description block.
-        sb.append(String.format("\t\"%s\" [\n", name));
+	/**
+	 * Returns the String of the Class (header, fields, methods) in DOT file
+	 * format.
+	 *
+	 * @return Class in DOT format.
+	 */
+	@Override
+	public String parse(IClassModel model) {
+		StringBuilder sb = new StringBuilder();
+		String name = model.getName();
 
-        // Set the header.
-        sb.append(String.format("\t\tlabel = \"{%s%s", classTypeParser.parse(classType), model.getName()));
+		// Set the header.
+		sb.append(header.parse(model));
 
-        // Set the fields.
-        // Check to avoid double lines if there are no fields.
-        Iterable<? extends IFieldModel> fields = model.getFields();
-        if (fields.iterator().hasNext()) {
-            sb.append(String.format(" | %s", fieldParser.parse(fields)));
-        }
+		// Set the fields.
+		Iterable<? extends IFieldModel> fields = model.getFields();
+		if (fields.iterator().hasNext()) {
+			sb.append(String.format(" | %s", fieldParser.parse(fieldFilter.filter(fields))));
+		}
 
-        // Set the methods.
-        Iterable<? extends IMethodModel> methods = model.getMethods();
-        if (methods.iterator().hasNext()) {
-            sb.append(String.format(" | %s", methodParser.parse(methods)));
-        }
+		// Set the methods.
+		Iterable<? extends IMethodModel> methods = model.getMethods();
+		if (methods.iterator().hasNext()) {
+			sb.append(String.format(" | %s", methodParser.parse(methodFilter.filter(methods))));
+		}
 
-        // End the Class Block.
-        sb.append("}\"\n\t]\n");
-
-        return sb.toString();
-    }
+		// generate the full string with the label text generated above.
+		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t]\n", name, sb.toString());
+	}
 
 }
