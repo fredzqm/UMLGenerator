@@ -1,5 +1,8 @@
 package generator;
 
+import utility.MethodType;
+import utility.Modifier;
+
 /**
  * An Interface of the Method Models.
  * <p>
@@ -19,7 +22,7 @@ public interface IMethodModel {
      *
      * @return Access Modifier.
      */
-    IModifier getModifier();
+    Modifier getModifier();
 
     /**
      * Returns the Method Type (Abstract, Contructor, Static, Static
@@ -27,7 +30,7 @@ public interface IMethodModel {
      *
      * @return Method Type.
      */
-    IMethodType getMethodType();
+    MethodType getMethodType();
 
     /**
      * Returns true if the Method is final.
@@ -57,23 +60,4 @@ public interface IMethodModel {
      */
     Iterable<? extends ITypeModel> getArguments();
 
-    /**
-     * Type of method
-     */
-    interface IMethodType {
-        void switchByCase(Switcher switcher);
-
-        interface Switcher {
-            void ifConstructor();
-
-            void ifConcrete();
-
-            void ifStatic();
-
-            void ifStaticInitializer();
-
-            void ifAbstract();
-
-        }
-    }
 }

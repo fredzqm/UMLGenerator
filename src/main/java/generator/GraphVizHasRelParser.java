@@ -2,15 +2,17 @@ package generator;
 
 import java.util.Collection;
 
+import utility.Modifier;
+
 /**
  * A GraphVizParser for the model's HasRelations.
  * <p>
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizHasRelParser implements IParser<IClassModel> {
-    private Collection<IModifier> filters;
+    private Collection<Modifier> filters;
 
-    GraphVizHasRelParser(Collection<IModifier> filters) {
+    GraphVizHasRelParser(Collection<Modifier> filters) {
         this.filters = filters;
     }
 

@@ -2,15 +2,17 @@ package generator;
 
 import java.util.Collection;
 
+import utility.Modifier;
+
 /**
  * A GraphVizParser for the Field class.
  * <p>
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizFieldParser implements IParser<IFieldModel> {
-    private Collection<IModifier> filters;
+    private Collection<Modifier> filters;
 
-    public GraphVizFieldParser(Collection<IModifier> filters) {
+    public GraphVizFieldParser(Collection<Modifier> filters) {
         this.filters = filters;
     }
 

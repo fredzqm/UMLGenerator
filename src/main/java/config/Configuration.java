@@ -1,13 +1,13 @@
 package config;
 
-import generator.IGeneratorConfiguration;
-import generator.IModifier;
-import model.IModelConfiguration;
-import runner.IRunnerConfiguration;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+
+import generator.IGeneratorConfiguration;
+import model.IModelConfiguration;
+import runner.IRunnerConfiguration;
+import utility.Modifier;
 
 /**
  * Created by lamd on 12/7/2016.
@@ -21,7 +21,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private String outputDirectory;
     private String fileName;
     private double nodesep;
-    private Collection<IModifier> filters;
+    private Collection<Modifier> filters;
     private boolean isRecursive;
     private String rankDir;
 
@@ -91,11 +91,11 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.isRecursive = isRecursive;
     }
 
-    public Collection<IModifier> getFilters() {
+    public Collection<Modifier> getFilters() {
         return this.filters;
     }
 
-    public void setFilters(Collection<IModifier> filters) {
+    public void setFilters(Collection<Modifier> filters) {
         this.filters = filters;
     }
 

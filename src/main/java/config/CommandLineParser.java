@@ -1,13 +1,19 @@
 package config;
 
-import com.martiansoftware.jsap.*;
-import generator.IModifier;
-import model.Modifier;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.Switch;
+import com.martiansoftware.jsap.UnflaggedOption;
+
+import utility.Modifier;
 
 /**
  * Created by fineral on 12/11/2016
@@ -182,7 +188,7 @@ public class CommandLineParser implements ConfigurationFactory {
         conf.setFileName(config.getString("outputfile"));
         conf.setNodesep(config.getDouble("nodeseparationvalue"));
 
-        List<IModifier> filters = new ArrayList<IModifier>();
+        List<Modifier> filters = new ArrayList<Modifier>();
         switch (config.getString("filters")) {
             case "public":
                 filters.add(Modifier.PRIVATE);

@@ -1,19 +1,18 @@
 package example;
 
-import config.Configuration;
-import generator.GraphVizGenerator;
-import generator.IGenerator;
-import generator.IModifier;
-import generator.ISystemModel;
-import model.Modifier;
-import model.SystemModel;
-import runner.GraphVizRunner;
-import runner.IRunner;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import config.Configuration;
+import generator.GraphVizGenerator;
+import generator.IGenerator;
+import generator.ISystemModel;
+import model.SystemModel;
+import runner.GraphVizRunner;
+import runner.IRunner;
+import utility.Modifier;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -41,7 +40,7 @@ public class LocalTester {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        Set<IModifier> filters = new HashSet<>();
+        Set<Modifier> filters = new HashSet<>();
         filters.add(Modifier.PROTECTED);
         filters.add(Modifier.PRIVATE);
         config.setFilters(filters);

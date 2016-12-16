@@ -1,13 +1,13 @@
 package generator;
 
 import config.Configuration;
-import model.Modifier;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;
 import runner.IRunner;
+import utility.Modifier;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,7 +92,7 @@ public class GraphVizGeneratorTest {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        Set<IModifier> filters = new HashSet<>();
+        Set<Modifier> filters = new HashSet<>();
         filters.add(Modifier.PROTECTED);
         filters.add(Modifier.PRIVATE);
         config.setFilters(filters);

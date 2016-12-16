@@ -1,5 +1,7 @@
 package generator;
 
+import utility.Modifier;
+
 /**
  * An interface for Fields.
  * <p>
@@ -11,7 +13,7 @@ public interface IFieldModel {
      *
      * @return Field's Acess Modifier.
      */
-    IModifier getModifier();
+    Modifier getModifier();
 
     /**
      * Returns the name of the Field.
