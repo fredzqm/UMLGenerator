@@ -147,9 +147,10 @@ public class GraphVizGeneratorTest {
         // Set up a System Model.
         ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
-        config.setFileName("test");
+        config.setFileName("testWrite");
         config.setOutputFormat("png");
         config.setExecutablePath("dot");
+        config.setRankDir("BT");
 
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(directory.toString());
@@ -165,11 +166,13 @@ public class GraphVizGeneratorTest {
      * Interal Testing Runner method to call for actual output.
      *
      * @param config         Configuration for the runner to use.
-     * @param graphVizString GraphViz DOT string t
+     * @param graphVizString GraphViz DOT string
      */
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner();
+        config.setOutputDirectory("./output");
+        config.setFileName("testWrite");
         try {
             runner.execute(config, graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
