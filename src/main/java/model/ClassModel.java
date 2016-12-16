@@ -25,7 +25,7 @@ import java.util.*;
  *
  * @author zhang
  */
-public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
+class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
 	private final ASMServiceProvider asmServiceProvider;
 	private final ClassNode asmClassNode;
 

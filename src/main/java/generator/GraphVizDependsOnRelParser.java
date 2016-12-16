@@ -1,7 +1,6 @@
 package generator;
 
-import java.util.Collection;
-
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -9,11 +8,11 @@ import utility.Modifier;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizDependsOnRelParser implements IParser<IClassModel> {
-    private Collection<Modifier> filters;
+class GraphVizDependsOnRelParser implements IParser<IClassModel> {
+    private IFilter<Modifier> modifierFilter;
 
-    GraphVizDependsOnRelParser(Collection<Modifier> filters) {
-        this.filters = filters;
+    GraphVizDependsOnRelParser(IFilter<Modifier> filter) {
+        this.modifierFilter = filter;
     }
 
     @Override
@@ -25,7 +24,7 @@ public class GraphVizDependsOnRelParser implements IParser<IClassModel> {
         int dependsOnLengthBefore = sb.length();
 
         otherClassList.forEach((has) -> {
-            if (!filters.contains(has.getModifier())) {
+            if (modifierFilter.filter(has.getModifier())) {
                 sb.append(String.format("\"%s\", ", has.getName()));
             }
         });

@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.FieldNode;
  *
  * @author zhang
  */
-public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
+class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     private final FieldNode asmFieldNode;
     private final ClassModel belongsTo;
 
