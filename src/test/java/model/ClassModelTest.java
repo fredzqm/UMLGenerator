@@ -1,7 +1,6 @@
 package model;
 
-import generator.IClassModel;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,7 +9,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import generator.IClassModel;
-import util.IFilter;
+import utility.IFilter;
 
 public class ClassModelTest {
 
