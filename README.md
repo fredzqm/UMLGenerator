@@ -1,10 +1,11 @@
-# Reverse-Engineered Design (RevEngD)
+# FAD Reverse Java UML builder
 
-[![build status](https://ada.csse.rose-hulman.edu/CSSE374-Public/RevEngD/badges/master/build.svg)](https://ada.csse.rose-hulman.edu/CSSE374-Public/RevEngD/commits/master)
 
-[![coverage report](https://ada.csse.rose-hulman.edu/CSSE374-Public/RevEngD/badges/master/coverage.svg)](https://ada.csse.rose-hulman.edu/CSSE374-Public/RevEngD/commits/master)
+[![build status](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/build.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master)
 
-This application reverse engineers the design of a supplied codebase.
+[![coverage report](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/coverage.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master)
+
+We use continuous integration to test our program 
 
 To build this project from command line (note that it also computes test coverage):
 **./gradlew build**
@@ -55,9 +56,13 @@ Usage: Command Line Parser
   [-k|--direction]
         desc: use this flag if you want the UML to be outputed Top down, otherwise it will be outputed Bottom up
 
-Member Contributions:
-Adam:  	Managed the creation and updates to the UML, pair programmed the initial model, coded the CommandLineParser and Configuration, Performed Debugging, 		wrote the README
-Fred:  	, Performed Debugging
+
+## Member Contributions:
+
+Adam:  	Managed the creation and updates to the UML, pair programmed the initial model, coded the CommandLineParser and Configuration, Performed Debugging, wrote the README
+
+Fred:   I implemented the model package of the program. I help David identify a good design for generator and break his one class generator into multiple classes with strategy patthern. I come up with the IFilter idea, so iterable can be process with one line and we can customize logic into generator external.
+
 David: 	, Performed Debugging
 
 
