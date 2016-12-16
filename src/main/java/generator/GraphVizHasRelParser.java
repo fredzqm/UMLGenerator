@@ -26,7 +26,7 @@ public class GraphVizHasRelParser implements IParser<IClassModel> {
 
         otherClassList.forEach((has) -> {
             if (!filters.contains(has.getModifier())) {
-                sb.append(String.format("\"%s\", ", has.getName()));
+                sb.append(String.format("\"%s\" ", has.getName()));
             }
         });
 
