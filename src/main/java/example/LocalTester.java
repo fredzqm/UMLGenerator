@@ -1,10 +1,5 @@
 package example;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import config.Configuration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
@@ -12,7 +7,11 @@ import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
+import utility.IFilter;
 import utility.Modifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -40,10 +39,13 @@ public class LocalTester {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        Set<Modifier> filters = new HashSet<>();
-        filters.add(Modifier.PROTECTED);
-        filters.add(Modifier.PRIVATE);
-        config.setFilters(filters);
+        config.setFilters(new IFilter<Modifier>() {
+            @Override
+            public boolean filter(Modifier data) {
+                return data == Modifier.DEFAULT || data == Modifier.PUBLIC;
+            }
+
+        });
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
@@ -56,7 +58,8 @@ public class LocalTester {
 
         String actual = generator.generate(systemModel, null);
 
-        internalRunner(config, actual); // Comment out if you want actual files to be
+        internalRunner(config, actual); // Comment out if you want actual files
+        // to be
     }
 
     /**

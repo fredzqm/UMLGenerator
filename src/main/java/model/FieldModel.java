@@ -4,17 +4,16 @@ import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IFieldModel;
 import generator.ITypeModel;
-import utility.Modifier;
-
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
+import utility.Modifier;
 
 /**
  * Representing field in java programs
  *
  * @author zhang
  */
-public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
+class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     private final FieldNode asmFieldNode;
     private final ClassModel belongsTo;
 

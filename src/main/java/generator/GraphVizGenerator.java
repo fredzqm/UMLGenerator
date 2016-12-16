@@ -1,7 +1,6 @@
 package generator;
 
-import java.util.Collection;
-
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -14,7 +13,7 @@ public class GraphVizGenerator implements IGenerator {
     private IParser<IClassModel> classParser, extendsRelParser, implementsRelParser, hasRelPraser, dependsOnRelParser;
 
     public GraphVizGenerator(IGeneratorConfiguration config) {
-        Collection<Modifier> filters = config.getFilters();
+        IFilter<Modifier> filters = config.getModifierFilter();
         this.config = config;
 
         // parsing class

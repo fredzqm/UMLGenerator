@@ -1,4 +1,4 @@
-package problem;
+package labCITest;
 
 public class AmazonLineParser implements ILineParser {
 

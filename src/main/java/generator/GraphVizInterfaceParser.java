@@ -5,7 +5,7 @@ package generator;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizInterfaceParser implements IParser<IClassModel> {
+class GraphVizInterfaceParser implements IParser<IClassModel> {
 
     @Override
     public String parse(IClassModel thisClass) {

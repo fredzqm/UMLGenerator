@@ -1,4 +1,4 @@
-package problem;
+package labCITest;
 
 import java.io.BufferedReader;
 import java.io.IOException;

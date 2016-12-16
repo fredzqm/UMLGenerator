@@ -1,7 +1,6 @@
 package generator;
 
-import java.util.Collection;
-
+import utility.IFilter;
 import utility.Modifier;
 
 /**
@@ -9,17 +8,17 @@ import utility.Modifier;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizMethodParser implements IParser<IMethodModel> {
-    private Collection<Modifier> filters;
+class GraphVizMethodParser implements IParser<IMethodModel> {
+    private IFilter<Modifier> modifierFiter;
 
-    GraphVizMethodParser(Collection<Modifier> filters) {
-        this.filters = filters;
+    GraphVizMethodParser(IFilter<Modifier> filters2) {
+        this.modifierFiter = filters2;
     }
 
     @Override
     public String parse(IMethodModel method) {
         StringBuilder classMethod = new StringBuilder();
-        if (!filters.contains(method.getModifier())) {
+        if (modifierFiter.filter(method.getModifier())) {
             // Add the modifier.
             String modifierSymbol = method.getModifier().getModifierSymbol();
             // We need to escape the space for default methods.

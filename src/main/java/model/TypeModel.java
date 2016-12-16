@@ -8,7 +8,7 @@ import org.objectweb.asm.Type;
  *
  * @author zhang
  */
-public class TypeModel implements ITypeModel {
+class TypeModel implements ITypeModel {
     private final ClassModel classModel;
     private final int dimension;
     private final PrimitiveType primiType;

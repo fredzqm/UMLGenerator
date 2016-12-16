@@ -7,11 +7,14 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;
 import runner.IRunner;
+import utility.IFilter;
 import utility.Modifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
@@ -92,10 +95,13 @@ public class GraphVizGeneratorTest {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        Set<Modifier> filters = new HashSet<>();
-        filters.add(Modifier.PROTECTED);
-        filters.add(Modifier.PRIVATE);
-        config.setFilters(filters);
+        config.setFilters(new IFilter<Modifier>() {
+            @Override
+            public boolean filter(Modifier data) {
+                return data == Modifier.DEFAULT || data == Modifier.PUBLIC;
+            }
+
+        });
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");

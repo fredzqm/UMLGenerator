@@ -1,17 +1,15 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-
 import generator.IGeneratorConfiguration;
 import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
+import utility.IFilter;
 import utility.Modifier;
 
+import java.util.ArrayList;
+
 /**
- * Created by lamd on 12/7/2016.
- * Edited by fineral on 12/13/2016
+ * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration {
 
@@ -21,7 +19,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private String outputDirectory;
     private String fileName;
     private double nodesep;
-    private Collection<Modifier> filters;
+    private IFilter<Modifier> modifierFilter;
     private boolean isRecursive;
     private String rankDir;
 
@@ -31,7 +29,12 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setFileName("out");
         conf.setNodesep(1);
         conf.setClasses(new ArrayList<>());
-        conf.setFilters(new HashSet<>());
+        conf.setFilters(new IFilter<Modifier>() {
+            @Override
+            public boolean filter(Modifier data) {
+                return true;
+            }
+        });
         return conf;
     }
 
@@ -91,12 +94,12 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.isRecursive = isRecursive;
     }
 
-    public Collection<Modifier> getFilters() {
-        return this.filters;
+    public IFilter<Modifier> getModifierFilter() {
+        return this.modifierFilter;
     }
 
-    public void setFilters(Collection<Modifier> filters) {
-        this.filters = filters;
+    public void setFilters(IFilter<Modifier> filter) {
+        this.modifierFilter = filter;
     }
 
     public String getRankDir() {
@@ -108,14 +111,10 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     }
 
     public String toString() {
-        return "Classes:                   " + classes + "\n"
-                + "Executable Path:           " + executablePath + "\n"
-                + "Output Extension:          " + outputFormat + "\n"
-                + "Output file name:          " + fileName + "\n"
-                + "Output Directory:          " + outputDirectory + "\n"
-                + "Node seperation value:     " + nodesep + "\n"
-                + "Filters:                   " + filters + "\n"
-                + "Recursive?:                " + isRecursive + "\n"
-                + "Rank Dir:                  " + rankDir;
+        return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
+                + "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
+                + "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
+                + "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
+                + isRecursive + "\n" + "Rank Dir:                  " + rankDir;
     }
 }

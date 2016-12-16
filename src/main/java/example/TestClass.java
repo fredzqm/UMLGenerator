@@ -29,7 +29,7 @@ public class TestClass {
             // print out specific error messages describing the problems
             // with the command line, THEN print usage, THEN print full
             // help.  This is called "beating the user with a clue stick."
-            for (Iterator errs = config.getErrorMessageIterator();
+            for (Iterator<?> errs = config.getErrorMessageIterator();
                  errs.hasNext(); ) {
                 System.err.println("Error: " + errs.next());
             }
