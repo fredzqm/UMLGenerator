@@ -4,68 +4,54 @@ import org.junit.Test;
 
 import generator.IClassModel;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ASMParserTest {
-
+	
 	@Test
-	public void asmParserString() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
-		assertEquals("java.lang.String", model.getName());
+	public void getClassesRecursive() {
+		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
+			@Override
+			public boolean isRecursive() {
+				return true;
+			}
 
-		Set<String> fields = new HashSet<>();
-		Set<String> actfields = new HashSet<>();
+			@Override
+			public Iterable<String> getClasses() {
+				return Arrays.asList("java.lang.String");
+			}
+		});
+		Set<String> expected;
+		Iterable<ClassModel> ls;
+		Set<String> actual;
 
-		actfields.add("value");
-		actfields.add("hash");
-		actfields.add("serialVersionUID");
-		actfields.add("serialPersistentFields");
-		actfields.add("CASE_INSENSITIVE_ORDER");
+		expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object", "java.lang.CharSequence",
+				"java.lang.Comparable", "java.io.Serializable"));
+		ls = parser.getClasses();
+		actual = new HashSet<>();
+		for (ClassModel c : ls)
+			actual.add(c.getName());
 
-		for (FieldModel field : model.getFields())
-			fields.add(field.getName());
+		assertEquals(expected, actual);
 
-		assertEquals(actfields, fields);
 	}
+	
 
 	@Test
-	public void asmParserStringInterface() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
-		assertEquals("java.lang.String", model.getName());
+	public void testGetClassesNonRecursive() {
+		ASMClassTracker parser = new ASMParser();
+		parser.addClasses(Arrays.asList("java/lang/String"));
 		
-		Set<String> acutalInterfaces = new HashSet<>();
-		Set<String> expectInterfaces = new HashSet<>();
-
-		expectInterfaces.add("java.io.Serializable");
-		expectInterfaces.add("java.lang.Comparable");
-		expectInterfaces.add("java.lang.CharSequence");
-
-		for (IClassModel interf : model.getInterfaces())
-			acutalInterfaces.add(interf.getName());
-
-		assertEquals(expectInterfaces, acutalInterfaces);
+		Iterator<ClassModel> itr = parser.getClasses().iterator();
+		assertTrue(itr.hasNext());
+		itr.next();
+		assertFalse(itr.hasNext());
 	}
-
-	@Test
-	public void lab_1_AmazonParser() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("problem.AmazonLineParser");
-		assertEquals("problem.AmazonLineParser", model.getName());
-		
-		Set<String> acutalInterfaces = new HashSet<>();
-		Set<String> expectInterfaces = new HashSet<>();
-
-		expectInterfaces.add("problem.ILineParser");
-
-		for (IClassModel interf : model.getInterfaces())
-			acutalInterfaces.add(interf.getName());
-
-		assertEquals(expectInterfaces, acutalInterfaces);
-	}
-
 }

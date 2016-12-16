@@ -7,8 +7,8 @@ import config.CommandLineParserTest;
 import generator.GraphVizGeneratorTest;
 import model.ASMParserTest;
 import model.ClassModelTest;
-import model.NonRecursiveASMParserTest;
 import model.SystemModelTest;
+import util.IFilterTest;
 
 /**
  * Runs all test suite.
@@ -17,7 +17,7 @@ import model.SystemModelTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ GraphVizGeneratorTest.class, ASMParserTest.class, CommandLineParserTest.class,
-		NonRecursiveASMParserTest.class, SystemModelTest.class, ClassModelTest.class })
+		SystemModelTest.class, ClassModelTest.class, IFilterTest.class})
 public class AllTests {
 
 }
