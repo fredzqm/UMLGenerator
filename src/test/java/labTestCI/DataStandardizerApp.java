@@ -1,4 +1,4 @@
-package labCITest;
+package labTestCI;
 
 import javax.swing.*;
 import java.awt.*;

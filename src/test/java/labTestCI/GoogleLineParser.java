@@ -1,4 +1,4 @@
-package labCITest;
+package labTestCI;
 
 public class GoogleLineParser implements ILineParser {
 

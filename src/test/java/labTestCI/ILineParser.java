@@ -1,4 +1,4 @@
-package labCITest;
+package labTestCI;
 
 /**
  * This interface is currently unused.

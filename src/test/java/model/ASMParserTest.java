@@ -2,10 +2,7 @@ package model;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +18,7 @@ public class ASMParserTest {
 
             @Override
             public Iterable<String> getClasses() {
-                return Arrays.asList("java.lang.String");
+                return Collections.singletonList("java.lang.String");
             }
         });
         Set<String> expected;
@@ -43,7 +40,7 @@ public class ASMParserTest {
     @Test
     public void testGetClassesNonRecursive() {
         ASMClassTracker parser = new ASMParser();
-        parser.addClasses(Arrays.asList("java/lang/String"));
+        parser.addClasses(Collections.singletonList("java/lang/String"));
 
         Iterator<ClassModel> itr = parser.getClasses().iterator();
         assertTrue(itr.hasNext());
