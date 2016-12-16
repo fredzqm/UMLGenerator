@@ -10,8 +10,10 @@ class GraphVizClassParser implements IParser<IClassModel> {
 	private IParser<IClassModel> header;
 	private IParser<IFieldModel> fieldParser;
 	private IParser<IMethodModel> methodParser;
+	private IFilter<IMethodModel> methodFilter;
 
-	GraphVizClassParser(IFilter<Modifier> filters) {
+	GraphVizClassParser(IFilter<Modifier> filters, IFilter<IMethodModel> methodFilter) {
+		this.methodFilter = methodFilter;
 		this.header = new GraphVizHeaderParser(new GraphVizClassTypeParser());
 		this.fieldParser = new GraphVizFieldParser(filters);
 		this.methodParser = new GraphVizMethodParser(filters);
@@ -40,7 +42,7 @@ class GraphVizClassParser implements IParser<IClassModel> {
 		// Set the methods.
 		Iterable<? extends IMethodModel> methods = model.getMethods();
 		if (methods.iterator().hasNext()) {
-			sb.append(String.format(" | %s", methodParser.parse(methods)));
+			sb.append(String.format(" | %s", methodParser.parse(methodFilter.filter(methods))));
 		}
 
 		// generate the full string with the label text generated above.
