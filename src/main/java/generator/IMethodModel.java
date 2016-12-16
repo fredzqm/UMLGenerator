@@ -60,23 +60,4 @@ public interface IMethodModel {
      */
     Iterable<? extends ITypeModel> getArguments();
 
-    /**
-     * Type of method
-     */
-    interface IMethodType {
-        void switchByCase(Switcher switcher);
-
-        interface Switcher {
-            void ifConstructor();
-
-            void ifConcrete();
-
-            void ifStatic();
-
-            void ifStaticInitializer();
-
-            void ifAbstract();
-
-        }
-    }
 }
