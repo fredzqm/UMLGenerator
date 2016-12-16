@@ -34,88 +34,88 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setFilters(new HashSet<>());
         return conf;
     }
-    
+
     public Iterable<String> getClasses() {
-		return classes;
-	}
+        return classes;
+    }
 
-	public void setClasses(Iterable<String> classes) {
-		this.classes = classes;
-	}
+    public void setClasses(Iterable<String> classes) {
+        this.classes = classes;
+    }
 
-	public String getExecutablePath() {
-		return executablePath;
-	}
+    public String getExecutablePath() {
+        return executablePath;
+    }
 
-	public void setExecutablePath(String executablePath) {
-		this.executablePath = executablePath;
-	}
+    public void setExecutablePath(String executablePath) {
+        this.executablePath = executablePath;
+    }
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+    public String getOutputFormat() {
+        return outputFormat;
+    }
 
-	public void setOutputFormat(String outputExtension) {
-		this.outputFormat = outputExtension;
-	}
+    public void setOutputFormat(String outputExtension) {
+        this.outputFormat = outputExtension;
+    }
 
-	public String getOutputDirectory() {
-		return outputDirectory;
-	}
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	public void setOutputDirectory(String outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public double getNodeSep() {
-		return nodesep;
-	}
+    public double getNodeSep() {
+        return nodesep;
+    }
 
-	public void setNodesep(double nodesep) {
-		this.nodesep = nodesep;
-	}
+    public void setNodesep(double nodesep) {
+        this.nodesep = nodesep;
+    }
 
-	public boolean isRecursive() {
-		return isRecursive;
-	}
+    public boolean isRecursive() {
+        return isRecursive;
+    }
 
-	public void setRecursive(boolean isRecursive) {
-		this.isRecursive = isRecursive;
-	}
+    public void setRecursive(boolean isRecursive) {
+        this.isRecursive = isRecursive;
+    }
 
-	public Collection<IModifier> getFilters() {
-		return this.filters;
-	}
-	
-	public void setFilters(Collection<IModifier> filters) {
-		this.filters = filters;
-	}
+    public Collection<IModifier> getFilters() {
+        return this.filters;
+    }
 
-	public String getRankDir() {
-    	return this.rankDir;
-	}
+    public void setFilters(Collection<IModifier> filters) {
+        this.filters = filters;
+    }
+
+    public String getRankDir() {
+        return this.rankDir;
+    }
 
     public void setRankDir(String rankDir) {
         this.rankDir = rankDir;
     }
 
     public String toString() {
-		return    "Classes:                   " + classes + "\n"
-				+ "Executable Path:           " + executablePath + "\n"
-				+ "Output Extension:          " + outputFormat + "\n"
-				+ "Output file name:          " + fileName + "\n"
-				+ "Output Directory:          " + outputDirectory + "\n"
-				+ "Node seperation value:     " + nodesep + "\n"
-				+ "Filters:                   " + filters + "\n"
-				+ "Recursive?:                " + isRecursive + "\n"
-				+ "Rank Dir:                  " + rankDir;
-	}
+        return "Classes:                   " + classes + "\n"
+                + "Executable Path:           " + executablePath + "\n"
+                + "Output Extension:          " + outputFormat + "\n"
+                + "Output file name:          " + fileName + "\n"
+                + "Output Directory:          " + outputDirectory + "\n"
+                + "Node seperation value:     " + nodesep + "\n"
+                + "Filters:                   " + filters + "\n"
+                + "Recursive?:                " + isRecursive + "\n"
+                + "Rank Dir:                  " + rankDir;
+    }
 }
