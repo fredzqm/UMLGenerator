@@ -178,7 +178,7 @@ public class GraphVizGeneratorTest {
             assertTrue(file.exists());
         } catch (Exception e) {
             System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
-            fail("[ ERROR ]: An Exception has occured!\n" + e.getMessage());
+            fail("[ ERROR ]: An Exception has occurred!\n" + e.getMessage());
             e.printStackTrace();
         }
     }
