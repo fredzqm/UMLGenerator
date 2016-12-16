@@ -171,8 +171,7 @@ public class GraphVizGeneratorTest {
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner();
-        config.setOutputDirectory("./output");
-        config.setFileName("testWrite");
+
         try {
             runner.execute(config, graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
