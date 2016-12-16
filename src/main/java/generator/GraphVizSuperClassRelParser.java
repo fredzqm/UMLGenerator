@@ -18,7 +18,7 @@ class GraphVizSuperClassRelParser implements IParser<IClassModel> {
     @Override
     public String parse(IClassModel thisClass) {
         IClassModel superClass = thisClass.getSuperClass();
-		if (superClass == null || !modifierFilter.filter(superClass.getModifier())) {
+        if (superClass == null || !modifierFilter.filter(superClass.getModifier())) {
             return "";
         }
 

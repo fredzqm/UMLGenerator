@@ -1,11 +1,12 @@
-package problem;
+package labTestCI;
 
-public class GrouponLineParser implements ILineParser {
+public class MicrosoftLineParser implements ILineParser {
 
     @Override
     public String parse(String line) {
-        String[] fields = line.split("\\s+");
+        String[] fields = line.split(",");
         return fields[0].trim() + " : " + fields[1].trim();
     }
 
 }
+

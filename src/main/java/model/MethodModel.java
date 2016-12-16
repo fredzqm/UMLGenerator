@@ -4,10 +4,9 @@ import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IFieldModel;
 import generator.IMethodModel;
+import org.objectweb.asm.tree.MethodNode;
 import utility.MethodType;
 import utility.Modifier;
-
-import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -4,6 +4,7 @@ import generator.IClassModel;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class SystemModelTest {
 
             @Override
             public Iterable<String> getClasses() {
-                return Arrays.asList("javax.swing.JComponent");
+                return Collections.singletonList("javax.swing.JComponent");
             }
         };
         SystemModel sys = SystemModel.getInstance(config);

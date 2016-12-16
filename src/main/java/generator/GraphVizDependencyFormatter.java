@@ -21,7 +21,7 @@ class GraphVizDependencyFormatter {
         if (lengthBefore == length) {
             vizDescription.append("};\n");
         } else {
-            vizDescription.replace(length - 2, length, "};\n");
+            vizDescription.replace(length - 1, length, "};\n");
         }
     }
 }

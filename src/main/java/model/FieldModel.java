@@ -4,10 +4,9 @@ import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IFieldModel;
 import generator.ITypeModel;
-import utility.Modifier;
-
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
+import utility.Modifier;
 
 /**
  * Representing field in java programs

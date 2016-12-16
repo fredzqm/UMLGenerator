@@ -24,8 +24,9 @@ class GraphVizDependsOnRelParser implements IParser<IClassModel> {
         int dependsOnLengthBefore = sb.length();
 
         otherClassList.forEach((has) -> {
+            sb.append(String.format("\"%s\" ", has.getName()));
             if (modifierFilter.filter(has.getModifier())) {
-                sb.append(String.format("\"%s\", ", has.getName()));
+                sb.append(String.format("\"%s\" ", has.getName()));
             }
         });
 
