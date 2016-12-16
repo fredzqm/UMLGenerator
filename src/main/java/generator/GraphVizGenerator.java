@@ -34,24 +34,29 @@ public class GraphVizGenerator implements IGenerator {
 
         // TODO: This can be configurable.
         // Basic Configurations.
-        dotString.append("\tnodesep=").append(config.getNodeSep()).append(";\n");
+        dotString.append(String.format("\tnodesep=%s;\n", config.getNodeSep()));
         dotString.append("\tnode [shape=record];\n");
+        dotString.append(String.format("\trankdir=%s;\n", config.getRankDir()));
+        dotString.append("\n");
 
         // Basic UML Boxes.
         dotString.append(classParser.parse(classes));
+        dotString.append("\n");
 
         // Superclass Relations
         dotString.append("\tedge [arrowhead=onormal];\n");
-        // Configurable.
         dotString.append(extendsRelParser.parse(classes));
+        dotString.append("\n");
 
         // Inheritance Relations.
         dotString.append("\tedge [arrowhead=onormal, style=dashed];\n");
         dotString.append(implementsRelParser.parse(classes));
+        dotString.append("\n");
 
         // Has-A Relations.
         dotString.append("\tedge [arrowhead=vee];\n");
         dotString.append(hasRelPraser.parse(classes));
+        dotString.append("\n");
 
         // Depend-On Relations.
         dotString.append("\tedge [arrowhead=vee style=dashed];\n");

@@ -9,7 +9,7 @@ import org.objectweb.asm.Opcodes;
  * @author zhang
  */
 public enum Modifier implements IModifier {
-    PUBLIC("+"), DEFAULT(""), PROTECTED("#"), PRIVATE("-");
+    PUBLIC("+"), DEFAULT(" "), PROTECTED("#"), PRIVATE("-");
 
     private final String modifierValue;
 

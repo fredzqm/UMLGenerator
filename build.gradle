@@ -73,6 +73,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.martiansoftware/jsap
     compile group: 'com.martiansoftware', name: 'jsap', version: '2.1'
     
+    // https://mvnrepository.com/artifact/org.json/json
+	compile group: 'org.json', name: 'json', version: '20160810'
+    
+    
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
     

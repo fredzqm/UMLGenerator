@@ -18,12 +18,7 @@ public class GraphVizFieldParser implements IParser<IFieldModel> {
     public String parse(IFieldModel field) {
         StringBuilder classFields = new StringBuilder();
         if (!filters.contains(field.getModifier())) {
-            classFields.append(field.getModifier().getModifierSymbol());
-            classFields.append(" ");
-            classFields.append(field.getName());
-            classFields.append(" : ");
-            classFields.append(field.getType().getName());
-            classFields.append("\\l");
+            classFields.append(String.format("%s %s : %s \\l", field.getModifier().getModifierSymbol(), field.getName(), field.getType().getName()));
         }
         return classFields.toString();
     }

@@ -9,19 +9,19 @@ public class GraphVizInterfaceParser implements IParser<IClassModel> {
 
     @Override
     public String parse(IClassModel thisClass) {
-        Iterable<? extends IClassModel> otherClassLs = thisClass.getInterfaces();
+        Iterable<? extends IClassModel> otherClassList = thisClass.getInterfaces();
 
         StringBuilder sb = new StringBuilder();
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
         int interfaceLengthBefore = sb.length();
 
-        otherClassLs.forEach((interfaceModel) -> {
-            sb.append("\"").append(interfaceModel.getName()).append("\"");
-            sb.append(", ");
+        otherClassList.forEach((interfaceModel) -> {
+            sb.append(String.format("\"%s\", ", interfaceModel.getName()));
         });
+
         // If it is empty close the braces without replacing characters.
         GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
-        sb.append("\n\t");
+
         return sb.toString();
     }
 
