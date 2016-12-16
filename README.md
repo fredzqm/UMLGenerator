@@ -57,12 +57,14 @@ This project takes a set of classes and draws the UML diagram for those set of c
   - Assisted in Generator Design
   - Refactored Code.
   - Code Review.
+  - Wrote test code.
 - **Adam:**
   - Managed the creation and updates to the UML
   - Discuss Design Decisions
   - Coded the CommandLineParser and Configuration
   - Performed Debugging
   - Created the README.
+  - Wrote test code.
 - **David:**
   - Performed Debugging
   - Discuss Design Decisions
@@ -75,3 +77,4 @@ This project takes a set of classes and draws the UML diagram for those set of c
   - Formatted README with MarkDown syntax.
   - Refactored Code.
   - Code Review.
+  - Wrote test code.
