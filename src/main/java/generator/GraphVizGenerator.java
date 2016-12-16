@@ -31,7 +31,6 @@ public class GraphVizGenerator implements IGenerator {
         // DOT parent.
         Iterable<? extends IClassModel> classes = sm.getClasses();
         StringBuilder dotString = new StringBuilder();
-        dotString.append("digraph GraphVizGeneratedDOT {\n");
 
         // TODO: This can be configurable.
         // Basic Configurations.
@@ -63,9 +62,7 @@ public class GraphVizGenerator implements IGenerator {
         dotString.append("\tedge [arrowhead=vee style=dashed];\n");
         dotString.append(dependsOnRelParser.parse(classes));
 
-        dotString.append("}");
-
-        return dotString.toString();
+        return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
     }
 
 }
