@@ -1,5 +1,6 @@
 package config;
 
+import generator.IFormat;
 import generator.IGeneratorConfiguration;
 import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
@@ -9,7 +10,8 @@ import utility.Modifier;
 import java.util.ArrayList;
 
 /**
- * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
+ * Created by lamd on 12/7/2016.
+ * Edited by fineral on 12/13/2016
  */
 public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration {
 
@@ -22,6 +24,8 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private IFilter<Modifier> modifierFilter;
     private boolean isRecursive;
     private String rankDir;
+    private IFormat format;
+    private String nodeStyle;
 
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
@@ -29,15 +33,13 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setFileName("out");
         conf.setNodesep(1);
         conf.setClasses(new ArrayList<>());
-        conf.setFilters(new IFilter<Modifier>() {
-            @Override
-            public boolean filter(Modifier data) {
-                return true;
-            }
-        });
+        conf.setFilters(data -> true);
+        conf.setNodeStyle("node [shape=record]");
+        // TODO: Figure out setting format.
         return conf;
     }
 
+    @Override
     public Iterable<String> getClasses() {
         return classes;
     }
@@ -46,6 +48,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.classes = classes;
     }
 
+    @Override
     public String getExecutablePath() {
         return executablePath;
     }
@@ -54,6 +57,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.executablePath = executablePath;
     }
 
+    @Override
     public String getOutputFormat() {
         return outputFormat;
     }
@@ -62,6 +66,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.outputFormat = outputExtension;
     }
 
+    @Override
     public String getOutputDirectory() {
         return outputDirectory;
     }
@@ -70,6 +75,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.outputDirectory = outputDirectory;
     }
 
+    @Override
     public String getFileName() {
         return fileName;
     }
@@ -78,6 +84,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.fileName = fileName;
     }
 
+    @Override
     public double getNodeSep() {
         return nodesep;
     }
@@ -86,6 +93,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.nodesep = nodesep;
     }
 
+    @Override
     public boolean isRecursive() {
         return isRecursive;
     }
@@ -94,7 +102,8 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.isRecursive = isRecursive;
     }
 
-    public IFilter<Modifier> getModifierFilter() {
+    @Override
+    public IFilter<Modifier> getFilters() {
         return this.modifierFilter;
     }
 
@@ -102,6 +111,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.modifierFilter = filter;
     }
 
+    @Override
     public String getRankDir() {
         return this.rankDir;
     }
@@ -110,6 +120,25 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         this.rankDir = rankDir;
     }
 
+    @Override
+    public IFormat getFormat() {
+        return this.format;
+    }
+
+    public void setFormat(IFormat format) {
+        this.format = format;
+    }
+
+    @Override
+    public String getNodeStyle() {
+        return this.nodeStyle;
+    }
+
+    public void setNodeStyle(String nodeStyle) {
+        this.nodeStyle = nodeStyle;
+    }
+
+    @Override
     public String toString() {
         return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
                 + "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
