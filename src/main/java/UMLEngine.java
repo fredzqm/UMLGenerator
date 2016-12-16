@@ -1,4 +1,4 @@
-package application;
+
 
 import config.Configuration;
 import display.Display;
