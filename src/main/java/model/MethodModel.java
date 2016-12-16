@@ -7,7 +7,6 @@ import generator.IMethodModel;
 import utility.MethodType;
 import utility.Modifier;
 
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
  *
  * @author zhang
  */
-public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
+class MethodModel implements IVisitable<MethodModel>, IMethodModel {
     private final MethodNode asmMethodNode;
     private final ClassModel belongsTo;
 

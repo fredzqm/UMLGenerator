@@ -77,7 +77,8 @@ public class DesignParser {
     private static void printFields(ClassNode classNode) {
         // Print all fields (note the cast; ASM doesn't store generic
         // data with its Lists)
-        List<FieldNode> fields = (List<FieldNode>) classNode.fields;
+        @SuppressWarnings("unchecked")
+		List<FieldNode> fields = (List<FieldNode>) classNode.fields;
         for (FieldNode field : fields) {
             System.out.println("	Field: " + field.name);
             System.out.println("	Internal JVM type: " + field.desc);
@@ -97,7 +98,8 @@ public class DesignParser {
     }
 
     private static void printMethods(ClassNode classNode) {
-        List<MethodNode> methods = (List<MethodNode>) classNode.methods;
+        @SuppressWarnings("unchecked")
+		List<MethodNode> methods = (List<MethodNode>) classNode.methods;
         for (MethodNode method : methods) {
             System.out.println("	Method: " + method.name);
             System.out.println("	Internal JVM method signature: " + method.desc);
