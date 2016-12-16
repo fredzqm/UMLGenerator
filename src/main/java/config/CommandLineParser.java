@@ -12,47 +12,47 @@ import java.util.List;
 /**
  * Created by fineral on 12/11/2016
  * Edited by fineral on 12/13/2016
- * 
+ * <p>
  * Usage: java config.CommandLineParser
-                class1 class2 ... classN [(-e|--executable) <path>] (-d|--directory) <outputDirectory> (-o|--outputfile) <outputfile> [(-x|--extension) <extension>] [(-f|--filters) <filters>] [(-n|--nodesep) <nodeseparationvalue>] [-r|--recursive] [-k|--direction]
-
-  class1 class2 ... classN
-        desc: space separated list of the name of the classes you want the UML
-        for
-        (default: java.lang.String)
-
-  [(-e|--executable) <path>]
-        desc: the name of the executable path for graphviz on your machine
-        (default: dot)
-
-  (-d|--directory) <outputDirectory>
-        desc: the name of the directory which you want output to go to
-        (default: output)
-
-  (-o|--outputfile) <outputfile>
-        desc: the name of the output file
-        (default: output)
-
-  [(-x|--extension) <extension>]
-        desc: the name extension of the output file without the dot
-        (default: png)
-
-  [(-f|--filters) <filters>]
-        desc: use this flag if you want to filter out
-        if public, you filter out protected and private
-        if protected, you filter out private
-        if blank or private, you filter out nothing
-        (default: private)
-
-  [(-n|--nodesep) <nodeseparationvalue>]
-        desc: the node seperation value which is greater than 0
-        (default: 1)
-
-  [-r|--recursive]
-        desc: use this flag if you want to recursively create the UML
-
-  [-k|--direction]
-        desc: use this flag if you want the UML to be outputed Top down
+ * class1 class2 ... classN [(-e|--executable) <path>] (-d|--directory) <outputDirectory> (-o|--outputfile) <outputfile> [(-x|--extension) <extension>] [(-f|--filters) <filters>] [(-n|--nodesep) <nodeseparationvalue>] [-r|--recursive] [-k|--direction]
+ * <p>
+ * class1 class2 ... classN
+ * desc: space separated list of the name of the classes you want the UML
+ * for
+ * (default: java.lang.String)
+ * <p>
+ * [(-e|--executable) <path>]
+ * desc: the name of the executable path for graphviz on your machine
+ * (default: dot)
+ * <p>
+ * (-d|--directory) <outputDirectory>
+ * desc: the name of the directory which you want output to go to
+ * (default: output)
+ * <p>
+ * (-o|--outputfile) <outputfile>
+ * desc: the name of the output file
+ * (default: output)
+ * <p>
+ * [(-x|--extension) <extension>]
+ * desc: the name extension of the output file without the dot
+ * (default: png)
+ * <p>
+ * [(-f|--filters) <filters>]
+ * desc: use this flag if you want to filter out
+ * if public, you filter out protected and private
+ * if protected, you filter out private
+ * if blank or private, you filter out nothing
+ * (default: private)
+ * <p>
+ * [(-n|--nodesep) <nodeseparationvalue>]
+ * desc: the node seperation value which is greater than 0
+ * (default: 1)
+ * <p>
+ * [-r|--recursive]
+ * desc: use this flag if you want to recursively create the UML
+ * <p>
+ * [-k|--direction]
+ * desc: use this flag if you want the UML to be outputed Top down
  */
 public class CommandLineParser implements ConfigurationFactory {
 
@@ -136,16 +136,14 @@ public class CommandLineParser implements ConfigurationFactory {
         addOption(opt8);
 
         Switch opt9 = new Switch("rankdir")
-        		.setShortFlag('k')
-        		.setLongFlag("direction");
+                .setShortFlag('k')
+                .setLongFlag("direction");
         opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
         addOption(opt9);
     }
 
     /**
-     * 
      * This method creates a new configuration based on the arguments passed into the constructor
-     * 
      */
     @Override
     public Configuration create() {
@@ -200,27 +198,27 @@ public class CommandLineParser implements ConfigurationFactory {
         }
         conf.setFilters(filters);
         conf.setRecursive(config.getBoolean("recursive"));
-        
-        if(config.getBoolean("rankdir")){
-        	conf.setRankDir("TB");
-        }else {
-        	conf.setRankDir("BT");
+
+        if (config.getBoolean("rankdir")) {
+            conf.setRankDir("TB");
+        } else {
+            conf.setRankDir("BT");
         }
 
         return conf;
     }
-    
+
     /**
      * Adds the specified option to the commanLineParser
-     * 
+     *
      * @param opt- option to add to the commandLineParser
      */
     public void addOption(Parameter opt) {
-    	try {
-			jsap.registerParameter(opt);
-		} catch (JSAPException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            jsap.registerParameter(opt);
+        } catch (JSAPException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
