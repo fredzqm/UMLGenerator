@@ -7,7 +7,6 @@ import generator.IMethodModel;
 import utility.MethodType;
 import utility.Modifier;
 
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
