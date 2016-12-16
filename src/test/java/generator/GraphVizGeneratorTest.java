@@ -100,17 +100,10 @@ public class GraphVizGeneratorTest {
         config.setRecursive(true);
         config.setRankDir("BT");
 
-        // FIXME: Remove test code.
-//        config.setOutputDirectory("./output");
-//        config.setFileName("testFilter");
-//        config.setExecutablePath("dot");
-
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
-
-//        internalRunner(config, actual); // FIXME: Remove after testing is done.
 
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
