@@ -2,15 +2,17 @@ package generator;
 
 import java.util.Collection;
 
+import utility.Modifier;
+
 /**
  * A GraphVizParser for the model's depends on Relationship.
  * <p>
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizDependsOnRelParser implements IParser<IClassModel> {
-    private Collection<IModifier> filters;
+    private Collection<Modifier> filters;
 
-    GraphVizDependsOnRelParser(Collection<IModifier> filters) {
+    GraphVizDependsOnRelParser(Collection<Modifier> filters) {
         this.filters = filters;
     }
 

@@ -92,7 +92,7 @@ public class GraphVizGeneratorTest {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        Set<IModifier> filters = new HashSet<>();
+        Set<Modifier> filters = new HashSet<>();
         filters.add(Modifier.PROTECTED);
         filters.add(Modifier.PRIVATE);
         config.setFilters(filters);

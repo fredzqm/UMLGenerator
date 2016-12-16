@@ -1,6 +1,7 @@
 package generator;
 
 import utility.ClassType;
+import utility.Modifier;
 
 /**
  * An interface for Class Models.
@@ -75,6 +76,6 @@ public interface IClassModel {
      *
      * @return
      */
-    IModifier getModifier();
+    Modifier getModifier();
 
 }

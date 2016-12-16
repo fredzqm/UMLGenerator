@@ -2,15 +2,17 @@ package generator;
 
 import java.util.Collection;
 
+import utility.Modifier;
+
 /**
  * A GraphVizParser for the model's Methods.
  * <p>
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizMethodParser implements IParser<IMethodModel> {
-    private Collection<IModifier> filters;
+    private Collection<Modifier> filters;
 
-    GraphVizMethodParser(Collection<IModifier> filters) {
+    GraphVizMethodParser(Collection<Modifier> filters) {
         this.filters = filters;
     }
 

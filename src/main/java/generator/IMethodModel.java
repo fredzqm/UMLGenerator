@@ -1,6 +1,7 @@
 package generator;
 
 import utility.MethodType;
+import utility.Modifier;
 
 /**
  * An Interface of the Method Models.
@@ -21,7 +22,7 @@ public interface IMethodModel {
      *
      * @return Access Modifier.
      */
-    IModifier getModifier();
+    Modifier getModifier();
 
     /**
      * Returns the Method Type (Abstract, Contructor, Static, Static

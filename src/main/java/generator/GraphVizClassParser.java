@@ -3,6 +3,7 @@ package generator;
 import java.util.Collection;
 
 import utility.ClassType;
+import utility.Modifier;
 
 /**
  * Representing a single class in the DOT language.
@@ -12,7 +13,7 @@ public class GraphVizClassParser implements IParser<IClassModel> {
     private IParser<IFieldModel> fieldParser;
     private IParser<IMethodModel> methodParser;
 
-    GraphVizClassParser(Collection<IModifier> filters) {
+    GraphVizClassParser(Collection<Modifier> filters) {
         // this.header = new GraphVizHeaderParser(model.getType(), this.name);
         this.classTypeParser = new GraphVizClassTypeParser();
         this.fieldParser = new GraphVizFieldParser(filters);

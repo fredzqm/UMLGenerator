@@ -2,6 +2,8 @@ package generator;
 
 import java.util.Collection;
 
+import utility.Modifier;
+
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
  * <p>
@@ -12,7 +14,7 @@ public class GraphVizGenerator implements IGenerator {
     private IParser<IClassModel> classParser, extendsRelParser, implementsRelParser, hasRelPraser, dependsOnRelParser;
 
     public GraphVizGenerator(IGeneratorConfiguration config) {
-        Collection<IModifier> filters = config.getFilters();
+        Collection<Modifier> filters = config.getFilters();
         this.config = config;
 
         // parsing class

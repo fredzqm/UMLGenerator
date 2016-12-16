@@ -1,6 +1,5 @@
 package config;
 
-import generator.IModifier;
 import utility.Modifier;
 
 import org.junit.Test;
@@ -199,8 +198,8 @@ public class CommandLineParserTest {
         CommandLineParser com = new CommandLineParser(args);
 
         Configuration conf = com.create();
-        Collection<IModifier> actual = conf.getFilters();
-        Collection<IModifier> expect = new ArrayList<>(Arrays.asList(Modifier.PRIVATE, Modifier.PROTECTED));
+        Collection<Modifier> actual = conf.getFilters();
+        Collection<Modifier> expect = new ArrayList<>(Arrays.asList(Modifier.PRIVATE, Modifier.PROTECTED));
 
         assertEquals(expect, actual);
     }
