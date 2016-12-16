@@ -1,7 +1,5 @@
 package generator;
 
-import java.util.Collection;
-
 import utility.IFilter;
 import utility.Modifier;
 

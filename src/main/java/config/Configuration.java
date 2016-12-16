@@ -1,8 +1,6 @@
 package config;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 
 import generator.IGeneratorConfiguration;
 import model.IModelConfiguration;

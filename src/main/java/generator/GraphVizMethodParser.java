@@ -1,7 +1,5 @@
 package generator;
 
-import java.util.Collection;
-
 import utility.IFilter;
 import utility.Modifier;
 
@@ -10,7 +8,7 @@ import utility.Modifier;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-public class GraphVizMethodParser implements IParser<IMethodModel> {
+class GraphVizMethodParser implements IParser<IMethodModel> {
 	private IFilter<Modifier> modifierFiter;
 
 	GraphVizMethodParser(IFilter<Modifier> filters2) {

@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author zhang
  */
-public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
+class MethodModel implements IVisitable<MethodModel>, IMethodModel {
     private final MethodNode asmMethodNode;
     private final ClassModel belongsTo;
 
