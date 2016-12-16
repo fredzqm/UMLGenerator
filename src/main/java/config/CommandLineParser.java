@@ -41,7 +41,7 @@ import utility.Modifier;
  * <p>
  * [(-x|--extension) <extension>]
  * desc: the name extension of the output file without the dot
- * (default: png)
+ * (default: svg)
  * <p>
  * [(-f|--filters) <filters>]
  * desc: use this flag if you want to filter out
@@ -107,7 +107,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         FlaggedOption opt5 = new FlaggedOption("extension")
                 .setStringParser(JSAP.STRING_PARSER)
-                .setDefault("png")
+                .setDefault("svg")
                 .setRequired(false)
                 .setShortFlag('x')
                 .setLongFlag("extension");
