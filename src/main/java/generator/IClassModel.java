@@ -1,5 +1,8 @@
 package generator;
 
+import utility.ClassType;
+import utility.Modifier;
+
 /**
  * An interface for Class Models.
  * <p>
@@ -19,7 +22,7 @@ public interface IClassModel {
      *
      * @return ClassType
      */
-    IClassType getType();
+    ClassType getType();
 
     /**
      * Returns an Iterable of the Model's Fields.
@@ -73,23 +76,6 @@ public interface IClassModel {
      *
      * @return
      */
-    IModifier getModifier();
-
-    /**
-     * Type of class
-     */
-    interface IClassType {
-        void switchByCase(Switcher switcher);
-
-        interface Switcher {
-            void ifAbstract();
-
-            void ifConcrete();
-
-            void ifInterface();
-
-            void ifEnum();
-        }
-    }
+    Modifier getModifier();
 
 }
