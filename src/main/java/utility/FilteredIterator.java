@@ -3,12 +3,12 @@ package utility;
 import java.util.Iterator;
 
 class FilteredIterable<T> implements Iterator<T> {
-	private Iterator<T> itr;
+	private Iterator<? extends T> itr;
 	private IFilter<T> filter;
 	private T data;
 
-	public FilteredIterable(IFilter<T> iFilter, Iterator<T> originIterator) {
-		itr = originIterator;
+	public FilteredIterable(IFilter<T> iFilter, Iterator<? extends T> iterator) {
+		itr = iterator;
 		filter = iFilter;
 		advance();
 	}
