@@ -38,21 +38,23 @@ public class GraphVizClassParser implements IParser<IClassModel> {
         sb.append(String.format("\t\"%s\" [\n", name));
 
         // Set the header.
-        sb.append(String.format("\t\tlabel = \"{%s%s | ", classTypeParser.parse(classType), model.getName()));
+        sb.append(String.format("\t\tlabel = \"{%s%s", classTypeParser.parse(classType), model.getName()));
 
         // Set the fields.
         // Check to avoid double lines if there are no fields.
         Iterable<? extends IFieldModel> fields = model.getFields();
         if (fields.iterator().hasNext()) {
-            sb.append(String.format("%s | ", fieldParser.parse(fields)));
+            sb.append(String.format(" | %s", fieldParser.parse(fields)));
         }
 
         // Set the methods.
         Iterable<? extends IMethodModel> methods = model.getMethods();
         if (methods.iterator().hasNext()) {
-            sb.append(String.format("%s}\"", methodParser.parse(methods)));
+            sb.append(String.format(" | %s", methodParser.parse(methods)));
         }
-        sb.append("\n\t]\n");
+
+        // End the Class Block.
+        sb.append("}\"\n\t]\n");
 
         return sb.toString();
     }
