@@ -8,11 +8,15 @@ import utility.Modifier;
  */
 class GraphVizClassParser implements IParser<IClassModel> {
 	private IParser<IClassModel> header;
-	private IParser<IFieldModel> fieldParser;
-	private IParser<IMethodModel> methodParser;
-	private IFilter<IMethodModel> methodFilter;
 
-	GraphVizClassParser(IFilter<Modifier> filters, IFilter<IMethodModel> methodFilter) {
+	private IFilter<IFieldModel> fieldFilter;
+	private IParser<IFieldModel> fieldParser;
+
+	private IFilter<IMethodModel> methodFilter;
+	private IParser<IMethodModel> methodParser;
+
+	GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilter, IFilter<IMethodModel> methodFilter) {
+		this.fieldFilter = fieldFilter;
 		this.methodFilter = methodFilter;
 		this.header = new GraphVizHeaderParser(new GraphVizClassTypeParser());
 		this.fieldParser = new GraphVizFieldParser(filters);
@@ -36,7 +40,7 @@ class GraphVizClassParser implements IParser<IClassModel> {
 		// Set the fields.
 		Iterable<? extends IFieldModel> fields = model.getFields();
 		if (fields.iterator().hasNext()) {
-			sb.append(String.format(" | %s", fieldParser.parse(fields)));
+			sb.append(String.format(" | %s", fieldParser.parse(fieldFilter.filter(fields))));
 		}
 
 		// Set the methods.
