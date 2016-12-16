@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 import config.CommandLineParserTest;
 import generator.GraphVizGeneratorTest;
 import model.ASMParserTest;
+import model.ClassModelTest;
 import model.NonRecursiveASMParserTest;
 import model.SystemModelTest;
 
@@ -16,7 +17,7 @@ import model.SystemModelTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ GraphVizGeneratorTest.class, ASMParserTest.class, CommandLineParserTest.class,
-		NonRecursiveASMParserTest.class, SystemModelTest.class })
+		NonRecursiveASMParserTest.class, SystemModelTest.class, ClassModelTest.class })
 public class AllTests {
 
 }
