@@ -41,9 +41,9 @@ public interface IGeneratorConfiguration {
     String getNodeStyle();
 
     /**
-     * Returns a IFormat.
+     * Returns the parser key for generator to use.
      *
-     * @return IFormat.
+     * @return Parser key.
      */
-    IFormat getFormat();
+    String getParserKey();
 }

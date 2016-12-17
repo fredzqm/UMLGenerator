@@ -1,5 +1,7 @@
-package generator;
+package generator.parser;
 
+import generator.IFieldModel;
+import generator.IParser;
 import utility.IFilter;
 import utility.Modifier;
 

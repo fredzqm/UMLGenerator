@@ -1,36 +1,38 @@
-package generator;
+package generator.parser;
 
+import generator.IClassModel;
+import generator.IParser;
 import utility.IFilter;
 import utility.Modifier;
 
 /**
- * A GraphVizParser for the model's HasRelations.
+ * A GraphVizParser for the model's depends on Relationship.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-class GraphVizHasRelParser implements IParser<IClassModel> {
+public class GraphVizDependsOnRelParser implements IParser<IClassModel> {
     private IFilter<Modifier> modifierFilter;
 
-    GraphVizHasRelParser(IFilter<Modifier> filter) {
+    public GraphVizDependsOnRelParser(IFilter<Modifier> filter) {
         this.modifierFilter = filter;
     }
 
     @Override
     public String parse(IClassModel thisClass) {
-        Iterable<? extends IClassModel> otherClassList = thisClass.getHasRelation();
+        Iterable<? extends IClassModel> otherClassList = thisClass.getDependsRelation();
 
         StringBuilder sb = new StringBuilder();
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
-        int hasALengthBefore = sb.length();
+        int dependsOnLengthBefore = sb.length();
 
         otherClassList.forEach((has) -> {
+            sb.append(String.format("\"%s\" ", has.getName()));
             if (modifierFilter.filter(has.getModifier())) {
                 sb.append(String.format("\"%s\" ", has.getName()));
             }
         });
 
-        GraphVizDependencyFormatter.closeDependencyVizDescription(sb, hasALengthBefore);
-
+        GraphVizDependencyFormatter.closeDependencyVizDescription(sb, dependsOnLengthBefore);
         return sb.toString();
     }
 

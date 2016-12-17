@@ -1,7 +1,7 @@
 package generator;
 
 import config.Configuration;
-import config.Format;
+import generator.parser.*;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,30 +29,6 @@ public class GraphVizGeneratorTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private void setupFormatter(Configuration config) {
-        IFilter<Modifier> filters = config.getFilters();
-        IParser<IClassModel> classParser = new GraphVizClassParser(filters, data -> true, method -> true);
-        IParser<IClassModel> extendsRelParser = new GraphVizSuperClassRelParser(filters);
-        IParser<IClassModel> implementsRelParser = new GraphVizInterfaceParser();
-        IParser<IClassModel> hasRelPraser = new GraphVizHasRelParser(filters);
-        IParser<IClassModel> dependsOnRelParser = new GraphVizDependsOnRelParser(filters);
-
-        IFormatter classFormatter = new GraphVizFormatter<>(classParser, null);
-        IFormatter extendsRelFormatter = new GraphVizFormatter<>(extendsRelParser, "edge [arrowhead=onormal]");
-        IFormatter implementsRelFormatter = new GraphVizFormatter<>(implementsRelParser, "edge [arrowhead=onormal, style=dashed]");
-        IFormatter hasRelFormatter = new GraphVizFormatter<>(hasRelPraser, "edge [arrowhead=vee]");
-        IFormatter dependsOnRelFormatter = new GraphVizFormatter<>(dependsOnRelParser, "edge [arrowhead=vee style=dashed]");
-
-        Format format = new Format();
-        format.addClassFormatter(classFormatter);
-        format.addClassFormatter(extendsRelFormatter);
-        format.addClassFormatter(implementsRelFormatter);
-        format.addClassFormatter(hasRelFormatter);
-        format.addClassFormatter(dependsOnRelFormatter);
-
-        config.setFormat(format);
-    }
-
     private ISystemModel setupSystemModel() {
         Configuration config = Configuration.getInstance();
         List<String> classList = new ArrayList<>();
@@ -73,10 +49,9 @@ public class GraphVizGeneratorTest {
         Configuration config = Configuration.getInstance();
         config.setNodesep(1.0);
         config.setRankDir("BT");
-        setupFormatter(config);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+        IGenerator generator = new GraphVizGenerator(config, "default");
 
         String actual = generator.generate(systemModel, null);
 
@@ -127,10 +102,9 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
-        setupFormatter(config);
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+        IGenerator generator = new GraphVizGenerator(config, "default");
 
         String actual = generator.generate(systemModel, null);
 
@@ -181,13 +155,11 @@ public class GraphVizGeneratorTest {
         config.setExecutablePath("dot");
         config.setRankDir("BT");
 
-        setupFormatter(config);
-
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(directory.toString());
 
         // generate the string
-        IGenerator generator = new GraphVizGenerator(config);
+        IGenerator generator = new GraphVizGenerator(config, "default");
         String graphVizString = generator.generate(systemModel, null);
 
         internalRunner(config, graphVizString);

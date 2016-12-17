@@ -1,12 +1,13 @@
-package generator;
+package generator.parser;
 
+import generator.*;
 import utility.IFilter;
 import utility.Modifier;
 
 /**
  * Representing a single class in the DOT language.
  */
-class GraphVizClassParser implements IParser<IClassModel> {
+public class GraphVizClassParser implements IParser<IClassModel> {
     private IParser<IClassModel> header;
 
     private IFilter<IFieldModel> fieldFilter;
@@ -15,7 +16,7 @@ class GraphVizClassParser implements IParser<IClassModel> {
     private IFilter<IMethodModel> methodFilter;
     private IParser<IMethodModel> methodParser;
 
-    GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilter, IFilter<IMethodModel> methodFilter) {
+    public GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilter, IFilter<IMethodModel> methodFilter) {
         this.fieldFilter = fieldFilter;
         this.methodFilter = methodFilter;
         this.header = new GraphVizHeaderParser(new GraphVizClassTypeParser());

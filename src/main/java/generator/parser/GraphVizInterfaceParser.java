@@ -1,11 +1,15 @@
-package generator;
+package generator.parser;
+
+import generator.IClassModel;
+import generator.IParser;
+import generator.parser.GraphVizDependencyFormatter;
 
 /**
  * A GraphVizParser for the model's interface.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-class GraphVizInterfaceParser implements IParser<IClassModel> {
+public class GraphVizInterfaceParser implements IParser<IClassModel> {
 
     @Override
     public String parse(IClassModel thisClass) {

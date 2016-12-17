@@ -1,6 +1,5 @@
 package config;
 
-import generator.IFormat;
 import generator.IGeneratorConfiguration;
 import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
@@ -24,8 +23,8 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private IFilter<Modifier> modifierFilter;
     private boolean isRecursive;
     private String rankDir;
-    private IFormat format;
     private String nodeStyle;
+    private String parserKey;
 
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
@@ -35,7 +34,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setClasses(new ArrayList<>());
         conf.setFilters(data -> true);
         conf.setNodeStyle("node [shape=record]");
-        // TODO: Figure out setting format.
+        conf.setParserKey("default");
         return conf;
     }
 
@@ -121,17 +120,17 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     }
 
     @Override
-    public IFormat getFormat() {
-        return this.format;
-    }
-
-    public void setFormat(IFormat format) {
-        this.format = format;
+    public String getNodeStyle() {
+        return this.nodeStyle;
     }
 
     @Override
-    public String getNodeStyle() {
-        return this.nodeStyle;
+    public String getParserKey() {
+        return this.parserKey;
+    }
+
+    public void setParserKey(String parserKey) {
+        this.parserKey = parserKey;
     }
 
     public void setNodeStyle(String nodeStyle) {

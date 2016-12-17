@@ -1,22 +1,22 @@
 package generator;
 
 /**
- * A IFormatter for the GraphVizGenerator.
+ * A IParseGuide for the GraphVizGenerator.
  * <p>
  * Created by lamd on 12/16/2016.
  */
-public class GraphVizFormatter<T> implements IFormatter {
+public class GraphVizParseGuide<T> implements IParseGuide {
     private IParser<T> modelParser;
     private String edgeStyle;
 
     /**
-     * Constructs a GraphVizFormatter.
+     * Constructs a GraphVizParseGuide.
      *
      * @param modelParser IParser for a model
      * @param edgeStyle   String of the edgeStyle
      *                    Example: "edge [arrowhead=onormal]"
      */
-    public GraphVizFormatter(IParser<T> modelParser, String edgeStyle) {
+    GraphVizParseGuide(IParser<T> modelParser, String edgeStyle) {
         this.modelParser = modelParser;
         this.edgeStyle = edgeStyle;
     }
@@ -34,6 +34,6 @@ public class GraphVizFormatter<T> implements IFormatter {
 
     @Override
     public String parse(Iterable classes) {
-        return this.modelParser.parse(classes);
+        return this.modelParser.parse(classes); // FIXME: figure out warnings.
     }
 }

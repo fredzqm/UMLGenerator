@@ -39,13 +39,7 @@ public class LocalTester {
 
         // Set up config.
         Configuration config = Configuration.getInstance();
-        config.setFilters(new IFilter<Modifier>() {
-            @Override
-            public boolean filter(Modifier data) {
-                return data == Modifier.DEFAULT || data == Modifier.PUBLIC;
-            }
-
-        });
+        config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
@@ -54,12 +48,11 @@ public class LocalTester {
         config.setExecutablePath("dot");
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+        IGenerator generator = new GraphVizGenerator(config, "default");
 
         String actual = generator.generate(systemModel, null);
 
-        internalRunner(config, actual); // Comment out if you want actual files
-        // to be
+        internalRunner(config, actual);
     }
 
     /**
