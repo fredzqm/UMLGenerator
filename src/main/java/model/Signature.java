@@ -1,15 +1,14 @@
 package model;
 
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Representing the signature of a method. It has three part -- return type,
- * name and argument list types
+ * Representing the signature of a method. It has two parts -- name and argument
+ * list types
  *
  * @author zhang
  */
@@ -18,7 +17,14 @@ class Signature {
 	private final String name;
 	private int hashCode;
 
-	private Signature(List<TypeModel> argumentList, String name) {
+	/**
+	 * creates a Signature
+	 * 
+	 * @param returnType
+	 * @param argumentList
+	 * @param name
+	 */
+	public Signature(List<TypeModel> argumentList, String name) {
 		this.args = argumentList;
 		this.name = name;
 	}

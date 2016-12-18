@@ -39,6 +39,13 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	private Collection<MethodModel> dependenOnMethod;
 	private Collection<IFieldModel> dependenOnField;
 
+	/**
+	 * constructs an method model given the class it belongs to and the asm
+	 * method node
+	 * 
+	 * @param belongsTo
+	 * @param methodNode
+	 */
 	public MethodModel(ClassModel belongsTo, MethodNode methodNode) {
 		this.belongsTo = belongsTo;
 		this.asmMethodNode = methodNode;
@@ -136,7 +143,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 			dependenOnField = new ArrayList<>();
 			InsnList instructions = asmMethodNode.instructions;
 			for (int i = 0; i < instructions.size(); i++) {
-				AbstractInsnNode insn = instructions.get(i);
+//				AbstractInsnNode insn = instructions.get(i);
 				// if (insn instanceof FieldInsnNode) {
 				// MethodInsnNode methodCall = (MethodInsnNode) insn;
 				// ClassModel destClass =
