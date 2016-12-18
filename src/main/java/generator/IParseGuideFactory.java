@@ -13,7 +13,7 @@ public interface IParseGuideFactory {
      *
      * @return ParseGuide of the Class.
      */
-    IParseGuide createClassParser();
+    IParser<IClassModel> createClassParser();
 
     /**
      * Create super class, interfaces, has-a, and/or depends-on parsers.

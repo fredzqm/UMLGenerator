@@ -1,6 +1,7 @@
 package generator;
 
 import generator.parser.*;
+import generator.parser.GraphVizClassParser;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -26,9 +27,8 @@ class GraphVizParseGuideFactory implements IParseGuideFactory {
 	}
 
 	@Override
-	public IParseGuide createClassParser() {
-		IParser<IClassModel> classParser = new GraphVizClassParser(this.filters, (data) -> true, (method) -> true);
-		return new GraphVizParseGuide(classParser, null);
+	public IParser<IClassModel> createClassParser() {
+		return new GraphVizClassParser(this.filters, (data) -> true, (method) -> true);
 	}
 
 	@Override

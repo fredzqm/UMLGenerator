@@ -13,7 +13,8 @@ public class GraphVizGenerator extends AbstractGenerator implements IGenerator {
     @Override
     void createParsers() {
         // FIXME: Figure out how to get ride of warnings.
-        this.parsers.add(this.factory.createClassParser());
-        this.parsers.addAll(this.factory.createRelationshipParsers());
+    	this.classModelParser = this.factory.createClassParser();
+//        this.parsers.add(this.factory.createClassParser());
+        this.relParsers.addAll(this.factory.createRelationshipParsers());
     }
 }
