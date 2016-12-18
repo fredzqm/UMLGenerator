@@ -113,7 +113,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 
 	@Override
 	public String toString() {
-		return "" + returnType + " " + getSignature().toString();
+		return returnType + " " + getSignature().toString();
 	}
 
 	@Override
