@@ -2,33 +2,39 @@ package generator.classParser;
 
 import generator.*;
 import utility.IFilter;
-import utility.Modifier;
 
 /**
  * Representing a single class in the DOT language.
  */
 public class GraphVizClassParser extends AbstractClassParser {
 
-	public GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilters,
-			IFilter<IMethodModel> methodFilters) {
-		super(filters, fieldFilters, methodFilters);
+	public GraphVizClassParser(IGeneratorConfiguration config) {
+		super(config);
 	}
 
 	@Override
-	public IParser<IMethodModel> createMethodParser(IFilter<Modifier> filters) {
-		return new GraphVizMethodParser(filters);
+	public IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config) {
+		return (m) -> true;
 	}
 
 	@Override
-	public IParser<IFieldModel> createFieldParser(IFilter<Modifier> filters) {
-		return new GraphVizFieldParser(filters);
+	public IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config) {
+		return new GraphVizMethodParser(config.getModifierFilters());
 	}
 
 	@Override
-	public IParser<IClassModel> createHeaderParser() {
+	public IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config) {
+		return (f) -> true;
+	}
+
+	@Override
+	public IParser<IFieldModel> createFieldParser(IGeneratorConfiguration config) {
+		return new GraphVizFieldParser(config.getModifierFilters());
+	}
+
+	@Override
+	public IParser<IClassModel> createHeaderParser(IGeneratorConfiguration config) {
 		return new GraphVizHeaderParser(new GraphVizClassTypeParser());
 	}
-
-
 
 }

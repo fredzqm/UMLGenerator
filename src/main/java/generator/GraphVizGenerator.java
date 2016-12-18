@@ -27,7 +27,7 @@ public class GraphVizGenerator extends AbstractGenerator implements IGenerator {
 
 	@Override
 	public IParser<IClassModel> createClassParser(IGeneratorConfiguration config) {
-		return new GraphVizClassParser(config.getModifierFilters(), (data) -> true, (method) -> true);
+		return new GraphVizClassParser(config);
 	}
 
 	@Override

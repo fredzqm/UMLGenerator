@@ -2,26 +2,20 @@ package generator;
 
 import generator.classParser.IParser;
 import utility.IFilter;
-import utility.Modifier;
 
 public abstract class AbstractClassParser implements IParser<IClassModel> {
+	private final IParser<IClassModel> header;
+	private final IFilter<IFieldModel> fieldFilters;
+	private final IParser<IFieldModel> fieldParser;
+	private final IFilter<IMethodModel> methodFilters;
+	private final IParser<IMethodModel> methodParser;
 
-	private IParser<IClassModel> header;
-
-	private IFilter<IFieldModel> fieldFilters;
-	private IParser<IFieldModel> fieldParser;
-
-	private IFilter<IMethodModel> methodFilters;
-	private IParser<IMethodModel> methodParser;
-
-	public AbstractClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilters,
-			IFilter<IMethodModel> methodFilters) {
-		this.fieldFilters = fieldFilters;
-		this.methodFilters = methodFilters;
-
-		this.header = createHeaderParser();
-		this.fieldParser = createFieldParser(filters);
-		this.methodParser = createMethodParser(filters);
+	public AbstractClassParser(IGeneratorConfiguration config) {
+		this.fieldFilters = createFieldFilter(config);
+		this.methodFilters = createFieldMethodFilter(config);
+		this.header = createHeaderParser(config);
+		this.fieldParser = createFieldParser(config);
+		this.methodParser = createMethodParser(config);
 	}
 
 	/**
@@ -55,28 +49,41 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 	}
 
 	/**
+	 * 
+	 * @param config
+	 * @return the filter to decide whether or not to show a method
+	 */
+	public abstract IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config);
+
+	/**
 	 * Returns a Method Parser.
 	 *
-	 * @param filters
-	 *            Filters for Parser.
+	 * @param config
 	 * @return Method Parser.
 	 */
-	public abstract IParser<IMethodModel> createMethodParser(IFilter<Modifier> filters);
+	public abstract IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config);
+
+	/**
+	 * 
+	 * @param config
+	 * @return the filter to determin whether or not to show a field
+	 */
+	public abstract IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config);
 
 	/**
 	 * Returns a Field Parser.
 	 *
-	 * @param filters
-	 *            Filters for Parser.
+	 * @param config
 	 * @return Field Parser.
 	 */
-	public abstract IParser<IFieldModel> createFieldParser(IFilter<Modifier> filters);
+	public abstract IParser<IFieldModel> createFieldParser(IGeneratorConfiguration config);
 
 	/**
 	 * Returns a Header Parser.
-	 *
+	 * 
+	 * @param config
 	 * @return Header Parser.
 	 */
-	public abstract IParser<IClassModel> createHeaderParser();
+	public abstract IParser<IClassModel> createHeaderParser(IGeneratorConfiguration config);
 
 }
