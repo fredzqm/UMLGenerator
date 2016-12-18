@@ -6,14 +6,20 @@ import utility.Modifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
+ * An Implementation of the default UML GraphViz ParseGuide Factory.
+ * <p>
  * Created by lamd on 12/17/2016.
  */
-public class GraphVizParseGuideFactory implements IParseGuideFactory {
+class GraphVizParseGuideFactory implements IParseGuideFactory {
     private final IFilter<Modifier> filters;
 
+    /**
+     * Contructs a GraphVizParseGuideFactory.
+     *
+     * @param filters Modifier Filters.
+     */
     GraphVizParseGuideFactory(IFilter<Modifier> filters) {
         this.filters = filters;
     }

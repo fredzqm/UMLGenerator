@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * An abstract class for Generators.
+ * <p>
  * Created by lamd on 12/17/2016.
  */
-public abstract class AbstractGenerator implements IGenerator{
+public abstract class AbstractGenerator implements IGenerator {
     protected IGeneratorConfiguration config;
     IParseGuideFactory factory;
     Collection<IParseGuide<IClassModel>> parsers;

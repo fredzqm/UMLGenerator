@@ -1,5 +1,10 @@
 package generator;
 
+/**
+ * An Interface for Parsers.
+ *
+ * @param <T>
+ */
 public interface IParser<T> {
     /**
      * Parse single data.
