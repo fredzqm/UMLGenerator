@@ -12,8 +12,8 @@ import utility.Modifier;
 class GraphVizMethodParser implements IParser<IMethodModel> {
     private IFilter<Modifier> modifierFiter;
 
-    GraphVizMethodParser(IFilter<Modifier> filters2) {
-        this.modifierFiter = filters2;
+    GraphVizMethodParser(IFilter<Modifier> filters) {
+        this.modifierFiter = filters;
     }
 
     @Override
