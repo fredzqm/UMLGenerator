@@ -143,13 +143,4 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     public void setNodeStyle(String nodeStyle) {
         this.nodeStyle = nodeStyle;
     }
-
-    @Override
-    public String toString() {
-        return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
-                + "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
-                + "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
-                + "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
-                + isRecursive + "\n" + "Rank Dir:                  " + rankDir;
-    }
 }

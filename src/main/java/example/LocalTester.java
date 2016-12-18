@@ -25,7 +25,7 @@ public class LocalTester {
 	private static ISystemModel setupSystemModel() {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
-		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
+//		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
 		classList.add("java.lang.String");
 		config.setClasses(classList);
 		config.setRecursive(true);
@@ -43,18 +43,17 @@ public class LocalTester {
         config.setRecursive(true);
         config.setRankDir("BT");
         config.setOutputDirectory("./output");
-        config.setFileName("testFilter");
+        config.setFileName("localTest");
         config.setExecutablePath("dot");
         config.setParseKey("default");
+        config.setOutputFormat("svg");
+
+        IGenerator generator = new GraphVizGenerator(config);
 
 		String actual = generator.generate(systemModel, null);
 
-		internalRunner(config, actual); // Comment out if you want actual files
-		// to be
+		internalRunner(config, actual);
 	}
-
-        internalRunner(config, actual);
-    }
 
     /**
      * Interal Testing Runner method to call for actual output.
