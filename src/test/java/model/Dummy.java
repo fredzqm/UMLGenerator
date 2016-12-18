@@ -4,7 +4,7 @@ public class Dummy {
 	private int privateField;
 	public int publicField;
 	int defaultField;
-	protected String  proctedField;
+	protected String proctedField;
 
 	static {
 
@@ -17,16 +17,18 @@ public class Dummy {
 
 	}
 
-	private void privateMethod() {
-
+	private int privateMethod() {
+		defaultField = 4;
+		String x = proctedField;
+		proctedField = proctedField + "34";
+		return publicField;
 	}
 
-	public int publicMethod() {
-		return 0;
-	}
-
-	public boolean publicMethod2() {
-		return false;
+	public String publicMethod() {
+		StringBuilder a = new StringBuilder();
+		a.append("1");
+		a.append("2");
+		return a.toString();
 	}
 
 	public static int staticMethod() {

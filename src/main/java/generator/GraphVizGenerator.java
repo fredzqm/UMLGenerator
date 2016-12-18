@@ -18,17 +18,7 @@ public class GraphVizGenerator implements IGenerator {
 		this.config = config;
 
 		// parsing class
-		this.classParser = new GraphVizClassParser(filters, new IFilter<IFieldModel>() {
-			@Override
-			public boolean filter(IFieldModel data) {
-				return true;
-			}
-		}, new IFilter<IMethodModel>() {
-			@Override
-			public boolean filter(IMethodModel method) {
-				return true;
-			}
-		});
+		this.classParser = new GraphVizClassParser(filters, (d) -> true, (d) -> true);
 
 		// parsing class relationship
 		this.extendsRelParser = new GraphVizSuperClassRelParser(filters);

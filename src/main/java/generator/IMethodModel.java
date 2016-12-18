@@ -11,13 +11,6 @@ import utility.Modifier;
 public interface IMethodModel {
 
     /**
-     * Returns the Parent Class this method belongs to.
-     *
-     * @return Parent Class Model.
-     */
-    IClassModel getParentClass();
-
-    /**
      * Returns the access Modifier of this method.
      *
      * @return Access Modifier.

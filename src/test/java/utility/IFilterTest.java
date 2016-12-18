@@ -14,13 +14,8 @@ public class IFilterTest {
 	public void test() {
 		Iterable<Integer> a = Arrays.asList(1, 2, 3, 4, 5, 66, 7, 87);
 
-		IFilter<Integer> f = new IFilter<Integer>() {
-			@Override
-			public boolean filter(Integer data) {
-				return data % 2 != 0;
-			}
+		IFilter<Integer> f = (d) -> d % 2 != 0;
 
-		};
 		Iterator<? extends Integer> itr = f.filter(a).iterator();
 		assertEquals(1, (int) itr.next());
 		assertEquals(3, (int) itr.next());

@@ -16,6 +16,12 @@ public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
         this.importantList = importantList;
     }
 
+    /**
+     * constructs an instance of SystemModel given the configuration
+     * 
+     * @param config
+     * @return
+     */
     public static SystemModel getInstance(IModelConfiguration config) {
         ASMClassTracker asmParser = ASMParser.getInstance(config);
 
