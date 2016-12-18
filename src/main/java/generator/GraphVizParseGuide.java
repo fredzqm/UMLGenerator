@@ -34,6 +34,6 @@ public class GraphVizParseGuide implements IParseGuide {
 
     @Override
     public String parse(Iterable<? extends IClassModel> classes) {
-        return this.modelParser.parse(classes); // FIXME: figure out warnings.
+        return this.modelParser.parse(classes);
     }
 }

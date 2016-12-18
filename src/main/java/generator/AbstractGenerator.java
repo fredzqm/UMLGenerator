@@ -1,6 +1,5 @@
 package generator;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,22 +8,14 @@ import java.util.Collection;
  * Created by lamd on 12/17/2016.
  */
 public abstract class AbstractGenerator implements IGenerator {
-	protected IGeneratorConfiguration config;
-	IParseGuideFactory factory;
-	IParser<IClassModel> classModelParser;
-	Collection<IParseGuide> relParsers;
+	private final IParser<IClassModel> classModelParser;
+	private final Collection<IParseGuide> relParsers;
+	private final String basicConfiguration;
 
 	AbstractGenerator(IGeneratorConfiguration config) {
-		this.config = config;
-		switch (config.getParseKey()) {
-		// TODO: Add cases here.
-		default:
-			this.factory = new GraphVizParseGuideFactory(config.getMethodFilters());
-		}
-
-		// Setup the parsers.
-		this.relParsers = new ArrayList<>();
-		createParsers();
+		this.classModelParser = createClassParser(config);
+		this.relParsers = createRelationshipParsers(config);
+		this.basicConfiguration = createBasicConfiguration(config);
 	}
 
 	@Override
@@ -34,10 +25,7 @@ public abstract class AbstractGenerator implements IGenerator {
 		StringBuilder dotString = new StringBuilder();
 
 		// Basic Configurations.
-		dotString.append(String.format("\tnodesep=%s;\n", this.config.getNodeSep()));
-		dotString.append(String.format("\t%s;\n", this.config.getNodeStyle()));
-		dotString.append(String.format("\trankdir=%s;\n", this.config.getRankDir()));
-		dotString.append("\n");
+		dotString.append(basicConfiguration);
 
 		// Parse the class
 		dotString.append(classModelParser.parse(classes) + '\n');
@@ -49,5 +37,24 @@ public abstract class AbstractGenerator implements IGenerator {
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
 	}
 
-	abstract void createParsers();
+	/**
+	 * 
+	 * @param config
+	 * @return the basic configuration before all everything else
+	 */
+	public abstract String createBasicConfiguration(IGeneratorConfiguration config);
+
+	/**
+	 * Returns the class parser.
+	 *
+	 * @return ParseGuide of the Class.
+	 */
+	public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
+
+	/**
+	 * Create super class, interfaces, has-a, and/or depends-on parsers.
+	 *
+	 * @return Collection of relationship ParseGuides
+	 */
+	public abstract Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config);
 }
