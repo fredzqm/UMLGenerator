@@ -45,13 +45,10 @@ class Signature {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		if (hashCode == 0) {
-			hashCode = name.hashCode() * 31 + args.hashCode();
-		}
-		return hashCode;
+		return name.hashCode() * 31 + args.hashCode();
 	}
 
 	@Override
