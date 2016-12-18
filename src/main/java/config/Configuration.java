@@ -102,7 +102,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 	}
 
     @Override
-    public IFilter<Modifier> getMethodFilters() {
+    public IFilter<Modifier> getModifierFilters() {
         return this.modifierFilter;
     }
 

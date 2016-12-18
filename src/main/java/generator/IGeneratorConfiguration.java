@@ -23,7 +23,7 @@ public interface IGeneratorConfiguration {
      *
      * @return Set of Method Access Filters.
      */
-    IFilter<Modifier> getMethodFilters();
+    IFilter<Modifier> getModifierFilters();
 
     /**
      * Returns either BT or TB depending on how you want the

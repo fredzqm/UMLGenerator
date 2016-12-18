@@ -24,12 +24,12 @@ public class GraphVizGenerator extends AbstractGenerator implements IGenerator {
 
 	@Override
 	public IParser<IClassModel> createClassParser(IGeneratorConfiguration config) {
-		return new GraphVizClassParser(config.getMethodFilters(), (data) -> true, (method) -> true);
+		return new GraphVizClassParser(config.getModifierFilters(), (data) -> true, (method) -> true);
 	}
 
 	@Override
 	public Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config) {
-		IFilter<Modifier> filters = config.getMethodFilters();
+		IFilter<Modifier> filters = config.getModifierFilters();
 		
 		Collection<IParseGuide> relationshipParsers = new ArrayList<>();
 
