@@ -6,6 +6,7 @@ import utility.Modifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by lamd on 12/17/2016.
@@ -24,31 +25,19 @@ public class GraphVizParseGuideFactory implements IParseGuideFactory {
     }
 
     @Override
-    public IParseGuide<IClassModel> createDependsOnParser() {
-        IParser<IClassModel> dependsOnRelParser = new GraphVizDependsOnRelParser(filters);
-        return new GraphVizParseGuide<>(dependsOnRelParser, "edge [arrowhead=vee style=dashed]");
-    }
+    public Collection<IParseGuide<IClassModel>> createRelationshipParsers() {
+        Collection<IParseGuide<IClassModel>> relationshipParsers = new ArrayList<>();
 
-    @Override
-    public Collection<IParseGuide<IClassModel>> createCustomParser() {
-        return new ArrayList<>(); // By default, GraphVizParseGuide does not have any custom parser.
-    }
-
-    @Override
-    public IParseGuide createHasParser() {
-        IParser<IClassModel> hasRelPraser = new GraphVizHasRelParser(filters);
-        return new GraphVizParseGuide<>(hasRelPraser, "edge [arrowhead=vee]");
-    }
-
-    @Override
-    public IParseGuide createSuperClassParser() {
         IParser<IClassModel> extendsRelParser = new GraphVizSuperClassRelParser(filters);
-        return new GraphVizParseGuide<>(extendsRelParser, "edge [arrowhead=onormal]");
-    }
-
-    @Override
-    public IParseGuide<IClassModel> createInterfaceParser() {
         IParser<IClassModel> implementsRelParser = new GraphVizInterfaceParser();
-        return new GraphVizParseGuide<>(implementsRelParser, "edge [arrowhead=onormal, style=dashed]");
+        IParser<IClassModel> hasRelPraser = new GraphVizHasRelParser(filters);
+        IParser<IClassModel> dependsOnRelParser = new GraphVizDependsOnRelParser(filters);
+
+        relationshipParsers.add(new GraphVizParseGuide<>(extendsRelParser, "edge [arrowhead=onormal]"));
+        relationshipParsers.add(new GraphVizParseGuide<>(implementsRelParser, "edge [arrowhead=onormal, style=dashed]"));
+        relationshipParsers.add(new GraphVizParseGuide<>(hasRelPraser, "edge [arrowhead=vee]"));
+        relationshipParsers.add(new GraphVizParseGuide<>(dependsOnRelParser, "edge [arrowhead=vee style=dashed]"));
+
+        return relationshipParsers;
     }
 }

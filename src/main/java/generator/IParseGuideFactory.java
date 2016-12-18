@@ -7,9 +7,5 @@ import java.util.Collection;
  */
 public interface IParseGuideFactory {
     IParseGuide<IClassModel> createClassParser();
-    IParseGuide<IClassModel> createSuperClassParser();
-    IParseGuide<IClassModel> createInterfaceParser();
-    IParseGuide<IClassModel> createHasParser();
-    IParseGuide<IClassModel> createDependsOnParser();
-    Collection<IParseGuide<IClassModel>> createCustomParser();
+    Collection<IParseGuide<IClassModel>> createRelationshipParsers();
 }
