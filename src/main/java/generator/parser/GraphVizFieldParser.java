@@ -1,5 +1,7 @@
-package generator;
+package generator.parser;
 
+import generator.IFieldModel;
+import generator.IParser;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -11,7 +13,7 @@ import utility.Modifier;
 class GraphVizFieldParser implements IParser<IFieldModel> {
     private IFilter<Modifier> enumFilter;
 
-    public GraphVizFieldParser(IFilter<Modifier> filters2) {
+    GraphVizFieldParser(IFilter<Modifier> filters2) {
         this.enumFilter = filters2;
     }
 

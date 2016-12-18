@@ -1,12 +1,9 @@
 package analyzer;
 
-import generator.IFormat;
+import generator.IParseGuide;
 
-public class Format implements IFormat {
+import java.util.Collection;
 
-    @Override
-    public String getValue(String key) {
-        return null;
-    }
+public class Format {
 
 }

@@ -1,7 +1,6 @@
 package config;
 
 import com.martiansoftware.jsap.*;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.util.ArrayList;

@@ -1,5 +1,3 @@
-
-
 import config.Configuration;
 import display.Display;
 import generator.GraphVizGenerator;

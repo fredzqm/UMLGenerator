@@ -18,10 +18,4 @@ public interface IJob {
      * @return classes
      */
     List<String> getClasses();
-
-    /**
-     * @return format
-     */
-    IFormat getFormat();
-
 }

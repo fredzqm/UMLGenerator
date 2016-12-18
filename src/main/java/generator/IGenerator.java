@@ -6,7 +6,6 @@ package generator;
  * Created by lamd on 12/7/2016.
  */
 public interface IGenerator {
-
     /**
      * Creates a file formatted to display classes.
      *
@@ -15,5 +14,4 @@ public interface IGenerator {
      * @return the UML String.
      */
     String generate(ISystemModel sm, Iterable<IJob> jobs);
-
 }

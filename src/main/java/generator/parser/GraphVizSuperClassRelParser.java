@@ -1,5 +1,7 @@
-package generator;
+package generator.parser;
 
+import generator.IClassModel;
+import generator.IParser;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -8,10 +10,10 @@ import utility.Modifier;
  * <p>
  * Created by lamd on 12/14/2016.
  */
-class GraphVizSuperClassRelParser implements IParser<IClassModel> {
+public class GraphVizSuperClassRelParser implements IParser<IClassModel> {
     private IFilter<Modifier> modifierFilter;
 
-    GraphVizSuperClassRelParser(IFilter<Modifier> filters2) {
+    public GraphVizSuperClassRelParser(IFilter<Modifier> filters2) {
         this.modifierFilter = filters2;
     }
 

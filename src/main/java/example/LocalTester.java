@@ -25,7 +25,7 @@ public class LocalTester {
 	private static ISystemModel setupSystemModel() {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
-		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
+//		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
 		classList.add("java.lang.String");
 		config.setClasses(classList);
 		config.setRecursive(true);
@@ -36,41 +36,39 @@ public class LocalTester {
 		// Set up the system model and config.
 		ISystemModel systemModel = setupSystemModel();
 
-		// Set up config.
-		Configuration config = Configuration.getInstance();
-		config.setFilters((d) -> d == Modifier.DEFAULT || d == Modifier.PUBLIC);
-		config.setNodesep(1.0);
-		config.setRecursive(true);
-		config.setRankDir("BT");
-		config.setOutputDirectory("./output");
-		config.setFileName("testFilter");
-		config.setExecutablePath("dot");
+        // Set up config.
+        Configuration config = Configuration.getInstance();
+        config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        config.setNodesep(1.0);
+        config.setRecursive(true);
+        config.setRankDir("BT");
+        config.setOutputDirectory("./output");
+        config.setFileName("localTest");
+        config.setExecutablePath("dot");
+        config.setParseKey("default");
+        config.setOutputFormat("svg");
 
-		// Create GraphVizGenerator.
-		IGenerator generator = new GraphVizGenerator(config);
+        IGenerator generator = new GraphVizGenerator(config);
 
 		String actual = generator.generate(systemModel, null);
 
-		internalRunner(config, actual); // Comment out if you want actual files
-		// to be
+		internalRunner(config, actual);
 	}
 
-	/**
-	 * Interal Testing Runner method to call for actual output.
-	 *
-	 * @param config
-	 *            Configuration for the runner to use.
-	 * @param graphVizString
-	 *            GraphViz DOT string t
-	 */
-	private static void internalRunner(Configuration config, String graphVizString) {
-		// Create the runner
-		IRunner runner = new GraphVizRunner();
-		try {
-			runner.execute(config, graphVizString);
-		} catch (Exception e) {
-			System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Interal Testing Runner method to call for actual output.
+     *
+     * @param config         Configuration for the runner to use.
+     * @param graphVizString GraphViz DOT string t
+     */
+    private static void internalRunner(Configuration config, String graphVizString) {
+        // Create the runner
+        IRunner runner = new GraphVizRunner();
+        try {
+            runner.execute(config, graphVizString);
+        } catch (Exception e) {
+            System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
+            e.printStackTrace();
+        }
+    }
 }

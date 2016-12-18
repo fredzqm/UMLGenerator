@@ -1,11 +1,14 @@
-package generator;
+package generator.parser;
+
+import generator.IClassModel;
+import generator.IParser;
 
 /**
  * A GraphVizParser for the model's interface.
  * <p>
  * Created by lamd on 12/14/2016.
  */
-class GraphVizInterfaceParser implements IParser<IClassModel> {
+public class GraphVizInterfaceParser implements IParser<IClassModel> {
 
     @Override
     public String parse(IClassModel thisClass) {
@@ -15,9 +18,7 @@ class GraphVizInterfaceParser implements IParser<IClassModel> {
         GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
         int interfaceLengthBefore = sb.length();
 
-        otherClassList.forEach((interfaceModel) -> {
-            sb.append(String.format("\"%s\" ", interfaceModel.getName()));
-        });
+        otherClassList.forEach((interfaceModel) -> sb.append(String.format("\"%s\" ", interfaceModel.getName())));
 
         // If it is empty close the braces without replacing characters.
         GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);

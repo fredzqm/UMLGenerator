@@ -24,7 +24,7 @@ public class GraphVizRunner implements IRunner {
         // Create command "<execPath> -T<format> <input> -o <output>
         String command = String.format("%s -T%s %s -o %s", config.getExecutablePath(), config.getOutputFormat(),
                 outputFilePathDot, outputFilePathImage);
-        Process process = Runtime.getRuntime().exec(command.toString());
+        Process process = Runtime.getRuntime().exec(command);
         process.waitFor();
     }
 

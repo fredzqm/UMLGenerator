@@ -1,6 +1,8 @@
 package runner;
 
 /**
+ * An interface for a Runner Configuration.
+ * <p>
  * Created by lamd on 12/12/2016.
  */
 public interface IRunnerConfiguration {
