@@ -5,9 +5,9 @@ package generator;
  * <p>
  * Created by lamd on 12/16/2016.
  */
-public class GraphVizParseGuide<T> implements IParseGuide {
-    private IParser<T> modelParser;
-    private String edgeStyle;
+public class GraphVizParseGuide implements IParseGuide {
+    private final IParser<IClassModel> modelParser;
+    private final String edgeStyle;
 
     /**
      * Constructs a GraphVizParseGuide.
@@ -16,7 +16,7 @@ public class GraphVizParseGuide<T> implements IParseGuide {
      * @param edgeStyle   String of the edgeStyle
      *                    Example: "edge [arrowhead=onormal]"
      */
-    GraphVizParseGuide(IParser<T> modelParser, String edgeStyle) {
+    GraphVizParseGuide(IParser<IClassModel> modelParser, String edgeStyle) {
         this.modelParser = modelParser;
         this.edgeStyle = edgeStyle;
     }
@@ -33,7 +33,7 @@ public class GraphVizParseGuide<T> implements IParseGuide {
     }
 
     @Override
-    public String parse(Iterable classes) {
+    public String parse(Iterable<? extends IClassModel> classes) {
         return this.modelParser.parse(classes); // FIXME: figure out warnings.
     }
 }

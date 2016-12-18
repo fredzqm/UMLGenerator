@@ -13,12 +13,12 @@ public interface IParseGuideFactory {
      *
      * @return ParseGuide of the Class.
      */
-    IParseGuide<IClassModel> createClassParser();
+    IParseGuide createClassParser();
 
     /**
      * Create super class, interfaces, has-a, and/or depends-on parsers.
      *
      * @return Collection of relationship ParseGuides
      */
-    Collection<IParseGuide<IClassModel>> createRelationshipParsers();
+    Collection<IParseGuide> createRelationshipParsers();
 }

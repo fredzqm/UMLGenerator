@@ -11,7 +11,7 @@ import java.util.Collection;
 public abstract class AbstractGenerator implements IGenerator {
     protected IGeneratorConfiguration config;
     IParseGuideFactory factory;
-    Collection<IParseGuide<IClassModel>> parsers;
+    Collection<IParseGuide> parsers;
 
     AbstractGenerator(IGeneratorConfiguration config) {
         this.config = config;

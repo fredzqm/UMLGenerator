@@ -5,7 +5,7 @@ package generator;
  * <p>
  * Created by lamd on 12/16/2016.
  */
-public interface IParseGuide<T> {
+public interface IParseGuide {
     /**
      * Returns true if there is an edge style defined.
      *
@@ -26,5 +26,5 @@ public interface IParseGuide<T> {
      * @param classes Iterable of class models to parse.
      * @return Parsed String.
      */
-    String parse(Iterable<? extends T> classes);
+    String parse(Iterable<? extends IClassModel> classes);
 }
