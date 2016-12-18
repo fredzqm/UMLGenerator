@@ -1,7 +1,6 @@
-package generator.parser;
+package generator.classParser;
 
-import generator.IFieldModel;
-import generator.IParser;
+import generator.*;
 import utility.IFilter;
 import utility.Modifier;
 

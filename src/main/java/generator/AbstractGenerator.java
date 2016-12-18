@@ -2,6 +2,9 @@ package generator;
 
 import java.util.Collection;
 
+import generator.classParser.IParser;
+import generator.relParser.IParseGuide;
+
 /**
  * An abstract class for Generators.
  * <p>

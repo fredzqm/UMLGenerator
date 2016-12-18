@@ -1,9 +1,6 @@
-package generator.parser;
+package generator.classParser;
 
-import generator.IClassModel;
-import generator.IFieldModel;
-import generator.IMethodModel;
-import generator.IParser;
+import generator.*;
 import utility.IFilter;
 import utility.Modifier;
 

@@ -1,4 +1,4 @@
-package generator.parser;
+package generator.relParser;
 
 /**
  * A GraphVizDepenedency Formatter.
