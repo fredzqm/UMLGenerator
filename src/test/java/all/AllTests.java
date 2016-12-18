@@ -4,6 +4,7 @@ import config.CommandLineParserTest;
 import generator.GraphVizGeneratorTest;
 import model.ASMParserTest;
 import model.ClassModelTest;
+import model.MethodModelTest;
 import model.SystemModelTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -16,7 +17,7 @@ import utility.IFilterTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({GraphVizGeneratorTest.class, ASMParserTest.class, CommandLineParserTest.class,
-        SystemModelTest.class, ClassModelTest.class, IFilterTest.class})
+        SystemModelTest.class, ClassModelTest.class, IFilterTest.class, MethodModelTest.class})
 public class AllTests {
 
 }

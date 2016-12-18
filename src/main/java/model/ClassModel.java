@@ -107,8 +107,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
     }
 
     public MethodModel getMethodBySignature(Signature signature) {
-        if (methods.containsKey(signature))
-            return methods.get(signature);
+        if (getMethodsMap().containsKey(signature))
+            return getMethodsMap().get(signature);
         return null;
     }
 

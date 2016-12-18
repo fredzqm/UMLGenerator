@@ -7,7 +7,6 @@ import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.util.ArrayList;
