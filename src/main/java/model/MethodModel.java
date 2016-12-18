@@ -7,6 +7,7 @@ import generator.IMethodModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -37,7 +38,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 
 	private List<MethodModel> superMethods;
 	private Collection<MethodModel> dependenOnMethod;
-	private Collection<IFieldModel> dependenOnField;
+	private Collection<FieldModel> dependenOnField;
 
 	/**
 	 * constructs an method model given the class it belongs to and the asm
@@ -131,6 +132,9 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					ClassModel destClass = belongsTo.getClassByName(methodCall.owner);
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
+					if (method == null)
+						throw new RuntimeException(
+								"The destination class " + destClass + " does not contain a method: " + signature);
 					dependenOnMethod.add(method);
 				}
 			}
@@ -138,21 +142,21 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 		return dependenOnMethod;
 	}
 
-	public Collection<IFieldModel> getDependentFields() {
+	public Collection<FieldModel> getDependentFields() {
 		if (dependenOnField == null) {
-			dependenOnField = new ArrayList<>();
+			dependenOnField = new HashSet<>();
 			InsnList instructions = asmMethodNode.instructions;
 			for (int i = 0; i < instructions.size(); i++) {
-//				AbstractInsnNode insn = instructions.get(i);
-				// if (insn instanceof FieldInsnNode) {
-				// MethodInsnNode methodCall = (MethodInsnNode) insn;
-				// ClassModel destClass =
-				// belongsTo.getClassByName(methodCall.owner);
-				// FieldModel method = destClass
-				// .getFieldByName(Signature.parse(belongsTo, methodCall.name,
-				// methodCall.desc));
-				// dependenOnField.add(method);
-				// }
+				AbstractInsnNode insn = instructions.get(i);
+				if (insn instanceof FieldInsnNode) {
+					FieldInsnNode fiedlCall = (FieldInsnNode) insn;
+					ClassModel destClass = belongsTo.getClassByName(fiedlCall.owner);
+					FieldModel field = destClass.getFieldByName(fiedlCall.name);
+					if (field == null)
+						throw new RuntimeException(
+								"The destination class " + destClass + " does not contain a field: " + fiedlCall.name);
+					dependenOnField.add(field);
+				}
 			}
 		}
 		return dependenOnField;

@@ -17,8 +17,11 @@ public class Dummy {
 
 	}
 
-	private void privateMethod() {
-		
+	private int privateMethod() {
+		defaultField = 4;
+		String x = proctedField;
+		proctedField = proctedField + "34";
+		return publicField;
 	}
 
 	public String publicMethod() {

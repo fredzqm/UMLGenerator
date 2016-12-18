@@ -18,7 +18,7 @@ import utility.Modifier;
 public class MethodModelTest {
 
 	@Test
-	public void test() {
+	public void testGetDependentMethods() {
 		ASMServiceProvider parser = new ASMParser();
 		ClassModel dummy = parser.getClassByName("model.Dummy");
 
@@ -36,6 +36,31 @@ public class MethodModelTest {
 		Collection<String> actual = new ArrayList<>();
 
 		Collection<MethodModel> method = methodModel.getDependentMethods();
+		method.forEach((m) -> actual.add(m.getName()));
+		
+		assertEquals(expected.size(), actual.size());
+		assertEquals(expected, new HashSet<>(actual));
+	}
+	
+	@Test
+	public void testGetDependentFields() {
+		ASMServiceProvider parser = new ASMParser();
+		ClassModel dummy = parser.getClassByName("model.Dummy");
+
+		IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
+				&& d.getMethodType() == MethodType.METHOD;
+
+		assertEquals("model.Dummy", dummy.getName());
+		Iterator<? extends MethodModel> itr = filter.filter(dummy.getMethods()).iterator();
+
+		MethodModel methodModel = itr.next();
+		assertEquals("privateMethod", methodModel.getName());
+		assertFalse(itr.hasNext());
+
+		Set<String> expected = new HashSet<>(Arrays.asList("proctedField", "defaultField", "publicField"));
+		Collection<String> actual = new ArrayList<>();
+
+		Collection<FieldModel> method = methodModel.getDependentFields();
 		method.forEach((m) -> actual.add(m.getName()));
 		
 		assertEquals(expected.size(), actual.size());
