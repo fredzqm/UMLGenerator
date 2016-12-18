@@ -11,7 +11,7 @@ import utility.Modifier;
  * Representing a single class in the DOT language.
  */
 public class GraphVizClassParser implements IParser<IClassModel> {
-    private final IClassElementParserFactory factory;
+    private final IClassElementParserFactory factory; // FIXME: This may not need to be a field variable.
     private IParser<IClassModel> header;
 
     private IFilter<IFieldModel> fieldFilters;
