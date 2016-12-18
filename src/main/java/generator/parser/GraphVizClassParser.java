@@ -1,6 +1,9 @@
 package generator.parser;
 
-import generator.*;
+import generator.IClassModel;
+import generator.IFieldModel;
+import generator.IMethodModel;
+import generator.IParser;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -8,20 +11,24 @@ import utility.Modifier;
  * Representing a single class in the DOT language.
  */
 public class GraphVizClassParser implements IParser<IClassModel> {
+    private final IClassElementParserFactory factory;
     private IParser<IClassModel> header;
 
-    private IFilter<IFieldModel> fieldFilter;
+    private IFilter<IFieldModel> fieldFilters;
     private IParser<IFieldModel> fieldParser;
 
-    private IFilter<IMethodModel> methodFilter;
+    private IFilter<IMethodModel> methodFilters;
     private IParser<IMethodModel> methodParser;
 
-    public GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilter, IFilter<IMethodModel> methodFilter) {
-        this.fieldFilter = fieldFilter;
-        this.methodFilter = methodFilter;
-        this.header = new GraphVizHeaderParser(new GraphVizClassTypeParser());
-        this.fieldParser = new GraphVizFieldParser(filters);
-        this.methodParser = new GraphVizMethodParser(filters);
+    public GraphVizClassParser(IFilter<Modifier> filters, IFilter<IFieldModel> fieldFilters, IFilter<IMethodModel> methodFilters) {
+        this.fieldFilters = fieldFilters;
+        this.methodFilters = methodFilters;
+
+        this.factory = new GraphVizClassElementParserFactory();
+
+        this.header = this.factory.createHeaderParser();
+        this.fieldParser = this.factory.createFieldParser(filters);
+        this.methodParser = this.factory.createMethodParser(filters);
     }
 
     /**
@@ -41,13 +48,13 @@ public class GraphVizClassParser implements IParser<IClassModel> {
         // Set the fields.
         Iterable<? extends IFieldModel> fields = model.getFields();
         if (fields.iterator().hasNext()) {
-            sb.append(String.format(" | %s", fieldParser.parse(fieldFilter.filter(fields))));
+            sb.append(String.format(" | %s", fieldParser.parse(this.fieldFilters.filter(fields))));
         }
 
         // Set the methods.
         Iterable<? extends IMethodModel> methods = model.getMethods();
         if (methods.iterator().hasNext()) {
-            sb.append(String.format(" | %s", methodParser.parse(methodFilter.filter(methods))));
+            sb.append(String.format(" | %s", methodParser.parse(this.methodFilters.filter(methods))));
         }
 
         // generate the full string with the label text generated above.

@@ -1,5 +1,3 @@
-
-
 import config.CommandLineParser;
 import config.Configuration;
 
