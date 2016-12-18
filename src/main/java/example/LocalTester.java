@@ -18,23 +18,23 @@ import java.util.List;
  * Created by lamd on 12/15/2016.
  */
 public class LocalTester {
-    public static void main(String[] args) {
-        localTester();
-    }
+	public static void main(String[] args) {
+		localTester();
+	}
 
-    private static ISystemModel setupSystemModel() {
-        Configuration config = Configuration.getInstance();
-        List<String> classList = new ArrayList<>();
-        classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
-        classList.add("java.lang.String");
-        config.setClasses(classList);
-        config.setRecursive(true);
-        return SystemModel.getInstance(config);
-    }
+	private static ISystemModel setupSystemModel() {
+		Configuration config = Configuration.getInstance();
+		List<String> classList = new ArrayList<>();
+		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
+		classList.add("java.lang.String");
+		config.setClasses(classList);
+		config.setRecursive(true);
+		return SystemModel.getInstance(config);
+	}
 
-    private static void localTester() {
-        // Set up the system model and config.
-        ISystemModel systemModel = setupSystemModel();
+	private static void localTester() {
+		// Set up the system model and config.
+		ISystemModel systemModel = setupSystemModel();
 
         // Set up config.
         Configuration config = Configuration.getInstance();
@@ -47,10 +47,11 @@ public class LocalTester {
         config.setExecutablePath("dot");
         config.setParseKey("default");
 
-        // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config);
+		String actual = generator.generate(systemModel, null);
 
-        String actual = generator.generate(systemModel, null);
+		internalRunner(config, actual); // Comment out if you want actual files
+		// to be
+	}
 
         internalRunner(config, actual);
     }

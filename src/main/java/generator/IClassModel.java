@@ -67,11 +67,6 @@ public interface IClassModel {
     Iterable<? extends IClassModel> getDependsRelation();
 
     /**
-     * @return the super class name
-     */
-    String getSuperClassName();
-
-    /**
      * Returns the Modifier of the Class Model.
      *
      * @return

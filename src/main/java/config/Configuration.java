@@ -43,82 +43,89 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         return classes;
     }
 
-    public void setClasses(Iterable<String> classes) {
-        this.classes = classes;
-    }
+	public void setClasses(Iterable<String> classes) {
+		this.classes = classes;
+	}
 
     @Override
     public String getExecutablePath() {
         return executablePath;
     }
 
-    public void setExecutablePath(String executablePath) {
-        this.executablePath = executablePath;
-    }
+	public void setExecutablePath(String executablePath) {
+		this.executablePath = executablePath;
+	}
 
     @Override
     public String getOutputFormat() {
         return outputFormat;
     }
 
-    public void setOutputFormat(String outputExtension) {
-        this.outputFormat = outputExtension;
-    }
+	public void setOutputFormat(String outputExtension) {
+		this.outputFormat = outputExtension;
+	}
 
     @Override
     public String getOutputDirectory() {
         return outputDirectory;
     }
 
-    public void setOutputDirectory(String outputDirectory) {
-        this.outputDirectory = outputDirectory;
-    }
+	public void setOutputDirectory(String outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
 
     @Override
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
     @Override
     public double getNodeSep() {
         return nodesep;
     }
 
-    public void setNodesep(double nodesep) {
-        this.nodesep = nodesep;
-    }
+	public void setNodesep(double nodesep) {
+		this.nodesep = nodesep;
+	}
 
     @Override
     public boolean isRecursive() {
         return isRecursive;
     }
 
-    public void setRecursive(boolean isRecursive) {
-        this.isRecursive = isRecursive;
-    }
+	public void setRecursive(boolean isRecursive) {
+		this.isRecursive = isRecursive;
+	}
 
     @Override
     public IFilter<Modifier> getMethodFilters() {
         return this.modifierFilter;
     }
 
-    public void setFilters(IFilter<Modifier> filter) {
-        this.modifierFilter = filter;
-    }
+	public void setFilters(IFilter<Modifier> filter) {
+		this.modifierFilter = filter;
+	}
 
     @Override
     public String getRankDir() {
         return this.rankDir;
     }
 
-    public void setRankDir(String rankDir) {
-        this.rankDir = rankDir;
-    }
+	public void setRankDir(String rankDir) {
+		this.rankDir = rankDir;
+	}
 
+	public String toString() {
+		return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
+				+ "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
+				+ "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
+				+ "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
+				+ isRecursive + "\n" + "Rank Dir:                  " + rankDir;
+	}
     @Override
     public String getNodeStyle() {
         return this.nodeStyle;
