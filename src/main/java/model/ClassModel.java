@@ -3,6 +3,8 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
+import generator.IFieldModel;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -38,6 +40,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
+	private Iterable<ClassModel> hasARel;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -88,12 +91,45 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	@Override
-	public List<IClassModel> getHasRelation() {
-		return new ArrayList<>();
+	public Iterable<ClassModel> getHasRelation() {
+		if (hasARel == null) {
+			hasARel = () -> new HasARelationIterator();
+		}
+		return hasARel;
+	}
+
+	private class HasARelationIterator implements Iterator<ClassModel> {
+		private Iterator<FieldModel> iterator;
+		private ClassModel data;
+
+		public HasARelationIterator() {
+			iterator = getFields().iterator();
+			advance();
+		}
+
+		private void advance() {
+			data = null;
+			while (iterator.hasNext() && data == null) {
+				data = iterator.next().getType().getClassModel();
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return data != null;
+		}
+
+		@Override
+		public ClassModel next() {
+			ClassModel ret = data;
+			advance();
+			return ret;
+		}
+
 	}
 
 	@Override
-	public List<IClassModel> getDependsRelation() {
+	public Iterable<IClassModel> getDependsRelation() {
 		return new ArrayList<>();
 	}
 

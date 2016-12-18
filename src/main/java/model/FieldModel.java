@@ -40,7 +40,7 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 	}
 
 	@Override
-	public ITypeModel getType() {
+	public TypeModel getType() {
 		return fieldType;
 	}
 
