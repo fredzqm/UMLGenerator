@@ -8,6 +8,8 @@ import utility.IFilter;
 import utility.Modifier;
 
 /**
+ * A ClassElementParserFactory for GraphViz.
+ * <p>
  * Created by lamd on 12/18/2016.
  */
 public class GraphVizClassElementParserFactory implements IClassElementParserFactory {

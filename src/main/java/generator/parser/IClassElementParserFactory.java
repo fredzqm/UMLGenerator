@@ -1,6 +1,5 @@
 package generator.parser;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import generator.IClassModel;
 import generator.IFieldModel;
 import generator.IMethodModel;
@@ -9,12 +8,31 @@ import utility.IFilter;
 import utility.Modifier;
 
 /**
+ * An Interface for ClassElementParserFactory.
+ * <p>
  * Created by lamd on 12/18/2016.
  */
 public interface IClassElementParserFactory {
+    /**
+     * Returns a Header Parser.
+     *
+     * @return Header Parser.
+     */
     IParser<IClassModel> createHeaderParser();
 
-    IParser<IFieldModel> createFieldParser(IFilter<Modifier> fieldFilters);
+    /**
+     * Returns a Field Parser.
+     *
+     * @param filters Filters for Parser.
+     * @return Field Parser.
+     */
+    IParser<IFieldModel> createFieldParser(IFilter<Modifier> filters);
 
-    IParser<IMethodModel> createMethodParser(IFilter<Modifier> methodFilters);
+    /**
+     * Returns a Method Parser.
+     *
+     * @param filters Filters for Parser.
+     * @return Method Parser.
+     */
+    IParser<IMethodModel> createMethodParser(IFilter<Modifier> filters);
 }
