@@ -93,7 +93,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	@Override
-	public Iterable<ClassModel> getHasRelation() {
+	public Collection<ClassModel> getHasRelation() {
 		if (hasARel == null) {
 			hasARel = new HashSet<>();
 			for (FieldModel field : getFields()) {
@@ -107,10 +107,13 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	@Override
-	public Iterable<ClassModel> getDependsRelation() {
+	public Collection<ClassModel> getDependsRelation() {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();
-//			for (MethodModel method )
+			for (MethodModel method : getMethods()) {
+				dependsOn.addAll(method.addDependsClasses());
+			}
+			dependsOn.removeAll(getHasRelation());
 		}
 		return dependsOn;
 	}

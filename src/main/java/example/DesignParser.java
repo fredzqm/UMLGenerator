@@ -27,8 +27,9 @@ public class DesignParser {
 
         // FIXME: this code has POOR DESIGN. If you keep this code as-is for
         // your main method, you will be sad about your grade.
-        String[] args = new String[]{"model.Dummy"};
-
+        String[] args = new String[]{"java.lang.StringBuilder"};
+        StringBuilder x;
+        
         for (String className : args) {
             // ASM's ClassReader does the heavy lifting of parsing the compiled
             // Java class.

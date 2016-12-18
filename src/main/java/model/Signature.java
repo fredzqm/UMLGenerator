@@ -15,7 +15,6 @@ import java.util.Objects;
 class Signature {
 	private final List<TypeModel> args;
 	private final String name;
-	private int hashCode;
 
 	/**
 	 * creates a Signature

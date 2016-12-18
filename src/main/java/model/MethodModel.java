@@ -11,6 +11,7 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import utility.MethodType;
 import utility.Modifier;
@@ -39,6 +40,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	private List<MethodModel> superMethods;
 	private Collection<MethodModel> dependenOnMethod;
 	private Collection<FieldModel> dependenOnField;
+	private Collection<ClassModel> dependsOn;
 
 	/**
 	 * constructs an method model given the class it belongs to and the asm
@@ -57,7 +59,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 		this.signature = Signature.parse(belongsTo, methodNode.name, methodNode.desc);
 	}
 
-	public ClassModel getParentClass() {
+	public ClassModel getBelongTo() {
 		return belongsTo;
 	}
 
@@ -133,9 +135,10 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
 					if (method == null)
-						throw new RuntimeException(
+						System.err.println(
 								"The destination class " + destClass + " does not contain a method: " + signature);
-					dependenOnMethod.add(method);
+					else
+						dependenOnMethod.add(method);
 				}
 			}
 		}
@@ -153,13 +156,35 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					ClassModel destClass = belongsTo.getClassByName(fiedlCall.owner);
 					FieldModel field = destClass.getFieldByName(fiedlCall.name);
 					if (field == null)
-						throw new RuntimeException(
+						System.err.println(
 								"The destination class " + destClass + " does not contain a field: " + fiedlCall.name);
-					dependenOnField.add(field);
+					else
+						dependenOnField.add(field);
 				}
 			}
 		}
 		return dependenOnField;
 	}
-	
+
+	public Collection<ClassModel> addDependsClasses() {
+		if (dependsOn == null) {
+			dependsOn = new HashSet<>();
+			for (TypeModel arg : getArguments()) {
+				ClassModel asArgument = arg.getClassModel();
+				if (asArgument != null)
+					dependsOn.add(asArgument);
+			}
+			ClassModel asReturnType = getReturnType().getClassModel();
+			if (asReturnType != null)
+				dependsOn.add(asReturnType);
+			for (FieldModel field : getDependentFields()) {
+				dependsOn.add(field.getBelongTo());
+			}
+			for (MethodModel method : getDependentMethods()) {
+				dependsOn.add(method.getBelongTo());
+			}
+		}
+		return dependsOn;
+	}
+
 }
