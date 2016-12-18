@@ -25,7 +25,7 @@ public class UMLEngine implements Runnable {
         // analyze
 
         // generate
-        IGenerator generator = new GraphVizGenerator(config, config.getParserKey());
+        IGenerator generator = new GraphVizGenerator(config);
         String graphVisStr = generator.generate(systemModel, null);
 
         // run graphviz to generate the image

@@ -7,7 +7,6 @@ import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.util.ArrayList;
@@ -46,9 +45,10 @@ public class LocalTester {
         config.setOutputDirectory("./output");
         config.setFileName("testFilter");
         config.setExecutablePath("dot");
+        config.setParseKey("default");
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config, "default");
+        IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
 

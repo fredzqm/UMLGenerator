@@ -1,14 +1,12 @@
 package generator;
 
 import config.Configuration;
-import generator.parser.*;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.io.File;
@@ -49,9 +47,10 @@ public class GraphVizGeneratorTest {
         Configuration config = Configuration.getInstance();
         config.setNodesep(1.0);
         config.setRankDir("BT");
+        config.setParseKey("default");
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config, "default");
+        IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
 
@@ -102,9 +101,10 @@ public class GraphVizGeneratorTest {
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
+        config.setParseKey("default");
 
         // Create GraphVizGenerator.
-        IGenerator generator = new GraphVizGenerator(config, "default");
+        IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel, null);
 
@@ -154,12 +154,13 @@ public class GraphVizGeneratorTest {
         config.setOutputFormat("png");
         config.setExecutablePath("dot");
         config.setRankDir("BT");
+        config.setParseKey("default");
 
         // Set the output directory to the root of the Temporary Folder.
         config.setOutputDirectory(directory.toString());
 
         // generate the string
-        IGenerator generator = new GraphVizGenerator(config, "default");
+        IGenerator generator = new GraphVizGenerator(config);
         String graphVizString = generator.generate(systemModel, null);
 
         internalRunner(config, graphVizString);

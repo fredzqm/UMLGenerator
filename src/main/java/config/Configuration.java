@@ -34,7 +34,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setClasses(new ArrayList<>());
         conf.setFilters(data -> true);
         conf.setNodeStyle("node [shape=record]");
-        conf.setParserKey("default");
+        conf.setParseKey("default");
         return conf;
     }
 
@@ -102,7 +102,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     }
 
     @Override
-    public IFilter<Modifier> getFilters() {
+    public IFilter<Modifier> getMethodFilters() {
         return this.modifierFilter;
     }
 
@@ -125,11 +125,11 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     }
 
     @Override
-    public String getParserKey() {
+    public String getParseKey() {
         return this.parserKey;
     }
 
-    public void setParserKey(String parserKey) {
+    public void setParseKey(String parserKey) {
         this.parserKey = parserKey;
     }
 

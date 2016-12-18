@@ -23,7 +23,7 @@ public interface IGeneratorConfiguration {
      *
      * @return Set of Method Access Filters.
      */
-    IFilter<Modifier> getFilters();
+    IFilter<Modifier> getMethodFilters();
 
     /**
      * Returns either BT or TB depending on how you want the
@@ -45,5 +45,5 @@ public interface IGeneratorConfiguration {
      *
      * @return Parser key.
      */
-    String getParserKey();
+    String getParseKey();
 }
