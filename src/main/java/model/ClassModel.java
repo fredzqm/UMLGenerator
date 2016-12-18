@@ -4,6 +4,7 @@ import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
 import generator.IFieldModel;
+import generator.IMethodModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -40,7 +41,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
-	private Iterable<ClassModel> hasARel;
+	private Collection<ClassModel> hasARel;
+	private Collection<ClassModel> dependsOn;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -93,44 +95,24 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	@Override
 	public Iterable<ClassModel> getHasRelation() {
 		if (hasARel == null) {
-			hasARel = () -> new HasARelationIterator();
+			hasARel = new HashSet<>();
+			for (FieldModel field : getFields()) {
+				ClassModel hasClass = field.getType().getClassModel();
+				if (hasClass != null) {
+					hasARel.add(hasClass);
+				}
+			}
 		}
 		return hasARel;
 	}
 
-	private class HasARelationIterator implements Iterator<ClassModel> {
-		private Iterator<FieldModel> iterator;
-		private ClassModel data;
-
-		public HasARelationIterator() {
-			iterator = getFields().iterator();
-			advance();
-		}
-
-		private void advance() {
-			data = null;
-			while (iterator.hasNext() && data == null) {
-				data = iterator.next().getType().getClassModel();
-			}
-		}
-
-		@Override
-		public boolean hasNext() {
-			return data != null;
-		}
-
-		@Override
-		public ClassModel next() {
-			ClassModel ret = data;
-			advance();
-			return ret;
-		}
-
-	}
-
 	@Override
-	public Iterable<IClassModel> getDependsRelation() {
-		return new ArrayList<>();
+	public Iterable<ClassModel> getDependsRelation() {
+		if (dependsOn == null) {
+			dependsOn = new HashSet<>();
+//			for (MethodModel method )
+		}
+		return dependsOn;
 	}
 
 	public Iterable<MethodModel> getMethods() {
