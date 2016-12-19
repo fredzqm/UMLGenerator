@@ -12,17 +12,9 @@ public class GraphVizInterfaceParser implements IParseGuide {
 	@Override
 	public String parse(IClassModel thisClass) {
 		Iterable<? extends IClassModel> otherClassList = thisClass.getInterfaces();
-
 		StringBuilder sb = new StringBuilder();
-		GraphVizDependencyFormatter.setupDependencyVizDescription(sb, thisClass.getName());
-		int interfaceLengthBefore = sb.length();
-
 		otherClassList.forEach((interfaceModel) -> sb.append(String.format("\"%s\" ", interfaceModel.getName())));
-
-		// If it is empty close the braces without replacing characters.
-		GraphVizDependencyFormatter.closeDependencyVizDescription(sb, interfaceLengthBefore);
-
-		return sb.toString();
+		return String.format("\t\"%s\" -> {%s};\n", thisClass.getName(), sb.toString());
 	}
 
 	@Override
