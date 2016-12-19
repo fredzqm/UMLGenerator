@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Dummy {
 	private int privateField;
 	public int publicField;
 	int defaultField;
 	protected String proctedField;
-
+	private ArrayList<String> x;
+	
 	static {
 
 	}

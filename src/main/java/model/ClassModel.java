@@ -98,7 +98,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 				ClassModel hasClass = field.getType().getClassModel();
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
-
+//						field.get
 					} else {
 						hasARel.put(hasClass, 1);
 					}
