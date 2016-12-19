@@ -32,7 +32,7 @@ public class ASMParserTest {
 		for (ClassModel c : ls)
 			actual.add(c.getName());
 
-		assertTrue("Not all interfaces get parsed", actual.contains(expected));
+		assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
 		
 	}
 
@@ -48,7 +48,7 @@ public class ASMParserTest {
 	}
 	
 	@Test
-	public void testGetFieldsByName() {
+	public void testGetFieldsByNameSequence() {
 		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
 			@Override
 			public boolean isRecursive() {

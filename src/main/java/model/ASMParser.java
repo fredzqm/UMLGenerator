@@ -6,7 +6,9 @@ import org.objectweb.asm.tree.ClassNode;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -23,6 +25,7 @@ public class ASMParser implements ASMClassTracker {
 
 	private boolean autoCreate;
 	private Map<String, ClassModel> map;
+	private Queue<ClassModel> unextended;
 
 	/**
 	 * create an ASM parser with a certain recursive factor
@@ -54,37 +57,43 @@ public class ASMParser implements ASMClassTracker {
 	}
 
 	private ClassModel getClassExplicity(String className) {
-		ClassModel model = parseClass(className);
-		if ((recursiveFlag & RECURSE_SUPERCLASS) != 0)
-			model.getSuperClass();
-		if ((recursiveFlag & RECURSE_INTERFACE) != 0)
-			model.getInterfaces();
-		if ((recursiveFlag & RECURSE_FILEDS) != 0)
-			model.getFields();
-		return model;
-	}
-
-	private ClassModel parseClass(String className) {
+		ClassModel model;
 		if (map.containsKey(className))
 			return map.get(className);
 		try {
 			ClassReader reader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
 			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-			ClassModel model = new ClassModel(this, classNode);
+			model = new ClassModel(this, classNode);
 			map.put(className, model);
-			return model;
+			if (unextended != null)
+				unextended.add(model);
 		} catch (IOException e) {
 			throw new RuntimeException("ASM parsing of " + className + " failed.", e);
 		}
+		return model;
+	}
+
+	private void parseRelated(ClassModel model) {
+		if ((recursiveFlag & RECURSE_SUPERCLASS) != 0)
+			model.getSuperClass();
+		if ((recursiveFlag & RECURSE_INTERFACE) != 0)
+			model.getInterfaces();
+		if ((recursiveFlag & RECURSE_FILEDS) != 0)
+			model.getFields();
 	}
 
 	public void addClasses(Iterable<String> importClassesList) {
+		unextended = new LinkedList<>();
 		if (importClassesList != null) {
 			for (String importantClass : importClassesList) {
 				getClassExplicity(importantClass.replace(".", "/"));
 			}
 		}
+		while (!unextended.isEmpty()) {
+			parseRelated(unextended.poll());
+		}
+		unextended = null;
 	}
 
 	/**

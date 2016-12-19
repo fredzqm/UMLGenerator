@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SystemModelTest {
@@ -36,7 +35,7 @@ public class SystemModelTest {
         for (IClassModel x : sys.getClasses())
             actual.add(x.getName());
 
-		assertTrue("Not all interfaces get parsed", actual.contains(expected));
+		assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
     }
 
 }
