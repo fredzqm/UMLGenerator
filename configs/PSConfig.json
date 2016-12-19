@@ -1,0 +1,13 @@
+{
+	"config" : {
+		"outputDir" : "output",
+		"classes" : ["headfirst.factory.pizzaaf.BlackOlives","headfirst.factory.pizzaaf.Cheese","headfirst.factory.pizzaaf.CheesePizza","headfirst.factory.pizzaaf.ChicagoPizzaIngredientFactory","headfirst.factory.pizzaaf.ChicagoPizzaStore","headfirst.factory.pizzaaf.ClamPizza","headfirst.factory.pizzaaf.Clams","headfirst.factory.pizzaaf.Dough","headfirst.factory.pizzaaf.Eggplant","headfirst.factory.pizzaaf.FreshClams","headfirst.factory.pizzaaf.FrozenClams","headfirst.factory.pizzaaf.Garlic","headfirst.factory.pizzaaf.MarinaraSauce","headfirst.factory.pizzaaf.MozzarellaCheese","headfirst.factory.pizzaaf.Mushroom","headfirst.factory.pizzaaf.NYPizzaIngredientFactory","headfirst.factory.pizzaaf.NYPizzaStore","headfirst.factory.pizzaaf.Onion","headfirst.factory.pizzaaf.ParmesanCheese","headfirst.factory.pizzaaf.Pepperoni","headfirst.factory.pizzaaf.PepperoniPizza","headfirst.factory.pizzaaf.Pizza","headfirst.factory.pizzaaf.PizzaIngredientFactory","headfirst.factory.pizzaaf.PizzaStore","headfirst.factory.pizzaaf.PizzaTestDrive","headfirst.factory.pizzaaf.PlumTomatoSauce","headfirst.factory.pizzaaf.RedPepper","headfirst.factory.pizzaaf.ReggianoCheese","headfirst.factory.pizzaaf.Sauce","headfirst.factory.pizzaaf.SlicedPepperoni","headfirst.factory.pizzaaf.Spinach","headfirst.factory.pizzaaf.ThickCrustDough","headfirst.factory.pizzaaf.ThinCrustDough","headfirst.factory.pizzaaf.VeggiePizza","headfirst.factory.pizzaaf.Veggies"],
+		"executablePath" : "dot",
+		"outputFormat" : "svg",
+		"fileName" : "PizzaService",
+		"nodeSep" : 1.0,
+		"modifierFilter" : "",
+		"isRecursive" : false,
+		"rankDir" : "BT"
+	}
+}
