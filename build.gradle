@@ -26,6 +26,8 @@ run {
 sourceCompatibility = 1.8
 version = "1.0.0-SNAPSHOT"
 
+//gradle.java.home="C:\\Program Files\\Java\\jdk1.8.0_91"
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven {
@@ -33,6 +35,9 @@ repositories {
     }
     maven {
         url "https://mvnrepository.com/artifact/org.easymock/"
+    }
+    maven {
+    	url "https://mvnrepository.com/artifact/org.json/json"
     }
 }
 
@@ -75,7 +80,7 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.json/json
 	compile group: 'org.json', name: 'json', version: '20160810'
-    
+  
     
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
