@@ -26,7 +26,7 @@ public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
         ASMClassTracker asmParser = ASMParser.getInstance(config);
 
         List<ClassModel> ls = new ArrayList<>();
-        asmParser.getClasses().forEach((c) -> {
+        asmParser.freezeClassCreation().forEach((c) -> {
             ls.add(c);
         });
         return new SystemModel(ls);

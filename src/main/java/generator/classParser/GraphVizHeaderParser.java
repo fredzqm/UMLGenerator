@@ -1,11 +1,9 @@
-package generator.parser;
+package generator.classParser;
 
-import generator.IClassModel;
-import generator.IParser;
+import generator.*;
 import utility.ClassType;
 
 public class GraphVizHeaderParser implements IParser<IClassModel> {
-
     private IParser<ClassType> classTypeParser;
 
     GraphVizHeaderParser(IParser<ClassType> classTypeParser) {

@@ -3,8 +3,6 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
-import generator.IFieldModel;
-import generator.IMethodModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -41,7 +39,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
-	private Collection<ClassModel> hasARel;
+	private Map<ClassModel, Integer> hasARel;
 	private Collection<ClassModel> dependsOn;
 
 	/**
@@ -60,7 +58,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 	}
 
-	public IClassModel getSuperClass() {
+	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = getClassByName(asmClassNode.superName);
 		return superClass;
@@ -93,13 +91,17 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	@Override
-	public Collection<ClassModel> getHasRelation() {
+	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
-			hasARel = new HashSet<>();
+			hasARel = new HashMap<>();
 			for (FieldModel field : getFields()) {
 				ClassModel hasClass = field.getType().getClassModel();
 				if (hasClass != null) {
-					hasARel.add(hasClass);
+					if (hasARel.containsKey(hasClass)) {
+						// TODO:
+					} else {
+						hasARel.put(hasClass, 1);
+					}
 				}
 			}
 		}
@@ -113,7 +115,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 			for (MethodModel method : getMethods()) {
 				dependsOn.addAll(method.addDependsClasses());
 			}
-			dependsOn.removeAll(getHasRelation());
+			dependsOn.removeAll(getHasRelation().keySet());
 		}
 		return dependsOn;
 	}
@@ -125,6 +127,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	public MethodModel getMethodBySignature(Signature signature) {
 		if (getMethodsMap().containsKey(signature))
 			return getMethodsMap().get(signature);
+		if (getSuperClass() != null)
+			getSuperClass().getMethodBySignature(signature);
 		return null;
 	}
 
@@ -162,6 +166,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	public FieldModel getFieldByName(String name) {
 		if (getFieldMap().containsKey(name))
 			return getFieldMap().get(name);
+		if (getSuperClass() != null)
+			return getSuperClass().getFieldByName(name);
 		return null;
 	}
 

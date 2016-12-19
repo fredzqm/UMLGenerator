@@ -58,22 +58,13 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal ]"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
-        // TODO: When Fred implements Has-A and Depends-On update this test.
-        int relationsCount = 0;
-        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
-        while (index != -1) {
-            relationsCount++;
-            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
-        }
-//		assertEqualsals("Number of Relations not equal", 3, relationsCount);
-
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
                 "- privateString : java.lang.String", "+ publicInt : int"};
         String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
@@ -111,22 +102,22 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"};"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\"}"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal ]"));
+        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
         // TODO: When Fred implements Has-A and Depends-On update this test.
 
-        String expectedSuperClass = "\"generator.DummyClass\" -> {\"java.lang.Object\"};";
+        String expectedSuperClass = "\"generator.DummyClass\" -> {\"java.lang.Object\" };";
         assertTrue(actual.contains(expectedSuperClass));
 
         String expectedInterfaces = "\"generator.DummyClass\" -> {};";
         assertTrue(actual.contains(expectedInterfaces));
 
-        String expectedDependencies = "\"generator.DummyClass\" -> {\"java.lang.String\"};";
+        String expectedDependencies = "\"generator.DummyClass\" -> {\"java.lang.String\" };";
         assertTrue(actual.contains(expectedDependencies));
 
 //        String expectedHasA = "\"generator.DummyClass\" -> {\"java.lang.Object\" \"java.lang.Object\" \"java.io.PrintStream\" \"java.io.PrintStream\" \"generator.DummyClass\" \"generator.DummyClass\" \"java.lang.StringBuilder\" \"java.lang.StringBuilder\" \"java.lang.System\" \"java.lang.System\"};";
@@ -154,11 +145,12 @@ public class GraphVizGeneratorTest {
         ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
         config.setFileName("testWrite");
-        config.setOutputFormat("png");
+        config.setOutputFormat("svg");
         config.setExecutablePath("dot");
         config.setRankDir("BT");
         config.setParseKey("default");
-
+        config.setOutputDirectory(directory.toString());
+        
         // generate the string
         IGenerator generator = new GraphVizGenerator(config);
         String graphVizString = generator.generate(systemModel, null);

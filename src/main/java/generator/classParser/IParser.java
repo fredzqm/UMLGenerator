@@ -1,4 +1,4 @@
-package generator;
+package generator.classParser;
 
 /**
  * An Interface for Parsers.
@@ -6,6 +6,7 @@ package generator;
  * @param <T>
  */
 public interface IParser<T> {
+	
     /**
      * Parse single data.
      *

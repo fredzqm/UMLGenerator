@@ -1,6 +1,5 @@
-package generator.parser;
+package generator.classParser;
 
-import generator.IParser;
 import utility.ClassType;
 
 class GraphVizClassTypeParser implements IParser<ClassType> {

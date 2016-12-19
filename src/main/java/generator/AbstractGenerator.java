@@ -2,6 +2,9 @@ package generator;
 
 import java.util.Collection;
 
+import generator.classParser.IParser;
+import generator.relParser.IParseGuide;
+
 /**
  * An abstract class for Generators.
  * <p>
@@ -32,7 +35,7 @@ public abstract class AbstractGenerator implements IGenerator {
 
 		// Pull the formatter from the config.
 		this.relParsers.forEach((relParser) -> dotString
-				.append(String.format("\t%s;\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
+				.append(String.format("\tedge [%s]\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
 
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
 	}

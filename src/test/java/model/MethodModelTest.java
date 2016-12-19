@@ -22,26 +22,22 @@ public class MethodModelTest {
 		ASMServiceProvider parser = new ASMParser();
 		ClassModel dummy = parser.getClassByName("model.Dummy");
 
-		IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PUBLIC
-				&& d.getMethodType() == MethodType.METHOD;
-
 		assertEquals("model.Dummy", dummy.getName());
-		Iterator<? extends MethodModel> itr = filter.filter(dummy.getMethods()).iterator();
 
-		MethodModel methodModel = itr.next();
-		assertEquals("publicMethod", methodModel.getName());
-		assertFalse(itr.hasNext());
+		MethodModel methodModel = dummy.getMethodBySignature(Signature.parse(parser, "publicMethod", "()LString"));
 
+		assertTrue(methodModel != null);
+		
 		Set<String> expected = new HashSet<>(Arrays.asList("append", "toString", "java.lang.StringBuilder"));
 		Collection<String> actual = new ArrayList<>();
 
-		Collection<MethodModel> method = methodModel.getDependentMethods();
-		method.forEach((m) -> actual.add(m.getName()));
-		
+		Collection<MethodModel> methods = methodModel.getDependentMethods();
+		methods.forEach((m) -> actual.add(m.getName()));
+
 		assertEquals(expected.size(), actual.size());
 		assertEquals(expected, new HashSet<>(actual));
 	}
-	
+
 	@Test
 	public void testGetDependentFields() {
 		ASMServiceProvider parser = new ASMParser();
@@ -62,7 +58,7 @@ public class MethodModelTest {
 
 		Collection<FieldModel> method = methodModel.getDependentFields();
 		method.forEach((m) -> actual.add(m.getName()));
-		
+
 		assertEquals(expected.size(), actual.size());
 		assertEquals(expected, new HashSet<>(actual));
 	}
