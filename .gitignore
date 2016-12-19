@@ -159,3 +159,4 @@ gradle-app.setting
 *.iml
 asm-5.0.4-bin/
 output/
+gradle.properties
