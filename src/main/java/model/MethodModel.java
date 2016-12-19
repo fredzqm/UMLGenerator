@@ -14,7 +14,6 @@ import org.objectweb.asm.tree.MethodNode;
 import utility.MethodType;
 import utility.Modifier;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +34,6 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	private final TypeModel returnType;
 	private final Signature signature;
 
-	private List<MethodModel> superMethods;
 	private Collection<MethodModel> dependenOnMethod;
 	private Collection<FieldModel> dependenOnField;
 	private Collection<ClassModel> dependsOn;
@@ -88,21 +86,6 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 		return signature;
 	}
 
-	public Iterable<MethodModel> getSuperMethods() {
-		if (superMethods == null) {
-			superMethods = new ArrayList<>();
-			MethodModel inherit = belongsTo.getMethodBySignature(signature);
-			if (inherit != null)
-				superMethods.add(inherit);
-			for (ClassModel interf : belongsTo.getInterfaces()) {
-				inherit = interf.getMethodBySignature(signature);
-				if (inherit != null)
-					superMethods.add(inherit);
-			}
-		}
-		return superMethods;
-	}
-
 	public List<TypeModel> getArguments() {
 		return signature.getArguments();
 	}
@@ -131,16 +114,14 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					MethodInsnNode methodCall = (MethodInsnNode) insn;
 					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(methodCall.owner));
 					ClassModel destClass = belongsTo.getClassByName(type.getName());
-					if (destClass == null) {
+					if (destClass == null)
 						continue;
-					}
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
 					if (method == null)
-						System.err.println(
+						throw new RuntimeException(
 								"The destination class " + destClass + " does not contain a method: " + signature);
-					else
-						dependenOnMethod.add(method);
+					dependenOnMethod.add(method);
 				}
 			}
 		}
@@ -157,15 +138,13 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					FieldInsnNode fiedlCall = (FieldInsnNode) insn;
 					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(fiedlCall.owner));
 					ClassModel destClass = belongsTo.getClassByName(type.getName());
-					if (destClass == null) {
+					if (destClass == null)
 						continue;
-					}
 					FieldModel field = destClass.getFieldByName(fiedlCall.name);
 					if (field == null)
-						System.err.println(
+						throw new RuntimeException(
 								"The destination class " + destClass + " does not contain a field: " + fiedlCall.name);
-					else
-						dependenOnField.add(field);
+					dependenOnField.add(field);
 				}
 			}
 		}

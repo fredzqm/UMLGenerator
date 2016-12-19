@@ -39,7 +39,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
-	private Collection<ClassModel> hasARel;
+	private Map<ClassModel, Integer> hasARel;
 	private Collection<ClassModel> dependsOn;
 
 	/**
@@ -58,7 +58,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 	}
 
-	public IClassModel getSuperClass() {
+	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = getClassByName(asmClassNode.superName);
 		return superClass;
@@ -91,13 +91,17 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	@Override
-	public Collection<ClassModel> getHasRelation() {
+	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
-			hasARel = new HashSet<>();
+			hasARel = new HashMap<>();
 			for (FieldModel field : getFields()) {
 				ClassModel hasClass = field.getType().getClassModel();
 				if (hasClass != null) {
-					hasARel.add(hasClass);
+					if (hasARel.containsKey(hasClass)) {
+
+					} else {
+						hasARel.put(hasClass, 1);
+					}
 				}
 			}
 		}
@@ -111,7 +115,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 			for (MethodModel method : getMethods()) {
 				dependsOn.addAll(method.addDependsClasses());
 			}
-			dependsOn.removeAll(getHasRelation());
+			dependsOn.removeAll(getHasRelation().keySet());
 		}
 		return dependsOn;
 	}
@@ -128,7 +132,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<Signature, MethodModel> getMethodsMap() {
 		if (methods == null) {
-			methods = new HashMap<>();
+			methods = getSuperClass() == null ? new HashMap<>() : new HashMap<>(getSuperClass().getMethodsMap());
 			@SuppressWarnings("unchecked")
 			List<MethodNode> ls = asmClassNode.methods;
 			for (MethodNode methodNode : ls) {
@@ -146,7 +150,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	private Map<String, FieldModel> getFieldMap() {
 		if (fields == null) {
-			fields = new HashMap<>();
+			fields = getSuperClass() == null ? new HashMap<>() : new HashMap<>(getSuperClass().getFieldMap());
 			@SuppressWarnings("unchecked")
 			List<FieldNode> ls = asmClassNode.fields;
 			for (FieldNode fieldNode : ls) {
