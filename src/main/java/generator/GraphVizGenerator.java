@@ -1,15 +1,16 @@
 package generator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
-import generator.parser.GraphVizClassParser;
-import generator.parser.GraphVizDependsOnRelParser;
-import generator.parser.GraphVizHasRelParser;
-import generator.parser.GraphVizInterfaceParser;
-import generator.parser.GraphVizSuperClassRelParser;
-import utility.IFilter;
-import utility.Modifier;
+import generator.classParser.GraphVizClassParser;
+import generator.classParser.IParser;
+import generator.relParser.GraphVizDependsOnRelParser;
+import generator.relParser.GraphVizHasRelParser;
+import generator.relParser.GraphVizInterfaceParser;
+import generator.relParser.GraphVizSuperClassRelParser;
+import generator.relParser.IParseGuide;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -24,35 +25,18 @@ public class GraphVizGenerator extends AbstractGenerator implements IGenerator {
 
 	@Override
 	public IParser<IClassModel> createClassParser(IGeneratorConfiguration config) {
-		return new GraphVizClassParser(config.getModifierFilters(), (data) -> true, (method) -> true);
+		return new GraphVizClassParser(config);
 	}
 
 	@Override
 	public Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config) {
-		IFilter<Modifier> filters = config.getModifierFilters();
-		
-		Collection<IParseGuide> relationshipParsers = new ArrayList<>();
-
-		IParser<IClassModel> extendsRelParser = new GraphVizSuperClassRelParser(filters);
-		IParser<IClassModel> implementsRelParser = new GraphVizInterfaceParser();
-		IParser<IClassModel> hasRelPraser = new GraphVizHasRelParser(filters);
-		IParser<IClassModel> dependsOnRelParser = new GraphVizDependsOnRelParser(filters);
-
-		relationshipParsers.add(new GraphVizParseGuide(extendsRelParser, "edge [arrowhead=onormal]"));
-		relationshipParsers.add(new GraphVizParseGuide(implementsRelParser, "edge [arrowhead=onormal, style=dashed]"));
-		relationshipParsers.add(new GraphVizParseGuide(hasRelPraser, "edge [arrowhead=vee]"));
-		relationshipParsers.add(new GraphVizParseGuide(dependsOnRelParser, "edge [arrowhead=vee style=dashed]"));
-
-		return relationshipParsers;
+		return new ArrayList<>(Arrays.asList(new GraphVizSuperClassRelParser(), new GraphVizInterfaceParser(),
+				new GraphVizHasRelParser(), new GraphVizDependsOnRelParser()));
 	}
 
 	@Override
 	public String createBasicConfiguration(IGeneratorConfiguration config) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("\tnodesep=%s;\n", config.getNodeSep()));
-		sb.append(String.format("\t%s;\n", config.getNodeStyle()));
-		sb.append(String.format("\trankdir=%s;\n", config.getRankDir()));
-		sb.append("\n");
-		return sb.toString();
+		return String.format("\tnodesep=%s;\n\t%s;\n\trankdir=%s;\n\n", config.getNodeSep(), config.getNodeStyle(),
+				config.getRankDir());
 	}
 }
