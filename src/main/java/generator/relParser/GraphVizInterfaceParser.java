@@ -19,7 +19,7 @@ public class GraphVizInterfaceParser implements IParseGuide {
 
 	@Override
 	public String getEdgeStyle() {
-		return "edge [arrowhead=onormal, style=dashed]";
+		return "arrowhead=onormal style=dashed ";
 	}
 
 }

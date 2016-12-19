@@ -21,7 +21,7 @@ public class GraphVizDependsOnRelParser implements IParseGuide {
 
 	@Override
 	public String getEdgeStyle() {
-		return "edge [arrowhead=vee style=dashed]";
+		return "arrowhead=vee style=dashed ";
 	}
 
 }
