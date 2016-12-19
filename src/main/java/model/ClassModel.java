@@ -9,7 +9,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import utility.ClassType;
-import utility.IFilter;
 import utility.Modifier;
 
 import java.util.*;
@@ -99,7 +98,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 				ClassModel hasClass = field.getType().getClassModel();
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
-//						field.get
+						// TODO:
 					} else {
 						hasARel.put(hasClass, 1);
 					}
@@ -122,8 +121,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	public Iterable<MethodModel> getMethods() {
-		IFilter<MethodModel> own = (f) -> f.getBelongTo() == this;
-		return own.filter(getMethodsMap().values());
+		return getMethodsMap().values();
 	}
 
 	public MethodModel getMethodBySignature(Signature signature) {

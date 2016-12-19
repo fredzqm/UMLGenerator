@@ -15,7 +15,8 @@ import java.util.Objects;
 class Signature {
 	private final List<TypeModel> args;
 	private final String name;
-
+	private int hashCode;
+	
 	/**
 	 * creates a Signature
 	 * 
@@ -47,7 +48,10 @@ class Signature {
 	
 	@Override
 	public int hashCode() {
-		return name.hashCode() * 31 + args.hashCode();
+		if (hashCode == 0) {
+			hashCode = name.hashCode() * 31 + args.hashCode();
+		}
+		return hashCode;
 	}
 
 	@Override

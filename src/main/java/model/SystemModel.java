@@ -29,7 +29,6 @@ public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
         asmParser.freezeClassCreation().forEach((c) -> {
             ls.add(c);
         });
-        System.out.println(ls.size());
         return new SystemModel(ls);
     }
 
