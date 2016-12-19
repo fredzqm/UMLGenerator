@@ -35,7 +35,7 @@ public abstract class AbstractGenerator implements IGenerator {
 
 		// Pull the formatter from the config.
 		this.relParsers.forEach((relParser) -> dotString
-				.append(String.format("\t%s;\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
+				.append(String.format("\t%s\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
 
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
 	}

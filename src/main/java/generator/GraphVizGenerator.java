@@ -11,8 +11,6 @@ import generator.relParser.GraphVizHasRelParser;
 import generator.relParser.GraphVizInterfaceParser;
 import generator.relParser.GraphVizSuperClassRelParser;
 import generator.relParser.IParseGuide;
-import utility.IFilter;
-import utility.Modifier;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -32,9 +30,8 @@ public class GraphVizGenerator extends AbstractGenerator implements IGenerator {
 
 	@Override
 	public Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config) {
-		IFilter<Modifier> filters = config.getModifierFilters();
-		return new ArrayList<>(Arrays.asList(new GraphVizSuperClassRelParser(filters), new GraphVizInterfaceParser(),
-				new GraphVizHasRelParser(filters), new GraphVizDependsOnRelParser(filters)));
+		return new ArrayList<>(Arrays.asList(new GraphVizSuperClassRelParser(), new GraphVizInterfaceParser(),
+				new GraphVizHasRelParser(), new GraphVizDependsOnRelParser()));
 	}
 
 	@Override
