@@ -48,8 +48,7 @@ public class ASMParser implements ASMClassTracker {
 	public static ASMParser getInstance(IModelConfiguration config) {
 		int recurisveFlag = 0;
 		if (config.isRecursive()) {
-			recurisveFlag |= RECURSE_SUPERCLASS;
-			recurisveFlag |= RECURSE_INTERFACE;
+			recurisveFlag = 0x6;
 		} else {
 			recurisveFlag |= AUTO_CREATE_OFF;
 		}

@@ -131,7 +131,12 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 				AbstractInsnNode insn = instructions.get(i);
 				if (insn instanceof MethodInsnNode) {
 					MethodInsnNode methodCall = (MethodInsnNode) insn;
-					ClassModel destClass = belongsTo.getClassByName(methodCall.owner);
+					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(methodCall.owner));
+					ClassModel destClass = belongsTo.getClassByName(type.getName());
+					if (destClass == null) {
+						// a method is called on a primitive type
+						continue;
+					}
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
 					if (method == null)
@@ -153,7 +158,12 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 				AbstractInsnNode insn = instructions.get(i);
 				if (insn instanceof FieldInsnNode) {
 					FieldInsnNode fiedlCall = (FieldInsnNode) insn;
-					ClassModel destClass = belongsTo.getClassByName(fiedlCall.owner);
+					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(fiedlCall.owner));
+					ClassModel destClass = belongsTo.getClassByName(type.getName());
+					if (destClass == null) {
+						// a method is called on a primitive type
+						continue;
+					}
 					FieldModel field = destClass.getFieldByName(fiedlCall.name);
 					if (field == null)
 						System.err.println(
