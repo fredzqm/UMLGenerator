@@ -23,9 +23,9 @@ public class ConfigFileParserTest {
 		assertEquals("out", config.getFileName());
 		assertEquals(10,(int)(10*config.getNodeSep()));
 		assertTrue(!config.isRecursive());
-		assertTrue(!config.getModifierFilter().filter(Modifier.PRIVATE));
-		assertTrue(!config.getModifierFilter().filter(Modifier.PROTECTED));
-		assertTrue(config.getModifierFilter().filter(Modifier.PUBLIC));
+		assertTrue(!config.getModifierFilters().filter(Modifier.PRIVATE));
+		assertTrue(!config.getModifierFilters().filter(Modifier.PROTECTED));
+		assertTrue(config.getModifierFilters().filter(Modifier.PUBLIC));
 		assertEquals("BT", config.getRankDir());
 	}
 
