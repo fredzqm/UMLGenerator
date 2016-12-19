@@ -27,7 +27,7 @@ public class ASMParserTest {
 
 		expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object", "java.lang.CharSequence",
 				"java.lang.Comparable", "java.io.Serializable"));
-		ls = parser.getClasses();
+		ls = parser.freezeClassCreation();
 		actual = new HashSet<>();
 		for (ClassModel c : ls)
 			actual.add(c.getName());
@@ -41,7 +41,7 @@ public class ASMParserTest {
 		ASMClassTracker parser = new ASMParser();
 		parser.addClasses(Collections.singletonList("java/lang/String"));
 
-		Iterator<ClassModel> itr = parser.getClasses().iterator();
+		Iterator<ClassModel> itr = parser.freezeClassCreation().iterator();
 		assertTrue(itr.hasNext());
 		itr.next();
 		assertFalse(itr.hasNext());

@@ -15,20 +15,23 @@ import java.util.Map;
  * @author zhang
  */
 public class ASMParser implements ASMClassTracker {
-	public static int AUTO_CREATE_OFF = 0x1;
 	public static int RECURSE_SUPERCLASS = 0x2;
 	public static int RECURSE_INTERFACE = 0x4;
 	public static int RECURSE_FILEDS = 0x8;
 
 	final private int recursiveFlag;
 
+	private boolean autoCreate;
 	private Map<String, ClassModel> map;
 
 	/**
 	 * create an ASM parser with a certain recursive factor
+	 * 
+	 * @param autoCreate
 	 */
-	private ASMParser(int recursiveFlag) {
+	private ASMParser(int recursiveFlag, boolean autoCreate) {
 		this.recursiveFlag = recursiveFlag;
+		this.autoCreate = autoCreate;
 		map = new HashMap<>();
 	}
 
@@ -36,33 +39,17 @@ public class ASMParser implements ASMClassTracker {
 	 * create an non-recursive ASM parser by default
 	 */
 	public ASMParser() {
-		this(0);
-	}
-
-	/**
-	 * creates an instance of ASMParsre given the configuration
-	 * 
-	 * @param config
-	 * @return
-	 */
-	public static ASMParser getInstance(IModelConfiguration config) {
-		int recurisveFlag = 0;
-		if (config.isRecursive()) {
-			recurisveFlag = 0x6;
-		} else {
-			recurisveFlag |= AUTO_CREATE_OFF;
-		}
-		ASMParser parser = new ASMParser(recurisveFlag);
-		parser.addClasses(config.getClasses());
-		return parser;
+		this(0, true);
 	}
 
 	@Override
 	public ClassModel getClassByName(String className) {
 		className = className.replace(".", "/");
-		if ((recursiveFlag & AUTO_CREATE_OFF) != 0 && !map.containsKey(className)) {
-			return null;
+		if (map.containsKey(className)) {
+			return map.get(className);
 		}
+		if (!autoCreate)
+			return null;
 		return getClassExplicity(className);
 	}
 
@@ -106,13 +93,31 @@ public class ASMParser implements ASMClassTracker {
 	 * <p>
 	 * Therefore, you should always wrap it in another list or set
 	 */
-	public Collection<ClassModel> getClasses() {
+	public Collection<ClassModel> freezeClassCreation() {
+		autoCreate = false;
 		return map.values();
 	}
 
 	@Override
 	public String toString() {
 		return map.toString();
+	}
+
+	/**
+	 * creates an instance of ASMParsre given the configuration
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public static ASMParser getInstance(IModelConfiguration config) {
+		ASMParser parser;
+		if (config.isRecursive()) {
+			parser = new ASMParser(RECURSE_INTERFACE | RECURSE_SUPERCLASS, true);
+		} else {
+			parser = new ASMParser(0, false);
+		}
+		parser.addClasses(config.getClasses());
+		return parser;
 	}
 
 }

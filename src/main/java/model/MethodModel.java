@@ -132,7 +132,6 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(methodCall.owner));
 					ClassModel destClass = belongsTo.getClassByName(type.getName());
 					if (destClass == null) {
-						// a method is called on a primitive type
 						continue;
 					}
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
@@ -159,7 +158,6 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(fiedlCall.owner));
 					ClassModel destClass = belongsTo.getClassByName(type.getName());
 					if (destClass == null) {
-						// a method is called on a primitive type
 						continue;
 					}
 					FieldModel field = destClass.getFieldByName(fiedlCall.name);

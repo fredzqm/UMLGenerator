@@ -19,5 +19,5 @@ public interface ASMClassTracker extends ASMServiceProvider {
      * @return an iterable of all the classes this ASM Class Tracker currently
      * contains
      */
-    public Iterable<ClassModel> getClasses();
+    public Iterable<ClassModel> freezeClassCreation();
 }
