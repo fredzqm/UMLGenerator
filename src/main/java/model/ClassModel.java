@@ -3,8 +3,6 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.IClassModel;
-import generator.IFieldModel;
-import generator.IMethodModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;

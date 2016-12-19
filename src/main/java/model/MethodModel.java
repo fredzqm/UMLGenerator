@@ -2,7 +2,6 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IFieldModel;
 import generator.IMethodModel;
 
 import org.objectweb.asm.Type;
@@ -11,7 +10,6 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import utility.MethodType;
 import utility.Modifier;
