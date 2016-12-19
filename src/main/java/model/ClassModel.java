@@ -129,12 +129,14 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	public MethodModel getMethodBySignature(Signature signature) {
 		if (getMethodsMap().containsKey(signature))
 			return getMethodsMap().get(signature);
+		if (getSuperClass() != null)
+			getSuperClass().getMethodBySignature(signature);
 		return null;
 	}
 
 	private Map<Signature, MethodModel> getMethodsMap() {
 		if (methods == null) {
-			methods = getSuperClass() == null ? new HashMap<>() : new HashMap<>(getSuperClass().getMethodsMap());
+			methods = new HashMap<>();
 			@SuppressWarnings("unchecked")
 			List<MethodNode> ls = asmClassNode.methods;
 			for (MethodNode methodNode : ls) {
@@ -147,13 +149,12 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	public Iterable<FieldModel> getFields() {
-		IFilter<FieldModel> own = (f) -> f.getBelongTo() == this;
-		return own.filter(getFieldMap().values());
+		return getFieldMap().values();
 	}
 
 	private Map<String, FieldModel> getFieldMap() {
 		if (fields == null) {
-			fields = getSuperClass() == null ? new HashMap<>() : new HashMap<>(getSuperClass().getFieldMap());
+			fields = new HashMap<>();
 			@SuppressWarnings("unchecked")
 			List<FieldNode> ls = asmClassNode.fields;
 			for (FieldNode fieldNode : ls) {
@@ -167,6 +168,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	public FieldModel getFieldByName(String name) {
 		if (getFieldMap().containsKey(name))
 			return getFieldMap().get(name);
+		if (getSuperClass() != null)
+			return getSuperClass().getFieldByName(name);
 		return null;
 	}
 
