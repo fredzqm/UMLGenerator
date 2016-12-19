@@ -20,7 +20,7 @@ public class GraphVizSuperClassRelParser implements IParseGuide {
 
 	@Override
 	public String getEdgeStyle() {
-		return "edge [arrowhead=onormal]";
+		return "arrowhead=onormal ";
 	}
 
 }

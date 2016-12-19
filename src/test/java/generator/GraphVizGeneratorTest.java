@@ -60,20 +60,11 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("\"generator.DummyClass\""));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal ]"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
-        // TODO: When Fred implements Has-A and Depends-On update this test.
-        int relationsCount = 0;
-        int index = actual.indexOf("\"generator.DummyClass\" -> {}");
-        while (index != -1) {
-            relationsCount++;
-            index = actual.indexOf("\"generator.DummyClass\" -> {}", index + 1);
-        }
-//		assertEqualsals("Number of Relations not equal", 3, relationsCount);
-
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
                 "- privateString : java.lang.String", "+ publicInt : int"};
         String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
@@ -113,8 +104,8 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("\"generator.DummyClass\""));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal]"));
+        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal ]"));
         assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
@@ -158,7 +149,8 @@ public class GraphVizGeneratorTest {
         config.setExecutablePath("dot");
         config.setRankDir("BT");
         config.setParseKey("default");
-
+        config.setOutputDirectory(directory.toString());
+        
         // generate the string
         IGenerator generator = new GraphVizGenerator(config);
         String graphVizString = generator.generate(systemModel, null);

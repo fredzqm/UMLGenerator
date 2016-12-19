@@ -19,7 +19,7 @@ public class GraphVizHasRelParser implements IParseGuide {
 
 	@Override
 	public String getEdgeStyle() {
-		return "edge [arrowhead=vee]";
+		return "arrowhead=vee ";
 	}
 
 }
