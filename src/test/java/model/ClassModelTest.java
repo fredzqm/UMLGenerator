@@ -35,7 +35,7 @@ public class ClassModelTest {
 		ClassModel model = parser.getClassByName("model.Dummy");
 
 		Set<String> actual = new HashSet<>();
-		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod", "getClass", "wait", "hashCode", "notifyAll", "equals", "clone", "toString", "finalize", "notify"));
+		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
 
 		IFilter<MethodModel> getInstanceMethod = (d) -> d.getMethodType() == MethodType.METHOD;
 

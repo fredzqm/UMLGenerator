@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import utility.ClassType;
+import utility.IFilter;
 import utility.Modifier;
 
 import java.util.*;
@@ -121,7 +122,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	public Iterable<MethodModel> getMethods() {
-		return getMethodsMap().values();
+		IFilter<MethodModel> own = (f) -> f.getBelongTo() == this;
+		return own.filter(getMethodsMap().values());
 	}
 
 	public MethodModel getMethodBySignature(Signature signature) {
@@ -145,7 +147,8 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	}
 
 	public Iterable<FieldModel> getFields() {
-		return getFieldMap().values();
+		IFilter<FieldModel> own = (f) -> f.getBelongTo() == this;
+		return own.filter(getFieldMap().values());
 	}
 
 	private Map<String, FieldModel> getFieldMap() {

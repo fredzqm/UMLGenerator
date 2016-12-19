@@ -27,14 +27,14 @@ public interface IClassModel {
 	ClassType getType();
 
 	/**
-	 * Returns an Iterable of the Model's Fields.
-	 *
+	 * Returns an Iterable of the Model's Fields. Excluding those inherited
+	 * 
 	 * @return Fields of the Model.
 	 */
 	Iterable<? extends IFieldModel> getFields();
 
 	/**
-	 * Returns an Iterable of the Model's Methods.
+	 * Returns an Iterable of the Model's Methods. Excluding those inherited
 	 *
 	 * @return Methods of the Model.
 	 */

@@ -119,8 +119,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
 					if (method == null)
-						throw new RuntimeException(
-								"The destination class " + destClass + " does not contain a method: " + signature);
+						continue;
 					dependenOnMethod.add(method);
 				}
 			}

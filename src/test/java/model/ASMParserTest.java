@@ -32,8 +32,8 @@ public class ASMParserTest {
 		for (ClassModel c : ls)
 			actual.add(c.getName());
 
-		assertEquals(expected, actual);
-
+		assertTrue("Not all interfaces get parsed", actual.contains(expected));
+		
 	}
 
 	@Test
@@ -45,5 +45,24 @@ public class ASMParserTest {
 		assertTrue(itr.hasNext());
 		itr.next();
 		assertFalse(itr.hasNext());
+	}
+	
+	@Test
+	public void testGetFieldsByName() {
+		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
+			@Override
+			public boolean isRecursive() {
+				return true;
+			}
+			@Override
+			public Iterable<String> getClasses() {
+				return Arrays.asList("java.awt.Window", "java.awt.Dialog");
+			}
+		});
+		parser.freezeClassCreation();
+		ClassModel x = parser.getClassByName("java.awt.Dialog");
+		assertTrue(x != null);
+		FieldModel field = x.getFieldByName("modalBlocker");
+		assertTrue(field != null);
 	}
 }

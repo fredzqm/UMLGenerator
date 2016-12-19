@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SystemModelTest {
 
@@ -27,15 +28,15 @@ public class SystemModelTest {
         };
         SystemModel sys = SystemModel.getInstance(config);
 
-        Set<String> acutal = new HashSet<>();
-        Set<String> expect = new HashSet<>(Arrays.asList("javax.swing.JComponent", "java.awt.Container",
+        Set<String> actual = new HashSet<>();
+        Set<String> expected = new HashSet<>(Arrays.asList("javax.swing.JComponent", "java.awt.Container",
                 "java.awt.Component", "java.lang.Object", "java.awt.image.ImageObserver", "java.awt.MenuContainer",
                 "java.io.Serializable", "javax.swing.TransferHandler$HasGetTransferHandler"));
 
         for (IClassModel x : sys.getClasses())
-            acutal.add(x.getName());
+            actual.add(x.getName());
 
-        assertEquals(expect, acutal);
+		assertTrue("Not all interfaces get parsed", actual.contains(expected));
     }
 
 }

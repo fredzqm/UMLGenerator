@@ -112,7 +112,7 @@ public class ASMParser implements ASMClassTracker {
 	public static ASMParser getInstance(IModelConfiguration config) {
 		ASMParser parser;
 		if (config.isRecursive()) {
-			parser = new ASMParser(RECURSE_INTERFACE | RECURSE_SUPERCLASS, true);
+			parser = new ASMParser(RECURSE_INTERFACE | RECURSE_SUPERCLASS | RECURSE_FILEDS, true);
 		} else {
 			parser = new ASMParser(0, false);
 		}

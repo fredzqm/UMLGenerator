@@ -18,7 +18,7 @@ public interface IFilter<T> {
      * @return an iterable of the same type but removed all the data that do not
      * pass the test
      */
-    default Iterable<? extends T> filter(Iterable<? extends T> iterable) {
+    default Iterable<T> filter(Iterable<? extends T> iterable) {
         return (Iterable<T>) () -> new FilteredIterator<>(IFilter.this, iterable);
     }
 
