@@ -27,13 +27,13 @@ public class ASMParserTest {
 
 		expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object", "java.lang.CharSequence",
 				"java.lang.Comparable", "java.io.Serializable"));
-		ls = parser.getClasses();
+		ls = parser.freezeClassCreation();
 		actual = new HashSet<>();
 		for (ClassModel c : ls)
 			actual.add(c.getName());
 
-		assertEquals(expected, actual);
-
+		assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
+		
 	}
 
 	@Test
@@ -41,9 +41,28 @@ public class ASMParserTest {
 		ASMClassTracker parser = new ASMParser();
 		parser.addClasses(Collections.singletonList("java/lang/String"));
 
-		Iterator<ClassModel> itr = parser.getClasses().iterator();
+		Iterator<ClassModel> itr = parser.freezeClassCreation().iterator();
 		assertTrue(itr.hasNext());
 		itr.next();
 		assertFalse(itr.hasNext());
+	}
+	
+	@Test
+	public void testGetFieldsByNameSequence() {
+		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
+			@Override
+			public boolean isRecursive() {
+				return true;
+			}
+			@Override
+			public Iterable<String> getClasses() {
+				return Arrays.asList("java.awt.Window", "java.awt.Dialog");
+			}
+		});
+		parser.freezeClassCreation();
+		ClassModel x = parser.getClassByName("java.awt.Dialog");
+		assertTrue(x != null);
+		FieldModel field = x.getFieldByName("modalBlocker");
+		assertTrue(field != null);
 	}
 }

@@ -145,7 +145,7 @@ public class GraphVizGeneratorTest {
         ISystemModel systemModel = setupSystemModel();
         Configuration config = Configuration.getInstance();
         config.setFileName("testWrite");
-        config.setOutputFormat("png");
+        config.setOutputFormat("svg");
         config.setExecutablePath("dot");
         config.setRankDir("BT");
         config.setParseKey("default");

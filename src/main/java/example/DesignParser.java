@@ -27,7 +27,7 @@ public class DesignParser {
 
         // FIXME: this code has POOR DESIGN. If you keep this code as-is for
         // your main method, you will be sad about your grade.
-        String[] args = new String[]{"java.lang.StringBuilder"};
+        String[] args = new String[]{"model.Dummy"};
         StringBuilder x;
         
         for (String className : args) {
@@ -81,9 +81,9 @@ public class DesignParser {
         @SuppressWarnings("unchecked")
         List<FieldNode> fields = (List<FieldNode>) classNode.fields;
         for (FieldNode field : fields) {
-            System.out.println("	Field: " + field.name);
-            System.out.println("	Internal JVM type: " + field.desc);
-            System.out.println("	User-friendly type: " + Type.getType(field.desc));
+            System.out.println("  Field: " + field.name);
+            System.out.println("  Internal JVM type: " + field.desc);
+            System.out.println("  User-friendly type: " + Type.getType(field.desc));
             // Query the access modifiers with the ACC_* constants.
 
             System.out.print("	private? " + ((field.access & Opcodes.ACC_PRIVATE) > 0));
@@ -93,8 +93,11 @@ public class DesignParser {
 
             // How do you tell if something has default access? (ie no
             // access modifiers?)
-
-            System.out.println();
+            System.out.println("	signature  " + field.signature);
+            System.out.println("	attrs  " + field.attrs);
+            System.out.println("	invisibleAnnotations  " + field.invisibleAnnotations);
+            System.out.println("	invisibleTypeAnnotations  " + field.invisibleTypeAnnotations);
+            
         }
     }
 
@@ -102,12 +105,12 @@ public class DesignParser {
         @SuppressWarnings("unchecked")
         List<MethodNode> methods = (List<MethodNode>) classNode.methods;
         for (MethodNode method : methods) {
-            System.out.println("	Method: " + method.name);
-            System.out.println("	Internal JVM method signature: " + method.desc);
+            System.out.println("  Method: " + method.name);
+            System.out.println("  Internal JVM method signature: " + method.desc);
 
-            System.out.println("	Return type: " + Type.getReturnType(method.desc).getClassName());
+            System.out.println("  Return type: " + Type.getReturnType(method.desc).getClassName());
 
-            System.out.println("	Args: ");
+            System.out.println("  Args: ");
             for (Type argType : Type.getArgumentTypes(method.desc)) {
                 System.out.println("		" + argType.getClassName());
                 // FIXME: what is the argument's VARIABLE NAME?
