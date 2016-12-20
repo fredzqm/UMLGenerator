@@ -5,10 +5,10 @@ package dummy;
  * <p>
  * Created by lamd on 12/12/2016.
  */
-public class OtherDummyClass {
+public class RelOtherDummyClass {
     private int dummyInt;
 
-    public OtherDummyClass(int dummyInt) {
+    public RelOtherDummyClass(int dummyInt) {
         System.out.println("I am dummyInt");
         this.dummyInt = dummyInt;
     }

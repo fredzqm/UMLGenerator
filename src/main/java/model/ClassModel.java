@@ -98,7 +98,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 				ClassModel hasClass = field.getType().getClassModel();
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
-						hasARel.put(hasClass, hasARel.get(hasClass)+1);
+						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
 					} else {
 						hasARel.put(hasClass, 1);
 					}
@@ -116,6 +116,10 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 				dependsOn.addAll(method.addDependsClasses());
 			}
 			dependsOn.removeAll(getHasRelation().keySet());
+			dependsOn.remove(this);
+			if (getSuperClass() != null)
+				dependsOn.remove(getSuperClass());
+			getInterfaces().forEach((i) -> dependsOn.remove(i));
 		}
 		return dependsOn;
 	}

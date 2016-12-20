@@ -5,11 +5,11 @@ package dummy;
  * <p>
  * Created by lamd on 12/12/2016.
  */
-public class DummyClass {
-    private OtherDummyClass privateDummy;
-    public OtherDummyClass publicDummy;
+public class RelDummyClass {
+    private RelOtherDummyClass privateDummy;
+    public RelOtherDummyClass publicDummy;
 
-    public DummyClass(OtherDummyClass dummy) {
+    public RelDummyClass(RelOtherDummyClass dummy) {
         this.privateDummy = dummy;
         this.publicDummy = dummy;
     }
@@ -18,7 +18,7 @@ public class DummyClass {
         System.out.println(this.privateDummy);
     }
 
-    public OtherDummyClass getPublicString() {
+    public RelOtherDummyClass getPublicString() {
         return this.publicDummy;
     }
 
