@@ -3,11 +3,19 @@ package model;
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
 import org.junit.Test;
+
+import config.Configuration;
+import dummy.DummyClass;
+import dummy.OtherDummyClass;
+import generator.ISystemModel;
 import utility.IFilter;
 import utility.MethodType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -107,10 +115,29 @@ public class ClassModelTest {
 
 		assertEquals(expectInterfaces, acutalInterfaces);
 	}
-	
+
+	String dummyClassName = DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName();
+	String otherDummyClassName = OtherDummyClass.class.getPackage().getName() + "."
+			+ OtherDummyClass.class.getSimpleName();
+
 	@Test
-	public void testHasARelationship(){
-		
+	public void testHasARelationship() {
+		Configuration config = Configuration.getInstance();
+		List<String> classList = new ArrayList<>(Arrays.asList(dummyClassName));
+		config.setClasses(classList);
+		config.setRecursive(true);
+		ASMClassTracker asmParser = ASMParser.getInstance(config);
+		asmParser.freezeClassCreation();
+
+		ClassModel dummyClass = asmParser.getClassByName(dummyClassName);
+		assertEquals(dummyClassName, dummyClass.getName());
+
+		ClassModel otherDummyClass = asmParser.getClassByName(otherDummyClassName);
+		assertEquals(otherDummyClassName, otherDummyClass.getName());
+
+		Map<ClassModel, Integer> x = dummyClass.getHasRelation();
+		assertEquals(1, x.size());
+		assertEquals(2, (int) x.get(otherDummyClass));
 	}
-	
+
 }
