@@ -1,6 +1,7 @@
-package example;
+package all;
 
 import config.Configuration;
+import dummy.RelDummyClass;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
@@ -26,7 +27,7 @@ public class LocalTester {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
 //		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
-		classList.add("java.lang.String");
+		classList.add(RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName());
 		config.setClasses(classList);
 		config.setRecursive(true);
 		return SystemModel.getInstance(config);

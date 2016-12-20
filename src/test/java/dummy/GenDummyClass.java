@@ -1,17 +1,17 @@
-package generator;
+package dummy;
 
 /**
  * A Dummy Class used for testing.
  * <p>
  * Created by lamd on 12/12/2016.
  */
-public class DummyClass {
+public class GenDummyClass {
     public int publicInt;
     public String publicString;
     private int privateInt;
     private String privateString;
 
-    public DummyClass(int privateInt, String privateString) {
+    public GenDummyClass(int privateInt, String privateString) {
         this.privateInt = privateInt;
         this.publicInt = privateInt + 5;
 

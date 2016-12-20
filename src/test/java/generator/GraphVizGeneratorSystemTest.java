@@ -1,6 +1,7 @@
 package generator;
 
 import config.Configuration;
+import dummy.GenDummyClass;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,14 +24,16 @@ import static org.junit.Assert.*;
  * <p>
  * Created by lamd on 12/11/2016.
  */
-public class GraphVizGeneratorTest {
+public class GraphVizGeneratorSystemTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
+    public String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
+    
     private ISystemModel setupSystemModel() {
         Configuration config = Configuration.getInstance();
         List<String> classList = new ArrayList<>();
-        classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
+        classList.add(dummyClassName);
         classList.add("java.lang.String");
         config.setClasses(classList);
         config.setRecursive(true);
@@ -57,12 +60,12 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
+        assertTrue(actual.contains("\""+dummyClassName+"\""));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" };"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {}"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
         assertTrue(actual.contains("edge [arrowhead=onormal ]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
@@ -101,26 +104,26 @@ public class GraphVizGeneratorTest {
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains("\"generator.DummyClass\""));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" };"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {}"));
+        assertTrue(actual.contains("\""+dummyClassName+"\""));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" };"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {}"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
         assertTrue(actual.contains("edge [arrowhead=onormal ]"));
-        assertTrue(actual.contains("\"generator.DummyClass\" -> {\"java.lang.Object\" }"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" }"));
 
         // Count how many relations there are.
         // TODO: When Fred implements Has-A and Depends-On update this test.
 
-        String expectedSuperClass = "\"generator.DummyClass\" -> {\"java.lang.Object\" };";
+        String expectedSuperClass = "\""+dummyClassName+"\" -> {\"java.lang.Object\" };";
         assertTrue(actual.contains(expectedSuperClass));
 
-        String expectedInterfaces = "\"generator.DummyClass\" -> {};";
+        String expectedInterfaces = "\""+dummyClassName+"\" -> {};";
         assertTrue(actual.contains(expectedInterfaces));
 
-        String expectedDependencies = "\"generator.DummyClass\" -> {\"java.lang.String\" };";
+        String expectedDependencies = "\""+dummyClassName+"\" -> {\"java.lang.String\" };";
         assertTrue(actual.contains(expectedDependencies));
 
-//        String expectedHasA = "\"generator.DummyClass\" -> {\"java.lang.Object\" \"java.lang.Object\" \"java.io.PrintStream\" \"java.io.PrintStream\" \"generator.DummyClass\" \"generator.DummyClass\" \"java.lang.StringBuilder\" \"java.lang.StringBuilder\" \"java.lang.System\" \"java.lang.System\"};";
+//        String expectedHasA = "\""+dummyClassName+"\" -> {\"java.lang.Object\" \"java.lang.Object\" \"java.io.PrintStream\" \"java.io.PrintStream\" \""+dummyClassName+"\" \""+dummyClassName+"\" \"java.lang.StringBuilder\" \"java.lang.StringBuilder\" \"java.lang.System\" \"java.lang.System\"};";
 //        assertTrue(actual.contains(expectedHasA));
 
         String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};

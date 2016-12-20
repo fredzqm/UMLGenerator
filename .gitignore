@@ -160,3 +160,4 @@ gradle-app.setting
 asm-5.0.4-bin/
 output/
 gradle.properties
+src/main/java/example/
