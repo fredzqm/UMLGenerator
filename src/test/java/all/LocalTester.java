@@ -1,6 +1,7 @@
-package example;
+package all;
 
 import config.Configuration;
+import dummy.DummyClass;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;

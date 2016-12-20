@@ -32,7 +32,7 @@ public class ClassModelTest {
 	@Test
 	public void testGetMethods() {
 		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("model.Dummy");
+		ClassModel model = parser.getClassByName("dummy.Dummy");
 
 		Set<String> actual = new HashSet<>();
 		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
@@ -106,6 +106,11 @@ public class ClassModelTest {
 		model.getInterfaces().forEach((interfaceModel) -> acutalInterfaces.add(interfaceModel.getName()));
 
 		assertEquals(expectInterfaces, acutalInterfaces);
+	}
+	
+	@Test
+	public void testHasARelationship(){
+		
 	}
 	
 }

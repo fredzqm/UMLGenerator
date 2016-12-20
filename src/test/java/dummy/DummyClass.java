@@ -1,4 +1,4 @@
-package example;
+package dummy;
 
 /**
  * A Dummy Class used for testing.
