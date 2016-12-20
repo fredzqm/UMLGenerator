@@ -47,7 +47,7 @@ public class LocalTester {
         config.setFileName("localTest");
         config.setExecutablePath("dot");
         config.setParseKey("default");
-        config.setOutputFormat("svg");
+        config.setOutputFormat("png");
 
         IGenerator generator = new GraphVizGenerator(config);
 
