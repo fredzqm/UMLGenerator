@@ -3,6 +3,7 @@ package model;
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
 import org.junit.Test;
+
 import utility.IFilter;
 import utility.MethodType;
 
@@ -32,7 +33,7 @@ public class ClassModelTest {
 	@Test
 	public void testGetMethods() {
 		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("model.Dummy");
+		ClassModel model = parser.getClassByName("dummy.Dummy");
 
 		Set<String> actual = new HashSet<>();
 		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
@@ -107,5 +108,5 @@ public class ClassModelTest {
 
 		assertEquals(expectInterfaces, acutalInterfaces);
 	}
-	
+
 }

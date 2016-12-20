@@ -1,8 +1,9 @@
 package all;
 
 import config.CommandLineParserTest;
-import generator.GraphVizGeneratorTest;
+import generator.GraphVizGeneratorSystemTest;
 import model.ASMParserTest;
+import model.ClassModelRelationshipTest;
 import model.ClassModelTest;
 import model.MethodModelTest;
 import model.SystemModelTest;
@@ -16,8 +17,8 @@ import utility.IFilterTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({GraphVizGeneratorTest.class, ASMParserTest.class, CommandLineParserTest.class,
-        SystemModelTest.class, ClassModelTest.class, IFilterTest.class, MethodModelTest.class})
+@Suite.SuiteClasses({GraphVizGeneratorSystemTest.class, ASMParserTest.class, CommandLineParserTest.class,
+        SystemModelTest.class, ClassModelTest.class, IFilterTest.class, MethodModelTest.class, ClassModelRelationshipTest.class})
 public class AllTests {
 
 }
