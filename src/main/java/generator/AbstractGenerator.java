@@ -33,7 +33,7 @@ public abstract class AbstractGenerator implements IGenerator {
 		// Parse the class
 		dotString.append(classModelParser.parse(classes) + '\n');
 
-		// Pull the formatter from the config.
+		// Parse each relationship.
 		this.relParsers.forEach((relParser) -> dotString
 				.append(String.format("\tedge [%s]\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
 

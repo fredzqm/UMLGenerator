@@ -6,7 +6,7 @@ package generator.classParser;
  * @param <T>
  */
 public interface IParser<T> {
-	
+
     /**
      * Parse single data.
      *

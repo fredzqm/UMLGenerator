@@ -26,7 +26,7 @@ public class LocalTester {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
 //		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
-		classList.add("java.lang.String");
+		classList.add(DummyClass.class.getPackage().getName() + "." + DummyClass.class.getSimpleName());
 		config.setClasses(classList);
 		config.setRecursive(true);
 		return SystemModel.getInstance(config);
