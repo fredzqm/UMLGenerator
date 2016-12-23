@@ -6,10 +6,9 @@ package generator.relParser;
  * Created by lamd on 12/14/2016.
  */
 public class GraphVizDependsOnRelParser implements IParseGuide {
-	
-	@Override
-	public String getEdgeStyle(Relation edge) {
-		return "arrowhead=vee style=dashed ";
-	}
+    @Override
+    public String getEdgeStyle(Relation edge) {
+        return "arrowhead=vee style=dashed ";
+    }
 
 }

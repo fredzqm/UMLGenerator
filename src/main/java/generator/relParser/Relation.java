@@ -2,37 +2,45 @@ package generator.relParser;
 
 import generator.classParser.IClassModel;
 
-public abstract class Relation implements Comparable<Relation>{
-	private final IClassModel from;
-	private final IClassModel to;
-	private final String key;
-	
-	public Relation(IClassModel from, IClassModel to) {
-		this.from = from;
-		this.to = to;
-		this.key = getKey();
-	}
+public abstract class Relation implements Comparable<Relation> {
+    private final IClassModel from;
+    private final IClassModel to;
+    private final String key;
 
-	public IClassModel getFrom() {
-		return from;
-	}
+    public Relation(IClassModel from, IClassModel to) {
+        this.to = to;
+        this.from = from;
+        this.key = getKey();
+    }
 
-	public IClassModel getTo() {
-		return to;
-	}
+    public String getFromName() {
+        return this.from.getName();
+    }
 
-	private String getKey() {
-		String a = getFrom().getName();
-		String b = getTo().getName();
-		if (a.compareTo(b) < 0)
-			return a + b;
-		else
-			return b + a;
-	}
+    public String getToName() {
+        return this.to.getName();
+    }
 
-	@Override
-	public int compareTo(Relation o) {
-		return key.compareTo(o.key);
-	}
+    public IClassModel getFrom() {
+        return this.from;
+    }
+
+    public IClassModel getTo() {
+        return this.to;
+    }
+
+    private String getKey() {
+        String fromName = this.from.getName();
+        String toName = this.to.getName();
+        if (fromName.compareTo(toName) < 0)
+            return fromName + toName;
+        else
+            return toName + fromName;
+    }
+
+    @Override
+    public int compareTo(Relation o) {
+        return this.key.compareTo(o.getKey());
+    }
 
 }

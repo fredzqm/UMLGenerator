@@ -7,9 +7,9 @@ package generator.relParser;
  */
 public class GraphVizSuperClassRelParser implements IParseGuide {
 
-	@Override
-	public String getEdgeStyle(Relation edge) {
-		return "arrowhead=onormal style=\"\"";
-	}
+    @Override
+    public String getEdgeStyle(Relation edge) {
+        return "arrowhead=onormal style=\"\" ";
+    }
 
 }

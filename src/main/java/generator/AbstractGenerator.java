@@ -1,11 +1,11 @@
 package generator;
 
-import java.util.Map;
-
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relParser.Relation;
 import generator.relParser.IParseGuide;
+import generator.relParser.Relation;
+
+import java.util.Map;
 
 /**
  * An abstract class for Generators.
@@ -13,75 +13,75 @@ import generator.relParser.IParseGuide;
  * Created by lamd on 12/17/2016.
  */
 public abstract class AbstractGenerator implements IGenerator {
-	private final IParser<IClassModel> classModelParser;
-	// private final Collection<IParseGuide> relParsers;
-	private final String basicConfiguration;
-	private final Map<Class<? extends Relation>, IParseGuide> relationshipFormat;
+    private final IParser<IClassModel> classModelParser;
+    // private final Collection<IParseGuide> relParsers;
+    private final String basicConfiguration;
+    private final Map<Class<? extends Relation>, IParseGuide> relationshipFormat;
 
-	AbstractGenerator(IGeneratorConfiguration config) {
-		this.classModelParser = createClassParser(config);
-		// this.relParsers = createRelationshipParsers(config);
-		this.basicConfiguration = createBasicConfiguration(config);
-		this.relationshipFormat = defineEdgeFormat(config);
-	}
+    AbstractGenerator(IGeneratorConfiguration config) {
+        this.classModelParser = createClassParser(config);
+        // this.relParsers = createRelationshipParsers(config);
+        this.basicConfiguration = createBasicConfiguration(config);
+        this.relationshipFormat = defineEdgeFormat(config);
+    }
 
-	@Override
-	public String generate(ISystemModel sm) {
-		// DOT parent.
-		Iterable<? extends IClassModel> classes = sm.getClasses();
-		StringBuilder dotString = new StringBuilder();
+    @Override
+    public String generate(ISystemModel sm) {
+        // DOT parent.
+        Iterable<? extends IClassModel> classes = sm.getClasses();
+        StringBuilder dotString = new StringBuilder();
 
-		// Basic Configurations.
-		dotString.append(basicConfiguration);
+        // Basic Configurations.
+        dotString.append(basicConfiguration);
 
-		// Parse the class
-		dotString.append(classModelParser.parse(classes) + '\n');
+        // Parse the class
+        dotString.append(classModelParser.parse(classes) + '\n');
 
-		// Parse each relationship.
-		Iterable<Relation> edges = sm.getRelations();
+        // Parse each relationship.
+        Iterable<Relation> relations = sm.getRelations();
 
-		for (Relation edge : edges) {
-			IParseGuide relParser = relationshipFormat.get(edge.getClass());
+        IParseGuide relParser;
+        for (Relation relation : relations) {
+            relParser = this.relationshipFormat.get(relation.getClass());
 
-			dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(edge),
-					edge.getFrom().getName(), edge.getTo().getName()));
-			
-			// StringBuilder sb = new StringBuilder();
-			// classes.forEach((thisClass) -> {
-			// Iterable<? extends IClassModel> otherClassList =
-			// relParser.getRelatesTo(thisClass);
-			// StringBuilder sb2 = new StringBuilder();
-			// otherClassList.forEach((has) -> {
-			// sb2.append(String.format("\"%s\" ", has.getName()));
-			// });
-			// sb.append(String.format("\t\"%s\" -> {%s};\n",
-			// thisClass.getName(), sb2.toString()));
-			// });
+            dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
+                    relation.getFromName(), relation.getToName()));
 
-		}
+            // StringBuilder sb = new StringBuilder();
+            // classes.forEach((thisClass) -> {
+            // Iterable<? extends IClassModel> otherClassList =
+            // relParser.getRelatesTo(thisClass);
+            // StringBuilder sb2 = new StringBuilder();
+            // otherClassList.forEach((has) -> {
+            // sb2.append(String.format("\"%s\" ", has.getName()));
+            // });
+            // sb.append(String.format("\t\"%s\" -> {%s};\n",
+            // thisClass.getName(), sb2.toString()));
+            // });
 
-		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
-	}
+        }
 
-	/**
-	 * 
-	 * @param config
-	 * @return the basic configuration before all everything else
-	 */
-	public abstract String createBasicConfiguration(IGeneratorConfiguration config);
+        return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
+    }
 
-	/**
-	 * Returns the class parser.
-	 *
-	 * @return ParseGuide of the Class.
-	 */
-	public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
+    /**
+     * @param config
+     * @return the basic configuration before all everything else
+     */
+    public abstract String createBasicConfiguration(IGeneratorConfiguration config);
 
-	/**
-	 * Define the format of each type of relationship
-	 * 
-	 * @param config
-	 * @return
-	 */
-	public abstract Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config);
+    /**
+     * Returns the class parser.
+     *
+     * @return ParseGuide of the Class.
+     */
+    public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
+
+    /**
+     * Define the format of each type of relationship
+     *
+     * @param config
+     * @return
+     */
+    public abstract Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config);
 }

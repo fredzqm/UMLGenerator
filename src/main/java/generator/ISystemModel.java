@@ -10,7 +10,7 @@ import generator.relParser.Relation;
  * Created by lamd on 12/9/2016.
  */
 public interface ISystemModel {
-	
+
     /**
      * Returns an Iterable of Class Models contained within the System Model.
      *
@@ -18,7 +18,7 @@ public interface ISystemModel {
      */
     Iterable<? extends IClassModel> getClasses();
 
-    
+
 //	/**
 //	 * Returns the IClassModel of the Model's superclass.
 //	 *
@@ -50,5 +50,10 @@ public interface ISystemModel {
 //	 */
 //    Iterable<Relation> getDependsRelation();
 
-
-	Iterable<Relation> getRelations();}
+    /**
+     * TODO: Fred Comment this out. Are Relations edges?
+     *
+     * @return
+     */
+    Iterable<Relation> getRelations();
+}

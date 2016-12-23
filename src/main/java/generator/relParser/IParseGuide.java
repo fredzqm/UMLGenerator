@@ -8,8 +8,8 @@ package generator.relParser;
 public interface IParseGuide {
     /**
      * Returns the edge style.
-     * @param edge 
      *
+     * @param edge
      * @return String describing the edge of this ParseGuide.
      */
     String getEdgeStyle(Relation edge);
