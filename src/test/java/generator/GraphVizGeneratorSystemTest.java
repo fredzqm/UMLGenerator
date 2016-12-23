@@ -160,7 +160,6 @@ public class GraphVizGeneratorSystemTest {
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner(config);
-        config.setOutputDirectory("./output");
 
         try {
             runner.execute(graphVizString);
