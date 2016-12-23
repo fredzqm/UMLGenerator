@@ -2,6 +2,13 @@ package generator.relParser;
 
 import generator.classParser.IClassModel;
 
+/**
+ * 
+ * Relation represet
+ * 
+ * @author zhang
+ *
+ */
 public abstract class Relation implements Comparable<Relation> {
     private final IClassModel from;
     private final IClassModel to;
@@ -30,8 +37,8 @@ public abstract class Relation implements Comparable<Relation> {
     }
 
     private String getKey() {
-        String fromName = this.from.getName();
-        String toName = this.to.getName();
+        String fromName = this.getFromName();
+        String toName = this.getToName();
         if (fromName.compareTo(toName) < 0)
             return fromName + toName;
         else
