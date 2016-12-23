@@ -34,8 +34,19 @@ public abstract class AbstractGenerator implements IGenerator {
 		dotString.append(classModelParser.parse(classes) + '\n');
 
 		// Parse each relationship.
-		this.relParsers.forEach((relParser) -> dotString
-				.append(String.format("\tedge [%s]\n%s\n", relParser.getEdgeStyle(), relParser.parse(classes))));
+		this.relParsers.forEach((relParser) -> {
+			StringBuilder sb = new StringBuilder();
+			classes.forEach((thisClass) -> {
+				Iterable<? extends IClassModel> otherClassList = relParser.getRelatesTo(thisClass);
+				StringBuilder sb2 = new StringBuilder();
+				otherClassList.forEach((has) -> {
+					sb2.append(String.format("\"%s\" ", has.getName()));
+				});
+				sb.append(String.format("\t\"%s\" -> {%s};\n", thisClass.getName(), sb2.toString()));
+			});
+
+			dotString.append(String.format("\tedge [%s]\n%s\n", relParser.getEdgeStyle(), sb.toString()));
+		});
 
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
 	}

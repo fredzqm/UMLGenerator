@@ -10,16 +10,13 @@ import generator.IClassModel;
 public class GraphVizInterfaceParser implements IParseGuide {
 
 	@Override
-	public String parse(IClassModel thisClass) {
-		Iterable<? extends IClassModel> otherClassList = thisClass.getInterfaces();
-		StringBuilder sb = new StringBuilder();
-		otherClassList.forEach((interfaceModel) -> sb.append(String.format("\"%s\" ", interfaceModel.getName())));
-		return String.format("\t\"%s\" -> {%s};\n", thisClass.getName(), sb.toString());
+	public String getEdgeStyle() {
+		return "arrowhead=onormal style=dashed ";
 	}
 
 	@Override
-	public String getEdgeStyle() {
-		return "arrowhead=onormal style=dashed ";
+	public Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass) {
+		return thisClass.getInterfaces();
 	}
 
 }

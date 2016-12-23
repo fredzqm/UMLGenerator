@@ -10,18 +10,13 @@ import generator.IClassModel;
 public class GraphVizDependsOnRelParser implements IParseGuide {
 	
 	@Override
-	public String parse(IClassModel thisClass) {
-		Iterable<? extends IClassModel> otherClassList = thisClass.getDependsRelation();
-		StringBuilder sb = new StringBuilder();
-		otherClassList.forEach((has) -> {
-			sb.append(String.format("\"%s\" ", has.getName()));
-		});
-		return String.format("\t\"%s\" -> {%s};\n", thisClass.getName(), sb.toString());
+	public String getEdgeStyle() {
+		return "arrowhead=vee style=dashed ";
 	}
 
 	@Override
-	public String getEdgeStyle() {
-		return "arrowhead=vee style=dashed ";
+	public Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass) {
+		return thisClass.getDependsRelation();
 	}
 
 }

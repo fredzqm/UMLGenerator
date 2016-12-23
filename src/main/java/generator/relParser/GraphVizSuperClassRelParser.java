@@ -1,5 +1,7 @@
 package generator.relParser;
 
+import java.util.ArrayList;
+
 import generator.IClassModel;
 
 /**
@@ -10,17 +12,16 @@ import generator.IClassModel;
 public class GraphVizSuperClassRelParser implements IParseGuide {
 
 	@Override
-	public String parse(IClassModel thisClass) {
-		IClassModel superClass = thisClass.getSuperClass();
-		if (superClass == null) {
-			return "";
-		}
-		return String.format("\t\"%s\" -> {\"%s\" };\n", thisClass.getName(), superClass.getName());
+	public String getEdgeStyle() {
+		return "arrowhead=onormal style=\"\"";
 	}
 
 	@Override
-	public String getEdgeStyle() {
-		return "arrowhead=onormal style=\"\"";
+	public Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass) {
+		ArrayList<IClassModel> ls = new ArrayList<>();
+		if (thisClass.getSuperClass() != null)
+			ls.add(thisClass.getSuperClass());
+		return ls;
 	}
 
 }

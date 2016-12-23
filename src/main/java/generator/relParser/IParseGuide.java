@@ -1,14 +1,13 @@
 package generator.relParser;
 
 import generator.IClassModel;
-import generator.classParser.IParser;
 
 /**
  * An Interface for a ParseGuide.
  * <p>
  * Created by lamd on 12/16/2016.
  */
-public interface IParseGuide extends IParser<IClassModel> {
+public interface IParseGuide {
     /**
      * Returns the edge style.
      *
@@ -16,4 +15,5 @@ public interface IParseGuide extends IParser<IClassModel> {
      */
     String getEdgeStyle();
 
+    Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass);
 }
