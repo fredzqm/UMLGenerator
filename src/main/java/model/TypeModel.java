@@ -22,11 +22,10 @@ class TypeModel implements ITypeModel {
 	/**
 	 * convert asm's type instance to TypeModel
 	 * 
-	 * @param serviceProvider
 	 * @param type
 	 * @return
 	 */
-	public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
+	public static TypeModel parse(Type type) {
 		int dimension = 0;
 		if (type.getSort() == Type.ARRAY) {
 			dimension = type.getDimensions();
@@ -35,7 +34,7 @@ class TypeModel implements ITypeModel {
 		PrimitiveType primiType = PrimitiveType.parse(type);
 		ClassModel classModel;
 		if (primiType == PrimitiveType.OBJECT)
-			classModel = serviceProvider.getClassByName(type.getClassName());
+			classModel = ASMParser.getClassByName(type.getClassName());
 		else
 			classModel = null;
 		return new TypeModel(classModel, dimension, primiType);

@@ -31,7 +31,7 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 		asmFieldNode = fieldNode;
 		modifier = Modifier.parse(asmFieldNode.access);
 		isFinal = Modifier.parseIsFinal(asmFieldNode.access);
-		fieldType = TypeModel.parse(classModel, Type.getType(asmFieldNode.desc));
+		fieldType = TypeModel.parse(Type.getType(asmFieldNode.desc));
 	}
 
 	public String getName() {

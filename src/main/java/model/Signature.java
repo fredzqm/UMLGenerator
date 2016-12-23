@@ -59,10 +59,10 @@ class Signature {
 		return String.format("%s(%s)", name, args.toString());
 	}
 
-	public static Signature parse(ASMServiceProvider serviceProvider, String name, String desc) {
+	public static Signature parse(String name, String desc) {
 		List<TypeModel> args = new ArrayList<>();
 		for (Type argType : Type.getArgumentTypes(desc)) {
-			args.add(TypeModel.parse(serviceProvider, argType));
+			args.add(TypeModel.parse(argType));
 		}
 		return new Signature(args, name);
 	}

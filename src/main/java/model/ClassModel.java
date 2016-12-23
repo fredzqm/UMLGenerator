@@ -25,8 +25,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
-	private final ASMServiceProvider asmServiceProvider;
+class ClassModel implements IVisitable<ClassModel>, IClassModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -49,8 +48,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	 * @param asmClassNode
 	 * @param important
 	 */
-	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode) {
-		this.asmServiceProvider = asmServiceProvider;
+	public ClassModel(ClassNode asmClassNode) {
 		this.asmClassNode = asmClassNode;
 		this.modifier = Modifier.parse(asmClassNode.access);
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
@@ -60,7 +58,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
-			superClass = getClassByName(asmClassNode.superName);
+			superClass = ASMParser.getClassByName(asmClassNode.superName);
 		return superClass;
 	}
 
@@ -82,7 +80,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 			@SuppressWarnings("unchecked")
 			List<String> ls = asmClassNode.interfaces;
 			for (String s : ls) {
-				ClassModel m = getClassByName(s);
+				ClassModel m = ASMParser.getClassByName(s);
 				if (m != null)
 					interfaces.add(m);
 			}
@@ -177,10 +175,6 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	public boolean isFinal() {
 		return isFinal;
-	}
-
-	public ClassModel getClassByName(String name) {
-		return asmServiceProvider.getClassByName(name);
 	}
 
 	@Override

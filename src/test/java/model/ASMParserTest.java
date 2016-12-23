@@ -10,24 +10,14 @@ public class ASMParserTest {
 
 	@Test
 	public void getClassesRecursive() {
-		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
-			@Override
-			public boolean isRecursive() {
-				return true;
-			}
-
-			@Override
-			public Iterable<String> getClasses() {
-				return Collections.singletonList("java.lang.String");
-			}
-		});
 		Set<String> expected;
 		Iterable<ClassModel> ls;
 		Set<String> actual;
 
 		expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object", "java.lang.CharSequence",
 				"java.lang.Comparable", "java.io.Serializable"));
-		ls = parser.freezeClassCreation();
+		
+		ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
 		actual = new HashSet<>();
 		for (ClassModel c : ls)
 			actual.add(c.getName());
@@ -38,10 +28,7 @@ public class ASMParserTest {
 
 	@Test
 	public void testGetClassesNonRecursive() {
-		ASMClassTracker parser = new ASMParser();
-		parser.addClasses(Collections.singletonList("java/lang/String"));
-
-		Iterator<ClassModel> itr = parser.freezeClassCreation().iterator();
+		Iterator<ClassModel> itr = ASMParser.getClasses(Collections.singletonList("java/lang/String"), 0).iterator();
 		assertTrue(itr.hasNext());
 		itr.next();
 		assertFalse(itr.hasNext());
@@ -49,18 +36,7 @@ public class ASMParserTest {
 	
 	@Test
 	public void testGetFieldsByNameSequence() {
-		ASMParser parser = ASMParser.getInstance(new IModelConfiguration() {
-			@Override
-			public boolean isRecursive() {
-				return true;
-			}
-			@Override
-			public Iterable<String> getClasses() {
-				return Arrays.asList("java.awt.Window", "java.awt.Dialog");
-			}
-		});
-		parser.freezeClassCreation();
-		ClassModel x = parser.getClassByName("java.awt.Dialog");
+		ClassModel x = ASMParser.getClassByName("java.awt.Dialog");
 		assertTrue(x != null);
 		FieldModel field = x.getFieldByName("modalBlocker");
 		assertTrue(field != null);

@@ -15,7 +15,6 @@ public class RelDummyClass {
     }
 
     private void printPrivateString() {
-        System.out.println(this.privateDummy);
     }
 
     public RelOtherDummyClass getPublicString() {
@@ -23,7 +22,6 @@ public class RelDummyClass {
     }
 
     protected double someProtectedMethod() {
-        System.out.println("I am protected");
         return 0.0;
     }
 }
