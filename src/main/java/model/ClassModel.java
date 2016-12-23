@@ -2,7 +2,7 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IClassModel;
+import generator.classParser.IClassModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -68,6 +68,25 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 
 	public ClassType getType() {
 		return classType;
+	}
+
+	@Override
+	public List<String> getStereoTypes() {
+		List<String> ls = new ArrayList<>();
+		switch (getType()) {
+		case INTERFACE:
+			ls.add("Interface");
+			break;
+		case CONCRETE:
+			break;
+		case ABSTRACT:
+			ls.add("Abstract");
+			break;
+		case ENUM:
+			ls.add("Enumeration");
+			break;
+		}
+		return ls;
 	}
 
 	public Modifier getModifier() {

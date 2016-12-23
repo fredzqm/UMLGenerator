@@ -1,5 +1,6 @@
-package generator;
+package generator.classParser;
 
+import java.util.List;
 import java.util.Map;
 
 import utility.ClassType;
@@ -18,13 +19,6 @@ public interface IClassModel {
 	 * @return Class Name.
 	 */
 	String getName();
-
-	/**
-	 * Returns the Model's ClassType.
-	 *
-	 * @return ClassType
-	 */
-	ClassType getType();
 
 	/**
 	 * Returns an Iterable of the Model's Fields. Excluding those inherited
@@ -72,10 +66,15 @@ public interface IClassModel {
 	Iterable<? extends IClassModel> getDependsRelation();
 
 	/**
-	 * Returns the Modifier of the Class Model.
 	 *
-	 * @return
+	 * @return the Modifier of the Class Model.
 	 */
 	Modifier getModifier();
+
+	/**
+	 * 
+	 * @return the list of stereotypes name for this class
+	 */
+	List<String> getStereoTypes();
 
 }

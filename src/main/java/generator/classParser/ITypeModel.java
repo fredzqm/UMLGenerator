@@ -1,4 +1,4 @@
-package generator;
+package generator.classParser;
 
 /**
  * An Interface for Type Models.

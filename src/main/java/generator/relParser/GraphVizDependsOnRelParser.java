@@ -1,6 +1,6 @@
 package generator.relParser;
 
-import generator.IClassModel;
+import generator.classParser.IClassModel;
 
 /**
  * A GraphVizParser for the model's depends on Relationship.

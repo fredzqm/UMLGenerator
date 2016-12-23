@@ -1,6 +1,6 @@
 package generator.relParser;
 
-import generator.IClassModel;
+import generator.classParser.IClassModel;
 
 /**
  * An Interface for a ParseGuide.

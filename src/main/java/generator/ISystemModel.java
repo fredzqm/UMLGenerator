@@ -1,5 +1,7 @@
 package generator;
 
+import generator.classParser.IClassModel;
+
 /**
  * An Interface for System Models.
  * <p>

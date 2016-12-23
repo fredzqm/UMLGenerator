@@ -2,6 +2,7 @@ package generator;
 
 import java.util.Collection;
 
+import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.IParseGuide;
 
@@ -22,7 +23,7 @@ public abstract class AbstractGenerator implements IGenerator {
 	}
 
 	@Override
-	public String generate(ISystemModel sm, Iterable<IJob> jobs) {
+	public String generate(ISystemModel sm) {
 		// DOT parent.
 		Iterable<? extends IClassModel> classes = sm.getClasses();
 		StringBuilder dotString = new StringBuilder();

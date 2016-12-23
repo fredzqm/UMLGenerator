@@ -1,4 +1,4 @@
-package generator;
+package generator.classParser;
 
 import utility.MethodType;
 import utility.Modifier;

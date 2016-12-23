@@ -2,7 +2,8 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IFieldModel;
+import generator.classParser.IFieldModel;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
 import utility.Modifier;

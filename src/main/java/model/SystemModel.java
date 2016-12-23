@@ -1,6 +1,5 @@
 package model;
 
-import analyzer.IAnalyzerSystemModel;
 import generator.ISystemModel;
 
 import java.util.Collection;
@@ -8,7 +7,7 @@ import java.util.Collection;
 /**
  * This class representing the entire model of a java program
  */
-public class SystemModel implements ISystemModel, IAnalyzerSystemModel {
+public class SystemModel implements ISystemModel {
     private Iterable<ClassModel> importantList;
 
     private SystemModel(Iterable<ClassModel> importantList) {

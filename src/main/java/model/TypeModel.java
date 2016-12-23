@@ -1,7 +1,8 @@
 package model;
 
-import generator.ITypeModel;
 import org.objectweb.asm.Type;
+
+import generator.classParser.ITypeModel;
 
 /**
  * Representing the type in java programs

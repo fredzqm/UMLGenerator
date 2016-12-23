@@ -2,7 +2,7 @@ package generator.relParser;
 
 import java.util.ArrayList;
 
-import generator.IClassModel;
+import generator.classParser.IClassModel;
 
 /**
  * A GraphVizParser for the model's SuperClass.

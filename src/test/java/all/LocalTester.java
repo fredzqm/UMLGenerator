@@ -51,7 +51,7 @@ public class LocalTester {
 
         IGenerator generator = new GraphVizGenerator(config);
 
-		String actual = generator.generate(systemModel, null);
+		String actual = generator.generate(systemModel);
 
 		internalRunner(config, actual);
 	}

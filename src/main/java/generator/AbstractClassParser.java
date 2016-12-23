@@ -1,5 +1,8 @@
 package generator;
 
+import generator.classParser.IClassModel;
+import generator.classParser.IFieldModel;
+import generator.classParser.IMethodModel;
 import generator.classParser.IParser;
 import utility.IFilter;
 
