@@ -4,6 +4,7 @@ import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.*;
+import model.Relation;
 import model.RelationDependsOn;
 import model.RelationExtendsClass;
 import model.RelationHasA;

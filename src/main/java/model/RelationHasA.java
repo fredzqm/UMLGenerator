@@ -1,7 +1,5 @@
 package model;
 
-import generator.relParser.Relation;
-
 public class RelationHasA extends Relation {
 
 	private boolean many;

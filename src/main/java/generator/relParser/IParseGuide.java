@@ -13,6 +13,6 @@ public interface IParseGuide {
      * @param edge
      * @return String describing the edge of this ParseGuide.
      */
-    String getEdgeStyle(Relation edge);
+    String getEdgeStyle(IRelation edge);
 
 }

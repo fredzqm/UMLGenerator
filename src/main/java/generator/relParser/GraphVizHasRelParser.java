@@ -8,7 +8,7 @@ package generator.relParser;
 public class GraphVizHasRelParser implements IParseGuide {
 	
     @Override
-    public String getEdgeStyle(Relation edge) {
+    public String getEdgeStyle(IRelation edge) {
         return "arrowhead=vee style=\"\" ";
     }
 

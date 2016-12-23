@@ -1,7 +1,6 @@
 package model;
 
 import generator.classParser.IClassModel;
-import generator.relParser.Relation;
 
 public class RelationImplement extends Relation {
 

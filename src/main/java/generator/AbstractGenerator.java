@@ -3,7 +3,7 @@ package generator;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.IParseGuide;
-import generator.relParser.Relation;
+import model.Relation;
 
 import java.util.Map;
 
