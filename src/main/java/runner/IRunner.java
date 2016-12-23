@@ -15,6 +15,6 @@ public interface IRunner {
      * @throws IOException          if it is unable to write.
      * @throws InterruptedException if the write process is interrupted.
      */
-    void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException;
+    void execute(String dotString) throws IOException, InterruptedException;
 
 }

@@ -3,7 +3,6 @@ package generator.classParser;
 import java.util.List;
 import java.util.Map;
 
-import utility.ClassType;
 import utility.Modifier;
 
 /**

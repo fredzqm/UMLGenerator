@@ -169,11 +169,11 @@ public class GraphVizGeneratorSystemTest {
      */
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
-        IRunner runner = new GraphVizRunner();
+        IRunner runner = new GraphVizRunner(config);
         config.setOutputDirectory("./output");
 
         try {
-            runner.execute(config, graphVizString);
+            runner.execute(graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
             assertTrue(file.exists());
         } catch (Exception e) {

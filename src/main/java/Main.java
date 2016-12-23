@@ -1,5 +1,6 @@
 import config.CommandLineParser;
 import config.Configuration;
+import display.Display;
 
 public class Main {
 
@@ -9,6 +10,8 @@ public class Main {
 
         UMLEngine engine = new UMLEngine(conf);
         engine.run();
+        
+        Display.showWindown(conf);
     }
 
 }

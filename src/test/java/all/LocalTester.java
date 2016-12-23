@@ -64,9 +64,9 @@ public class LocalTester {
      */
     private static void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
-        IRunner runner = new GraphVizRunner();
+        IRunner runner = new GraphVizRunner(config);
         try {
-            runner.execute(config, graphVizString);
+            runner.execute(graphVizString);
         } catch (Exception e) {
             System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             e.printStackTrace();

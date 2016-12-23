@@ -1,7 +1,5 @@
 package generator.classParser;
 
-import generator.*;
-
 /**
  * A GraphVizParser for the model's Methods.
  * <p>
