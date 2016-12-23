@@ -63,7 +63,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains("\""+dummyClassName+"\""));
         assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\"]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\" ]"));
         assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
 
         // Count how many relations there are.
@@ -106,7 +106,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains("\""+dummyClassName+"\""));
         assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\"]"));
+        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\" ]"));
         assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
 
         // Count how many relations there are.
