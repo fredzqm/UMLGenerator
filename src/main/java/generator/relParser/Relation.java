@@ -1,7 +1,6 @@
-package model;
+package generator.relParser;
 
 import generator.classParser.IClassModel;
-import generator.relParser.IRelation;
 
 /**
  * 
@@ -11,33 +10,27 @@ import generator.relParser.IRelation;
  *
  */
 public abstract class Relation implements IRelation, Comparable<IRelation> {
-	private final IClassModel from;
-	private final IClassModel to;
+	private final String from;
+	private final String to;
 
-	public Relation(IClassModel from, IClassModel to) {
+	public Relation(String from, String to) {
 		this.to = to;
 		this.from = from;
 	}
 
-	public String getFromName() {
-		return this.from.getName();
+	@Override
+	public String getFrom() {
+		return from;
 	}
 
-	public String getToName() {
-		return this.to.getName();
-	}
-
-	public IClassModel getFrom() {
-		return this.from;
-	}
-
-	public IClassModel getTo() {
-		return this.to;
+	@Override
+	public String getTo() {
+		return to;
 	}
 
 	private static String getKey(IRelation x) {
-		String fromName = x.getFromName();
-		String toName = x.getToName();
+		String fromName = x.getFrom();
+		String toName = x.getTo();
 		if (fromName.compareTo(toName) < 0)
 			return fromName + toName;
 		else

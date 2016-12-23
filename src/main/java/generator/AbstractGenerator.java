@@ -3,7 +3,7 @@ package generator;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.IParseGuide;
-import model.Relation;
+import generator.relParser.Relation;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ public abstract class AbstractGenerator implements IGenerator {
             relParser = this.relationshipFormat.get(relation.getClass());
 
             dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
-                    relation.getFromName(), relation.getToName()));
+                    relation.getFrom(), relation.getTo()));
 
         }
 

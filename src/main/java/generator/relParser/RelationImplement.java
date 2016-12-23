@@ -1,10 +1,10 @@
-package model;
+package generator.relParser;
 
 import generator.classParser.IClassModel;
 
 public class RelationImplement extends Relation {
 
-	public RelationImplement(IClassModel from, IClassModel to) {
+	public RelationImplement(String from, String to) {
 		super(from, to);
 	}
 

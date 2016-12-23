@@ -1,10 +1,10 @@
-package model;
+package generator.relParser;
 
 import generator.classParser.IClassModel;
 
 public class RelationDependsOn extends Relation {
 
-	public RelationDependsOn(IClassModel from, IClassModel to) {
+	public RelationDependsOn(String from, String to) {
 		super(from, to);
 	}
 

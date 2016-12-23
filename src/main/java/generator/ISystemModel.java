@@ -2,7 +2,7 @@ package generator;
 
 
 import generator.classParser.IClassModel;
-import model.Relation;
+import generator.relParser.Relation;
 
 /**
  * An Interface for System Models.
