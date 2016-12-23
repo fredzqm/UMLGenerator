@@ -61,11 +61,10 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\""+dummyClassName+"\""));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" };"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {}"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
         assertTrue(actual.contains("edge [arrowhead=onormal style=\"\"]"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" }"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
 
         // Count how many relations there are.
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
@@ -99,32 +98,23 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-
+        
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains("\""+dummyClassName+"\""));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" };"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {}"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
         assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
         assertTrue(actual.contains("edge [arrowhead=onormal style=\"\"]"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> {\"java.lang.Object\" }"));
+        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
 
         // Count how many relations there are.
-        // TODO: When Fred implements Has-A and Depends-On update this test.
-
-        String expectedSuperClass = "\""+dummyClassName+"\" -> {\"java.lang.Object\" };";
+        String expectedSuperClass = "\""+dummyClassName+"\" -> \"java.lang.Object\";";
         assertTrue(actual.contains(expectedSuperClass));
 
-        String expectedInterfaces = "\""+dummyClassName+"\" -> {};";
-        assertTrue(actual.contains(expectedInterfaces));
-
-        String expectedDependencies = "\""+dummyClassName+"\" -> {\"java.lang.String\" };";
+        String expectedDependencies = "\""+dummyClassName+"\" -> \"java.lang.String\";";
         assertTrue(actual.contains(expectedDependencies));
-
-//        String expectedHasA = "\""+dummyClassName+"\" -> {\"java.lang.Object\" \"java.lang.Object\" \"java.io.PrintStream\" \"java.io.PrintStream\" \""+dummyClassName+"\" \""+dummyClassName+"\" \"java.lang.StringBuilder\" \"java.lang.StringBuilder\" \"java.lang.System\" \"java.lang.System\"};";
-//        assertTrue(actual.contains(expectedHasA));
 
         String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
         String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};

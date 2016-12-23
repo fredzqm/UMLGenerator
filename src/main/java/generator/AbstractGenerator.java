@@ -1,9 +1,10 @@
 package generator;
 
-import java.util.Collection;
+import java.util.Map;
 
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
+import generator.relParser.Relation;
 import generator.relParser.IParseGuide;
 
 /**
@@ -13,13 +14,15 @@ import generator.relParser.IParseGuide;
  */
 public abstract class AbstractGenerator implements IGenerator {
 	private final IParser<IClassModel> classModelParser;
-	private final Collection<IParseGuide> relParsers;
+	// private final Collection<IParseGuide> relParsers;
 	private final String basicConfiguration;
+	private final Map<Class<? extends Relation>, IParseGuide> relationshipFormat;
 
 	AbstractGenerator(IGeneratorConfiguration config) {
 		this.classModelParser = createClassParser(config);
-		this.relParsers = createRelationshipParsers(config);
+		// this.relParsers = createRelationshipParsers(config);
 		this.basicConfiguration = createBasicConfiguration(config);
+		this.relationshipFormat = defineEdgeFormat(config);
 	}
 
 	@Override
@@ -35,19 +38,27 @@ public abstract class AbstractGenerator implements IGenerator {
 		dotString.append(classModelParser.parse(classes) + '\n');
 
 		// Parse each relationship.
-		this.relParsers.forEach((relParser) -> {
-			StringBuilder sb = new StringBuilder();
-			classes.forEach((thisClass) -> {
-				Iterable<? extends IClassModel> otherClassList = relParser.getRelatesTo(thisClass);
-				StringBuilder sb2 = new StringBuilder();
-				otherClassList.forEach((has) -> {
-					sb2.append(String.format("\"%s\" ", has.getName()));
-				});
-				sb.append(String.format("\t\"%s\" -> {%s};\n", thisClass.getName(), sb2.toString()));
-			});
+		Iterable<Relation> edges = sm.getRelations();
 
-			dotString.append(String.format("\tedge [%s]\n%s\n", relParser.getEdgeStyle(), sb.toString()));
-		});
+		for (Relation edge : edges) {
+			IParseGuide relParser = relationshipFormat.get(edge.getClass());
+
+			dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(edge),
+					edge.getFrom().getName(), edge.getTo().getName()));
+			
+			// StringBuilder sb = new StringBuilder();
+			// classes.forEach((thisClass) -> {
+			// Iterable<? extends IClassModel> otherClassList =
+			// relParser.getRelatesTo(thisClass);
+			// StringBuilder sb2 = new StringBuilder();
+			// otherClassList.forEach((has) -> {
+			// sb2.append(String.format("\"%s\" ", has.getName()));
+			// });
+			// sb.append(String.format("\t\"%s\" -> {%s};\n",
+			// thisClass.getName(), sb2.toString()));
+			// });
+
+		}
 
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
 	}
@@ -67,9 +78,10 @@ public abstract class AbstractGenerator implements IGenerator {
 	public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
 
 	/**
-	 * Create super class, interfaces, has-a, and/or depends-on parsers.
-	 *
-	 * @return Collection of relationship ParseGuides
+	 * Define the format of each type of relationship
+	 * 
+	 * @param config
+	 * @return
 	 */
-	public abstract Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config);
+	public abstract Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config);
 }

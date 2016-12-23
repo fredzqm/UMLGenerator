@@ -1,7 +1,5 @@
 package generator.relParser;
 
-import generator.classParser.IClassModel;
-
 /**
  * A GraphVizParser for the model's interface.
  * <p>
@@ -10,13 +8,8 @@ import generator.classParser.IClassModel;
 public class GraphVizInterfaceParser implements IParseGuide {
 
 	@Override
-	public String getEdgeStyle() {
+	public String getEdgeStyle(Relation edge) {
 		return "arrowhead=onormal style=dashed ";
-	}
-
-	@Override
-	public Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass) {
-		return thisClass.getInterfaces();
 	}
 
 }

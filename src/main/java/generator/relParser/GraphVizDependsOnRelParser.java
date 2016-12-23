@@ -1,7 +1,5 @@
 package generator.relParser;
 
-import generator.classParser.IClassModel;
-
 /**
  * A GraphVizParser for the model's depends on Relationship.
  * <p>
@@ -10,13 +8,8 @@ import generator.classParser.IClassModel;
 public class GraphVizDependsOnRelParser implements IParseGuide {
 	
 	@Override
-	public String getEdgeStyle() {
+	public String getEdgeStyle(Relation edge) {
 		return "arrowhead=vee style=dashed ";
-	}
-
-	@Override
-	public Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass) {
-		return thisClass.getDependsRelation();
 	}
 
 }

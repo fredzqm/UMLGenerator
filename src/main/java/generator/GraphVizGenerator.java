@@ -1,8 +1,7 @@
 package generator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
@@ -12,6 +11,11 @@ import generator.relParser.GraphVizHasRelParser;
 import generator.relParser.GraphVizInterfaceParser;
 import generator.relParser.GraphVizSuperClassRelParser;
 import generator.relParser.IParseGuide;
+import generator.relParser.Relation;
+import model.RelationDependsOn;
+import model.RelationExtendsClass;
+import model.RelationHasA;
+import model.RelationImplement;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -30,14 +34,18 @@ public class GraphVizGenerator extends AbstractGenerator {
 	}
 
 	@Override
-	public Collection<IParseGuide> createRelationshipParsers(IGeneratorConfiguration config) {
-		return new ArrayList<>(Arrays.asList(new GraphVizSuperClassRelParser(), new GraphVizInterfaceParser(),
-				new GraphVizHasRelParser(), new GraphVizDependsOnRelParser()));
-	}
-
-	@Override
 	public String createBasicConfiguration(IGeneratorConfiguration config) {
 		return String.format("\tnodesep=%s;\n\t%s;\n\trankdir=%s;\n\n", config.getNodeSep(), config.getNodeStyle(),
 				config.getRankDir());
+	}
+
+	@Override
+	public Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config) {
+		Map<Class<? extends Relation>, IParseGuide> map = new HashMap<>();
+		map.put(RelationExtendsClass.class, new GraphVizSuperClassRelParser());
+		map.put(RelationImplement.class, new GraphVizInterfaceParser());
+		map.put(RelationHasA.class, new GraphVizHasRelParser());
+		map.put(RelationDependsOn.class, new GraphVizDependsOnRelParser());
+		return map;
 	}
 }

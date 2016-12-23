@@ -107,7 +107,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		return interfaces;
 	}
 
-	@Override
 	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
 			hasARel = new HashMap<>();
@@ -125,7 +124,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		return hasARel;
 	}
 
-	@Override
 	public Collection<ClassModel> getDependsRelation() {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();

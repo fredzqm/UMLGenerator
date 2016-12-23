@@ -1,7 +1,5 @@
 package generator.relParser;
 
-import generator.classParser.IClassModel;
-
 /**
  * An Interface for a ParseGuide.
  * <p>
@@ -10,10 +8,10 @@ import generator.classParser.IClassModel;
 public interface IParseGuide {
     /**
      * Returns the edge style.
+     * @param edge 
      *
      * @return String describing the edge of this ParseGuide.
      */
-    String getEdgeStyle();
+    String getEdgeStyle(Relation edge);
 
-    Iterable<? extends IClassModel> getRelatesTo(IClassModel thisClass);
 }
