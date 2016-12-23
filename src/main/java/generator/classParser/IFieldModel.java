@@ -27,5 +27,5 @@ public interface IFieldModel {
      *
      * @return Type of the Field.
      */
-    ITypeModel getType();
+    String getTypeName();
 }

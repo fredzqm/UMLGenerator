@@ -43,4 +43,5 @@ public class GraphVizGenerator extends AbstractGenerator {
         map.put(RelationDependsOn.class, new GraphVizDependsOnRelParser());
         return map;
     }
+
 }

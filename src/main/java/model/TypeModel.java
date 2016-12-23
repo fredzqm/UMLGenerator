@@ -2,14 +2,12 @@ package model;
 
 import org.objectweb.asm.Type;
 
-import generator.classParser.ITypeModel;
-
 /**
  * Representing the type in java programs
  *
  * @author zhang
  */
-class TypeModel implements ITypeModel {
+class TypeModel {
 	private final ClassModel classModel;
 	private final int dimension;
 	private final PrimitiveType primiType;
