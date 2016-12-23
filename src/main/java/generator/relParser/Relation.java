@@ -1,7 +1,5 @@
 package generator.relParser;
 
-import generator.classParser.IClassModel;
-
 /**
  * 
  * Relation represet
