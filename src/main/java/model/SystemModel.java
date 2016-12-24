@@ -50,22 +50,26 @@ public class SystemModel implements ISystemModel {
         List<IRelation> ls = new ArrayList<>();
         for (ClassModel classModel : classList) {
             String className = classModel.getName();
+            
+            // add related super class relationship
             ClassModel superClass = classModel.getSuperClass();
-            // TODO: Fred! comment this each block of code.
             if (superClass != null)
                 if (classList.contains(superClass))
                     ls.add(new RelationExtendsClass(className, superClass.getName()));
 
+            // add related interface relationship
             Iterable<ClassModel> interfaces = classModel.getInterfaces();
             for (ClassModel x : interfaces)
                 if (classList.contains(x))
                     ls.add(new RelationImplement(className, x.getName()));
 
+            // add related has-a relationship
             Map<ClassModel, Integer> has_a = classModel.getHasRelation();
             for (ClassModel x : has_a.keySet())
                 if (classList.contains(x))
                     ls.add(new RelationHasA(className, x.getName(), has_a.get(x)));
 
+            // add related depends on relationship
             Iterable<ClassModel> depends_on = classModel.getDependsRelation();
             for (ClassModel x : depends_on)
                 if (classList.contains(x))

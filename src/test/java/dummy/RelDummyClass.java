@@ -10,7 +10,6 @@ import java.util.List;
 public class RelDummyClass {
     public RelOtherDummyClass publicDummy;
     private RelOtherDummyClass privateDummy;
-    private RelOtherDummyClass manyDummies;
 
     public RelDummyClass(RelOtherDummyClass dummy) {
         this.privateDummy = dummy;
