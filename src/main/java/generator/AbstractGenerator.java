@@ -3,9 +3,6 @@ package generator;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.IParseGuide;
-import generator.relParser.Relation;
-
-import java.util.Map;
 
 /**
  * An abstract class for Generators.
@@ -14,18 +11,16 @@ import java.util.Map;
  */
 public abstract class AbstractGenerator implements IGenerator {
     private final IParser<IClassModel> classModelParser;
-    // private final Collection<IParseGuide> relParsers;
     private final String basicConfiguration;
-    private final Map<Class<? extends Relation>, IParseGuide> relationshipFormat;
+    private final IParseGuide parseGuide;
 
     AbstractGenerator(IGeneratorConfiguration config) {
         this.classModelParser = createClassParser(config);
-        // this.relParsers = createRelationshipParsers(config);
         this.basicConfiguration = createBasicConfiguration(config);
-        this.relationshipFormat = defineEdgeFormat(config);
+        this.parseGuide = createParseGuide(config);
     }
 
-    @Override
+	@Override
     public String generate(ISystemModel sm) {
         // DOT parent.
         Iterable<? extends IClassModel> classes = sm.getClasses();
@@ -38,14 +33,8 @@ public abstract class AbstractGenerator implements IGenerator {
         dotString.append(classModelParser.parse(classes) + '\n');
 
         // Parse each relationship.
-        Iterable<Relation> relations = sm.getRelations();
-
-        relations.forEach(relation -> {
-            IParseGuide relParser = this.relationshipFormat.get(relation.getClass());
-
-//            dotString.append(String.format("\tedge [%s];\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
-//                    relation.getFrom(), relation.getTo()));
-            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), relParser.getEdgeStyle(relation)));
+        sm.getRelations().forEach(relation -> {
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), parseGuide.getEdgeStyle(relation)));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
@@ -70,5 +59,5 @@ public abstract class AbstractGenerator implements IGenerator {
      * @param config
      * @return
      */
-    public abstract Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config);
+    public abstract IParseGuide createParseGuide(IGeneratorConfiguration config);
 }

@@ -101,7 +101,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-
+        
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));

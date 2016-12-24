@@ -5,9 +5,6 @@ import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
  * <p>
@@ -29,14 +26,10 @@ public class GraphVizGenerator extends AbstractGenerator {
                 config.getRankDir());
     }
 
-    @Override
-    public Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config) {
-        Map<Class<? extends Relation>, IParseGuide> map = new HashMap<>();
-        map.put(RelationExtendsClass.class, new GraphVizSuperClassRelParser());
-        map.put(RelationImplement.class, new GraphVizInterfaceParser());
-        map.put(RelationHasA.class, new GraphVizHasRelParser());
-        map.put(RelationDependsOn.class, new GraphVizDependsOnRelParser());
-        return map;
-    }
+	@Override
+	public IParseGuide createParseGuide(IGeneratorConfiguration config) {
+		return new ParseGuide();
+	}
+
 
 }
