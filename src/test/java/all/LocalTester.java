@@ -30,6 +30,7 @@ public class LocalTester {
 		List<String> classList = new ArrayList<>();
 //		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
 		classList.add(RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName());
+//        classList.add("java.lang.String");
 		config.setClasses(classList);
 		config.setRecursive(true);
 		return SystemModel.getInstance(config);
