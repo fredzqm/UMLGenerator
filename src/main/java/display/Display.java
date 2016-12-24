@@ -13,48 +13,48 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class Display extends JFrame {
-	public static final Set<String> SUPPORT_EXTENSIONS;
+    public static final Set<String> SUPPORT_EXTENSIONS;
 
-	static {
-		SUPPORT_EXTENSIONS = new HashSet<>();
-		SUPPORT_EXTENSIONS.add("jpg");
-		SUPPORT_EXTENSIONS.add("png");
-	}
+    static {
+        SUPPORT_EXTENSIONS = new HashSet<>();
+        SUPPORT_EXTENSIONS.add("jpg");
+        SUPPORT_EXTENSIONS.add("png");
+    }
 
-	private BufferedImage image;
-	private JPanel canvas;
+    private BufferedImage image;
+    private JPanel canvas;
 
-	public Display(String imagePath) {
-		try {
-			this.image = ImageIO.read(new File(imagePath));
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
-		}
+    public Display(String imagePath) {
+        try {
+            this.image = ImageIO.read(new File(imagePath));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
-		this.canvas = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(image, 0, 0, null);
-			}
-		};
-		canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-		JScrollPane sp = new JScrollPane(canvas);
-		setLayout(new BorderLayout());
-		add(sp, BorderLayout.CENTER);
-	}
+        this.canvas = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
+        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        JScrollPane sp = new JScrollPane(canvas);
+        setLayout(new BorderLayout());
+        add(sp, BorderLayout.CENTER);
+    }
 
-	public static void showWindow(IRunnerConfiguration config) {
-		if (!SUPPORT_EXTENSIONS.contains(config.getOutputFormat())) {
-			System.err.print("Currently unsupported image format " + config.getOutputFormat());
-			return;
-		}
-		String outputFilePathImage = config.getOutputDirectory() + "/" + config.getFileName() + "."
-				+ config.getOutputFormat();
+    public static void showWindow(IRunnerConfiguration config) {
+        if (!SUPPORT_EXTENSIONS.contains(config.getOutputFormat())) {
+            System.err.print("Currently unsupported image format " + config.getOutputFormat());
+            return;
+        }
+        String outputFilePathImage = config.getOutputDirectory() + "/" + config.getFileName() + "."
+                + config.getOutputFormat();
 
-		JFrame frame = new Display(outputFilePathImage);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+        JFrame frame = new Display(outputFilePathImage);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 }

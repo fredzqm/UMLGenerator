@@ -6,7 +6,7 @@ package generator.relParser;
  * Created by lamd on 12/16/2016.
  */
 public interface IParseGuide {
-	
+
     /**
      * Returns the edge style.
      *

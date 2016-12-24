@@ -1,6 +1,6 @@
 package generator.classParser;
 
-import generator.*;
+import generator.IGeneratorConfiguration;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -9,35 +9,35 @@ import utility.Modifier;
  */
 public class GraphVizClassParser extends AbstractClassParser {
 
-	public GraphVizClassParser(IGeneratorConfiguration config) {
-		super(config);
-	}
+    public GraphVizClassParser(IGeneratorConfiguration config) {
+        super(config);
+    }
 
-	@Override
-	public IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config) {
-		IFilter<Modifier> modifierFilter = config.getModifierFilters();
-		return (m) -> modifierFilter.filter(m.getModifier());
-	}
+    @Override
+    public IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config) {
+        IFilter<Modifier> modifierFilter = config.getModifierFilters();
+        return (m) -> modifierFilter.filter(m.getModifier());
+    }
 
-	@Override
-	public IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config) {
-		return new GraphVizMethodParser();
-	}
+    @Override
+    public IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config) {
+        return new GraphVizMethodParser();
+    }
 
-	@Override
-	public IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config) {
-		IFilter<Modifier> modifierFilter = config.getModifierFilters();
-		return (f) -> modifierFilter.filter(f.getModifier());
-	}
+    @Override
+    public IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config) {
+        IFilter<Modifier> modifierFilter = config.getModifierFilters();
+        return (f) -> modifierFilter.filter(f.getModifier());
+    }
 
-	@Override
-	public IParser<IFieldModel> createFieldParser(IGeneratorConfiguration config) {
-		return new GraphVizFieldParser();
-	}
+    @Override
+    public IParser<IFieldModel> createFieldParser(IGeneratorConfiguration config) {
+        return new GraphVizFieldParser();
+    }
 
-	@Override
-	public IParser<IClassModel> createHeaderParser(IGeneratorConfiguration config) {
-		return new GraphVizHeaderParser();
-	}
+    @Override
+    public IParser<IClassModel> createHeaderParser(IGeneratorConfiguration config) {
+        return new GraphVizHeaderParser();
+    }
 
 }

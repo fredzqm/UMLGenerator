@@ -3,7 +3,6 @@ package generator;
 import config.Configuration;
 import dummy.GenDummyClass;
 import model.SystemModel;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -18,7 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -30,7 +30,7 @@ public class GraphVizGeneratorSystemTest {
     public TemporaryFolder folder = new TemporaryFolder();
 
     public String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
-    
+
     private ISystemModel setupSystemModel() {
         Configuration config = Configuration.getInstance();
         List<String> classList = new ArrayList<>();
@@ -60,11 +60,15 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains("\""+dummyClassName+"\""));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\" ]"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
+        assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
+
+        // See if it has its expected super class.
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
+        assertTrue(actual.contains(expectedSuperClass));
+
+        // See if it has its expected dependencies.
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
+        assertTrue(actual.contains(expectedDependencies));
 
         // Count how many relations there are.
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
@@ -87,38 +91,34 @@ public class GraphVizGeneratorSystemTest {
         // Set up the system model and config.
         ISystemModel systemModel = setupSystemModel();
 
-        // Set up config.
+        // Set up config and generator.
         Configuration config = Configuration.getInstance();
         config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
         config.setParseKey("default");
-
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-        
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains("\""+dummyClassName+"\""));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\";"));
-        assertTrue(actual.contains("edge [arrowhead=vee style=dashed ]"));
-        assertTrue(actual.contains("edge [arrowhead=onormal style=\"\" ]"));
-        assertTrue(actual.contains("\""+dummyClassName+"\" -> \"java.lang.Object\""));
+        assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
 
-        // Count how many relations there are.
-        String expectedSuperClass = "\""+dummyClassName+"\" -> \"java.lang.Object\";";
+        // See if it has its expected super class.
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
         assertTrue(actual.contains(expectedSuperClass));
 
-        String expectedDependencies = "\""+dummyClassName+"\" -> \"java.lang.String\";";
+        // See if it has its expected dependencies.
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
         assertTrue(actual.contains(expectedDependencies));
 
+        // Set up expected fields and methods.
         String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
         String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};
-
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
@@ -143,7 +143,7 @@ public class GraphVizGeneratorSystemTest {
         config.setRankDir("BT");
         config.setParseKey("default");
         config.setOutputDirectory(directory.toString());
-        
+
         // generate the string
         IGenerator generator = new GraphVizGenerator(config);
         String graphVizString = generator.generate(systemModel);

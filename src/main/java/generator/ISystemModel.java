@@ -19,7 +19,6 @@ public interface ISystemModel {
     Iterable<? extends IClassModel> getClasses();
 
     /**
-     * 
      * @return the list of relationships that should be shown in the graph
      */
     Iterable<Relation> getRelations();

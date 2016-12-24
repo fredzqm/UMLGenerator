@@ -1,12 +1,12 @@
-import java.io.IOException;
-
 import analyzer.IAnalyzer;
 import generator.IGenerator;
 import generator.ISystemModel;
 import runner.IRunner;
 
+import java.io.IOException;
+
 public abstract class AbstractUMLEngine implements Runnable {
-	
+
     @Override
     public void run() {
         // get the system model
@@ -15,7 +15,7 @@ public abstract class AbstractUMLEngine implements Runnable {
         // analyze
         IAnalyzer analyzer = createAnalyzer();
         systemModel = analyzer.analyze(systemModel);
-        
+
         // generate
         IGenerator generator = createGenerator();
         String graphVisStr = generator.generate(systemModel);
@@ -28,13 +28,13 @@ public abstract class AbstractUMLEngine implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    
-	public abstract IRunner createRunner();
-	
-	public abstract IGenerator createGenerator();
 
-	public abstract IAnalyzer createAnalyzer();
-	
-	public abstract ISystemModel createSystemModel();
+    public abstract IRunner createRunner();
+
+    public abstract IGenerator createGenerator();
+
+    public abstract IAnalyzer createAnalyzer();
+
+    public abstract ISystemModel createSystemModel();
 
 }
