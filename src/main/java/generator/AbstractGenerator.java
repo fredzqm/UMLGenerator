@@ -40,14 +40,12 @@ public abstract class AbstractGenerator implements IGenerator {
         // Parse each relationship.
         Iterable<Relation> relations = sm.getRelations();
 
-        IParseGuide relParser;
-        for (Relation relation : relations) {
-            relParser = this.relationshipFormat.get(relation.getClass());
+        relations.forEach(relation -> {
+            IParseGuide relParser = this.relationshipFormat.get(relation.getClass());
 
             dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
                     relation.getFrom(), relation.getTo()));
-
-        }
+        });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
     }

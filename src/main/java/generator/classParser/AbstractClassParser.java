@@ -51,7 +51,7 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 		}
 
 		// Generate the full string with the label text generated above.
-		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t]\n", name, sb.toString());
+		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", name, sb.toString());
 	}
 
 	/**

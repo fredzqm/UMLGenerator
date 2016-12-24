@@ -1,5 +1,7 @@
 package all;
 
+import analyzer.Analyzer;
+import analyzer.IAnalyzer;
 import config.Configuration;
 import dummy.RelDummyClass;
 import generator.GraphVizGenerator;
@@ -50,6 +52,8 @@ public class LocalTester {
         config.setOutputFormat("png");
 
         IGenerator generator = new GraphVizGenerator(config);
+        IAnalyzer analyzer = new Analyzer();
+        systemModel = analyzer.analyze(systemModel);
 
 		String actual = generator.generate(systemModel);
 

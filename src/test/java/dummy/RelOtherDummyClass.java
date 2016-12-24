@@ -8,6 +8,8 @@ package dummy;
 public class RelOtherDummyClass {
     private int dummyInt;
 
+    private RelDummyClass bijectiveDependency;
+
     public RelOtherDummyClass(int dummyInt) {
         System.out.println("I am dummyInt");
         this.dummyInt = dummyInt;

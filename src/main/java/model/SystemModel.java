@@ -55,6 +55,7 @@ public class SystemModel implements ISystemModel {
 		for (ClassModel classModel : classList) {
 			String className = classModel.getName();
 			ClassModel superClass = classModel.getSuperClass();
+			// TODO: Fred! comment this each block of code.
 			if (superClass != null)
 				if (classList.contains(superClass))
 					ls.add(new RelationExtendsClass(className, superClass.getName()));
