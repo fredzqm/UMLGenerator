@@ -44,13 +44,13 @@ public interface IMethodModel {
      *
      * @return Type Model of the Return Type.
      */
-    ITypeModel getReturnType();
+    String getReturnTypeName();
 
     /**
      * Returns an Iterable of Type Models of the arguments of the Method.
      *
      * @return Iterable of Type Model of Arguments.
      */
-    Iterable<? extends ITypeModel> getArguments();
+    Iterable<? extends String> getArgumentTypeNames();
 
 }

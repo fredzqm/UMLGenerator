@@ -1,46 +1,43 @@
 package generator.relParser;
 
-import generator.classParser.IClassModel;
+/**
+ * 
+ * Relation represet
+ * 
+ * @author zhang
+ *
+ */
+public abstract class Relation implements IRelation, Comparable<IRelation> {
+	private final String from;
+	private final String to;
 
-public abstract class Relation implements Comparable<Relation> {
-    private final IClassModel from;
-    private final IClassModel to;
-    private final String key;
+	public Relation(String from, String to) {
+		this.to = to;
+		this.from = from;
+	}
 
-    public Relation(IClassModel from, IClassModel to) {
-        this.to = to;
-        this.from = from;
-        this.key = getKey();
-    }
+	@Override
+	public String getFrom() {
+		return from;
+	}
 
-    public String getFromName() {
-        return this.from.getName();
-    }
+	@Override
+	public String getTo() {
+		return to;
+	}
 
-    public String getToName() {
-        return this.to.getName();
-    }
+	private static String getKey(IRelation x) {
+		String fromName = x.getFrom();
+		String toName = x.getTo();
+		if (fromName.compareTo(toName) < 0)
+			return fromName + toName;
+		else
+			return toName + fromName;
+	}
 
-    public IClassModel getFrom() {
-        return this.from;
-    }
-
-    public IClassModel getTo() {
-        return this.to;
-    }
-
-    private String getKey() {
-        String fromName = this.from.getName();
-        String toName = this.to.getName();
-        if (fromName.compareTo(toName) < 0)
-            return fromName + toName;
-        else
-            return toName + fromName;
-    }
-
-    @Override
-    public int compareTo(Relation o) {
-        return this.key.compareTo(o.getKey());
-    }
+	@Override
+	public int compareTo(IRelation o) {
+		return getKey(this).compareTo(getKey(o));
+	}
 
 }

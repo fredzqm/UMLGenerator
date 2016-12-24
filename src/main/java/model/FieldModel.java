@@ -39,9 +39,13 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 		return asmFieldNode.name;
 	}
 
-	@Override
 	public TypeModel getType() {
 		return fieldType;
+	}
+	
+	@Override
+	public String getTypeName() {
+		return fieldType.getName();
 	}
 
 	public ClassModel getBelongTo() {

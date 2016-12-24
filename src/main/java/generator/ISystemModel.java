@@ -18,42 +18,9 @@ public interface ISystemModel {
      */
     Iterable<? extends IClassModel> getClasses();
 
-
-//	/**
-//	 * Returns the IClassModel of the Model's superclass.
-//	 *
-//	 * @return Model's superclass (can be null if the class is Object)
-//	 */
-//	Iterable<Relation> getSuperClass();
-//
-//	/**
-//	 * Returns the List of classes the Model inherits from.
-//	 *
-//	 * @return Intefaces the model inherits.
-//	 */
-//    Iterable<Relation> getInterfaces();
-//
-//	/**
-//	 * Returns the Map of the Model's Has-A relation.
-//	 *
-//	 * @return Map from IClassModel to Integer with a Has-A relationship with
-//	 *         the Model. A positive integer m represents the number of single
-//	 *         composition. A negative integer -m represents containing at least
-//	 *         m composition, but up to infinity
-//	 */
-//    Iterable<Relation> getHasRelation();
-//
-//	/**
-//	 * Returns the List of the Model's Depends-On Relation.
-//	 *
-//	 * @return List of Classes with a Depends-On relationship with the Model.
-//	 */
-//    Iterable<Relation> getDependsRelation();
-
     /**
-     * TODO: Fred Comment this out. Are Relations edges?
-     *
-     * @return
+     * 
+     * @return the list of relationships that should be shown in the graph
      */
     Iterable<Relation> getRelations();
 }

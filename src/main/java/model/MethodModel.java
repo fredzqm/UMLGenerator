@@ -11,6 +11,7 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import utility.IMapper;
 import utility.MethodType;
 import utility.Modifier;
 
@@ -89,9 +90,20 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	public List<TypeModel> getArguments() {
 		return signature.getArguments();
 	}
-
+	
+	@Override
+	public Iterable<? extends String> getArgumentTypeNames() {
+		IMapper<TypeModel, String> mapper = TypeModel::getName;
+		return mapper.map(getArguments());
+	}
+	
 	public TypeModel getReturnType() {
 		return returnType;
+	}
+
+	@Override
+	public String getReturnTypeName() {
+		return returnType.getName();
 	}
 
 	@Override

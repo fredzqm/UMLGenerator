@@ -45,19 +45,7 @@ public abstract class AbstractGenerator implements IGenerator {
             relParser = this.relationshipFormat.get(relation.getClass());
 
             dotString.append(String.format("\tedge [%s]\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
-                    relation.getFromName(), relation.getToName()));
-
-            // StringBuilder sb = new StringBuilder();
-            // classes.forEach((thisClass) -> {
-            // Iterable<? extends IClassModel> otherClassList =
-            // relParser.getRelatesTo(thisClass);
-            // StringBuilder sb2 = new StringBuilder();
-            // otherClassList.forEach((has) -> {
-            // sb2.append(String.format("\"%s\" ", has.getName()));
-            // });
-            // sb.append(String.format("\t\"%s\" -> {%s};\n",
-            // thisClass.getName(), sb2.toString()));
-            // });
+                    relation.getFrom(), relation.getTo()));
 
         }
 

@@ -2,6 +2,10 @@ package model;
 
 import generator.ISystemModel;
 import generator.relParser.Relation;
+import generator.relParser.RelationDependsOn;
+import generator.relParser.RelationExtendsClass;
+import generator.relParser.RelationHasA;
+import generator.relParser.RelationImplement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,26 +52,27 @@ public class SystemModel implements ISystemModel {
 	@Override
 	public Iterable<Relation> getRelations() {
 		List<Relation> ls = new ArrayList<>();
-		for (ClassModel clazz : classList) {
-			ClassModel superClass = clazz.getSuperClass();
+		for (ClassModel classModel : classList) {
+			String className = classModel.getName();
+			ClassModel superClass = classModel.getSuperClass();
 			if (superClass != null)
 				if (classList.contains(superClass))
-					ls.add(new RelationExtendsClass(clazz, superClass));
+					ls.add(new RelationExtendsClass(className, superClass.getName()));
 
-			Iterable<ClassModel> interfaces = clazz.getInterfaces();
+			Iterable<ClassModel> interfaces = classModel.getInterfaces();
 			for (ClassModel x : interfaces)
 				if (classList.contains(x))
-					ls.add(new RelationImplement(clazz, x));
+					ls.add(new RelationImplement(className, x.getName()));
 
-			Map<ClassModel, Integer> has_a = clazz.getHasRelation();
+			Map<ClassModel, Integer> has_a = classModel.getHasRelation();
 			for (ClassModel x : has_a.keySet())
 				if (classList.contains(x))
-					ls.add(new RelationHasA(clazz, x, has_a.get(x)));
+					ls.add(new RelationHasA(className, x.getName(), has_a.get(x)));
 			
-			Iterable<ClassModel> depends_on = clazz.getDependsRelation();
+			Iterable<ClassModel> depends_on = classModel.getDependsRelation();
 			for (ClassModel x : depends_on)
 				if (classList.contains(x))
-					ls.add(new RelationDependsOn(clazz, x));
+					ls.add(new RelationDependsOn(className, x.getName()));
 		}
 		return ls;
 	}

@@ -26,9 +26,9 @@ class GraphVizMethodParser implements IParser<IMethodModel> {
 
 		// Add the arguments.
 		int methodLengthBefore = classMethod.length();
-		method.getArguments().forEach((type) -> {
+		method.getArgumentTypeNames().forEach((type) -> {
 			// Java does not keep track of variable names.
-			classMethod.append(String.format("%s, ", type.getName()));
+			classMethod.append(String.format("%s, ", type));
 		});
 
 		// Remove the ", " and end method with parenthesis.
@@ -39,7 +39,7 @@ class GraphVizMethodParser implements IParser<IMethodModel> {
 		}
 
 		// Add the return type.
-		classMethod.append(String.format(" : %s \\l", method.getReturnType().getName()));
+		classMethod.append(String.format(" : %s \\l", method.getReturnTypeName()));
 
 		return classMethod.toString();
 	}

@@ -4,10 +4,6 @@ import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relParser.*;
-import model.RelationDependsOn;
-import model.RelationExtendsClass;
-import model.RelationHasA;
-import model.RelationImplement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,4 +38,5 @@ public class GraphVizGenerator extends AbstractGenerator {
         map.put(RelationDependsOn.class, new GraphVizDependsOnRelParser());
         return map;
     }
+
 }

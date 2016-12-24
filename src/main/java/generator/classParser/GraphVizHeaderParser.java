@@ -3,10 +3,6 @@ package generator.classParser;
 
 public class GraphVizHeaderParser implements IParser<IClassModel> {
 
-    GraphVizHeaderParser() {
-    	
-    }
-
     @Override
     public String parse(IClassModel classModel) {
     	StringBuilder sb = new StringBuilder();

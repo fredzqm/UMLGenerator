@@ -6,7 +6,7 @@ public class Analyzer implements IAnalyzer {
 
 	@Override
 	public ISystemModel analyze(ISystemModel sm) {
-		return sm;
+		return new AnalyzedSystemModel(sm);
 	}
-
+	
 }
