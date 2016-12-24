@@ -10,7 +10,7 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 	private final IFilter<IMethodModel> methodFilters;
 	private final IParser<IMethodModel> methodParser;
 
-	public AbstractClassParser(IGeneratorConfiguration config) {
+	AbstractClassParser(IGeneratorConfiguration config) {
 		this.fieldFilters = createFieldFilter(config);
 		this.methodFilters = createFieldMethodFilter(config);
 		this.header = createHeaderParser(config);

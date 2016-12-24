@@ -11,7 +11,7 @@ public class Main {
         UMLEngine engine = new UMLEngine(conf);
         engine.run();
         
-        Display.showWindown(conf);
+        Display.showWindow(conf);
     }
 
 }
