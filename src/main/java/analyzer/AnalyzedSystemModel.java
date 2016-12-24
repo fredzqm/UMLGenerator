@@ -11,7 +11,7 @@ import generator.relParser.Relation;
 public class AnalyzedSystemModel implements ISystemModel {
 	private ISystemModel sysModel;
 
-	public AnalyzedSystemModel(ISystemModel sm) {
+	AnalyzedSystemModel(ISystemModel sm) {
 		sysModel = sm;
 	}
 
@@ -23,7 +23,7 @@ public class AnalyzedSystemModel implements ISystemModel {
 	@Override
 	public Iterable<Relation> getRelations() {
 		List<Relation> ls = new ArrayList<>();
-		sysModel.getRelations().forEach((r) -> ls.add(r));
+		sysModel.getRelations().forEach(ls::add);
 
 		Collections.sort(ls);
 		// TODO: merge bidirectional edge etc.

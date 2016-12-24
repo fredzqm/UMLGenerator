@@ -34,8 +34,13 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 
 		// Set the fields.
 		Iterable<? extends IFieldModel> fields = model.getFields();
+		StringBuilder fieldBuilder = new StringBuilder();
 		if (fields.iterator().hasNext()) {
-			sb.append(String.format(" | %s", fieldParser.parse(this.fieldFilters.filter(fields))));
+			fieldBuilder.append(fieldParser.parse(this.fieldFilters.filter(fields)));
+		}
+
+		if (fieldBuilder.length() > 0) {
+			sb.append(String.format(" | %s", fieldBuilder.toString()));
 		}
 
 		// Set the methods.

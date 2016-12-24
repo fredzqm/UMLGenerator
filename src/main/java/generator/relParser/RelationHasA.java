@@ -12,11 +12,11 @@ public class RelationHasA extends Relation {
 	}
 
 	public boolean isMany() {
-		return many;
+		return this.many;
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 }
