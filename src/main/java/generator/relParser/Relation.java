@@ -10,21 +10,32 @@ package generator.relParser;
 public abstract class Relation implements IRelation, Comparable<IRelation> {
 	private final String from;
 	private final String to;
+	private boolean isBijective;
 
 	public Relation(String from, String to) {
 		this.to = to;
 		this.from = from;
+		this.isBijective = false;
 	}
 
 	@Override
 	public String getFrom() {
-		return from;
+		return this.from;
 	}
 
 	@Override
 	public String getTo() {
-		return to;
+		return this.to;
 	}
+
+	@Override
+    public boolean isBijective() {
+	    return this.isBijective;
+    }
+
+    public void setBijective(boolean status) {
+	    this.isBijective = status;
+    }
 
 	private static String getKey(IRelation x) {
 		String fromName = x.getFrom();

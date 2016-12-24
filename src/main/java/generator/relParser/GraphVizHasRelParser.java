@@ -9,7 +9,12 @@ public class GraphVizHasRelParser implements IParseGuide {
 	
     @Override
     public String getEdgeStyle(IRelation edge) {
-        return "arrowhead=vee style=\"\" ";
+        StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
+        if (edge.isBijective()) {
+            edgeBuilder.append("arrowtail=vee dir=both ");
+        }
+
+        return edgeBuilder.toString();
     }
 
 }

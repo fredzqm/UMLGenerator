@@ -14,4 +14,10 @@ public interface IRelation {
 	 */
 	String getFrom();
 
+	/**
+	 * Returns true if the Class has a bijective relationship.
+	 *
+	 * @return true if the Class has a bijective relationship.
+	 */
+	boolean isBijective();
 }
