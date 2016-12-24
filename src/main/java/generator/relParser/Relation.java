@@ -9,11 +9,15 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
     private final String from;
     private final String to;
     private boolean isBijective;
+    private int toCardinality;
+    private int fromCardinality;
 
     public Relation(String from, String to) {
         this.to = to;
         this.from = from;
         this.isBijective = false;
+        this.toCardinality = 0;
+        this.fromCardinality = 0;
     }
 
     private static String getKey(IRelation x) {
@@ -23,6 +27,28 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
             return fromName + toName;
         else
             return toName + fromName;
+    }
+
+    public void setBijective(boolean status) {
+        this.isBijective = status;
+    }
+
+    public void setCardinalityTo(int count) {
+        this.toCardinality = count;
+    }
+
+    public void setCardinalityFrom(int count) {
+        this.fromCardinality = count;
+    }
+
+    @Override
+    public int getCardinalityTo() {
+        return this.toCardinality;
+    }
+
+    @Override
+    public int getCardinalityFrom() {
+        return this.fromCardinality;
     }
 
     @Override
@@ -38,10 +64,6 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
     @Override
     public boolean isBijective() {
         return this.isBijective;
-    }
-
-    public void setBijective(boolean status) {
-        this.isBijective = status;
     }
 
     @Override

@@ -3,6 +3,7 @@ package analyzer;
 import generator.ISystemModel;
 import generator.classParser.IClassModel;
 import generator.relParser.Relation;
+import generator.relParser.RelationHasA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,6 @@ public class AnalyzedSystemModel implements ISystemModel {
         systemModel.getRelations().forEach(relations::add);
 
         Collections.sort(relations);
-        // TODO: merge bidirectional edge etc.
         mergeBijectiveRelations(relations);
 
         return relations;
@@ -43,6 +43,14 @@ public class AnalyzedSystemModel implements ISystemModel {
             if (current.getClass().equals(next.getClass()) && current.getFrom().equals(next.getTo())) {
                 relations.remove(next);
                 current.setBijective(true);
+
+                // Save cardinality information inside current.
+                if (current instanceof RelationHasA) {
+                    RelationHasA currentHas = (RelationHasA) current;
+                    RelationHasA nextHas = (RelationHasA) next;
+                    current.setCardinalityTo(currentHas.getCount());
+                    current.setCardinalityFrom(nextHas.getCount());
+                }
             }
         }
     }

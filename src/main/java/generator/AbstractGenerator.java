@@ -35,7 +35,7 @@ public abstract class AbstractGenerator implements IGenerator {
         dotString.append(basicConfiguration);
 
         // Parse the class
-        dotString.append(classModelParser.parse(classes) + '\n');
+        dotString.append(classModelParser.parse(classes)).append('\n');
 
         // Parse each relationship.
         Iterable<Relation> relations = sm.getRelations();
