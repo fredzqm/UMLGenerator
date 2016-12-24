@@ -43,8 +43,9 @@ public abstract class AbstractGenerator implements IGenerator {
         relations.forEach(relation -> {
             IParseGuide relParser = this.relationshipFormat.get(relation.getClass());
 
-            dotString.append(String.format("\tedge [%s];\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
-                    relation.getFrom(), relation.getTo()));
+//            dotString.append(String.format("\tedge [%s];\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
+//                    relation.getFrom(), relation.getTo()));
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), relParser.getEdgeStyle(relation)));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
