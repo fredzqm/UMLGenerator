@@ -4,10 +4,21 @@ public class ParseGuide extends AbstractParseGuide {
 
 	@Override
 	public void initializeMap() {
+		map(RelationDecBidir.class, new BidirectionRelParser());
 		map(RelationExtendsClass.class, new GraphVizSuperClassRelParser());
 		map(RelationImplement.class, new GraphVizInterfaceParser());
 		map(RelationHasA.class, new GraphVizHasRelParser());
 		map(RelationDependsOn.class, new GraphVizDependsOnRelParser());
+	}
+
+	public class BidirectionRelParser implements IParseGuide {
+
+		@Override
+		public String getEdgeStyle(IRelation edge) {
+			RelationDecBidir rel = (RelationDecBidir) edge;
+			return ParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee dir=both ";
+		}
+
 	}
 
 	/**
@@ -20,10 +31,6 @@ public class ParseGuide extends AbstractParseGuide {
 		@Override
 		public String getEdgeStyle(IRelation edge) {
 			StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=dashed ");
-			if (edge.isBijective()) {
-				edgeBuilder.append("arrowtail=vee dir=both ");
-			}
-
 			return edgeBuilder.toString();
 		}
 
@@ -39,9 +46,13 @@ public class ParseGuide extends AbstractParseGuide {
 		@Override
 		public String getEdgeStyle(IRelation edge) {
 			StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
-			if (edge.isBijective()) {
-				edgeBuilder.append("arrowtail=vee dir=both ");
-			}
+
+//			if (edge.getCardinalityTo() > 0) {
+//				edgeBuilder.append("headlabel=0..n ");
+//			}
+//			if (edge.getCardinalityFrom() > 0) {
+//				edgeBuilder.append("taillabel=0..n ");
+//			}
 
 			return edgeBuilder.toString();
 		}

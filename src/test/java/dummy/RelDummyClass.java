@@ -1,5 +1,7 @@
 package dummy;
 
+import java.util.List;
+
 /**
  * A Dummy Class used for testing.
  * <p>
@@ -8,6 +10,7 @@ package dummy;
 public class RelDummyClass {
     public RelOtherDummyClass publicDummy;
     private RelOtherDummyClass privateDummy;
+    private RelOtherDummyClass manyDummies;
 
     public RelDummyClass(RelOtherDummyClass dummy) {
         this.privateDummy = dummy;

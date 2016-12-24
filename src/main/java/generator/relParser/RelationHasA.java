@@ -18,5 +18,20 @@ public class RelationHasA extends Relation {
     public int getCount() {
         return this.count;
     }
+    
+//    public int getCardinalityTo() {
+//        return this.toCardinality;
+//    }
+//
+//    public int getCardinalityFrom() {
+//        return this.fromCardinality;
+//    }
+	// public void setCardinalityTo(int count) {
+	// this.toCardinality = count;
+	// }
+	//
+	// public void setCardinalityFrom(int count) {
+	// this.fromCardinality = count;
+	// }
 
 }

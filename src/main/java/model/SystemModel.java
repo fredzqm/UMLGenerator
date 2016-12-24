@@ -46,8 +46,8 @@ public class SystemModel implements ISystemModel {
     }
 
     @Override
-    public Iterable<Relation> getRelations() {
-        List<Relation> ls = new ArrayList<>();
+    public Iterable<IRelation> getRelations() {
+        List<IRelation> ls = new ArrayList<>();
         for (ClassModel classModel : classList) {
             String className = classModel.getName();
             ClassModel superClass = classModel.getSuperClass();

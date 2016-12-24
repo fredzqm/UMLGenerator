@@ -5,15 +5,13 @@ package generator.relParser;
  *
  * @author zhang
  */
-public abstract class Relation implements IRelation, Comparable<IRelation> {
+public abstract class Relation implements IRelation {
     private final String from;
     private final String to;
-    private boolean isBijective;
 
     public Relation(String from, String to) {
         this.to = to;
         this.from = from;
-        this.isBijective = false;
     }
 
     private static String getKey(IRelation x) {
@@ -24,7 +22,7 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
         else
             return toName + fromName;
     }
-
+    
     @Override
     public String getFrom() {
         return this.from;
@@ -33,15 +31,6 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
     @Override
     public String getTo() {
         return this.to;
-    }
-
-    @Override
-    public boolean isBijective() {
-        return this.isBijective;
-    }
-
-    public void setBijective(boolean status) {
-        this.isBijective = status;
     }
 
     @Override
