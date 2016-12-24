@@ -1,9 +1,14 @@
 package generator.relParser;
 
-public class RelationDecBidir extends RelationDecorator{
+public class RelationDecBidir implements IRelationInfo{
+	private IRelationInfo decorated;
+	
+	public RelationDecBidir(IRelationInfo rel) {
+		this.decorated = rel;
+	}
 
-	public RelationDecBidir(IRelation decorated) {
-		super(decorated);
+	public IRelationInfo getDecorated() {
+		return decorated;
 	}
 	
 }

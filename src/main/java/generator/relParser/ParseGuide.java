@@ -9,16 +9,7 @@ public class ParseGuide extends AbstractParseGuide {
 		map(RelationImplement.class, new GraphVizInterfaceParser());
 		map(RelationHasA.class, new GraphVizHasRelParser());
 		map(RelationDependsOn.class, new GraphVizDependsOnRelParser());
-	}
-
-	public class BidirectionRelParser implements IParseGuide {
-
-		@Override
-		public String getEdgeStyle(IRelation edge) {
-			RelationDecBidir rel = (RelationDecBidir) edge;
-			return ParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee dir=both ";
-		}
-
+		map(RelationBidirHasA.class, new GraphVizBiHasAParser());
 	}
 
 	/**
@@ -29,9 +20,9 @@ public class ParseGuide extends AbstractParseGuide {
 	class GraphVizDependsOnRelParser implements IParseGuide {
 
 		@Override
-		public String getEdgeStyle(IRelation edge) {
-			StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=dashed ");
-			return edgeBuilder.toString();
+		public String getEdgeStyle(IRelationInfo info) {
+			StringBuilder infoBuilder = new StringBuilder("arrowhead=vee style=dashed ");
+			return infoBuilder.toString();
 		}
 
 	}
@@ -44,17 +35,36 @@ public class ParseGuide extends AbstractParseGuide {
 	class GraphVizHasRelParser implements IParseGuide {
 
 		@Override
-		public String getEdgeStyle(IRelation edge) {
-			StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
-
-//			if (edge.getCardinalityTo() > 0) {
-//				edgeBuilder.append("headlabel=0..n ");
+		public String getEdgeStyle(IRelationInfo info) {
+			RelationHasA rel = (RelationHasA) info;
+			StringBuilder infoBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
+//			if (rel.getCount() > 0) {
+//				infoBuilder.append("headlabel=0..n ");
 //			}
-//			if (edge.getCardinalityFrom() > 0) {
-//				edgeBuilder.append("taillabel=0..n ");
-//			}
+			return infoBuilder.toString();
+		}
 
-			return edgeBuilder.toString();
+	}
+
+	public class GraphVizBiHasAParser implements IParseGuide {
+
+		@Override
+		public String getEdgeStyle(IRelationInfo info) {
+			RelationHasA rel = ((RelationBidirHasA) info).getForward();
+			StringBuilder infoBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
+//			if (rel.getCount() > 0) {
+//				infoBuilder.append("headlabel=0..n ");
+//			}
+			return infoBuilder.toString();
+		}
+
+	}
+
+	public class BidirectionRelParser implements IParseGuide {
+		@Override
+		public String getEdgeStyle(IRelationInfo info) {
+			RelationDecBidir rel = (RelationDecBidir) info;
+			return ParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee dir=both ";
 		}
 
 	}
@@ -67,7 +77,7 @@ public class ParseGuide extends AbstractParseGuide {
 	public class GraphVizInterfaceParser implements IParseGuide {
 
 		@Override
-		public String getEdgeStyle(IRelation edge) {
+		public String getEdgeStyle(IRelationInfo info) {
 			return "arrowhead=onormal style=dashed ";
 		}
 
@@ -81,7 +91,7 @@ public class ParseGuide extends AbstractParseGuide {
 	public class GraphVizSuperClassRelParser implements IParseGuide {
 
 		@Override
-		public String getEdgeStyle(IRelation edge) {
+		public String getEdgeStyle(IRelationInfo info) {
 			return "arrowhead=onormal style=\"\" ";
 		}
 

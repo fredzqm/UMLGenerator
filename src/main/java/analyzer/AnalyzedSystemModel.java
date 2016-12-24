@@ -2,58 +2,93 @@ package analyzer;
 
 import generator.ISystemModel;
 import generator.classParser.IClassModel;
-import generator.relParser.IRelation;
+import generator.relParser.RelationBidirHasA;
+import generator.relParser.ClassPair;
+import generator.relParser.IRelationInfo;
 import generator.relParser.Relation;
 import generator.relParser.RelationDecBidir;
+import generator.relParser.RelationDependsOn;
 import generator.relParser.RelationHasA;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 public class AnalyzedSystemModel implements ISystemModel {
-    private ISystemModel systemModel;
+	private ISystemModel systemModel;
 
-    AnalyzedSystemModel(ISystemModel sm) {
-        this.systemModel = sm;
-    }
+	AnalyzedSystemModel(ISystemModel sm) {
+		this.systemModel = sm;
+	}
 
-    @Override
-    public Iterable<? extends IClassModel> getClasses() {
-        return systemModel.getClasses();
-    }
+	@Override
+	public Iterable<? extends IClassModel> getClasses() {
+		return systemModel.getClasses();
+	}
 
-    @Override
-    public Iterable<IRelation> getRelations() {
-        List<IRelation> relations = new ArrayList<>();
-        systemModel.getRelations().forEach(relations::add);
+	@Override
+	public Iterable<Relation> getRelations() {
+		List<Relation> relations = new ArrayList<>();
 
-        Collections.sort(relations);
-        mergeBijectiveRelations(relations);
+		// add every relation into the map
+		Map<ClassPair, List<IRelationInfo>> map = new HashMap<>();
+		systemModel.getRelations().forEach((r) -> {
+			ClassPair pair = r.getClassPair();
+			IRelationInfo info = r.getInfo();
+			if (map.containsKey(pair)) {
+				map.get(pair).add(info);
+			} else {
+				List<IRelationInfo> ls = new LinkedList<>();
+				ls.add(info);
+				map.put(pair, ls);
+			}
+		});
 
-        return relations;
-    }
+		// go through the map merge or remove relation according to rules
+		while (!map.isEmpty()) {
+			ClassPair next = map.keySet().iterator().next();
+			ClassPair reverse = next.reverse();
+			List<IRelationInfo> a = map.get(next);
+			List<IRelationInfo> b = map.getOrDefault(reverse, Collections.EMPTY_LIST);
 
-    private void mergeBijectiveRelations(List<IRelation> relations) {
-    	IRelation current;
-    	IRelation next;
-        for (int i = 0; i < relations.size() - 1; i++) {
-            current = relations.get(i);
-            next = relations.get(i + 1);
+			ListIterator<IRelationInfo> aitr = a.listIterator();
+			while (aitr.hasNext()) {
+				IRelationInfo aRel = aitr.next();
+				ListIterator<IRelationInfo> bitr = b.listIterator();
+				while (bitr.hasNext()) {
+					IRelationInfo bRel = bitr.next();
+					IRelationInfo rel = merge(aRel, bRel);
+					if (rel != null) {
+						aitr.remove();
+						bitr.remove();
+						relations.add(new Relation(next, rel));
+					}
+				}
+			}
+			for (IRelationInfo aRel : a)
+				relations.add(new Relation(next, aRel));
+			for (IRelationInfo bRel : b)
+				relations.add(new Relation(next, bRel));
 
-            // Ensure that current is of the same class before attempting to remove relations.
-            if (current.getClass().equals(next.getClass()) && current.getFrom().equals(next.getTo())) {
-                relations.remove(next);
-                relations.set(i, new RelationDecBidir(current));
+			map.remove(next);
+			map.remove(reverse);
+		}
+		return relations;
+	}
 
-                // Save cardinality information inside current.
-//                if (current instanceof RelationHasA) {
-//                    RelationHasA currentHas = (RelationHasA) current;
-//                    RelationHasA nextHas = (RelationHasA) next;
-//                    current.setCardinalityTo(currentHas.getCount());
-//                    current.setCardinalityFrom(nextHas.getCount());
-//                }
-            }
-        }
-    }
+	private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
+		if (aRel.getClass() == bRel.getClass()) {
+			if (aRel.getClass() == RelationDependsOn.class) {
+				return new RelationDecBidir(aRel);
+			} else if (aRel.getClass() == RelationHasA.class) {
+				return new RelationBidirHasA((RelationHasA) aRel, (RelationHasA) bRel);
+			}
+		}
+		return null;
+	}
+
 }

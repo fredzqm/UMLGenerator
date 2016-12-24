@@ -34,7 +34,7 @@ public abstract class AbstractGenerator implements IGenerator {
 
         // Parse each relationship.
         sm.getRelations().forEach(relation -> {
-            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), parseGuide.getEdgeStyle(relation)));
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), parseGuide.getEdgeStyle(relation.getInfo())));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());

@@ -1,7 +1,8 @@
 package generator;
 
+
 import generator.classParser.IClassModel;
-import generator.relParser.IRelation;
+import generator.relParser.Relation;
 
 /**
  * An Interface for System Models.
@@ -10,15 +11,16 @@ import generator.relParser.IRelation;
  */
 public interface ISystemModel {
 
-    /**
-     * Returns an Iterable of Class Models contained within the System Model.
-     *
-     * @return Iterable of Class Models.
-     */
-    Iterable<? extends IClassModel> getClasses();
+	/**
+	 * Returns an Iterable of Class Models contained within the System Model.
+	 *
+	 * @return Iterable of Class Models.
+	 */
+	Iterable<? extends IClassModel> getClasses();
 
-    /**
-     * @return the list of relationships that should be shown in the graph
-     */
-    Iterable<IRelation> getRelations();
+	/**
+	 * @return the list of relationships that should be shown in the graph
+	 */
+	Iterable<Relation> getRelations();
+
 }
