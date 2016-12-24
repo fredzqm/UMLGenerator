@@ -39,6 +39,7 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 			fieldBuilder.append(fieldParser.parse(this.fieldFilters.filter(fields)));
 		}
 
+		// Only append to main StringBuilder if it is non-empty.
 		if (fieldBuilder.length() > 0) {
 			sb.append(String.format(" | %s", fieldBuilder.toString()));
 		}
@@ -49,7 +50,7 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 			sb.append(String.format(" | %s", methodParser.parse(this.methodFilters.filter(methods))));
 		}
 
-		// generate the full string with the label text generated above.
+		// Generate the full string with the label text generated above.
 		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t]\n", name, sb.toString());
 	}
 
