@@ -44,7 +44,7 @@ public class Display extends JFrame {
 		add(sp, BorderLayout.CENTER);
 	}
 
-	public static void showWindown(IRunnerConfiguration config) {
+	public static void showWindow(IRunnerConfiguration config) {
 		if (!SUPPORT_EXTENSIONS.contains(config.getOutputFormat())) {
 			System.err.print("Currently unsupported image format " + config.getOutputFormat());
 			return;

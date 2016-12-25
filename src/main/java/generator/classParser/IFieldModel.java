@@ -1,4 +1,4 @@
-package generator;
+package generator.classParser;
 
 import utility.Modifier;
 
@@ -27,5 +27,5 @@ public interface IFieldModel {
      *
      * @return Type of the Field.
      */
-    ITypeModel getType();
+    String getTypeName();
 }

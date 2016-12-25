@@ -2,7 +2,7 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IMethodModel;
+import generator.classParser.IMethodModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -11,6 +11,7 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import utility.IMapper;
 import utility.MethodType;
 import utility.Modifier;
 
@@ -51,8 +52,8 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 		this.modifier = Modifier.parse(methodNode.access);
 		this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
 		this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
-		this.returnType = TypeModel.parse(belongsTo, Type.getReturnType(methodNode.desc));
-		this.signature = Signature.parse(belongsTo, methodNode.name, methodNode.desc);
+		this.returnType = TypeModel.parse(Type.getReturnType(methodNode.desc));
+		this.signature = Signature.parse(methodNode.name, methodNode.desc);
 	}
 
 	public ClassModel getBelongTo() {
@@ -89,9 +90,20 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	public List<TypeModel> getArguments() {
 		return signature.getArguments();
 	}
-
+	
+	@Override
+	public Iterable<? extends String> getArgumentTypeNames() {
+		IMapper<TypeModel, String> mapper = TypeModel::getName;
+		return mapper.map(getArguments());
+	}
+	
 	public TypeModel getReturnType() {
 		return returnType;
+	}
+
+	@Override
+	public String getReturnTypeName() {
+		return returnType.getName();
 	}
 
 	@Override
@@ -112,11 +124,11 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 				AbstractInsnNode insn = instructions.get(i);
 				if (insn instanceof MethodInsnNode) {
 					MethodInsnNode methodCall = (MethodInsnNode) insn;
-					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(methodCall.owner));
-					ClassModel destClass = belongsTo.getClassByName(type.getName());
+					TypeModel type = TypeModel.parse(Type.getObjectType(methodCall.owner));
+					ClassModel destClass = ASMParser.getClassByName(type.getName());
 					if (destClass == null)
 						continue;
-					Signature signature = Signature.parse(belongsTo, methodCall.name, methodCall.desc);
+					Signature signature = Signature.parse(methodCall.name, methodCall.desc);
 					MethodModel method = destClass.getMethodBySignature(signature);
 					if (method == null)
 						continue;
@@ -135,8 +147,8 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 				AbstractInsnNode insn = instructions.get(i);
 				if (insn instanceof FieldInsnNode) {
 					FieldInsnNode fiedlCall = (FieldInsnNode) insn;
-					TypeModel type = TypeModel.parse(belongsTo, Type.getObjectType(fiedlCall.owner));
-					ClassModel destClass = belongsTo.getClassByName(type.getName());
+					TypeModel type = TypeModel.parse(Type.getObjectType(fiedlCall.owner));
+					ClassModel destClass = ASMParser.getClassByName(type.getName());
 					if (destClass == null)
 						continue;
 					FieldModel field = destClass.getFieldByName(fiedlCall.name);

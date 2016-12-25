@@ -2,6 +2,7 @@ package generator.classParser;
 
 import generator.*;
 import utility.IFilter;
+import utility.Modifier;
 
 /**
  * Representing a single class in the DOT language.
@@ -14,27 +15,29 @@ public class GraphVizClassParser extends AbstractClassParser {
 
 	@Override
 	public IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config) {
-		return (m) -> true;
+		IFilter<Modifier> modifierFilter = config.getModifierFilters();
+		return (m) -> modifierFilter.filter(m.getModifier());
 	}
 
 	@Override
 	public IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config) {
-		return new GraphVizMethodParser(config.getModifierFilters());
+		return new GraphVizMethodParser();
 	}
 
 	@Override
 	public IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config) {
-		return (f) -> true;
+		IFilter<Modifier> modifierFilter = config.getModifierFilters();
+		return (f) -> modifierFilter.filter(f.getModifier());
 	}
 
 	@Override
 	public IParser<IFieldModel> createFieldParser(IGeneratorConfiguration config) {
-		return new GraphVizFieldParser(config.getModifierFilters());
+		return new GraphVizFieldParser();
 	}
 
 	@Override
 	public IParser<IClassModel> createHeaderParser(IGeneratorConfiguration config) {
-		return new GraphVizHeaderParser(new GraphVizClassTypeParser());
+		return new GraphVizHeaderParser();
 	}
 
 }

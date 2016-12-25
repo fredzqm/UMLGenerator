@@ -1,18 +1,16 @@
 package generator.classParser;
 
-import generator.*;
-import utility.ClassType;
 
 public class GraphVizHeaderParser implements IParser<IClassModel> {
-    private IParser<ClassType> classTypeParser;
-
-    GraphVizHeaderParser(IParser<ClassType> classTypeParser) {
-        this.classTypeParser = classTypeParser;
-    }
 
     @Override
-    public String parse(IClassModel data) {
-        return classTypeParser.parse(data.getType()) + data.getName();
+    public String parse(IClassModel classModel) {
+    	StringBuilder sb = new StringBuilder();
+    	for (String sterotype : classModel.getStereoTypes()) {
+    		sb.append(String.format("\\<\\<%s\\>\\>\\n", sterotype));
+    	}
+    	sb.append(classModel.getName());
+        return sb.toString();
     }
 
 }

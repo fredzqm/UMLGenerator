@@ -1,6 +1,6 @@
-package generator;
+package generator.classParser;
 
-import generator.classParser.IParser;
+import generator.IGeneratorConfiguration;
 import utility.IFilter;
 
 public abstract class AbstractClassParser implements IParser<IClassModel> {
@@ -10,7 +10,7 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 	private final IFilter<IMethodModel> methodFilters;
 	private final IParser<IMethodModel> methodParser;
 
-	public AbstractClassParser(IGeneratorConfiguration config) {
+	AbstractClassParser(IGeneratorConfiguration config) {
 		this.fieldFilters = createFieldFilter(config);
 		this.methodFilters = createFieldMethodFilter(config);
 		this.header = createHeaderParser(config);
@@ -34,8 +34,14 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 
 		// Set the fields.
 		Iterable<? extends IFieldModel> fields = model.getFields();
+		StringBuilder fieldBuilder = new StringBuilder();
 		if (fields.iterator().hasNext()) {
-			sb.append(String.format(" | %s", fieldParser.parse(this.fieldFilters.filter(fields))));
+			fieldBuilder.append(fieldParser.parse(this.fieldFilters.filter(fields)));
+		}
+
+		// Only append to main StringBuilder if it is non-empty.
+		if (fieldBuilder.length() > 0) {
+			sb.append(String.format(" | %s", fieldBuilder.toString()));
 		}
 
 		// Set the methods.
@@ -44,8 +50,8 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 			sb.append(String.format(" | %s", methodParser.parse(this.methodFilters.filter(methods))));
 		}
 
-		// generate the full string with the label text generated above.
-		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t]\n", name, sb.toString());
+		// Generate the full string with the label text generated above.
+		return String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", name, sb.toString());
 	}
 
 	/**

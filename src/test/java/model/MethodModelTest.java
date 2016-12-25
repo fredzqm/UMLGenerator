@@ -19,12 +19,11 @@ public class MethodModelTest {
 
 	@Test
 	public void testGetDependentMethods() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel dummy = parser.getClassByName("dummy.Dummy");
+		ClassModel dummy = ASMParser.getClassByName("dummy.Dummy");
 
 		assertEquals("dummy.Dummy", dummy.getName());
 
-		MethodModel methodModel = dummy.getMethodBySignature(Signature.parse(parser, "publicMethod", "()LString"));
+		MethodModel methodModel = dummy.getMethodBySignature(Signature.parse("publicMethod", "()LString"));
 
 		assertTrue(methodModel != null);
 		
@@ -40,8 +39,7 @@ public class MethodModelTest {
 
 	@Test
 	public void testGetDependentFields() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel dummy = parser.getClassByName("dummy.Dummy");
+		ClassModel dummy = ASMParser.getClassByName("dummy.Dummy");
 
 		IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
 				&& d.getMethodType() == MethodType.METHOD;

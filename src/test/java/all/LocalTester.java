@@ -1,5 +1,7 @@
 package all;
 
+import analyzer.Analyzer;
+import analyzer.IAnalyzer;
 import config.Configuration;
 import dummy.RelDummyClass;
 import generator.GraphVizGenerator;
@@ -28,6 +30,7 @@ public class LocalTester {
 		List<String> classList = new ArrayList<>();
 //		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
 		classList.add(RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName());
+//        classList.add("java.lang.String");
 		config.setClasses(classList);
 		config.setRecursive(true);
 		return SystemModel.getInstance(config);
@@ -50,8 +53,10 @@ public class LocalTester {
         config.setOutputFormat("png");
 
         IGenerator generator = new GraphVizGenerator(config);
+        IAnalyzer analyzer = new Analyzer();
+        systemModel = analyzer.analyze(systemModel);
 
-		String actual = generator.generate(systemModel, null);
+		String actual = generator.generate(systemModel);
 
 		internalRunner(config, actual);
 	}
@@ -64,9 +69,9 @@ public class LocalTester {
      */
     private static void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
-        IRunner runner = new GraphVizRunner();
+        IRunner runner = new GraphVizRunner(config);
         try {
-            runner.execute(config, graphVizString);
+            runner.execute(graphVizString);
         } catch (Exception e) {
             System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             e.printStackTrace();

@@ -1,42 +1,33 @@
 import config.Configuration;
-import display.Display;
 import generator.GraphVizGenerator;
-import generator.IGenerator;
+import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
-import runner.IRunner;
 
-import java.io.IOException;
+import analyzer.Analyzer;
+import analyzer.IAnalyzer;
 
-public class UMLEngine implements Runnable {
-    private Configuration config;
+public class UMLEngine extends AbstractUMLEngine {
+	private Configuration config;
 
-    public UMLEngine(Configuration configuration) {
-        config = configuration;
-    }
+	public UMLEngine(Configuration configuration) {
+		config = configuration;
+	}
 
-    @Override
-    public void run() {
-        // get the system model
-        SystemModel systemModel = SystemModel.getInstance(config);
+	public ISystemModel createSystemModel() {
+		return SystemModel.getInstance(config);
+	}
 
-        // analyze
+	public IAnalyzer createAnalyzer() {
+		return new Analyzer();
+	}
 
-        // generate
-        IGenerator generator = new GraphVizGenerator(config);
-        String graphVisStr = generator.generate(systemModel, null);
+	public GraphVizGenerator createGenerator() {
+		return new GraphVizGenerator(config);
+	}
 
-        // run graphviz to generate the image
-        IRunner runner = new GraphVizRunner();
-        try {
-            runner.execute(config, graphVisStr);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Display a small window
-        Display.showWindown(config);
-
-    }
+	public GraphVizRunner createRunner() {
+		return new GraphVizRunner(config);
+	}
 
 }

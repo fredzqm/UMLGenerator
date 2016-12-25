@@ -17,8 +17,7 @@ public class ClassModelTest {
 
 	@Test
 	public void testGetField() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ClassModel model = ASMParser.getClassByName("java.lang.String");
 		assertEquals("java.lang.String", model.getName());
 
 		Set<String> fields = new HashSet<>();
@@ -32,8 +31,7 @@ public class ClassModelTest {
 
 	@Test
 	public void testGetMethods() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("dummy.Dummy");
+		ClassModel model = ASMParser.getClassByName("dummy.Dummy");
 
 		Set<String> actual = new HashSet<>();
 		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
@@ -47,8 +45,7 @@ public class ClassModelTest {
 
 	@Test
 	public void testGetInterface() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ClassModel model = ASMParser.getClassByName("java.lang.String");
 		assertEquals("java.lang.String", model.getName());
 
 		Set<String> acutalInterfaces = new HashSet<>();
@@ -64,38 +61,10 @@ public class ClassModelTest {
 	}
 
 	@Test
-	public void testGetStringInterfaceNonRecursive() {
-		ASMClassTracker parser = ASMParser.getInstance(new IModelConfiguration() {
-			@Override
-			public boolean isRecursive() {
-				return false;
-			}
-
-			@Override
-			public Iterable<String> getClasses() {
-				return Arrays.asList("java.lang.String", "java/io/Serializable", "java/lang/Comparable");
-			}
-		});
-		ClassModel model = parser.getClassByName("java/lang/String");
-		assertEquals("java.lang.String", model.getName());
-
-		Set<String> acutalInterfaces = new HashSet<>();
-		Set<String> expectInterfaces = new HashSet<>();
-
-		expectInterfaces.add("java.io.Serializable");
-		expectInterfaces.add("java.lang.Comparable");
-
-		model.getInterfaces().forEach((interfaceModel) -> acutalInterfaces.add(interfaceModel.getName()));
-
-		assertEquals(expectInterfaces, acutalInterfaces);
-	}
-
-	@Test
 	public void testGetInterfaceLab_1_AmazonParser() {
-		ASMServiceProvider parser = new ASMParser();
 		String amazonQualifiedString = AmazonLineParser.class.getPackage().getName() + "."
 				+ AmazonLineParser.class.getSimpleName();
-		ClassModel model = parser.getClassByName(amazonQualifiedString);
+		ClassModel model = ASMParser.getClassByName(amazonQualifiedString);
 		assertEquals(amazonQualifiedString, model.getName());
 
 		Set<String> acutalInterfaces = new HashSet<>();

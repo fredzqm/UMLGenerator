@@ -2,7 +2,7 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IClassModel;
+import generator.classParser.IClassModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -25,8 +25,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
-	private final ASMServiceProvider asmServiceProvider;
+class ClassModel implements IVisitable<ClassModel>, IClassModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -49,8 +48,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 	 * @param asmClassNode
 	 * @param important
 	 */
-	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode) {
-		this.asmServiceProvider = asmServiceProvider;
+	public ClassModel(ClassNode asmClassNode) {
 		this.asmClassNode = asmClassNode;
 		this.modifier = Modifier.parse(asmClassNode.access);
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
@@ -60,7 +58,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
-			superClass = getClassByName(asmClassNode.superName);
+			superClass = ASMParser.getClassByName(asmClassNode.superName);
 		return superClass;
 	}
 
@@ -70,6 +68,25 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	public ClassType getType() {
 		return classType;
+	}
+
+	@Override
+	public List<String> getStereoTypes() {
+		List<String> ls = new ArrayList<>();
+		switch (getType()) {
+		case INTERFACE:
+			ls.add("Interface");
+			break;
+		case CONCRETE:
+			break;
+		case ABSTRACT:
+			ls.add("Abstract");
+			break;
+		case ENUM:
+			ls.add("Enumeration");
+			break;
+		}
+		return ls;
 	}
 
 	public Modifier getModifier() {
@@ -82,7 +99,7 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 			@SuppressWarnings("unchecked")
 			List<String> ls = asmClassNode.interfaces;
 			for (String s : ls) {
-				ClassModel m = getClassByName(s);
+				ClassModel m = ASMParser.getClassByName(s);
 				if (m != null)
 					interfaces.add(m);
 			}
@@ -90,7 +107,6 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 		return interfaces;
 	}
 
-	@Override
 	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
 			hasARel = new HashMap<>();
@@ -108,7 +124,6 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 		return hasARel;
 	}
 
-	@Override
 	public Collection<ClassModel> getDependsRelation() {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();
@@ -177,10 +192,6 @@ class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassMo
 
 	public boolean isFinal() {
 		return isFinal;
-	}
-
-	public ClassModel getClassByName(String name) {
-		return asmServiceProvider.getClassByName(name);
 	}
 
 	@Override
