@@ -3,7 +3,6 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
-
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -26,182 +25,182 @@ import java.util.*;
  * @author zhang
  */
 class ClassModel implements IVisitable<ClassModel>, IClassModel {
-	private final ClassNode asmClassNode;
+    private final ClassNode asmClassNode;
 
-	private final Modifier modifier;
-	private final boolean isFinal;
-	private final ClassType classType;
-	private final String name;
+    private final Modifier modifier;
+    private final boolean isFinal;
+    private final ClassType classType;
+    private final String name;
 
-	private ClassModel superClass;
-	private Collection<ClassModel> interfaces;
+    private ClassModel superClass;
+    private Collection<ClassModel> interfaces;
 
-	private Map<String, FieldModel> fields;
-	private Map<Signature, MethodModel> methods;
-	private Map<ClassModel, Integer> hasARel;
-	private Collection<ClassModel> dependsOn;
+    private Map<String, FieldModel> fields;
+    private Map<Signature, MethodModel> methods;
+    private Map<ClassModel, Integer> hasARel;
+    private Collection<ClassModel> dependsOn;
 
-	/**
-	 * Creates an ClassModel and assign its basic properties.
-	 *
-	 * @param asmServiceProvider
-	 * @param asmClassNode
-	 * @param important
-	 */
-	public ClassModel(ClassNode asmClassNode) {
-		this.asmClassNode = asmClassNode;
-		this.modifier = Modifier.parse(asmClassNode.access);
-		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
-		this.classType = ClassType.parse(asmClassNode.access);
-		this.name = Type.getObjectType(asmClassNode.name).getClassName();
-	}
+    /**
+     * Creates an ClassModel and assign its basic properties.
+     *
+     * @param asmServiceProvider
+     * @param asmClassNode
+     * @param important
+     */
+    public ClassModel(ClassNode asmClassNode) {
+        this.asmClassNode = asmClassNode;
+        this.modifier = Modifier.parse(asmClassNode.access);
+        this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
+        this.classType = ClassType.parse(asmClassNode.access);
+        this.name = Type.getObjectType(asmClassNode.name).getClassName();
+    }
 
-	public ClassModel getSuperClass() {
-		if (superClass == null && asmClassNode.superName != null)
-			superClass = ASMParser.getClassByName(asmClassNode.superName);
-		return superClass;
-	}
+    public ClassModel getSuperClass() {
+        if (superClass == null && asmClassNode.superName != null)
+            superClass = ASMParser.getClassByName(asmClassNode.superName);
+        return superClass;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public ClassType getType() {
-		return classType;
-	}
+    public ClassType getType() {
+        return classType;
+    }
 
-	@Override
-	public List<String> getStereoTypes() {
-		List<String> ls = new ArrayList<>();
-		switch (getType()) {
-		case INTERFACE:
-			ls.add("Interface");
-			break;
-		case CONCRETE:
-			break;
-		case ABSTRACT:
-			ls.add("Abstract");
-			break;
-		case ENUM:
-			ls.add("Enumeration");
-			break;
-		}
-		return ls;
-	}
+    @Override
+    public List<String> getStereoTypes() {
+        List<String> ls = new ArrayList<>();
+        switch (getType()) {
+            case INTERFACE:
+                ls.add("Interface");
+                break;
+            case CONCRETE:
+                break;
+            case ABSTRACT:
+                ls.add("Abstract");
+                break;
+            case ENUM:
+                ls.add("Enumeration");
+                break;
+        }
+        return ls;
+    }
 
-	public Modifier getModifier() {
-		return modifier;
-	}
+    public Modifier getModifier() {
+        return modifier;
+    }
 
-	public Iterable<ClassModel> getInterfaces() {
-		if (interfaces == null) {
-			interfaces = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			List<String> ls = asmClassNode.interfaces;
-			for (String s : ls) {
-				ClassModel m = ASMParser.getClassByName(s);
-				if (m != null)
-					interfaces.add(m);
-			}
-		}
-		return interfaces;
-	}
+    public Iterable<ClassModel> getInterfaces() {
+        if (interfaces == null) {
+            interfaces = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            List<String> ls = asmClassNode.interfaces;
+            for (String s : ls) {
+                ClassModel m = ASMParser.getClassByName(s);
+                if (m != null)
+                    interfaces.add(m);
+            }
+        }
+        return interfaces;
+    }
 
-	public Map<ClassModel, Integer> getHasRelation() {
-		if (hasARel == null) {
-			hasARel = new HashMap<>();
-			for (FieldModel field : getFields()) {
-				ClassModel hasClass = field.getType().getClassModel();
-				if (hasClass != null) {
-					if (hasARel.containsKey(hasClass)) {
-						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
-					} else {
-						hasARel.put(hasClass, 1);
-					}
-				}
-			}
-		}
-		return hasARel;
-	}
+    public Map<ClassModel, Integer> getHasRelation() {
+        if (hasARel == null) {
+            hasARel = new HashMap<>();
+            for (FieldModel field : getFields()) {
+                ClassModel hasClass = field.getType().getClassModel();
+                if (hasClass != null) {
+                    if (hasARel.containsKey(hasClass)) {
+                        hasARel.put(hasClass, hasARel.get(hasClass) + 1);
+                    } else {
+                        hasARel.put(hasClass, 1);
+                    }
+                }
+            }
+        }
+        return hasARel;
+    }
 
-	public Collection<ClassModel> getDependsRelation() {
-		if (dependsOn == null) {
-			dependsOn = new HashSet<>();
-			for (MethodModel method : getMethods()) {
-				dependsOn.addAll(method.addDependsClasses());
-			}
-			dependsOn.removeAll(getHasRelation().keySet());
-			dependsOn.remove(this);
-			if (getSuperClass() != null)
-				dependsOn.remove(getSuperClass());
-			getInterfaces().forEach((i) -> dependsOn.remove(i));
-		}
-		return dependsOn;
-	}
+    public Collection<ClassModel> getDependsRelation() {
+        if (dependsOn == null) {
+            dependsOn = new HashSet<>();
+            for (MethodModel method : getMethods()) {
+                dependsOn.addAll(method.addDependsClasses());
+            }
+            dependsOn.removeAll(getHasRelation().keySet());
+            dependsOn.remove(this);
+            if (getSuperClass() != null)
+                dependsOn.remove(getSuperClass());
+            getInterfaces().forEach((i) -> dependsOn.remove(i));
+        }
+        return dependsOn;
+    }
 
-	public Iterable<MethodModel> getMethods() {
-		return getMethodsMap().values();
-	}
+    public Iterable<MethodModel> getMethods() {
+        return getMethodsMap().values();
+    }
 
-	public MethodModel getMethodBySignature(Signature signature) {
-		if (getMethodsMap().containsKey(signature))
-			return getMethodsMap().get(signature);
-		if (getSuperClass() != null)
-			getSuperClass().getMethodBySignature(signature);
-		return null;
-	}
+    public MethodModel getMethodBySignature(Signature signature) {
+        if (getMethodsMap().containsKey(signature))
+            return getMethodsMap().get(signature);
+        if (getSuperClass() != null)
+            getSuperClass().getMethodBySignature(signature);
+        return null;
+    }
 
-	private Map<Signature, MethodModel> getMethodsMap() {
-		if (methods == null) {
-			methods = new HashMap<>();
-			@SuppressWarnings("unchecked")
-			List<MethodNode> ls = asmClassNode.methods;
-			for (MethodNode methodNode : ls) {
-				MethodModel methodModel = new MethodModel(this, methodNode);
-				Signature signature = methodModel.getSignature();
-				methods.put(signature, methodModel);
-			}
-		}
-		return methods;
-	}
+    private Map<Signature, MethodModel> getMethodsMap() {
+        if (methods == null) {
+            methods = new HashMap<>();
+            @SuppressWarnings("unchecked")
+            List<MethodNode> ls = asmClassNode.methods;
+            for (MethodNode methodNode : ls) {
+                MethodModel methodModel = new MethodModel(this, methodNode);
+                Signature signature = methodModel.getSignature();
+                methods.put(signature, methodModel);
+            }
+        }
+        return methods;
+    }
 
-	public Iterable<FieldModel> getFields() {
-		return getFieldMap().values();
-	}
+    public Iterable<FieldModel> getFields() {
+        return getFieldMap().values();
+    }
 
-	private Map<String, FieldModel> getFieldMap() {
-		if (fields == null) {
-			fields = new HashMap<>();
-			@SuppressWarnings("unchecked")
-			List<FieldNode> ls = asmClassNode.fields;
-			for (FieldNode fieldNode : ls) {
-				FieldModel fieldModel = new FieldModel(this, fieldNode);
-				fields.put(fieldModel.getName(), fieldModel);
-			}
-		}
-		return fields;
-	}
+    private Map<String, FieldModel> getFieldMap() {
+        if (fields == null) {
+            fields = new HashMap<>();
+            @SuppressWarnings("unchecked")
+            List<FieldNode> ls = asmClassNode.fields;
+            for (FieldNode fieldNode : ls) {
+                FieldModel fieldModel = new FieldModel(this, fieldNode);
+                fields.put(fieldModel.getName(), fieldModel);
+            }
+        }
+        return fields;
+    }
 
-	public FieldModel getFieldByName(String name) {
-		if (getFieldMap().containsKey(name))
-			return getFieldMap().get(name);
-		if (getSuperClass() != null)
-			return getSuperClass().getFieldByName(name);
-		return null;
-	}
+    public FieldModel getFieldByName(String name) {
+        if (getFieldMap().containsKey(name))
+            return getFieldMap().get(name);
+        if (getSuperClass() != null)
+            return getSuperClass().getFieldByName(name);
+        return null;
+    }
 
-	public boolean isFinal() {
-		return isFinal;
-	}
+    public boolean isFinal() {
+        return isFinal;
+    }
 
-	@Override
-	public String toString() {
-		return getName();
-	}
+    @Override
+    public String toString() {
+        return getName();
+    }
 
-	@Override
-	public void visit(IVisitor<ClassModel> IVisitor) {
-		IVisitor.visit(this);
-	}
+    @Override
+    public void visit(IVisitor<ClassModel> IVisitor) {
+        IVisitor.visit(this);
+    }
 
 }

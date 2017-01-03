@@ -21,24 +21,24 @@ import java.util.List;
  * Created by lamd on 12/15/2016.
  */
 public class LocalTester {
-	public static void main(String[] args) {
-		localTester();
-	}
+    public static void main(String[] args) {
+        localTester();
+    }
 
-	private static ISystemModel setupSystemModel() {
-		Configuration config = Configuration.getInstance();
-		List<String> classList = new ArrayList<>();
+    private static ISystemModel setupSystemModel() {
+        Configuration config = Configuration.getInstance();
+        List<String> classList = new ArrayList<>();
 //		classList.add(GraphVizGenerator.class.getPackage().getName() + "." + GraphVizGenerator.class.getSimpleName());
-		classList.add(RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName());
+        classList.add(RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName());
 //        classList.add("java.lang.String");
-		config.setClasses(classList);
-		config.setRecursive(true);
-		return SystemModel.getInstance(config);
-	}
+        config.setClasses(classList);
+        config.setRecursive(true);
+        return SystemModel.getInstance(config);
+    }
 
-	private static void localTester() {
-		// Set up the system model and config.
-		ISystemModel systemModel = setupSystemModel();
+    private static void localTester() {
+        // Set up the system model and config.
+        ISystemModel systemModel = setupSystemModel();
 
         // Set up config.
         Configuration config = Configuration.getInstance();
@@ -56,10 +56,10 @@ public class LocalTester {
         IAnalyzer analyzer = new Analyzer();
         systemModel = analyzer.analyze(systemModel);
 
-		String actual = generator.generate(systemModel);
+        String actual = generator.generate(systemModel);
 
-		internalRunner(config, actual);
-	}
+        internalRunner(config, actual);
+    }
 
     /**
      * Interal Testing Runner method to call for actual output.

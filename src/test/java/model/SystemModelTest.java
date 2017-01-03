@@ -1,8 +1,7 @@
 package model;
 
-import org.junit.Test;
-
 import generator.classParser.IClassModel;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +35,7 @@ public class SystemModelTest {
         for (IClassModel x : sys.getClasses())
             actual.add(x.getName());
 
-		assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
+        assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
     }
 
 }

@@ -1,13 +1,15 @@
 package dummy;
 
+import java.util.List;
+
 /**
  * A Dummy Class used for testing.
  * <p>
  * Created by lamd on 12/12/2016.
  */
 public class RelDummyClass {
-    private RelOtherDummyClass privateDummy;
     public RelOtherDummyClass publicDummy;
+    private RelOtherDummyClass privateDummy;
 
     public RelDummyClass(RelOtherDummyClass dummy) {
         this.privateDummy = dummy;

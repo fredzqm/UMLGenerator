@@ -11,16 +11,16 @@ import generator.relParser.Relation;
  */
 public interface ISystemModel {
 
-    /**
-     * Returns an Iterable of Class Models contained within the System Model.
-     *
-     * @return Iterable of Class Models.
-     */
-    Iterable<? extends IClassModel> getClasses();
+	/**
+	 * Returns an Iterable of Class Models contained within the System Model.
+	 *
+	 * @return Iterable of Class Models.
+	 */
+	Iterable<? extends IClassModel> getClasses();
 
-    /**
-     * 
-     * @return the list of relationships that should be shown in the graph
-     */
-    Iterable<Relation> getRelations();
+	/**
+	 * @return the list of relationships that should be shown in the graph
+	 */
+	Iterable<Relation> getRelations();
+
 }

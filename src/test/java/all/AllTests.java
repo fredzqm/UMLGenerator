@@ -2,11 +2,7 @@ package all;
 
 import config.CommandLineParserTest;
 import generator.GraphVizGeneratorSystemTest;
-import model.ASMParserTest;
-import model.ClassModelRelationshipTest;
-import model.ClassModelTest;
-import model.MethodModelTest;
-import model.SystemModelTest;
+import model.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import utility.IFilterTest;
