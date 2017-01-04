@@ -1,9 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.objectweb.asm.Type;
+
 
 /**
  * A factory method utility for type model
@@ -119,9 +121,13 @@ class TypeParser {
 	 *            of a class or a method
 	 * @return the list of generic parameter this class or method needs
 	 */
-	static List<GenericTypeModel> parseGenericTypeList(String signature) {
-		List<GenericTypeModel> ls = new ArrayList<>();
-		if (signature != null && signature.length() >= 1 && signature.charAt(0) == '<') {
+	public static ClassSignatureParseResult parseClassSignature(String signature) {
+		List<GenericTypeModel> genericList;
+		List<ClassTypeModel> superTypes = null;
+		if (signature.charAt(0) != '<') {
+			genericList = Collections.EMPTY_LIST;
+		} else {
+			genericList = new ArrayList<>();
 			int count = 1, i = 1, j = 1;
 			while (count != 0) {
 				switch (signature.charAt(j)) {
@@ -133,7 +139,7 @@ class TypeParser {
 					break;
 				case ';':
 					if (count == 1) {
-						ls.add(TypeParser.parseGenericType(signature.substring(i, j)));
+						genericList.add(TypeParser.parseGenericType(signature.substring(i, j)));
 						i = j + 1;
 					}
 					break;
@@ -143,7 +149,26 @@ class TypeParser {
 				j++;
 			}
 		}
-		return ls;
+		return new ClassSignatureParseResult(genericList, superTypes);
+
+	}
+
+	public static class ClassSignatureParseResult {
+		private List<GenericTypeModel> genericList;
+		private List<ClassTypeModel> superTypes;
+
+		public ClassSignatureParseResult(List<GenericTypeModel> genericList, List<ClassTypeModel> superTypes) {
+			this.genericList = genericList;
+			this.superTypes = superTypes;
+		}
+
+		public List<GenericTypeModel> getGenericList() {
+			return genericList;
+		}
+
+		public List<ClassTypeModel> getSuperTypes() {
+			return superTypes;
+		}
 	}
 
 }

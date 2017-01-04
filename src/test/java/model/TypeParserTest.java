@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import model.TypeParser.ClassSignatureParseResult;
+
 public class TypeParserTest {
 
 	@Test
@@ -74,22 +76,29 @@ public class TypeParserTest {
 	}
 
 	@Test
-	public void testParseGenericList1() {
+	public void testParseClassSignature1() {
 		String genericDummy = "<L::Ljava/util/EventListener;>Ljava/lang/Object;";
 
-		List<GenericTypeModel> gls = TypeParser.parseGenericTypeList(genericDummy);
+		ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
+		// generated List
+		List<GenericTypeModel> gls = rs.getGenericList();
 		assertEquals(1, gls.size());
 		GenericTypeModel gene = gls.get(0);
 		assertEquals("L", gene.getName());
 		assertEquals(ASMParser.getClassByName("java.util.EventListener"), gene.getClassModel());
 		assertNull(gene.getUpperBound());
+		
+		// super type list
+		List<ClassTypeModel> spls = rs.getSuperTypes();
 	}
 
 	@Test
-	public void testParseGenericListNested() {
+	public void testParseClassSignatureNested() {
 		String genericDummy = "<E::Ljava/lang/Comparable<TE;>;>Ljava/lang/Object;Ljava/lang/Iterable<TE;>;";
 
-		List<GenericTypeModel> gls = TypeParser.parseGenericTypeList(genericDummy);
+		ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
+		// generated List
+		List<GenericTypeModel> gls = rs.getGenericList();
 		assertEquals(1, gls.size());
 		GenericTypeModel e = gls.get(0);
 		assertEquals("E", e.getName());
@@ -104,6 +113,9 @@ public class TypeParserTest {
 		ClassTypeModel ce = ls.get(0);
 		assertEquals(GenericTypePlaceHolder.class, ce.getClass());
 		assertEquals("E", ce.getName());
+		
+		// super type list
+		List<ClassTypeModel> spls = rs.getSuperTypes();
 	}
 
 }

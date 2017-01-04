@@ -3,6 +3,7 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -39,6 +40,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
+
 	private Map<ClassModel, Integer> hasARel;
 	private Collection<ClassModel> dependsOn;
 
@@ -55,9 +57,9 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
 		this.classType = ClassType.parse(asmClassNode.access);
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
-		if (asmClassNode.signature != null) {
-			System.out.println(asmClassNode.signature);
-		}
+		// if (asmClassNode.signature != null) {
+		// System.out.println(asmClassNode.signature);
+		// }
 	}
 
 	public String getName() {
@@ -87,29 +89,52 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 
 	public List<GenericTypeModel> getGenericList() {
 		if (genericList == null) {
-			genericList = TypeParser.parseGenericTypeList(asmClassNode.signature);
+			getSuperTypes();
 		}
 		return genericList;
 	}
 
 	public List<ClassTypeModel> getSuperTypes() {
 		if (superTypes == null) {
-			superTypes = new ArrayList<>();
-			// add super class
-			if (asmClassNode.superName == null) {
-				superTypes.add(null);
+			if (asmClassNode.signature == null) {
+				genericList = Collections.EMPTY_LIST;
+				superTypes = new ArrayList<>();
+				// add super class
+				if (asmClassNode.superName == null) {
+					superTypes.add(null);
+				} else {
+					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+					superTypes.add(superClass);
+				}
+				// add interfaces
+				List<String> ls = asmClassNode.interfaces;
+				for (String s : ls) {
+					ClassTypeModel m = ASMParser.getClassByName(s);
+					if (m != null)
+						superTypes.add(m);
+				}
 			} else {
-				ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
-				superTypes.add(superClass);
+				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
+				genericList = rs.getGenericList();
+				superTypes = rs.getSuperTypes();
+				
+				// TOBE remoeved
+				superTypes = new ArrayList<>();
+				// add super class
+				if (asmClassNode.superName == null) {
+					superTypes.add(null);
+				} else {
+					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+					superTypes.add(superClass);
+				}
+				// add interfaces
+				List<String> ls = asmClassNode.interfaces;
+				for (String s : ls) {
+					ClassTypeModel m = ASMParser.getClassByName(s);
+					if (m != null)
+						superTypes.add(m);
+				}
 			}
-			// add interfaces
-			List<String> ls = asmClassNode.interfaces;
-			for (String s : ls) {
-				ClassTypeModel m = ASMParser.getClassByName(s);
-				if (m != null)
-					superTypes.add(m);
-			}
-
 		}
 		return superTypes;
 	}
