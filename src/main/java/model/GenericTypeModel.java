@@ -7,22 +7,22 @@ package model;
  * @author zhang
  *
  */
-class GenericTypeModel implements ClazzTypeModel {
-	private final ClazzTypeModel lowerBound;
-	private final ClazzTypeModel upperBound;
+class GenericTypeModel implements ClassTypeModel {
+	private final ClassTypeModel lowerBound;
+	private final ClassTypeModel upperBound;
 	private final String key;
 
-	GenericTypeModel(ClazzTypeModel lowerBound, ClazzTypeModel upperBound, String name) {
+	GenericTypeModel(ClassTypeModel lowerBound, ClassTypeModel upperBound, String name) {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		this.key = name;
 	}
 
-	public ClazzTypeModel getLowerBound() {
+	public ClassTypeModel getLowerBound() {
 		return lowerBound;
 	}
 
-	public ClazzTypeModel getUpperBound() {
+	public ClassTypeModel getUpperBound() {
 		return upperBound;
 	}
 
@@ -37,7 +37,7 @@ class GenericTypeModel implements ClazzTypeModel {
 	}
 
 	static GenericTypeModel getWildType(String name) {
-		return new GenericTypeModel(ClassTypeModel.getObject(), null, name);
+		return new GenericTypeModel(ConcreteClassTypeModel.getObject(), null, name);
 	}
 
 	static GenericTypeModel getLowerBounded(ClassTypeModel classTypeModel, String name) {
@@ -45,7 +45,7 @@ class GenericTypeModel implements ClazzTypeModel {
 	}
 
 	static GenericTypeModel getUpperBounded(ClassTypeModel upperBound, String name) {
-		return new GenericTypeModel(ClassTypeModel.getObject(), upperBound, name);
+		return new GenericTypeModel(ConcreteClassTypeModel.getObject(), upperBound, name);
 	}
 
 }

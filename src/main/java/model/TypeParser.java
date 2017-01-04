@@ -29,7 +29,7 @@ class TypeParser {
 			return new ArrayTypeModel(parse(type), dimension);
 		case Type.OBJECT:
 			ClassModel classModel = ASMParser.getClassByName(type.getClassName());
-			return new ClassTypeModel(classModel, Collections.EMPTY_LIST);
+			return new ConcreteClassTypeModel(classModel, Collections.EMPTY_LIST);
 		case Type.VOID:
 			return PrimitiveType.VOID;
 		case Type.INT:
@@ -59,8 +59,8 @@ class TypeParser {
 	 * @param classModel
 	 * @return
 	 */
-	static ClassTypeModel getType(ClassModel classModel) {
-		return new ClassTypeModel(classModel, Collections.EMPTY_LIST);
+	static ConcreteClassTypeModel getType(ClassModel classModel) {
+		return new ConcreteClassTypeModel(classModel, Collections.EMPTY_LIST);
 	}
 
 	/**
@@ -69,8 +69,8 @@ class TypeParser {
 	 * @param classModel
 	 * @return
 	 */
-	static ClassTypeModel getGenericType(ClassModel classModel, List<ClassTypeModel> genericList) {
-		return new ClassTypeModel(classModel, genericList);
+	static ConcreteClassTypeModel getGenericType(ClassModel classModel, List<ConcreteClassTypeModel> genericList) {
+		return new ConcreteClassTypeModel(classModel, genericList);
 	}
 
 	/**
@@ -87,18 +87,28 @@ class TypeParser {
 
 	/**
 	 * 
+	 * @param internalName
+	 *            the internal name representing a type of a class
+	 * @return the corresponding class type model
+	 */
+	static ClassTypeModel parseClassTypeModel(String internalName) {
+		ClassModel bound = ASMParser.getClassByName(internalName.substring(1));
+		ConcreteClassTypeModel type = TypeParser.getType(bound);
+		return type;
+	}
+
+	/**
+	 * 
 	 * @param arg
 	 *            the argument description string found in class or method's
 	 *            signature
 	 * @return the generic type model representing this
 	 */
 	static GenericTypeModel parseGenericType(String arg) {
-		// E:Ljava/lang/Object
 		String[] sp = arg.split(":");
 		String key = sp[0];
-		// has a lower bound
-		ClassModel bound = ASMParser.getClassByName(sp[sp.length - 1].substring(1));
-		return GenericTypeModel.getLowerBounded(TypeParser.getType(bound), key);
+		ClassTypeModel type = parseClassTypeModel(sp[sp.length - 1]);
+		return GenericTypeModel.getLowerBounded(type, key);
 	}
 
 	/**
