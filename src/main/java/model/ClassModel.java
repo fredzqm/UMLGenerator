@@ -34,8 +34,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 	private final ClassType classType;
 	private final String name;
 
-	private ClassTypeModel superClass;
-	private Collection<ClassTypeModel> interfaces;
+	private List<ClassTypeModel> superTypes;
 	private List<GenericTypeModel> genericList;
 
 	private Map<String, FieldModel> fields;
@@ -93,28 +92,39 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 		return genericList;
 	}
 
-	public ClassModel getSuperClass() {
-		if (superClass == null) {
-			if (this == ASMParser.getObject())
-				return null;
-			superClass = ASMParser.getClassByName(asmClassNode.superName);
+	public List<ClassTypeModel> getSuperTypes() {
+		if (superTypes == null) {
+			superTypes = new ArrayList<>();
+			// add super class
+			if (asmClassNode.superName == null) {
+				superTypes.add(null);
+			} else {
+				ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+				superTypes.add(superClass);
+			}
+			// add interfaces
+			List<String> ls = asmClassNode.interfaces;
+			for (String s : ls) {
+				ClassTypeModel m = ASMParser.getClassByName(s);
+				if (m != null)
+					superTypes.add(m);
+			}
+
 		}
-		return superClass.getClassModel();
+		return superTypes;
+	}
+
+	public ClassModel getSuperClass() {
+		List<ClassTypeModel> ls = getSuperTypes();
+		if (ls.get(0) == null)
+			return null;
+		return ls.get(0).getClassModel();
 	}
 
 	public Iterable<ClassModel> getInterfaces() {
-		if (interfaces == null) {
-			interfaces = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			List<String> ls = asmClassNode.interfaces;
-			for (String s : ls) {
-				ClassModel m = ASMParser.getClassByName(s);
-				if (m != null)
-					interfaces.add(m);
-			}
-		}
+		List<ClassTypeModel> ls = getSuperTypes();
 		IMapper<ClassTypeModel, ClassModel> map = (c) -> c.getClassModel();
-		return map.map(interfaces);
+		return map.map(ls.subList(1, ls.size()));
 	}
 
 	@Override
