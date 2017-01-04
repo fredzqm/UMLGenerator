@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -90,6 +91,7 @@ public class TypeParserTest {
 		
 		// super type list
 		List<ClassTypeModel> spls = rs.getSuperTypes();
+		assertEquals(spls, Arrays.asList(new ClassTypeModel[]{ASMParser.getObject()}));
 	}
 
 	@Test
@@ -100,22 +102,32 @@ public class TypeParserTest {
 		// generated List
 		List<GenericTypeModel> gls = rs.getGenericList();
 		assertEquals(1, gls.size());
-		GenericTypeModel e = gls.get(0);
-		assertEquals("E", e.getName());
-		assertNull(e.getUpperBound());
+		GenericTypeModel te1 = gls.get(0);
+		assertEquals("E", te1.getName());
+		assertNull(te1.getUpperBound());
 		
-		ClassTypeModel c = e.getLowerBound();
-		assertEquals(ParametizedClassModel.class, c.getClass());
-		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), c.getClassModel());
+		ClassTypeModel comp = te1.getLowerBound();
+		assertEquals(ParametizedClassModel.class, comp.getClass());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), comp.getClassModel());
 		
-		List<ClassTypeModel> ls = ((ParametizedClassModel) c).getGenericList();
-		assertEquals(1, ls.size());
-		ClassTypeModel ce = ls.get(0);
-		assertEquals(GenericTypePlaceHolder.class, ce.getClass());
-		assertEquals("E", ce.getName());
+		List<ClassTypeModel> compPals = ((ParametizedClassModel) comp).getGenericList();
+		assertEquals(1, compPals.size());
+		ClassTypeModel compPalsTE = compPals.get(0);
+		assertEquals(GenericTypePlaceHolder.class, compPalsTE.getClass());
+		assertEquals("E", compPalsTE.getName());
 		
 		// super type list
-		List<ClassTypeModel> spls = rs.getSuperTypes();
+		List<ClassTypeModel> superTypes = rs.getSuperTypes();
+		assertEquals(2, superTypes.size());
+		assertEquals(ASMParser.getObject(), superTypes.get(0));
+		ClassTypeModel iter = superTypes.get(1);
+		assertEquals(ASMParser.getClassByName("java.lang.Iterable"), iter.getClassModel());
+		assertEquals(ParametizedClassModel.class, iter.getClass());
+		List<ClassTypeModel> iterPals = ((ParametizedClassModel)iter).getGenericList();
+		assertEquals(1, iterPals.size());
+		ClassTypeModel iterPalsTE = iterPals.get(0);
+		assertEquals(GenericTypePlaceHolder.class, iterPalsTE.getClass());
+		assertEquals("E", iterPalsTE.getName());
 	}
 
 }
