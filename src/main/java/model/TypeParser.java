@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.objectweb.asm.Type;
@@ -29,7 +28,7 @@ class TypeParser {
 			return new ArrayTypeModel(parse(type), dimension);
 		case Type.OBJECT:
 			ClassModel classModel = ASMParser.getClassByName(type.getClassName());
-			return new ConcreteClassTypeModel(classModel, Collections.EMPTY_LIST);
+			return classModel;
 		case Type.VOID:
 			return PrimitiveType.VOID;
 		case Type.INT:
@@ -54,26 +53,6 @@ class TypeParser {
 	}
 
 	/**
-	 * get the type model for a specific class
-	 *
-	 * @param classModel
-	 * @return
-	 */
-	static ConcreteClassTypeModel getType(ClassModel classModel) {
-		return new ConcreteClassTypeModel(classModel, Collections.EMPTY_LIST);
-	}
-
-	/**
-	 * get the type model for a generic class given its generic list
-	 *
-	 * @param classModel
-	 * @return
-	 */
-	static ConcreteClassTypeModel getGenericType(ClassModel classModel, List<ClassTypeModel> genericList) {
-		return new ConcreteClassTypeModel(classModel, genericList);
-	}
-
-	/**
 	 * get the array type model for a specific class
 	 *
 	 * @param classModel
@@ -81,8 +60,8 @@ class TypeParser {
 	 *            the dimension of the array
 	 * @return
 	 */
-	static TypeModel getArrayType(ClassModel classModel, int dimension) {
-		return new ArrayTypeModel(getType(classModel), dimension);
+	static TypeModel getArrayType(TypeModel classModel, int dimension) {
+		return new ArrayTypeModel(classModel, dimension);
 	}
 
 	/**
@@ -99,12 +78,11 @@ class TypeParser {
 		} else if (x == 'L') {
 			int index = internalName.indexOf('<');
 			if (index < 0) {
-				ClassModel bound = ASMParser.getClassByName(internalName.substring(1));
-				return TypeParser.getType(bound);
+				return ASMParser.getClassByName(internalName.substring(1));
 			} else {
 				ClassModel bound = ASMParser.getClassByName(internalName.substring(1, index));
 				List<ClassTypeModel> genericEnv = parseParameterList(internalName.substring(index));
-				return TypeParser.getGenericType(bound, genericEnv);
+				return new ParametizedClassModel(bound, genericEnv);
 			}
 		}
 		throw new RuntimeException(internalName + " does not represent a class type");

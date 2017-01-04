@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import utility.ClassType;
+import utility.IMapper;
 import utility.Modifier;
 
 import java.util.*;
@@ -25,7 +26,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, IClassModel {
+class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -33,8 +34,8 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 	private final ClassType classType;
 	private final String name;
 
-	private ClassModel superClass;
-	private Collection<ClassModel> interfaces;
+	private ClassTypeModel superClass;
+	private Collection<ClassTypeModel> interfaces;
 	private List<GenericTypeModel> genericList;
 
 	private Map<String, FieldModel> fields;
@@ -64,27 +65,17 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		return name;
 	}
 
-	@Override
-	public List<String> getStereoTypes() {
-		List<String> ls = new ArrayList<>();
-		switch (getType()) {
-		case INTERFACE:
-			ls.add("Interface");
-			break;
-		case CONCRETE:
-			break;
-		case ABSTRACT:
-			ls.add("Abstract");
-			break;
-		case ENUM:
-			ls.add("Enumeration");
-			break;
-		}
-		return ls;
-	}
-
 	public Modifier getModifier() {
 		return modifier;
+	}
+
+	@Override
+	public ClassModel getClassModel() {
+		return this;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
 	}
 
 	public ClassType getType() {
@@ -102,11 +93,13 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		return genericList;
 	}
 
-
 	public ClassModel getSuperClass() {
-		if (superClass == null && asmClassNode.superName != null)
+		if (superClass == null) {
+			if (this == ASMParser.getObject())
+				return null;
 			superClass = ASMParser.getClassByName(asmClassNode.superName);
-		return superClass;
+		}
+		return superClass.getClassModel();
 	}
 
 	public Iterable<ClassModel> getInterfaces() {
@@ -120,7 +113,27 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 					interfaces.add(m);
 			}
 		}
-		return interfaces;
+		IMapper<ClassTypeModel, ClassModel> map = (c) -> c.getClassModel();
+		return map.map(interfaces);
+	}
+
+	@Override
+	public List<String> getStereoTypes() {
+		List<String> ls = new ArrayList<>();
+		switch (getType()) {
+		case INTERFACE:
+			ls.add("Interface");
+			break;
+		case CONCRETE:
+			break;
+		case ABSTRACT:
+			ls.add("Abstract");
+			break;
+		case ENUM:
+			ls.add("Enumeration");
+			break;
+		}
+		return ls;
 	}
 
 	public Map<ClassModel, Integer> getHasRelation() {
@@ -204,10 +217,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		if (getSuperClass() != null)
 			return getSuperClass().getFieldByName(name);
 		return null;
-	}
-
-	public boolean isFinal() {
-		return isFinal;
 	}
 
 	@Override

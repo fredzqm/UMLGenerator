@@ -37,7 +37,7 @@ class GenericTypeModel implements ClassTypeModel {
 	}
 
 	static GenericTypeModel getWildType(String name) {
-		return new GenericTypeModel(ConcreteClassTypeModel.getObject(), null, name);
+		return new GenericTypeModel(ASMParser.getObject(), null, name);
 	}
 
 	static GenericTypeModel getLowerBounded(ClassTypeModel classTypeModel, String name) {
@@ -45,7 +45,7 @@ class GenericTypeModel implements ClassTypeModel {
 	}
 
 	static GenericTypeModel getUpperBounded(ClassTypeModel upperBound, String name) {
-		return new GenericTypeModel(ConcreteClassTypeModel.getObject(), upperBound, name);
+		return new GenericTypeModel(ASMParser.getObject(), upperBound, name);
 	}
 
 }

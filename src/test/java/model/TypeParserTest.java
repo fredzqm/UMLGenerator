@@ -14,10 +14,8 @@ public class TypeParserTest {
 
 		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, x.getClass());
 		assertEquals("java.lang.Object", x.getName());
 		assertEquals(ASMParser.getClassByName("java.lang.Object"), x.getClassModel());
-		assertEquals(0, ((ConcreteClassTypeModel) x).getGenericList().size());
 	}
 
 	@Test
@@ -26,10 +24,8 @@ public class TypeParserTest {
 
 		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, x.getClass());
 		assertEquals("java.util.EventListener", x.getName());
 		assertEquals(ASMParser.getClassByName("java.util.EventListener"), x.getClassModel());
-		assertEquals(0, ((ConcreteClassTypeModel) x).getGenericList().size());
 	}
 
 	@Test
@@ -49,10 +45,10 @@ public class TypeParserTest {
 
 		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, x.getClass());
+		assertEquals(ParametizedClassModel.class, x.getClass());
 		assertEquals("java.lang.Comparable", x.getName());
 		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), x.getClassModel());
-		List<ClassTypeModel> ls = ((ConcreteClassTypeModel) x).getGenericList();
+		List<ClassTypeModel> ls = ((ParametizedClassModel) x).getGenericList();
 		assertEquals(1, ls.size());
 		ClassTypeModel y = ls.get(0);
 		assertEquals(GenericTypePlaceHolder.class, y.getClass());
@@ -100,10 +96,10 @@ public class TypeParserTest {
 		assertNull(e.getUpperBound());
 		
 		ClassTypeModel c = e.getLowerBound();
-		assertEquals(ConcreteClassTypeModel.class, c.getClass());
+		assertEquals(ParametizedClassModel.class, c.getClass());
 		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), c.getClassModel());
 		
-		List<ClassTypeModel> ls = ((ConcreteClassTypeModel) c).getGenericList();
+		List<ClassTypeModel> ls = ((ParametizedClassModel) c).getGenericList();
 		assertEquals(1, ls.size());
 		ClassTypeModel ce = ls.get(0);
 		assertEquals(GenericTypePlaceHolder.class, ce.getClass());

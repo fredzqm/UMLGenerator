@@ -7,15 +7,15 @@ import java.util.List;
  *
  * @author zhang
  */
-class ConcreteClassTypeModel implements ClassTypeModel {
+class ParametizedClassModel implements ClassTypeModel {
 	private final ClassModel classModel;
-	private final List<ClassTypeModel> genericList;
+	private final List<ClassTypeModel> genericArguments;
 
-	ConcreteClassTypeModel(ClassModel classModel, List<ClassTypeModel> genericList) {
+	ParametizedClassModel(ClassModel classModel, List<ClassTypeModel> genericList) {
 		if (classModel == null)
 			throw new RuntimeException("ClassModel cannot be null");
 		this.classModel = classModel;
-		this.genericList = genericList;
+		this.genericArguments = genericList;
 	}
 
 	public ClassModel getClassModel() {
@@ -23,7 +23,7 @@ class ConcreteClassTypeModel implements ClassTypeModel {
 	}
 
 	public List<ClassTypeModel> getGenericList() {
-		return genericList;
+		return genericArguments;
 	}
 
 	public String getName() {
@@ -32,8 +32,8 @@ class ConcreteClassTypeModel implements ClassTypeModel {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ConcreteClassTypeModel) {
-			ConcreteClassTypeModel o = (ConcreteClassTypeModel) obj;
+		if (obj instanceof ParametizedClassModel) {
+			ParametizedClassModel o = (ParametizedClassModel) obj;
 			return classModel == o.classModel;
 		}
 		return false;
@@ -49,8 +49,5 @@ class ConcreteClassTypeModel implements ClassTypeModel {
 		return getName();
 	}
 
-	public static ClassTypeModel getObject() {
-		return TypeParser.getType(ASMParser.getObject());
-	}
 
 }
