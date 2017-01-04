@@ -2,9 +2,6 @@ package model;
 
 import org.objectweb.asm.Type;
 
-import model.type.TypeModel;
-import model.type.TypeParser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

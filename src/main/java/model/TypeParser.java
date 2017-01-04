@@ -1,12 +1,10 @@
-package model.type;
+package model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.objectweb.asm.Type;
-
-import model.ASMParser;
-import model.ClassModel;
 
 /**
  * A factory method utility for type model
@@ -14,7 +12,7 @@ import model.ClassModel;
  * @author zhang
  *
  */
-public class TypeParser {
+class TypeParser {
 
 	/**
 	 * convert asm's type instance to TypeModel, assume this type has empty
@@ -23,7 +21,7 @@ public class TypeParser {
 	 * @param type
 	 * @return the corresponding type model
 	 */
-	public static TypeModel parse(Type type) {
+	static TypeModel parse(Type type) {
 		switch (type.getSort()) {
 		case Type.ARRAY:
 			int dimension = type.getDimensions();
@@ -61,7 +59,7 @@ public class TypeParser {
 	 * @param classModel
 	 * @return
 	 */
-	public static ClassTypeModel getType(ClassModel classModel) {
+	static ClassTypeModel getType(ClassModel classModel) {
 		return new ClassTypeModel(classModel, Collections.EMPTY_LIST);
 	}
 
@@ -71,7 +69,7 @@ public class TypeParser {
 	 * @param classModel
 	 * @return
 	 */
-	public static ClassTypeModel getGenericType(ClassModel classModel, List<ClassTypeModel> genericList) {
+	static ClassTypeModel getGenericType(ClassModel classModel, List<ClassTypeModel> genericList) {
 		return new ClassTypeModel(classModel, genericList);
 	}
 
@@ -83,8 +81,57 @@ public class TypeParser {
 	 *            the dimension of the array
 	 * @return
 	 */
-	public static TypeModel getArrayType(ClassModel classModel, int dimension) {
+	static TypeModel getArrayType(ClassModel classModel, int dimension) {
 		return new ArrayTypeModel(getType(classModel), dimension);
+	}
+
+	/**
+	 * 
+	 * @param arg
+	 *            the argument description string found in class or method's
+	 *            signature
+	 * @return the generic type model representing this
+	 */
+	static GenericTypeModel parseGenericType(String arg) {
+		// E:Ljava/lang/Object
+		String[] sp = arg.split(":");
+		String key = sp[0];
+		// has a lower bound
+		ClassModel bound = ASMParser.getClassByName(sp[sp.length - 1].substring(1));
+		return GenericTypeModel.getLowerBounded(TypeParser.getType(bound), key);
+	}
+
+	/**
+	 * 
+	 * @param signature
+	 *            of a class or a method
+	 * @return the list of generic parameter this class or method needs
+	 */
+	static List<GenericTypeModel> parseGenericTypeList(String signature) {
+		List<GenericTypeModel> ls = new ArrayList<>();
+		if (signature != null && signature.length() >= 1 && signature.charAt(0) == '<') {
+			int count = 1, i = 1, j = 1;
+			while (count != 0) {
+				switch (signature.charAt(j)) {
+				case '<':
+					count++;
+					break;
+				case '>':
+					count--;
+					break;
+				case ';':
+					if (count == 1) {
+						ls.add(TypeParser.parseGenericType(signature.substring(i, j)));
+						i = j + 1;
+					}
+					break;
+				default:
+					break;
+				}
+				j++;
+			}
+		}
+		return ls;
 	}
 
 }

@@ -1,6 +1,4 @@
-package model.type;
-
-import model.ClassModel;
+package model;
 
 /**
  * Representing type model in general
@@ -8,7 +6,7 @@ import model.ClassModel;
  * @author zhang
  *
  */
-public interface TypeModel {
+interface TypeModel {
 
 	/**
 	 * @return the class model behind this type model. null if it is a primitive

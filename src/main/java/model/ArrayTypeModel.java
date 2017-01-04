@@ -1,6 +1,4 @@
-package model.type;
-
-import model.ClassModel;
+package model;
 
 /**
  * A decorate class for array

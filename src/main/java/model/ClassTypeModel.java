@@ -1,9 +1,6 @@
-package model.type;
+package model;
 
 import java.util.List;
-
-import model.ASMParser;
-import model.ClassModel;
 
 /**
  * Representing the type in java programs

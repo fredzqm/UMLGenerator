@@ -1,6 +1,4 @@
-package model.type;
-
-import model.ClassModel;
+package model;
 
 /**
  * representing any primitive type
@@ -8,7 +6,7 @@ import model.ClassModel;
  * @author zhang
  *
  */
-public enum PrimitiveType implements TypeModel {
+enum PrimitiveType implements TypeModel {
 	INT("int"), DOUBLE("double"), FLOAT("float"), BOOLEAN("boolean"), BYTE("byte"), CHAR("char"), SHORT("short"), LONG(
 			"long"), VOID("void");
 

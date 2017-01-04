@@ -2,7 +2,6 @@ package model;
 
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
-import model.type.GenericTypeModel;
 
 import org.junit.Test;
 
@@ -115,7 +114,7 @@ public class ClassModelTest {
 				+ GenericDummyClass2.class.getSimpleName();
 		ClassModel model = ASMParser.getClassByName(genericDummy);
 		assertEquals(genericDummy, model.getName());
-
+		
 		List<GenericTypeModel> gls = model.getGenericList();
 		assertEquals(1, gls.size());
 		GenericTypeModel gene = gls.get(0);

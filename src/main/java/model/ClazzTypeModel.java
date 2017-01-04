@@ -1,4 +1,4 @@
-package model.type;
+package model;
 
 /**
  * representing the type of a class
@@ -6,6 +6,6 @@ package model.type;
  * @author zhang
  *
  */
-public interface ClazzTypeModel extends TypeModel {
+interface ClazzTypeModel extends TypeModel {
 
 }

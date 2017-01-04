@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @author zhang
  */
-public class ASMParser {
+class ASMParser {
 	public static int RECURSE_SUPERCLASS = 0x2;
 	public static int RECURSE_INTERFACE = 0x4;
 	public static int RECURSE_HAS_A = 0x8;

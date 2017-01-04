@@ -3,7 +3,6 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
-import model.type.GenericTypeModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -26,7 +25,7 @@ import java.util.*;
  *
  * @author zhang
  */
-public class ClassModel implements IVisitable<ClassModel>, IClassModel {
+class ClassModel implements IVisitable<ClassModel>, IClassModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -98,33 +97,11 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 
 	public List<GenericTypeModel> getGenericList() {
 		if (genericList == null) {
-			genericList = new ArrayList<>();
-			String signature = asmClassNode.signature;
-			if (signature != null && signature.length() >= 1 && signature.charAt(0) == '<') {
-				int count = 1, i = 1, j = 1;
-				while (count != 0) {
-					switch (signature.charAt(j)) {
-					case '<':
-						count++;
-						break;
-					case '>':
-						count--;
-						break;
-					case ';':
-						if (count == 1) {
-							genericList.add(GenericTypeModel.parse(signature.substring(i, j)));
-							i = j + 1;
-						}
-						break;
-					default:
-						break;
-					}
-					j++;
-				}
-			}
+			genericList = TypeParser.parseGenericTypeList(asmClassNode.signature);
 		}
 		return genericList;
 	}
+
 
 	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
