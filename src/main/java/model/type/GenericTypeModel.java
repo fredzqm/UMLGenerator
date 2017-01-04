@@ -38,17 +38,34 @@ public class GenericTypeModel implements ClazzTypeModel {
 	public String getName() {
 		return key;
 	}
-	
-	public static GenericTypeModel getWildType(String name) {
-		return new GenericTypeModel(ASMParser.getClassByName("java.lang.Object"), null, name);
+
+	private static GenericTypeModel getWildType(String name) {
+		return new GenericTypeModel(ASMParser.getObject(), null, name);
 	}
 
-	public static GenericTypeModel getLowerBounded(ClassModel lowerBounded, String name) {
+	private static GenericTypeModel getLowerBounded(ClassModel lowerBounded, String name) {
 		return new GenericTypeModel(lowerBounded, null, name);
 	}
 
-	public static GenericTypeModel getUpperBounded(ClassModel upperBound, String name) {
-		return new GenericTypeModel(ASMParser.getClassByName("java.lang.Object"), upperBound, name);
+	private static GenericTypeModel getUpperBounded(ClassModel upperBound, String name) {
+		return new GenericTypeModel(ASMParser.getObject(), upperBound, name);
+	}
+
+	/**
+	 * 
+	 * @param arg
+	 *            the argument description string found in class or method's
+	 *            signature
+	 * @return the generic type model representing this
+	 */
+	public static GenericTypeModel parse(String arg) {
+		// E:Ljava/lang/Object
+		String[] a = arg.split(":");
+		String key = a[0];
+		String typeName = a[1];
+
+		ClassModel bound = ASMParser.getClassByName(typeName.substring(1));
+		return getLowerBounded(bound, key);
 	}
 
 }
