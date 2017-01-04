@@ -4,7 +4,6 @@ import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
 import model.type.GenericTypeModel;
-import model.type.TypeParser;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -59,9 +58,6 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 		if (asmClassNode.signature != null) {
 			System.out.println(asmClassNode.signature);
-			if (asmClassNode.signature.contains("P:Ljava/util/spi/LocaleServiceProvider;")) {
-				getGenericList();
-			}
 		}
 	}
 
@@ -104,14 +100,26 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		if (genericList == null) {
 			genericList = new ArrayList<>();
 			String signature = asmClassNode.signature;
-			if (signature != null) {
-				// <E:Ljava/lang/Object;>Ljava/lang/Object;Ljava/lang/Iterable<TE;>;
-				String typeArgs = signature.substring(1, signature.indexOf('>'));
-				String[] args = typeArgs.split(";");
-				for (String arg : args) {
-					if (arg.length() > 0) {
-						genericList.add(GenericTypeModel.parse(arg));
+			if (signature != null && signature.length() >= 1 && signature.charAt(0) == '<') {
+				int count = 1, i = 1, j = 1;
+				while (count != 0) {
+					switch (signature.charAt(j)) {
+					case '<':
+						count++;
+						break;
+					case '>':
+						count--;
+						break;
+					case ';':
+						if (count == 1) {
+							genericList.add(GenericTypeModel.parse(signature.substring(i, j)));
+							i = j + 1;
+						}
+						break;
+					default:
+						break;
 					}
+					j++;
 				}
 			}
 		}

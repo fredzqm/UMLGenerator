@@ -6,7 +6,9 @@ import model.type.GenericTypeModel;
 
 import org.junit.Test;
 
+import dummy.Dummy;
 import dummy.GenericDummyClass;
+import dummy.GenericDummyClass2;
 import utility.IFilter;
 import utility.MethodType;
 
@@ -83,6 +85,16 @@ public class ClassModelTest {
 	}
 
 	@Test
+	public void testGetGenericNonGeneric() {
+		String dummy = Dummy.class.getPackage().getName() + "." + Dummy.class.getSimpleName();
+		ClassModel model = ASMParser.getClassByName(dummy);
+		assertEquals(dummy, model.getName());
+
+		List<GenericTypeModel> gls = model.getGenericList();
+		assertEquals(0, gls.size());
+	}
+	
+	@Test
 	public void testGetGeneric() {
 		String genericDummy = GenericDummyClass.class.getPackage().getName() + "."
 				+ GenericDummyClass.class.getSimpleName();
@@ -96,5 +108,19 @@ public class ClassModelTest {
 		assertEquals(ASMParser.getObject(), gene.getLowerBound());
 		assertNull(gene.getUpperBound());
 	}
+	
+	@Test
+	public void testGetGeneric2() {
+		String genericDummy = GenericDummyClass2.class.getPackage().getName() + "."
+				+ GenericDummyClass2.class.getSimpleName();
+		ClassModel model = ASMParser.getClassByName(genericDummy);
+		assertEquals(genericDummy, model.getName());
 
+		List<GenericTypeModel> gls = model.getGenericList();
+		assertEquals(1, gls.size());
+		GenericTypeModel gene = gls.get(0);
+		assertEquals("E", gene.getName());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), gene.getLowerBound());
+		assertNull(gene.getUpperBound());
+	}
 }
