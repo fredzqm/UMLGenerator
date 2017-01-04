@@ -26,4 +26,25 @@ enum PrimitiveType implements TypeModel {
 		return null;
 	}
 
+	public static TypeModel parseTypeModel(char x) {
+		switch (x) {
+		case 'Z':
+			return BOOLEAN;
+		case 'C':
+			return CHAR;
+		case 'B':
+			return BYTE;
+		case 'S':
+			return SHORT;
+		case 'I':
+			return INT;
+		case 'F':
+			return FLOAT;
+		case 'J':
+			return FLOAT;
+		default:
+			throw new RuntimeException(x + " Cannot represent a primitive type");
+		}
+	}
+
 }

@@ -7,10 +7,10 @@ package model;
  * @author zhang
  *
  */
-public class GenericTypePlaceHolder implements ClassTypeModel {
+public class GenericTypeVar implements TypeModel {
 	private final String key;
 
-	public GenericTypePlaceHolder(String name) {
+	public GenericTypeVar(String name) {
 		key = name;
 	}
 

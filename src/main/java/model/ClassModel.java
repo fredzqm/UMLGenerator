@@ -27,7 +27,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel {
+class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -35,8 +35,8 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 	private final ClassType classType;
 	private final String name;
 
-	private List<ClassTypeModel> superTypes;
-	private List<GenericTypeModel> genericList;
+	private List<TypeModel> superTypes;
+	private List<GenericTypeParams> genericList;
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
@@ -57,9 +57,9 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
 		this.classType = ClassType.parse(asmClassNode.access);
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
-		// if (asmClassNode.signature != null) {
-		// System.out.println(asmClassNode.signature);
-		// }
+		if (asmClassNode.signature != null) {
+			System.out.println(asmClassNode.signature);
+		}
 	}
 
 	public String getName() {
@@ -87,14 +87,14 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 	// ---------------- All the lazy initialized fields ------------------
 	// ===================================================================
 
-	public List<GenericTypeModel> getGenericList() {
+	public List<GenericTypeParams> getGenericList() {
 		if (genericList == null) {
 			getSuperTypes();
 		}
 		return genericList;
 	}
 
-	public List<ClassTypeModel> getSuperTypes() {
+	public List<TypeModel> getSuperTypes() {
 		if (superTypes == null) {
 			if (asmClassNode.signature == null) {
 				genericList = Collections.EMPTY_LIST;
@@ -103,52 +103,52 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, ClassTypeModel 
 				if (asmClassNode.superName == null) {
 					superTypes.add(null);
 				} else {
-					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+					TypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
 					superTypes.add(superClass);
 				}
 				// add interfaces
 				List<String> ls = asmClassNode.interfaces;
 				for (String s : ls) {
-					ClassTypeModel m = ASMParser.getClassByName(s);
+					TypeModel m = ASMParser.getClassByName(s);
 					if (m != null)
 						superTypes.add(m);
 				}
 			} else {
 				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
-				genericList = rs.getGenericList();
+				genericList = rs.getParamsList();
 				superTypes = rs.getSuperTypes();
-				
+
 				// TOBE remoeved
-				superTypes = new ArrayList<>();
-				// add super class
-				if (asmClassNode.superName == null) {
-					superTypes.add(null);
-				} else {
-					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
-					superTypes.add(superClass);
-				}
-				// add interfaces
-				List<String> ls = asmClassNode.interfaces;
-				for (String s : ls) {
-					ClassTypeModel m = ASMParser.getClassByName(s);
-					if (m != null)
-						superTypes.add(m);
-				}
+//				superTypes = new ArrayList<>();
+//				// add super class
+//				if (asmClassNode.superName == null) {
+//					superTypes.add(null);
+//				} else {
+//					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+//					superTypes.add(superClass);
+//				}
+//				// add interfaces
+//				List<String> ls = asmClassNode.interfaces;
+//				for (String s : ls) {
+//					ClassTypeModel m = ASMParser.getClassByName(s);
+//					if (m != null)
+//						superTypes.add(m);
+//				}
 			}
 		}
 		return superTypes;
 	}
 
 	public ClassModel getSuperClass() {
-		List<ClassTypeModel> ls = getSuperTypes();
+		List<TypeModel> ls = getSuperTypes();
 		if (ls.get(0) == null)
 			return null;
 		return ls.get(0).getClassModel();
 	}
 
 	public Iterable<ClassModel> getInterfaces() {
-		List<ClassTypeModel> ls = getSuperTypes();
-		IMapper<ClassTypeModel, ClassModel> map = (c) -> c.getClassModel();
+		List<TypeModel> ls = getSuperTypes();
+		IMapper<TypeModel, ClassModel> map = (c) -> c.getClassModel();
 		return map.map(ls.subList(1, ls.size()));
 	}
 

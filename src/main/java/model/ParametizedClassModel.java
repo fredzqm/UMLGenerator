@@ -7,11 +7,11 @@ import java.util.List;
  *
  * @author zhang
  */
-class ParametizedClassModel implements ClassTypeModel {
+class ParametizedClassModel implements TypeModel {
 	private final ClassModel classModel;
-	private final List<ClassTypeModel> genericArguments;
+	private final List<TypeModel> genericArguments;
 
-	ParametizedClassModel(ClassModel classModel, List<ClassTypeModel> genericList) {
+	ParametizedClassModel(ClassModel classModel, List<TypeModel> genericList) {
 		if (classModel == null)
 			throw new RuntimeException("ClassModel cannot be null");
 		this.classModel = classModel;
@@ -22,7 +22,7 @@ class ParametizedClassModel implements ClassTypeModel {
 		return classModel;
 	}
 
-	public List<ClassTypeModel> getGenericList() {
+	public List<TypeModel> getGenericList() {
 		return genericArguments;
 	}
 

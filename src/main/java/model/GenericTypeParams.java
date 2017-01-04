@@ -7,11 +7,11 @@ package model;
  * @author zhang
  *
  */
-class GenericTypeModel implements TypeModel {
+class GenericTypeParams implements TypeModel {
 	private final TypeModel lowerBound;
 	private final TypeModel upperBound;
 
-	GenericTypeModel(TypeModel lowerBound, TypeModel upperBound) {
+	GenericTypeParams(TypeModel lowerBound, TypeModel upperBound) {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 	}
