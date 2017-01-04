@@ -105,7 +105,7 @@ public class ClassModelTest {
 		assertEquals(1, gls.size());
 		GenericTypeModel gene = gls.get(0);
 		assertEquals("E", gene.getName());
-		assertEquals(ASMParser.getObject(), gene.getLowerBound());
+		assertEquals(ASMParser.getObject(), gene.getClassModel());
 		assertNull(gene.getUpperBound());
 	}
 	
@@ -120,7 +120,7 @@ public class ClassModelTest {
 		assertEquals(1, gls.size());
 		GenericTypeModel gene = gls.get(0);
 		assertEquals("E", gene.getName());
-		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), gene.getLowerBound());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), gene.getClassModel());
 		assertNull(gene.getUpperBound());
 	}
 }

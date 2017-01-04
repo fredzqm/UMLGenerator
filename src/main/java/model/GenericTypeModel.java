@@ -11,27 +11,27 @@ import model.ClassModel;
  *
  */
 public class GenericTypeModel implements ClazzTypeModel {
-	private final ClassModel lowerBound;
-	private final ClassModel upperBound;
+	private final ClazzTypeModel lowerBound;
+	private final ClazzTypeModel upperBound;
 	private final String key;
 
-	GenericTypeModel(ClassModel lowerBound, ClassModel upperBound, String name) {
+	GenericTypeModel(ClazzTypeModel lowerBound, ClazzTypeModel upperBound, String name) {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		this.key = name;
 	}
 
-	public ClassModel getLowerBound() {
+	public ClazzTypeModel getLowerBound() {
 		return lowerBound;
 	}
 
-	public ClassModel getUpperBound() {
+	public ClazzTypeModel getUpperBound() {
 		return upperBound;
 	}
 
 	@Override
 	public ClassModel getClassModel() {
-		return lowerBound;
+		return lowerBound.getClassModel();
 	}
 
 	@Override
@@ -40,15 +40,15 @@ public class GenericTypeModel implements ClazzTypeModel {
 	}
 
 	private static GenericTypeModel getWildType(String name) {
-		return new GenericTypeModel(ASMParser.getObject(), null, name);
+		return new GenericTypeModel(ClassTypeModel.getObject(), null, name);
 	}
 
-	private static GenericTypeModel getLowerBounded(ClassModel lowerBounded, String name) {
-		return new GenericTypeModel(lowerBounded, null, name);
+	private static GenericTypeModel getLowerBounded(ClassTypeModel classTypeModel, String name) {
+		return new GenericTypeModel(classTypeModel, null, name);
 	}
 
-	private static GenericTypeModel getUpperBounded(ClassModel upperBound, String name) {
-		return new GenericTypeModel(ASMParser.getObject(), upperBound, name);
+	private static GenericTypeModel getUpperBounded(ClassTypeModel upperBound, String name) {
+		return new GenericTypeModel(ClassTypeModel.getObject(), upperBound, name);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class GenericTypeModel implements ClazzTypeModel {
 		String key = sp[0];
 		// has a lower bound
 		ClassModel bound = ASMParser.getClassByName(sp[sp.length - 1].substring(1));
-		return getLowerBounded(bound, key);
+		return getLowerBounded(TypeParser.getType(bound), key);
 	}
 
 }

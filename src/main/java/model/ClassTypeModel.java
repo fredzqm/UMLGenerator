@@ -2,6 +2,7 @@ package model.type;
 
 import java.util.List;
 
+import model.ASMParser;
 import model.ClassModel;
 
 /**
@@ -47,6 +48,10 @@ class ClassTypeModel implements ClazzTypeModel {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	public static ClazzTypeModel getObject() {
+		return TypeParser.getType(ASMParser.getObject());
 	}
 
 }

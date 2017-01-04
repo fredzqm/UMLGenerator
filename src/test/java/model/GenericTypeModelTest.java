@@ -18,7 +18,7 @@ public class GenericTypeModelTest {
 
 	public void testGenericTypeModel_parse(String arg, ClassModel lower, String name) {
 		GenericTypeModel x = GenericTypeModel.parse(arg);
-		assertEquals(lower, x.getLowerBound());
+		assertEquals(lower, x.getClassModel());
 		assertNull(x.getUpperBound());
 		assertEquals(name, x.getName());
 	}
