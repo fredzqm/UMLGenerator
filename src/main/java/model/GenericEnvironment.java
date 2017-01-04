@@ -8,4 +8,8 @@ public class GenericEnvironment {
 	public TypeModel getTypeModelOf(String genericID) {
 		return generic.get(genericID);
 	}
+
+	public static GenericEnvironment parse(String substring) {
+		return null;
+	}
 }

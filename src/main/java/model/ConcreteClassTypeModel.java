@@ -9,9 +9,11 @@ import java.util.List;
  */
 class ConcreteClassTypeModel implements ClassTypeModel {
 	private final ClassModel classModel;
-	private final List<ConcreteClassTypeModel> genericList;
+	private final List<ClassTypeModel> genericList;
 
-	ConcreteClassTypeModel(ClassModel classModel, List<ConcreteClassTypeModel> genericList) {
+	ConcreteClassTypeModel(ClassModel classModel, List<ClassTypeModel> genericList) {
+		if (classModel == null)
+			throw new RuntimeException("ClassModel cannot be null");
 		this.classModel = classModel;
 		this.genericList = genericList;
 	}
@@ -20,7 +22,7 @@ class ConcreteClassTypeModel implements ClassTypeModel {
 		return classModel;
 	}
 
-	public List<ConcreteClassTypeModel> getGenericList() {
+	public List<ClassTypeModel> getGenericList() {
 		return genericList;
 	}
 

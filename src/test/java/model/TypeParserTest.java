@@ -12,33 +12,52 @@ public class TypeParserTest {
 	public void testParseClassTypeModel1() {
 		String internalName = "Ljava/lang/Object";
 
-		ClassTypeModel gene = TypeParser.parseClassTypeModel(internalName);
+		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, gene.getClass());
-		assertEquals("java.lang.Object", gene.getName());
-		assertEquals(ASMParser.getClassByName("java.lang.Object"), gene.getClassModel());
+		assertEquals(ConcreteClassTypeModel.class, x.getClass());
+		assertEquals("java.lang.Object", x.getName());
+		assertEquals(ASMParser.getClassByName("java.lang.Object"), x.getClassModel());
+		assertEquals(0, ((ConcreteClassTypeModel) x).getGenericList().size());
 	}
 
 	@Test
 	public void testParseClassTypeModel2() {
 		String internalName = "Ljava/util/EventListener";
 
-		ClassTypeModel gene = TypeParser.parseClassTypeModel(internalName);
+		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, gene.getClass());
-		assertEquals("java.util.EventListener", gene.getName());
-		assertEquals(ASMParser.getClassByName("java.util.EventListener"), gene.getClassModel());
+		assertEquals(ConcreteClassTypeModel.class, x.getClass());
+		assertEquals("java.util.EventListener", x.getName());
+		assertEquals(ASMParser.getClassByName("java.util.EventListener"), x.getClassModel());
+		assertEquals(0, ((ConcreteClassTypeModel) x).getGenericList().size());
+	}
+
+	@Test
+	public void testParseClassTypeModelPlaceHolder() {
+		String internalName = "TE";
+
+		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
+
+		assertEquals(GenericTypePlaceHolder.class, x.getClass());
+		assertEquals("E", x.getName());
+		assertNull(x.getClassModel());
 	}
 
 	@Test
 	public void testParseClassTypeModelNested() {
 		String internalName = "Ljava/lang/Comparable<TE;>";
 
-		ClassTypeModel gene = TypeParser.parseClassTypeModel(internalName);
+		ClassTypeModel x = TypeParser.parseClassTypeModel(internalName);
 
-		assertEquals(ConcreteClassTypeModel.class, gene.getClass());
-		assertEquals("java.util.EventListener", gene.getName());
-		assertEquals(ASMParser.getClassByName("java.util.EventListener"), gene.getClassModel());
+		assertEquals(ConcreteClassTypeModel.class, x.getClass());
+		assertEquals("java.lang.Comparable", x.getName());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), x.getClassModel());
+		List<ClassTypeModel> ls = ((ConcreteClassTypeModel) x).getGenericList();
+		assertEquals(1, ls.size());
+		ClassTypeModel y = ls.get(0);
+		assertEquals(GenericTypePlaceHolder.class, y.getClass());
+		assertEquals("E", y.getName());
+		assertNull(y.getClassModel());
 	}
 
 	@Test
@@ -76,10 +95,19 @@ public class TypeParserTest {
 
 		List<GenericTypeModel> gls = TypeParser.parseGenericTypeList(genericDummy);
 		assertEquals(1, gls.size());
-		GenericTypeModel gene = gls.get(0);
-		assertEquals("E", gene.getName());
-		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), gene.getClassModel());
-		assertNull(gene.getUpperBound());
+		GenericTypeModel e = gls.get(0);
+		assertEquals("E", e.getName());
+		assertNull(e.getUpperBound());
+		
+		ClassTypeModel c = e.getLowerBound();
+		assertEquals(ConcreteClassTypeModel.class, c.getClass());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), c.getClassModel());
+		
+		List<ClassTypeModel> ls = ((ConcreteClassTypeModel) c).getGenericList();
+		assertEquals(1, ls.size());
+		ClassTypeModel ce = ls.get(0);
+		assertEquals(GenericTypePlaceHolder.class, ce.getClass());
+		assertEquals("E", ce.getName());
 	}
 
 }

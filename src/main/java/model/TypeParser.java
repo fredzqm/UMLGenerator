@@ -69,7 +69,7 @@ class TypeParser {
 	 * @param classModel
 	 * @return
 	 */
-	static ConcreteClassTypeModel getGenericType(ClassModel classModel, List<ConcreteClassTypeModel> genericList) {
+	static ConcreteClassTypeModel getGenericType(ClassModel classModel, List<ClassTypeModel> genericList) {
 		return new ConcreteClassTypeModel(classModel, genericList);
 	}
 
@@ -92,9 +92,33 @@ class TypeParser {
 	 * @return the corresponding class type model
 	 */
 	static ClassTypeModel parseClassTypeModel(String internalName) {
-		ClassModel bound = ASMParser.getClassByName(internalName.substring(1));
-		ConcreteClassTypeModel type = TypeParser.getType(bound);
-		return type;
+		char x = internalName.charAt(0);
+		if (x == 'T') {
+			GenericTypePlaceHolder type = new GenericTypePlaceHolder(internalName.substring(1));
+			return type;
+		} else if (x == 'L') {
+			int index = internalName.indexOf('<');
+			if (index < 0) {
+				ClassModel bound = ASMParser.getClassByName(internalName.substring(1));
+				return TypeParser.getType(bound);
+			} else {
+				ClassModel bound = ASMParser.getClassByName(internalName.substring(1, index));
+				List<ClassTypeModel> genericEnv = parseParameterList(internalName.substring(index));
+				return TypeParser.getGenericType(bound, genericEnv);
+			}
+		}
+		throw new RuntimeException(internalName + " does not represent a class type");
+	}
+
+	static List<ClassTypeModel> parseParameterList(String parameterList) {
+		if (parameterList.charAt(0) != '<' || parameterList.charAt(parameterList.length() - 1) != '>')
+			throw new RuntimeException(parameterList + " is not a valid parameter list");
+		String[] sp = parameterList.substring(1, parameterList.length() - 1).split(";");
+		List<ClassTypeModel> ret = new ArrayList<>();
+		for (String s : sp) {
+			ret.add(parseClassTypeModel(s));
+		}
+		return ret;
 	}
 
 	/**
@@ -107,7 +131,7 @@ class TypeParser {
 	static GenericTypeModel parseGenericType(String arg) {
 		String[] sp = arg.split(":");
 		String key = sp[0];
-		ClassTypeModel type = parseClassTypeModel(sp[sp.length - 1]);
+		ClassTypeModel type = (ClassTypeModel) parseClassTypeModel(sp[sp.length - 1]);
 		return GenericTypeModel.getLowerBounded(type, key);
 	}
 
