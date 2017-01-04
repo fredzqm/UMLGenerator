@@ -34,7 +34,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 
 	private ClassModel superClass;
 	private Collection<ClassModel> interfaces;
-	private ClassGeneric generic;
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
@@ -95,13 +94,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = ASMParser.getClassByName(asmClassNode.superName);
 		return superClass;
-	}
-
-	public ClassGeneric getGeneric() {
-		if (generic == null) {
-			
-		}
-		return generic;
 	}
 
 	public Iterable<ClassModel> getInterfaces() {

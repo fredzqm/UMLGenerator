@@ -32,7 +32,7 @@ class Signature {
     public static Signature parse(String name, String desc) {
         List<TypeModel> args = new ArrayList<>();
         for (Type argType : Type.getArgumentTypes(desc)) {
-            args.add(TypeModel.parse(argType));
+            args.add(ClassTypeModel.parse(argType));
         }
         return new Signature(args, name);
     }
