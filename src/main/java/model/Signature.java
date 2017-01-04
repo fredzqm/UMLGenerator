@@ -2,6 +2,9 @@ package model;
 
 import org.objectweb.asm.Type;
 
+import model.type.TypeModel;
+import model.type.TypeParser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +35,7 @@ class Signature {
     public static Signature parse(String name, String desc) {
         List<TypeModel> args = new ArrayList<>();
         for (Type argType : Type.getArgumentTypes(desc)) {
-            args.add(ClassTypeModel.parse(argType));
+            args.add(TypeParser.parse(argType));
         }
         return new Signature(args, name);
     }

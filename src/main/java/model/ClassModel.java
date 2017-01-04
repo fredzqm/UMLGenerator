@@ -3,6 +3,7 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -24,7 +25,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, IClassModel {
+public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;

@@ -3,6 +3,9 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IFieldModel;
+import model.type.TypeModel;
+import model.type.TypeParser;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
 import utility.Modifier;
@@ -31,7 +34,7 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
         asmFieldNode = fieldNode;
         modifier = Modifier.parse(asmFieldNode.access);
         isFinal = Modifier.parseIsFinal(asmFieldNode.access);
-        fieldType = ClassTypeModel.parse(Type.getType(asmFieldNode.desc));
+        fieldType = TypeParser.parse(Type.getType(asmFieldNode.desc));
     }
 
     public String getName() {

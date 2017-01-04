@@ -2,6 +2,7 @@ package model;
 
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
+
 import org.junit.Test;
 import utility.IFilter;
 import utility.MethodType;

@@ -1,5 +1,13 @@
-package model;
+package model.type;
 
+import model.ClassModel;
+
+/**
+ * Representing type model in general
+ * 
+ * @author zhang
+ *
+ */
 public interface TypeModel {
 
 	/**
@@ -14,4 +22,11 @@ public interface TypeModel {
 	 */
 	String getName();
 
+	/**
+	 * 
+	 * @return the dimension of this type, 0 if its is not an array
+	 */
+	default int getDimension() {
+		return 0;
+	}
 }
