@@ -3,6 +3,7 @@ package model;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
 import generator.classParser.IClassModel;
+import model.type.GenericTypeModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -35,11 +36,13 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 
 	private ClassModel superClass;
 	private Collection<ClassModel> interfaces;
-
+	private List<GenericTypeModel> genericList;
+	
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
 	private Map<ClassModel, Integer> hasARel;
 	private Collection<ClassModel> dependsOn;
+
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -87,10 +90,18 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		return classType;
 	}
 
-	//===================================================================
-	//---------------- All the lazy initialized fields ------------------
-	//===================================================================
-	
+	// ===================================================================
+	// ---------------- All the lazy initialized fields ------------------
+	// ===================================================================
+
+	public List<GenericTypeModel> getGenericList() {
+		if (genericList == null) {
+			genericList = new ArrayList<>();
+			
+		}
+		return genericList;
+	}
+
 	public ClassModel getSuperClass() {
 		if (superClass == null && asmClassNode.superName != null)
 			superClass = ASMParser.getClassByName(asmClassNode.superName);
