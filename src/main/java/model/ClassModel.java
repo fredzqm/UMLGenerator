@@ -57,6 +57,12 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
 		this.classType = ClassType.parse(asmClassNode.access);
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
+		if (asmClassNode.signature != null) {
+			System.out.println(asmClassNode.signature);
+			if (asmClassNode.signature.contains("P:Ljava/util/spi/LocaleServiceProvider;")) {
+				getGenericList();
+			}
+		}
 	}
 
 	public String getName() {
@@ -103,8 +109,9 @@ public class ClassModel implements IVisitable<ClassModel>, IClassModel {
 				String typeArgs = signature.substring(1, signature.indexOf('>'));
 				String[] args = typeArgs.split(";");
 				for (String arg : args) {
-					if (arg.length() > 0)
+					if (arg.length() > 0) {
 						genericList.add(GenericTypeModel.parse(arg));
+					}
 				}
 			}
 		}

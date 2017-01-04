@@ -60,11 +60,10 @@ public class GenericTypeModel implements ClazzTypeModel {
 	 */
 	public static GenericTypeModel parse(String arg) {
 		// E:Ljava/lang/Object
-		String[] a = arg.split(":");
-		String key = a[0];
-		String typeName = a[1];
-
-		ClassModel bound = ASMParser.getClassByName(typeName.substring(1));
+		String[] sp = arg.split(":");
+		String key = sp[0];
+		// has a lower bound
+		ClassModel bound = ASMParser.getClassByName(sp[sp.length - 1].substring(1));
 		return getLowerBounded(bound, key);
 	}
 

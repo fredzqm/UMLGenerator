@@ -13,8 +13,9 @@ import utility.IFilterTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({GraphVizGeneratorSystemTest.class, ASMParserTest.class, CommandLineParserTest.class,
-        SystemModelTest.class, ClassModelTest.class, IFilterTest.class, MethodModelTest.class, ClassModelRelationshipTest.class})
+@Suite.SuiteClasses({ GraphVizGeneratorSystemTest.class, ASMParserTest.class, CommandLineParserTest.class,
+		SystemModelTest.class, ClassModelTest.class, IFilterTest.class, MethodModelTest.class,
+		ClassModelRelationshipTest.class, GenericTypeModelTest.class })
 public class AllTests {
 
 }
