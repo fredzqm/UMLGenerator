@@ -18,9 +18,6 @@ class ParametizedClassModel implements TypeModel {
 	ParametizedClassModel(ClassModel classModel, List<TypeModel> genericList) {
 		if (classModel == null)
 			throw new RuntimeException("ClassModel cannot be null");
-		if (genericList.size() != classModel.getGenericList().size())
-			throw new RuntimeException("The number of generic arguments and parameters do not match"
-					+ classModel.getGenericList() + " " + genericList);
 		this.classModel = classModel;
 		this.genericArgs = genericList;
 	}
@@ -53,13 +50,16 @@ class ParametizedClassModel implements TypeModel {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + "<" + genericArgs + ">";
 	}
 
 	@Override
 	public Iterable<TypeModel> getSuperTypes() {
 		if (superTypes == null) {
 			List<GenericTypeParam> genels = classModel.getGenericList();
+			if (genels.size() != classModel.getGenericList().size())
+				throw new RuntimeException("The number of generic arguments and parameters do not match"
+						+ classModel.getGenericList() + " " + genels);
 			Map<String, TypeModel> paramMap = new HashMap<>();
 			for (int i = 0; i < genericArgs.size(); i++) {
 				GenericTypeParam p = genels.get(i);

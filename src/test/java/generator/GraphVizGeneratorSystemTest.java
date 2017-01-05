@@ -148,7 +148,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
         String graphVizString = generator.generate(systemModel);
 
-//        internalRunner(config, graphVizString);
+        internalRunner(config, graphVizString);
     }
 
     /**

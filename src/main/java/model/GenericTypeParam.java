@@ -53,7 +53,8 @@ class GenericTypeParam implements TypeModel {
 	@Override
 	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
 		if (!paramMap.containsKey(key)) {
-			throw new RuntimeException(paramMap + " does not contain " + key);
+			System.err.println(paramMap + " does not contain " + key);
+			return null;
 		}
 		if (paramMap.get(key) == this) {
 			// this is in the params list, modify in place

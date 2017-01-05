@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,7 +130,7 @@ class TypeParser {
 		if (argLs.charAt(0) != '<' || argLs.charAt(argLs.length() - 1) != '>')
 			throw new RuntimeException(argLs + " is not a valid argument list");
 		List<TypeModel> ret = new ArrayList<>();
-		for (String s : splitOn(argLs.substring(1, argLs.length() - 1))) {
+		for (String s : splitOn(argLs.substring(1, argLs.length() - 1), Arrays.asList(';', '*'))) {
 			ret.add(parseTypeArg(s));
 		}
 		return ret;
@@ -153,7 +155,7 @@ class TypeParser {
 		if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>')
 			throw new RuntimeException(paramList + " is not a valid parameter list");
 		List<GenericTypeParam> ret = new ArrayList<>();
-		for (String s : splitOn(paramList.substring(1, paramList.length() - 1))) {
+		for (String s : splitOn(paramList.substring(1, paramList.length() - 1), Arrays.asList(';'))) {
 			ret.add(parseTypeParam(s));
 		}
 		return ret;
@@ -175,13 +177,13 @@ class TypeParser {
 			typeParameters = parseTypeParams(classSig.substring(0, i));
 		}
 		List<TypeModel> superTypes = new ArrayList<>();
-		for (String s : splitOn(classSig.substring(i))) {
+		for (String s : splitOn(classSig.substring(i), Arrays.asList(';'))) {
 			superTypes.add(parseClassTypeSignature(s));
 		}
 		return new ClassSignatureParseResult(typeParameters, superTypes);
 	}
 
-	private static Iterable<String> splitOn(String str) {
+	private static Iterable<String> splitOn(String str, Collection<Character> stop) {
 		List<String> ls = new ArrayList<>();
 		int i = 0, start = 0, c = 0;
 		while (i < str.length()) {
@@ -190,7 +192,7 @@ class TypeParser {
 				c++;
 			} else if (x == '>') {
 				c--;
-			} else if (x == ';' && c == 0) {
+			} else if (stop.contains(x) && c == 0) {
 				ls.add(str.substring(start, i));
 				start = i;
 			}
