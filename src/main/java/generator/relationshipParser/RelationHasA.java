@@ -9,10 +9,20 @@ public class RelationHasA implements IRelationInfo {
         this.count = Math.abs(count);
     }
 
-    public boolean isMany() {
+    /**
+     * Returns true if this is a one-to-many relationship.
+     *
+     * @return true if it is a one-to-many relationship.
+     */
+    boolean isMany() {
         return this.many;
     }
 
+    /**
+     * Returns the exact cardinality of this relationship.
+     *
+     * @return Integer of the cardinality.
+     */
     public int getCount() {
         return this.count;
     }

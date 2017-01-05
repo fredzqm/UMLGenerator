@@ -7,7 +7,7 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
         this.decorated = rel;
     }
 
-    public IRelationInfo getDecorated() {
+    IRelationInfo getDecorated() {
         return decorated;
     }
 

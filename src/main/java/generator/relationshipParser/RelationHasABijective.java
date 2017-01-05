@@ -9,11 +9,11 @@ public class RelationHasABijective implements IRelationInfo {
         this.b = bRel;
     }
 
-    public RelationHasA getForward() {
+    RelationHasA getForward() {
         return a;
     }
 
-    public RelationHasA getBackward() {
+    RelationHasA getBackward() {
         return b;
     }
 }
