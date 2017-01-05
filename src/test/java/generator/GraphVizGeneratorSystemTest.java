@@ -3,6 +3,7 @@ package generator;
 import config.Configuration;
 import dummy.GenDummyClass;
 import dummy.RelDummyManyClass;
+import generator.relationshipParser.Relation;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,20 +58,20 @@ public class GraphVizGeneratorSystemTest {
         String actual = generator.generate(systemModel);
 
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
-        assertTrue(actual.contains("node [shape=record];"));
-        assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
+        assertTrue("Missing nodesep.", actual.contains("nodesep=1.0;"));
+        assertTrue("Missing node shape.", actual.contains("node [shape=record];"));
+        assertTrue("Missing rankdir.", actual.contains("rankdir=BT"));
+        assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
-        assertTrue(actual.contains(expectedSuperClass));
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=\"onormal\" style=\"\" ];", dummyClassName);
+        assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
-        assertTrue(actual.contains(expectedDependencies));
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+        assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
-        // Count how many relations there are.
+        // Check expected fields and methods.
         String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
                 "- privateString : java.lang.String", "+ publicInt : int"};
         String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
@@ -80,10 +81,10 @@ public class GraphVizGeneratorSystemTest {
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
         // Test if it has the Fields viewable in the class file.
-        expectedFieldStream.forEach((field) -> assertTrue(actual.contains(field)));
+        expectedFieldStream.forEach((field) -> assertTrue(String.format("Missing expected field: %s", field), actual.contains(field)));
 
         // Test if it has the Methods viewable in the class file.
-        expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
+        expectedMethodStream.forEach((method) -> assertTrue(String.format("Missing expected method: %s", method), actual.contains(method)));
     }
 
     @Test
@@ -102,18 +103,18 @@ public class GraphVizGeneratorSystemTest {
         String actual = generator.generate(systemModel);
 
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
-        assertTrue(actual.contains("node [shape=record];"));
-        assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
+        assertTrue("Missing nodesep.", actual.contains("nodesep=1.0;"));
+        assertTrue("Missing node shape.", actual.contains("node [shape=record];"));
+        assertTrue("Missing rankdir.", actual.contains("rankdir=BT"));
+        assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
-        assertTrue(actual.contains(expectedSuperClass));
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=\"onormal\" style=\"\" ];", dummyClassName);
+        assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
-        assertTrue(actual.contains(expectedDependencies));
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+        assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
         String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
@@ -122,10 +123,10 @@ public class GraphVizGeneratorSystemTest {
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
         // Test if it has the Fields viewable in the class file.
-        expectedFieldStream.forEach((field) -> assertTrue(actual.contains(field)));
+        expectedFieldStream.forEach((field) -> assertTrue(String.format("Missing expected field: %s", field), actual.contains(field)));
 
         // Test if it has the Methods viewable in the class file.
-        expectedMethodStream.forEach((method) -> assertTrue(actual.contains(method)));
+        expectedMethodStream.forEach((method) -> assertTrue(String.format("Missing expected method: %s", method), actual.contains(method)));
     }
 
     @Test
@@ -166,10 +167,23 @@ public class GraphVizGeneratorSystemTest {
 
         IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel);
+        // System Model Verification.
+        Iterable<Relation> relations = systemModel.getRelations();
+        boolean hasExpectedDependency1 = false;
+        boolean hasExpectedDependency2 = false;
+        for (Relation relation : relations) {
+            if (relation.getFrom().equals("dummy.RelDummyManyClass") && relation.getTo().equals("dummy.RelOtherDummyClass")) {
+                hasExpectedDependency1 = true;
+            } else if (relation.getFrom().equals("dummy.RelDummyManyClass") && relation.getTo().equals("dummy.RelDummyClass")) {
+                hasExpectedDependency2 = true;
+            }
+        }
+        assertTrue("Missing expected array dependency", hasExpectedDependency1);
+        assertTrue("Missing expected generic dependency", hasExpectedDependency2);
 
+        String actual = generator.generate(systemModel);
         String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\" headlabel=\"1..*\" ];";
-        assertTrue(actual.contains(expectedDependencyCardinality));
+        assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 
     /**
@@ -185,7 +199,7 @@ public class GraphVizGeneratorSystemTest {
         try {
             runner.execute(graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
-            assertTrue(file.exists());
+            assertTrue("Unable to detect output file", file.exists());
         } catch (Exception e) {
             System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
             fail("[ ERROR ]: An Exception has occurred!\n" + e.getMessage());

@@ -16,9 +16,14 @@ public class RelDummyManyClass {
     }
 
     private void printPrivateString() {
-        List<RelOtherDummyClass> manyDependencies = new ArrayList<>();
+        // Method makes internal use of a array of RelOtherDummyClass
+        RelOtherDummyClass[] manyDependencies = new RelOtherDummyClass[10];
+
+        // Internal use of a generic.
+        List<RelDummyClass> genericManyDependecies = new ArrayList<>();
     }
 
+    // Method that returns RelOtherDummyClass
     public RelOtherDummyClass getPublicString() {
         return new RelOtherDummyClass(2);
     }
