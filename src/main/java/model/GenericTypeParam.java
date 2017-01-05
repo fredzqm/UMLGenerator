@@ -39,6 +39,11 @@ class GenericTypeParam implements TypeModel {
 	}
 
 	@Override
+	public String toString() {
+		return this.key + " : " + boundSuperTypes;
+	}
+
+	@Override
 	public Iterable<TypeModel> getSuperTypes() {
 		if (boundSuperTypes.isEmpty())
 			return Arrays.asList(ASMParser.getObject());
@@ -47,6 +52,9 @@ class GenericTypeParam implements TypeModel {
 
 	@Override
 	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		if (!paramMap.containsKey(key)) {
+			throw new RuntimeException(paramMap + " does not contain " + key);
+		}
 		if (paramMap.get(key) == this) {
 			// this is in the params list, modify in place
 			ListIterator<TypeModel> itr = boundSuperTypes.listIterator();
@@ -56,11 +64,8 @@ class GenericTypeParam implements TypeModel {
 			}
 			return this;
 		} else {
-			// this is not in the params list, a place holder to represent
-			List<TypeModel> ls = new ArrayList<>();
-			for (TypeModel t : boundSuperTypes)
-				ls.add(t.replaceTypeVar(paramMap));
-			return new GenericTypeParam(key, ls);
+			// this is not in the params list, a place holder to representin
+			return paramMap.get(key);
 		}
 	}
 

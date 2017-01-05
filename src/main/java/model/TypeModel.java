@@ -49,4 +49,21 @@ interface TypeModel {
 	default TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
 		return this;
 	}
+
+	/**
+	 * The most strict version of clazz that it can be assigned to
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	default TypeModel assignTo(ClassModel clazz) {
+		if (this == clazz)
+			return clazz;
+		for (TypeModel sup : getSuperTypes()) {
+			TypeModel t = sup.assignTo(clazz);
+			if (t != null)
+				return t;
+		}
+		return null;
+	}
 }

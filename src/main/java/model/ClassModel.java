@@ -119,7 +119,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
 				genericParams = rs.getParamsList();
 				superTypes = rs.getSuperTypes();
-				
+
 				// replace GenericTypeVarPlaceHolder with GenericTypeParams
 				Map<String, GenericTypeParam> paramMap = getParamsMap();
 				for (GenericTypeParam t : genericParams) {
@@ -184,7 +184,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 			for (FieldModel field : getFields()) {
 				TypeModel hasType = field.getType();
 				ClassModel hasClass = hasType.getClassModel();
-				// TypeModel assignableTo = hasType.assignTo(iterable);
+				TypeModel assignableTo = hasType.assignTo(iterable);
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
 						hasARel.put(hasClass, hasARel.get(hasClass) + 1);

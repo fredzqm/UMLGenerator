@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -37,7 +38,8 @@ class GenericTypeVarPlaceHolder implements TypeModel {
 
 	@Override
 	public Iterable<TypeModel> getSuperTypes() {
-		throw new RuntimeException();
+		System.err.println("GenericTypeVar does not know its super types");
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override

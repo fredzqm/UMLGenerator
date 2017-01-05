@@ -65,4 +65,12 @@ class ArrayTypeModel implements TypeModel {
 	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
 		return new ArrayTypeModel(arrayType.replaceTypeVar(paramMap), dimension);
 	}
+
+	@Override
+	public TypeModel assignTo(ClassModel clazz) {
+		TypeModel t = arrayType.assignTo(clazz);
+		if (t != null)
+			return new ArrayTypeModel(t, dimension);
+		return null;
+	}
 }

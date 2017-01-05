@@ -77,4 +77,5 @@ class GenericTypeArg implements TypeModel {
 			return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), null);
 		return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), upperBound.replaceTypeVar(paramMap));
 	}
+
 }
