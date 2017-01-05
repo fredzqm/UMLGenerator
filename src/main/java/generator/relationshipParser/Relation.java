@@ -14,24 +14,30 @@ public final class Relation {
     }
 
     /**
-     * @return the name of class points to
+     * Returns the name of the class that it points from.
+     *
+     * @return String of the Class name this relationship is pointing from.
      */
     public String getFrom() {
-        return classPair.getFrom();
+        return this.classPair.getFrom();
     }
 
     /**
-     * @return the name of class from
+     * Returns the name of the class it is pointing to.
+     *
+     * @return String of the Class name this relationship is pointing to.
      */
     public String getTo() {
-        return classPair.getTo();
+        return this.classPair.getTo();
     }
 
     /**
-     * @return
+     * Returns the Relationship's Info.
+     *
+     * @return Relationship's Info.
      */
     public IRelationInfo getInfo() {
-        return info;
+        return this.info;
     }
 
 }

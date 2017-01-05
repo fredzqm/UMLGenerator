@@ -4,26 +4,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractParseGuide implements IParseGuide {
-    private Map<Class<?>, IParseGuide> map = new HashMap<>();
+    private Map<Class<?>, IParseGuide> parseMap = new HashMap<>();
 
     AbstractParseGuide() {
-        this.map = new HashMap<>();
+        this.parseMap = new HashMap<>();
         initializeMap();
     }
 
     protected void map(Class<?> relClass, IParseGuide guide) {
-        this.map.put(relClass, guide);
+        this.parseMap.put(relClass, guide);
     }
 
+    /**
+     * Initializes the ParseMap.
+     *
+     */
     public abstract void initializeMap();
 
     @Override
     public String getEdgeStyle(IRelationInfo edge) {
         Class<?> edgeClass = edge.getClass();
-        if (map.containsKey(edgeClass)) {
-            return map.get(edgeClass).getEdgeStyle(edge);
+        if (parseMap.containsKey(edgeClass)) {
+            return parseMap.get(edgeClass).getEdgeStyle(edge);
         }
         return "";
     }
-
 }

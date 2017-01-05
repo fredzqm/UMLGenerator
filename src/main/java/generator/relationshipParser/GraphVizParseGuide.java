@@ -1,16 +1,16 @@
 package generator.relationshipParser;
 
-public class ParseGuide extends AbstractParseGuide {
+public class GraphVizParseGuide extends AbstractParseGuide {
 
     @Override
     public void initializeMap() {
         // Call map METHOD.
-        map(ReleationBijectiveDecorator.class, new BidirectionRelParser());
-        map(RelationExtendsClass.class, new GraphVizSuperClassRelParser());
+        map(ReleationBijectiveDecorator.class, new GraphVizBiDirectionRelationshipParser());
+        map(RelationExtendsClass.class, new GraphVizSuperClassRelationshipParser());
         map(RelationImplement.class, new GraphVizInterfaceParser());
-        map(RelationHasA.class, new GraphVizHasRelParser());
-        map(RelationDependsOn.class, new GraphVizDependsOnRelParser());
-        map(RelationHasABijective.class, new GraphVizBiHasAParser());
+        map(RelationHasA.class, new GraphVizHasRelationshipParser());
+        map(RelationDependsOn.class, new GraphVizDependsOnRelationshipParser());
+        map(RelationHasABijective.class, new GraphVizHasABijectiveParser());
     }
 
     /**
@@ -18,7 +18,7 @@ public class ParseGuide extends AbstractParseGuide {
      * <p>
      * Created by lamd on 12/14/2016.
      */
-    class GraphVizDependsOnRelParser implements IParseGuide {
+    class GraphVizDependsOnRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             return "arrowhead=vee style=dashed ";
@@ -30,7 +30,7 @@ public class ParseGuide extends AbstractParseGuide {
      * <p>
      * Created by lamd on 12/14/2016.
      */
-    class GraphVizHasRelParser implements IParseGuide {
+    class GraphVizHasRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             RelationHasA hasARelation = (RelationHasA) info;
@@ -44,7 +44,7 @@ public class ParseGuide extends AbstractParseGuide {
         }
     }
 
-    public class GraphVizBiHasAParser implements IParseGuide {
+    public class GraphVizHasABijectiveParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             RelationHasA forward = ((RelationHasABijective) info).getForward();
@@ -63,11 +63,15 @@ public class ParseGuide extends AbstractParseGuide {
         }
     }
 
-    public class BidirectionRelParser implements IParseGuide {
+    /**
+     *
+     *
+     */
+    public class GraphVizBiDirectionRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             ReleationBijectiveDecorator rel = (ReleationBijectiveDecorator) info;
-            return ParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee style=\"\" dir=both ";
+            return GraphVizParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee style=\"\" dir=both ";
         }
 
     }
@@ -89,7 +93,7 @@ public class ParseGuide extends AbstractParseGuide {
      * <p>
      * Created by lamd on 12/14/2016.
      */
-    public class GraphVizSuperClassRelParser implements IParseGuide {
+    public class GraphVizSuperClassRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             return "arrowhead=onormal style=\"\" ";

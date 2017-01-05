@@ -28,7 +28,7 @@ public final class ClassPair {
 
     @Override
     public int hashCode() {
-        return from.hashCode() + to.hashCode() * 127;
+        return this.from.hashCode() + this.to.hashCode() * 127;
     }
 
     @Override

@@ -4,7 +4,7 @@ import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 import generator.relationshipParser.IParseGuide;
-import generator.relationshipParser.ParseGuide;
+import generator.relationshipParser.GraphVizParseGuide;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -29,7 +29,7 @@ public class GraphVizGenerator extends AbstractGenerator {
 
     @Override
     public IParseGuide createParseGuide(IGeneratorConfiguration config) {
-        return new ParseGuide();
+        return new GraphVizParseGuide();
     }
 
 
