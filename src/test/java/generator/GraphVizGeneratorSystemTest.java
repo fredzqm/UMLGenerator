@@ -171,6 +171,7 @@ public class GraphVizGeneratorSystemTest {
 
         IGenerator generator = new GraphVizGenerator(config);
 
+        // System Model Verification.
         Iterable<Relation> relations = systemModel.getRelations();
         boolean hasExpectedDependency1 = false;
         boolean hasExpectedDependency2 = false;
