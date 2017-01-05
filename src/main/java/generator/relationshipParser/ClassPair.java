@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 /**
  * This is an immutable class representing a pair of class.

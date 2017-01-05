@@ -2,13 +2,13 @@ package analyzer;
 
 import generator.ISystemModel;
 import generator.classParser.IClassModel;
-import generator.relParser.RelationHasABijective;
-import generator.relParser.ClassPair;
-import generator.relParser.IRelationInfo;
-import generator.relParser.Relation;
-import generator.relParser.ReleationBijectiveDecorator;
-import generator.relParser.RelationDependsOn;
-import generator.relParser.RelationHasA;
+import generator.relationshipParser.RelationHasABijective;
+import generator.relationshipParser.ClassPair;
+import generator.relationshipParser.IRelationInfo;
+import generator.relationshipParser.Relation;
+import generator.relationshipParser.ReleationBijectiveDecorator;
+import generator.relationshipParser.RelationDependsOn;
+import generator.relationshipParser.RelationHasA;
 
 import java.util.ArrayList;
 import java.util.Collections;

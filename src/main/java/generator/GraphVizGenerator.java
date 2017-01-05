@@ -3,8 +3,8 @@ package generator;
 import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relParser.IParseGuide;
-import generator.relParser.ParseGuide;
+import generator.relationshipParser.IParseGuide;
+import generator.relationshipParser.ParseGuide;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.

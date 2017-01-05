@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 public class RelationHasABijective implements IRelationInfo {
 

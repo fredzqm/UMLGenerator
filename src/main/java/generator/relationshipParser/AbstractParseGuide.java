@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 import java.util.HashMap;
 import java.util.Map;

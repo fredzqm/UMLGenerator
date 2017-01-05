@@ -2,7 +2,7 @@ package generator;
 
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relParser.IParseGuide;
+import generator.relationshipParser.IParseGuide;
 
 /**
  * An abstract class for Generators.

@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 /**
  * An Interface for a ParseGuide.

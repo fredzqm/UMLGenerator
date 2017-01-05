@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 public final class Relation {
     private final ClassPair classPair;

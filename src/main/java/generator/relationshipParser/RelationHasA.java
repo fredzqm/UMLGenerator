@@ -1,4 +1,4 @@
-package generator.relParser;
+package generator.relationshipParser;
 
 public class RelationHasA implements IRelationInfo {
     private final boolean many;
