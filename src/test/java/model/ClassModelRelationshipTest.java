@@ -22,7 +22,7 @@ public class ClassModelRelationshipTest {
 
         Map<ClassModel, Integer> x = dummyClass.getHasRelation();
         assertEquals(1, x.size());
-        assertEquals(2, (int) x.get(otherDummyClass));
+        assertEquals(3, (int) x.get(otherDummyClass));
     }
 
     @Test
