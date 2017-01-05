@@ -10,5 +10,10 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
     IRelationInfo getDecorated() {
         return decorated;
     }
+    
+	@Override
+	public String toString() {
+		return "bir-" + decorated.toString();
+	}
 
 }

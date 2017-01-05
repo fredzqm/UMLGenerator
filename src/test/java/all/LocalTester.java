@@ -10,7 +10,6 @@ import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import utility.Modifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +49,9 @@ public class LocalTester {
 
 		IGenerator generator = new GraphVizGenerator(config);
 		IAnalyzer analyzer = new Analyzer();
-//		systemModel = analyzer.analyze(systemModel);
+		systemModel = analyzer.analyze(systemModel);
 
 		String actual = generator.generate(systemModel);
-
 		internalRunner(config, actual);
 	}
 

@@ -83,7 +83,7 @@ public class AnalyzedSystemModel implements ISystemModel {
 					}
 				}
 				for (IRelationInfo bRel : b)
-					relations.add(new Relation(next, bRel));
+					relations.add(new Relation(reverse, bRel));
 				map.remove(reverse);
 			}
 			for (IRelationInfo aRel : a)
