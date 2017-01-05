@@ -180,12 +180,18 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
 			hasARel = new HashMap<>();
+			Set<ClassModel> hasMany = new HashSet<>();
 			ClassModel iterable = ASMParser.getClassByName("java.lang.Iterable");
 			for (FieldModel field : getFields()) {
 				TypeModel hasType = field.getType();
 				ClassModel hasClass = hasType.getClassModel();
 				TypeModel assignableTo = hasType.assignTo(iterable);
-				if (hasClass != null) {
+				if (assignableTo != null && assignableTo instanceof ParametizedClassModel) {
+					ParametizedClassModel iterableSuperType = (ParametizedClassModel) assignableTo;
+					ClassModel hasManyClass = iterableSuperType.getGenericArg(0).getClassModel();
+					if (hasManyClass != null)
+						hasMany.add(hasManyClass);
+				} else if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
 						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
 					} else {
@@ -193,8 +199,16 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 					}
 				}
 			}
+			for (ClassModel c : hasMany) {
+				if (hasARel.containsKey(c)) {
+					hasARel.put(c, -hasARel.get(c));
+				} else {
+					hasARel.put(c, 0);
+				}
+			}
 		}
 		return hasARel;
+
 	}
 
 	public Collection<ClassModel> getDependsRelation() {
