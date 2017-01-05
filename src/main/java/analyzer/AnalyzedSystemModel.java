@@ -42,7 +42,7 @@ public class AnalyzedSystemModel implements ISystemModel {
 			if (map.containsKey(pair)) {
 				map.get(pair).add(info);
 			} else {
-				List<IRelationInfo> ls = new LinkedList<>();
+				List<IRelationInfo> ls = pair.isLoop() ? new ArrayList<>() : new LinkedList<>();
 				ls.add(info);
 				map.put(pair, ls);
 			}
@@ -51,38 +51,51 @@ public class AnalyzedSystemModel implements ISystemModel {
 		// go through the map merge or remove relation according to rules
 		while (!map.isEmpty()) {
 			ClassPair next = map.keySet().iterator().next();
-			ClassPair reverse = next.reverse();
 			List<IRelationInfo> a = map.get(next);
-			List<IRelationInfo> b = map.getOrDefault(reverse, Collections.EMPTY_LIST); // FIXME: Unchecked Assignment.
-
-			ListIterator<IRelationInfo> aitr = a.listIterator();
-			while (aitr.hasNext()) {
-				IRelationInfo aRel = aitr.next();
-				ListIterator<IRelationInfo> bitr = b.listIterator();
-				while (bitr.hasNext()) {
-					IRelationInfo bRel = bitr.next();
-					IRelationInfo rel = merge(aRel, bRel);
-					if (rel != null) {
-						aitr.remove();
-						bitr.remove();
-						relations.add(new Relation(next, rel));
+			if (next.isLoop()) {
+				for (int i = 0; i < a.size(); i++) {
+					for (int j = i + 1; j < a.size(); j++) {
+						IRelationInfo rel = merge(a.get(i), a.get(j));
+						if (rel != null) {
+							a.remove(j);
+							a.remove(i);
+							j -= 2;
+							i -= 1;
+							relations.add(new Relation(next, rel));
+						}
 					}
 				}
+			} else {
+				ClassPair reverse = next.reverse();
+				List<IRelationInfo> b = map.getOrDefault(reverse, Collections.EMPTY_LIST);
+				ListIterator<IRelationInfo> aitr = a.listIterator();
+				while (aitr.hasNext()) {
+					IRelationInfo aRel = aitr.next();
+					ListIterator<IRelationInfo> bitr = b.listIterator();
+					while (bitr.hasNext()) {
+						IRelationInfo bRel = bitr.next();
+						IRelationInfo rel = merge(aRel, bRel);
+						if (rel != null) {
+							aitr.remove();
+							bitr.remove();
+							relations.add(new Relation(next, rel));
+						}
+					}
+				}
+				for (IRelationInfo bRel : b)
+					relations.add(new Relation(next, bRel));
+				map.remove(reverse);
 			}
 			for (IRelationInfo aRel : a)
 				relations.add(new Relation(next, aRel));
-			for (IRelationInfo bRel : b)
-				relations.add(new Relation(next, bRel));
-
 			map.remove(next);
-			map.remove(reverse);
 		}
 		return relations;
 	}
 
 	private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
 		if (aRel.getClass() == bRel.getClass()) {
-			if (aRel instanceof	RelationDependsOn) {
+			if (aRel instanceof RelationDependsOn) {
 				return new ReleationBijectiveDecorator(aRel);
 			} else if (aRel instanceof RelationHasA) {
 				return new RelationHasABijective((RelationHasA) aRel, (RelationHasA) bRel);
