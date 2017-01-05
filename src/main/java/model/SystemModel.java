@@ -1,7 +1,7 @@
 package model;
 
 import generator.ISystemModel;
-import generator.relParser.*;
+import generator.relationshipParser.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

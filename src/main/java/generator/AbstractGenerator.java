@@ -2,7 +2,8 @@ package generator;
 
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relParser.IParseGuide;
+import generator.relationshipParser.IParseGuide;
+import generator.relationshipParser.Relation;
 
 /**
  * An abstract class for Generators.
@@ -20,7 +21,7 @@ public abstract class AbstractGenerator implements IGenerator {
         this.parseGuide = createParseGuide(config);
     }
 
-	@Override
+    @Override
     public String generate(ISystemModel sm) {
         // DOT parent.
         Iterable<? extends IClassModel> classes = sm.getClasses();
@@ -33,23 +34,26 @@ public abstract class AbstractGenerator implements IGenerator {
         dotString.append(classModelParser.parse(classes)).append('\n');
 
         // Parse each relationship.
-        sm.getRelations().forEach(relation -> {
-            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), parseGuide.getEdgeStyle(relation.getInfo())));
+        Iterable<Relation> relations = sm.getRelations();
+        relations.forEach(relation -> {
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), this.parseGuide.getEdgeStyle(relation.getInfo())));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
     }
 
     /**
+     * Returns the String of the Basic Configuration.
+     *
      * @param config
-     * @return the basic configuration before all everything else
+     * @return String of the Basic Configuration
      */
     public abstract String createBasicConfiguration(IGeneratorConfiguration config);
 
     /**
      * Returns the class parser.
      *
-     * @return ParseGuide of the Class.
+     * @return GraphVizParseGuide of the Class.
      */
     public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
 

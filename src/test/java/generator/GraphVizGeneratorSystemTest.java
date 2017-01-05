@@ -2,6 +2,7 @@ package generator;
 
 import config.Configuration;
 import dummy.GenDummyClass;
+import dummy.RelDummyManyClass;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-        
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -67,7 +68,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue(actual.contains(expectedDependencies));
 
         // Count how many relations there are.
@@ -101,7 +102,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-        
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -113,7 +114,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue(actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -151,6 +152,30 @@ public class GraphVizGeneratorSystemTest {
         internalRunner(config, graphVizString);
     }
 
+    @Test
+    public void graphVizManyNoFields() {
+        // Set up the system model and config.
+        ISystemModel systemModel = setupSystemModel();
+
+        // Set up config and generator.
+        Configuration config = Configuration.getInstance();
+        config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        config.setNodesep(1.0);
+        config.setRecursive(true);
+        config.setRankDir("BT");
+        config.setParseKey("default");
+        List<String> classList = new ArrayList<>();
+        classList.add(RelDummyManyClass.class.getPackage().getName() + "." + RelDummyManyClass.class.getName());
+        config.setClasses(classList);
+
+        IGenerator generator = new GraphVizGenerator(config);
+
+        String actual = generator.generate(systemModel);
+
+        String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\" headlabel=\"1..*\" ];";
+        assertTrue(actual.contains(expectedDependencyCardinality));
+    }
+
     /**
      * Interal Testing Runner method to call for actual output.
      *
@@ -160,7 +185,7 @@ public class GraphVizGeneratorSystemTest {
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner(config);
-        
+
         try {
             runner.execute(graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());

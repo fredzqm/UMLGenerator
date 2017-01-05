@@ -2,13 +2,13 @@ package analyzer;
 
 import generator.ISystemModel;
 import generator.classParser.IClassModel;
-import generator.relParser.RelationBidirHasA;
-import generator.relParser.ClassPair;
-import generator.relParser.IRelationInfo;
-import generator.relParser.Relation;
-import generator.relParser.RelationDecBidir;
-import generator.relParser.RelationDependsOn;
-import generator.relParser.RelationHasA;
+import generator.relationshipParser.RelationHasABijective;
+import generator.relationshipParser.ClassPair;
+import generator.relationshipParser.IRelationInfo;
+import generator.relationshipParser.Relation;
+import generator.relationshipParser.ReleationBijectiveDecorator;
+import generator.relationshipParser.RelationDependsOn;
+import generator.relationshipParser.RelationHasA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +53,7 @@ public class AnalyzedSystemModel implements ISystemModel {
 			ClassPair next = map.keySet().iterator().next();
 			ClassPair reverse = next.reverse();
 			List<IRelationInfo> a = map.get(next);
-			List<IRelationInfo> b = map.getOrDefault(reverse, Collections.EMPTY_LIST);
+			List<IRelationInfo> b = map.getOrDefault(reverse, Collections.EMPTY_LIST); // FIXME: Unchecked Assignment.
 
 			ListIterator<IRelationInfo> aitr = a.listIterator();
 			while (aitr.hasNext()) {
@@ -82,10 +82,10 @@ public class AnalyzedSystemModel implements ISystemModel {
 
 	private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
 		if (aRel.getClass() == bRel.getClass()) {
-			if (aRel.getClass() == RelationDependsOn.class) {
-				return new RelationDecBidir(aRel);
-			} else if (aRel.getClass() == RelationHasA.class) {
-				return new RelationBidirHasA((RelationHasA) aRel, (RelationHasA) bRel);
+			if (aRel instanceof	RelationDependsOn) {
+				return new ReleationBijectiveDecorator(aRel);
+			} else if (aRel instanceof RelationHasA) {
+				return new RelationHasABijective((RelationHasA) aRel, (RelationHasA) bRel);
 			}
 		}
 		return null;

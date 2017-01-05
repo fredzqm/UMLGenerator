@@ -55,22 +55,26 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
     }
 
     /**
-     * @param config
-     * @return the filter to decide whether or not to show a method
+     * Returns a Method Filter.
+     *
+     * @param config Generator Configuration.
+     * @return Filter for Methods.
      */
     public abstract IFilter<IMethodModel> createFieldMethodFilter(IGeneratorConfiguration config);
 
     /**
      * Returns a Method Parser.
      *
-     * @param config
+     * @param config Generator Configuration.
      * @return Method Parser.
      */
     public abstract IParser<IMethodModel> createMethodParser(IGeneratorConfiguration config);
 
     /**
-     * @param config
-     * @return the filter to determin whether or not to show a field
+     * Returns a Field Filter.
+     *
+     * @param config Generator Configuration.
+     * @return Filter for the Fields.
      */
     public abstract IFilter<IFieldModel> createFieldFilter(IGeneratorConfiguration config);
 

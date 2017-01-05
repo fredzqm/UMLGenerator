@@ -10,7 +10,6 @@ import utility.Modifier;
  * Edited by fineral on 12/13/2016.
  */
 public interface IGeneratorConfiguration {
-
     /**
      * Returns the Node Seperation.
      *
