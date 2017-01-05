@@ -1,6 +1,10 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -32,6 +36,32 @@ class GenericTypeParam implements TypeModel {
 	@Override
 	public String getName() {
 		return key;
+	}
+
+	@Override
+	public Iterable<TypeModel> getSuperTypes() {
+		if (boundSuperTypes.isEmpty())
+			return Arrays.asList(ASMParser.getObject());
+		return boundSuperTypes;
+	}
+
+	@Override
+	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		if (paramMap.get(key) == this) {
+			// this is in the params list, modify in place
+			ListIterator<TypeModel> itr = boundSuperTypes.listIterator();
+			while (itr.hasNext()) {
+				TypeModel t = itr.next();
+				itr.set(t.replaceTypeVar(paramMap));
+			}
+			return this;
+		} else {
+			// this is not in the params list, a place holder to represent
+			List<TypeModel> ls = new ArrayList<>();
+			for (TypeModel t : boundSuperTypes)
+				ls.add(t.replaceTypeVar(paramMap));
+			return new GenericTypeParam(key, ls);
+		}
 	}
 
 }

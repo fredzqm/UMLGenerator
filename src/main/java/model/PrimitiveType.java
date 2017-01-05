@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * representing any primitive type
  * 
@@ -47,6 +50,11 @@ enum PrimitiveType implements TypeModel {
 		default:
 			throw new RuntimeException(x + " Cannot represent a primitive type");
 		}
+	}
+
+	@Override
+	public Iterable<TypeModel> getSuperTypes() {
+		return Collections.EMPTY_LIST;
 	}
 
 }

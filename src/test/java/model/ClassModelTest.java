@@ -67,8 +67,7 @@ public class ClassModelTest {
 
 	@Test
 	public void testGetInterfaceLab_1_AmazonParser() {
-		String amazonQualifiedString = AmazonLineParser.class.getPackage().getName() + "."
-				+ AmazonLineParser.class.getSimpleName();
+		String amazonQualifiedString = AmazonLineParser.class.getName();
 		ClassModel model = ASMParser.getClassByName(amazonQualifiedString);
 		assertEquals(amazonQualifiedString, model.getName());
 
@@ -85,14 +84,14 @@ public class ClassModelTest {
 
 	@Test
 	public void testGetGenericNonGeneric() {
-		String dummy = Dummy.class.getPackage().getName() + "." + Dummy.class.getSimpleName();
+		String dummy = Dummy.class.getName();
 		ClassModel model = ASMParser.getClassByName(dummy);
 		assertEquals(dummy, model.getName());
 
 		List<GenericTypeParam> gls = model.getGenericList();
 		assertEquals(0, gls.size());
 	}
-	
+
 	@Test
 	public void testGetGeneric() {
 		String genericDummy = GenericDummyClass.class.getPackage().getName() + "."
@@ -106,22 +105,51 @@ public class ClassModelTest {
 		assertEquals("E", gene.getName());
 		assertEquals(ASMParser.getObject(), gene.getClassModel());
 	}
-	
+
 	@Test
 	public void testGetGeneric2() {
 		String genericDummy = GenericDummyClass2.class.getPackage().getName() + "."
 				+ GenericDummyClass2.class.getSimpleName();
 		ClassModel model = ASMParser.getClassByName(genericDummy);
 		assertEquals(genericDummy, model.getName());
-		
+
+		// generic list
 		List<GenericTypeParam> gls = model.getGenericList();
 		assertEquals(2, gls.size());
-		GenericTypeParam gene1 = gls.get(0);
-		assertEquals("A", gene1.getName());
-		assertEquals(ASMParser.getObject(), gene1.getClassModel());
-		
-		GenericTypeParam gene2 = gls.get(1);
-		assertEquals("E", gene2.getName());
-		assertEquals(ASMParser.getClassByName("java.util.Map"), gene2.getClassModel());
+		GenericTypeParam gene1A = gls.get(0);
+		assertEquals("A", gene1A.getName());
+		assertEquals(ASMParser.getObject(), gene1A.getClassModel());
+
+		GenericTypeParam gene2E = gls.get(1);
+		assertEquals("E", gene2E.getName());
+		TypeModel gene2Bound1 = gene2E.getBoundSuperTypes().get(0);
+		assertEquals(ParametizedClassModel.class, gene2Bound1.getClass());
+		assertEquals(ASMParser.getClassByName("java.util.Map"), gene2Bound1.getClassModel());
+		List<TypeModel> gene2Bound1Args = ((ParametizedClassModel) gene2Bound1).getGenericArgs();
+		assertEquals(Arrays.asList(gene1A, gene1A), gene2Bound1Args);
+
+		// super types
+		List<TypeModel> superTypeLs = model.getSuperTypes();
+		assertEquals(2, superTypeLs.size());
+		TypeModel superType1 = superTypeLs.get(0);
+		assertEquals(ClassModel.class, superType1.getClass());
+		assertEquals(ASMParser.getClassByName("java.util.Observable"), superType1.getClassModel());
+
+		TypeModel superType2 = superTypeLs.get(1);
+		assertEquals(ParametizedClassModel.class, superType2.getClass());
+		assertEquals(ASMParser.getClassByName("java.lang.Iterable"), superType2.getClassModel());
+		List<TypeModel> superType2Argss = ((ParametizedClassModel) superType2).getGenericArgs();
+		assertEquals(Arrays.asList(gene2E), superType2Argss);
+
+		// fields
+		TypeModel aType = model.getFieldByName("a").getFieldType();
+		assertEquals(gene1A, aType);
+		TypeModel arrayEType = model.getFieldByName("arrayE").getFieldType();
+		assertEquals(new ArrayTypeModel(gene2E, 1), arrayEType);
+		TypeModel listAType = model.getFieldByName("listA").getFieldType();
+		assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Arrays.asList(gene1A)), listAType);
+		TypeModel mapAtoEType = model.getFieldByName("mapAtoE").getFieldType();
+		assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.Map"), Arrays.asList(gene1A, gene2E)), mapAtoEType);
+
 	}
 }

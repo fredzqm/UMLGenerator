@@ -36,13 +36,15 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	private final String name;
 
 	private List<TypeModel> superTypes;
-	private List<GenericTypeParam> genericList;
+	private List<GenericTypeParam> genericParams;
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
 
 	private Map<ClassModel, Integer> hasARel;
 	private Collection<ClassModel> dependsOn;
+
+	private Map<String, GenericTypeParam> paramMap;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -88,16 +90,16 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	// ===================================================================
 
 	public List<GenericTypeParam> getGenericList() {
-		if (genericList == null) {
+		if (genericParams == null) {
 			getSuperTypes();
 		}
-		return genericList;
+		return genericParams;
 	}
 
 	public List<TypeModel> getSuperTypes() {
 		if (superTypes == null) {
 			if (asmClassNode.signature == null) {
-				genericList = Collections.EMPTY_LIST;
+				genericParams = Collections.EMPTY_LIST;
 				superTypes = new ArrayList<>();
 				// add super class
 				if (asmClassNode.superName == null) {
@@ -115,11 +117,32 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 				}
 			} else {
 				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
-				genericList = rs.getParamsList();
+				genericParams = rs.getParamsList();
 				superTypes = rs.getSuperTypes();
+				
+				// replace GenericTypeVarPlaceHolder with GenericTypeParams
+				Map<String, GenericTypeParam> paramMap = getParamsMap();
+				for (GenericTypeParam t : genericParams) {
+					t.replaceTypeVar(paramMap);
+				}
+				ListIterator<TypeModel> itr = superTypes.listIterator();
+				while (itr.hasNext()) {
+					TypeModel t = itr.next();
+					itr.set(t.replaceTypeVar(paramMap));
+				}
 			}
 		}
 		return superTypes;
+	}
+
+	Map<String, GenericTypeParam> getParamsMap() {
+		if (paramMap == null) {
+			paramMap = new HashMap<>();
+			for (GenericTypeParam p : getGenericList()) {
+				paramMap.put(p.getName(), p);
+			}
+		}
+		return paramMap;
 	}
 
 	public ClassModel getSuperClass() {
@@ -161,7 +184,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 			for (FieldModel field : getFields()) {
 				TypeModel hasType = field.getType();
 				ClassModel hasClass = hasType.getClassModel();
-//				TypeModel assignableTo = hasType.assignTo(iterable);
+				// TypeModel assignableTo = hasType.assignTo(iterable);
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
 						hasARel.put(hasClass, hasARel.get(hasClass) + 1);

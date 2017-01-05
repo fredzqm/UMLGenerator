@@ -1,6 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import utility.IMapper;
 
 /**
  * Representing the type in java programs
@@ -22,7 +26,7 @@ class ParametizedClassModel implements TypeModel {
 		return classModel;
 	}
 
-	public List<TypeModel> getGenericList() {
+	public List<TypeModel> getGenericArgs() {
 		return genericArguments;
 	}
 
@@ -49,4 +53,19 @@ class ParametizedClassModel implements TypeModel {
 		return getName();
 	}
 
+	@Override
+	public Iterable<TypeModel> getSuperTypes() {
+		IMapper<TypeModel, TypeModel> mapper = (x) -> {
+			return null;
+		};
+		return mapper.map(classModel.getSuperTypes());
+	}
+
+	@Override
+	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		List<TypeModel> ls = new ArrayList<>();
+		for (TypeModel t : genericArguments)
+			ls.add(t.replaceTypeVar(paramMap));
+		return new ParametizedClassModel(classModel, ls);
+	}
 }

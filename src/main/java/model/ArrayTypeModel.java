@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Map;
+
+import utility.IMapper;
+
 /**
  * A decorate class for array
  * 
@@ -45,9 +49,20 @@ class ArrayTypeModel implements TypeModel {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return dimension * 31 + arrayType.hashCode();
+	}
+
+	@Override
+	public Iterable<TypeModel> getSuperTypes() {
+		IMapper<TypeModel, TypeModel> mapper = (x) -> new ArrayTypeModel(x, dimension);
+		return mapper.map(arrayType.getSuperTypes());
+	}
+
+	@Override
+	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		return new ArrayTypeModel(arrayType.replaceTypeVar(paramMap), dimension);
 	}
 }

@@ -32,10 +32,12 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 		asmFieldNode = fieldNode;
 		modifier = Modifier.parse(asmFieldNode.access);
 		isFinal = Modifier.parseIsFinal(asmFieldNode.access);
-		if (asmFieldNode.signature != null)
-			fieldType = TypeParser.parseFieldTypeSignature(asmFieldNode.signature);
-		else
+		if (asmFieldNode.signature != null) {
+			TypeModel rawfieldType = TypeParser.parseFieldTypeSignature(asmFieldNode.signature);
+			fieldType = rawfieldType.replaceTypeVar(belongsTo.getParamsMap());
+		} else {
 			fieldType = TypeParser.parse(Type.getType(asmFieldNode.desc));
+		}
 	}
 
 	public String getName() {

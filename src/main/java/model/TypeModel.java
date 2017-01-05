@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 /**
  * Representing type model in general
  * 
@@ -30,41 +32,21 @@ interface TypeModel {
 		return 0;
 	}
 
-//	/**
-//	 * It would recursively check if this type can fit in x
-//	 * 
-//	 * @param b
-//	 * @return true if a variable of type b can be assigned to this type
-//	 */
-//	boolean assignable(TypeModel b);
-//
-//	
-//	static boolean assignable(TypeModel a, TypeModel b) {
-//		if (a == b)
-//			return true;
-//		if (a.getDimension() != b.getDimension())
-//			return false;
-//		ClassModel tc = a.getClassModel();
-//		ClassModel xc = b.getClassModel();
-//		if (tc == null) {
-//			if (xc != null)
-//				return false;
-//		} else {
-//			if (!tc.assignable(xc))
-//				return false;
-//		}
-//		return a.assignable(b);
-//	}
-//	
-//	 /**
-//	 * It would check if x is a super type of this and finds the most strict
-//	 * generic combination that is assignable from this.
-//	 *
-//	 * It can return an {@link ArrayTypeModel} if this is an array itself
-//	 * {@link ParametizedClassModel} if this is a parametized type
-//	 *
-//	 * @param x
-//	 * @return the most strict form of class x that is assignable from this
-//	 */
-//	 TypeModel assignTo(ClassModel clazz);
+	/**
+	 * 
+	 * @return the collection of types that this type can be directly assigned
+	 *         to
+	 */
+	Iterable<TypeModel> getSuperTypes();
+
+	/**
+	 * replace {@link GenericTypeVarPlaceHolder} with real type in the parameter
+	 * This method should be called once after generic types are first parsed
+	 * 
+	 * @param paramMap
+	 *            the parameter type map containing information about each type
+	 */
+	default TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		return this;
+	}
 }

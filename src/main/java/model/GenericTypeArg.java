@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -36,7 +38,7 @@ class GenericTypeArg implements TypeModel {
 		return null;
 	}
 
-	private static GenericTypeArg wildType = new GenericTypeArg(null, null);
+	private static GenericTypeArg wildType = getUpperBounded(null);
 
 	public static GenericTypeArg getWildType() {
 		return wildType;
@@ -62,5 +64,17 @@ class GenericTypeArg implements TypeModel {
 	@Override
 	public int hashCode() {
 		return (upperBound == null ? 0 : upperBound.hashCode() * 31) + lowerBound.hashCode();
+	}
+
+	@Override
+	public Iterable<TypeModel> getSuperTypes() {
+		return Arrays.asList(lowerBound);
+	}
+
+	@Override
+	public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		if (upperBound == null)
+			return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), null);
+		return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), upperBound.replaceTypeVar(paramMap));
 	}
 }

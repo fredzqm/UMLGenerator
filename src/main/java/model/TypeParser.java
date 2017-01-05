@@ -77,7 +77,7 @@ class TypeParser {
 		case 'L':
 			return parseClassTypeSignature(filedTypeSig);
 		case 'T':
-			return new GenericTypeVar(filedTypeSig.substring(1, filedTypeSig.length() - 1));
+			return new GenericTypeVarPlaceHolder(filedTypeSig.substring(1, filedTypeSig.length() - 1));
 		case '[':
 			int dim = 1;
 			while (dim < filedTypeSig.length()) {
