@@ -70,9 +70,8 @@ public class TypeParserTest {
 	}
 
 	public void assertParseGenericType(String arg, ClassModel lower, String name) {
-		GenericTypeModel x = TypeParser.parseTypeParam(arg);
+		GenericTypeParam x = TypeParser.parseTypeParam(arg);
 		assertEquals(lower, x.getClassModel());
-		assertNull(x.getUpperBound());
 		assertEquals(name, x.getName());
 	}
 
@@ -82,12 +81,11 @@ public class TypeParserTest {
 
 		ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
 		// generated List
-		List<GenericTypeParams> gls = rs.getParamsList();
+		List<GenericTypeParam> gls = rs.getParamsList();
 		assertEquals(1, gls.size());
-		GenericTypeParams gene = gls.get(0);
+		GenericTypeParam gene = gls.get(0);
 		assertEquals("L", gene.getName());
 		assertEquals(ASMParser.getClassByName("java.util.EventListener"), gene.getClassModel());
-		assertNull(gene.getUpperBound());
 		
 		// super type list
 		List<TypeModel> spls = rs.getSuperTypes();
@@ -100,17 +98,18 @@ public class TypeParserTest {
 
 		ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
 		// generated List
-		List<GenericTypeParams> gls = rs.getParamsList();
+		List<GenericTypeParam> gls = rs.getParamsList();
 		assertEquals(1, gls.size());
-		GenericTypeParams te1 = gls.get(0);
+		GenericTypeParam te1 = gls.get(0);
 		assertEquals("E", te1.getName());
-		assertNull(te1.getUpperBound());
 		
-		TypeModel comp = te1.getLowerBound();
-		assertEquals(ParametizedClassModel.class, comp.getClass());
-		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), comp.getClassModel());
+		List<TypeModel> compls = te1.getBoundSuperTypes();
+		assertEquals(1, compls.size());
+		TypeModel comp2 = compls.get(0);
+		assertEquals(ParametizedClassModel.class, comp2.getClass());
+		assertEquals(ASMParser.getClassByName("java.lang.Comparable"), comp2.getClassModel());
 		
-		List<TypeModel> compPals = ((ParametizedClassModel) comp).getGenericList();
+		List<TypeModel> compPals = ((ParametizedClassModel) comp2).getGenericList();
 		assertEquals(1, compPals.size());
 		TypeModel compPalsTE = compPals.get(0);
 		assertEquals(GenericTypeVar.class, compPalsTE.getClass());

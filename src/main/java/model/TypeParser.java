@@ -2,10 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.objectweb.asm.Type;
 
@@ -120,33 +117,38 @@ class TypeParser {
 		}
 	}
 
-	static List<TypeModel> parseTypeArgs(String paraLs) {
-		if (paraLs.charAt(0) != '<' || paraLs.charAt(paraLs.length() - 1) != '>')
-			throw new RuntimeException(paraLs + " is not a valid parameter list");
+	static List<TypeModel> parseTypeArgs(String argLs) {
+		if (argLs.charAt(0) != '<' || argLs.charAt(argLs.length() - 1) != '>')
+			throw new RuntimeException(argLs + " is not a valid argument list");
 		List<TypeModel> ret = new ArrayList<>();
-		for (String s : splitOn(paraLs.substring(1, paraLs.length() - 1))) {
+		for (String s : splitOn(argLs.substring(1, argLs.length() - 1))) {
 			ret.add(parseTypeArg(s));
 		}
 		return ret;
 	}
 
-	/**
-	 * 
-	 * @param arg
-	 *            the argument description string found in class or method's
-	 *            signature
-	 * @return the generic type model representing this
-	 */
-	static GenericTypeModel parseTypeParam(String arg) {
-		String[] sp = arg.split(":");
+	static GenericTypeParam parseTypeParam(String param) {
+		String[] sp = param.split(":");
 		String key = sp[0];
-		TypeModel type = (TypeModel) parseTypeArg(sp[sp.length - 1]);
-		return GenericTypeModel.getLowerBounded(type);
+		List<TypeModel> ls = new ArrayList<>();
+		for (int i = 1; i < sp.length; i++) {
+			if (sp[i].equals(""))
+				continue;
+			TypeModel c = parseClassTypeSignature(sp[i]);
+			if (c == ASMParser.getObject())
+				continue;
+			ls.add(c);
+		}
+		return new GenericTypeParam(key, ls);
 	}
 
-	static List<GenericTypeParams> parseTypeParams(String paramList) {
-		List<GenericTypeParams> ret = new ArrayList<>();
-		
+	static List<GenericTypeParam> parseTypeParams(String paramList) {
+		if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>')
+			throw new RuntimeException(paramList + " is not a valid parameter list");
+		List<GenericTypeParam> ret = new ArrayList<>();
+		for (String s : splitOn(paramList.substring(1, paramList.length() - 1))) {
+			ret.add(parseTypeParam(s));
+		}
 		return ret;
 	}
 
@@ -157,7 +159,7 @@ class TypeParser {
 	 * @return the list of generic parameter this class or method needs
 	 */
 	static ClassSignatureParseResult parseClassSignature(String signature) {
-		List<GenericTypeParams> typeParameters;
+		List<GenericTypeParam> typeParameters;
 		int i = 0;
 		if (signature.charAt(0) != '<') {
 			typeParameters = Collections.EMPTY_LIST;
@@ -208,15 +210,15 @@ class TypeParser {
 	}
 
 	public static class ClassSignatureParseResult {
-		private List<GenericTypeParams> typeParameters;
+		private List<GenericTypeParam> typeParameters;
 		private List<TypeModel> superTypes;
 
-		public ClassSignatureParseResult(List<GenericTypeParams> typeParameters, List<TypeModel> superTypes) {
+		public ClassSignatureParseResult(List<GenericTypeParam> typeParameters, List<TypeModel> superTypes) {
 			this.typeParameters = typeParameters;
 			this.superTypes = superTypes;
 		}
 
-		public List<GenericTypeParams> getParamsList() {
+		public List<GenericTypeParam> getParamsList() {
 			return typeParameters;
 		}
 

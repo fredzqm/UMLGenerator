@@ -41,7 +41,9 @@ enum PrimitiveType implements TypeModel {
 		case 'F':
 			return FLOAT;
 		case 'J':
-			return FLOAT;
+			return LONG;
+		case 'D':
+			return DOUBLE;
 		default:
 			throw new RuntimeException(x + " Cannot represent a primitive type");
 		}

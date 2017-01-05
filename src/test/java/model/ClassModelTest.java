@@ -89,7 +89,7 @@ public class ClassModelTest {
 		ClassModel model = ASMParser.getClassByName(dummy);
 		assertEquals(dummy, model.getName());
 
-		List<GenericTypeModel> gls = model.getGenericList();
+		List<GenericTypeParam> gls = model.getGenericList();
 		assertEquals(0, gls.size());
 	}
 	
@@ -100,12 +100,11 @@ public class ClassModelTest {
 		ClassModel model = ASMParser.getClassByName(genericDummy);
 		assertEquals(genericDummy, model.getName());
 
-		List<GenericTypeModel> gls = model.getGenericList();
+		List<GenericTypeParam> gls = model.getGenericList();
 		assertEquals(1, gls.size());
-		GenericTypeModel gene = gls.get(0);
+		GenericTypeParam gene = gls.get(0);
 		assertEquals("E", gene.getName());
 		assertEquals(ASMParser.getObject(), gene.getClassModel());
-		assertNull(gene.getUpperBound());
 	}
 	
 	@Test
@@ -115,16 +114,14 @@ public class ClassModelTest {
 		ClassModel model = ASMParser.getClassByName(genericDummy);
 		assertEquals(genericDummy, model.getName());
 		
-		List<GenericTypeModel> gls = model.getGenericList();
+		List<GenericTypeParam> gls = model.getGenericList();
 		assertEquals(2, gls.size());
-		GenericTypeModel gene1 = gls.get(0);
+		GenericTypeParam gene1 = gls.get(0);
 		assertEquals("A", gene1.getName());
 		assertEquals(ASMParser.getObject(), gene1.getClassModel());
-		assertNull(gene1.getUpperBound());
 		
-		GenericTypeModel gene2 = gls.get(1);
+		GenericTypeParam gene2 = gls.get(1);
 		assertEquals("E", gene2.getName());
 		assertEquals(ASMParser.getClassByName("java.util.Map"), gene2.getClassModel());
-		assertNull(gene2.getUpperBound());
 	}
 }

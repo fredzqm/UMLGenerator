@@ -36,7 +36,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	private final String name;
 
 	private List<TypeModel> superTypes;
-	private List<GenericTypeParams> genericList;
+	private List<GenericTypeParam> genericList;
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
@@ -87,7 +87,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	// ---------------- All the lazy initialized fields ------------------
 	// ===================================================================
 
-	public List<GenericTypeParams> getGenericList() {
+	public List<GenericTypeParam> getGenericList() {
 		if (genericList == null) {
 			getSuperTypes();
 		}
