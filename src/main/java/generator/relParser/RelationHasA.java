@@ -1,13 +1,11 @@
 package generator.relParser;
 
-public class RelationHasA extends Relation {
+public class RelationHasA implements IRelationInfo {
+    private final boolean many;
+    private final int count;
 
-    private boolean many;
-    private int count;
-
-    public RelationHasA(String from, String to, int count) {
-        super(from, to);
-        this.many = count <= 0;
+    public RelationHasA(int count) {
+        this.many = count < 1;
         this.count = Math.abs(count);
     }
 

@@ -10,9 +10,10 @@ public interface IParseGuide {
     /**
      * Returns the edge style.
      *
-     * @param edge
+     * @param info each edge may have totally different data structure to
+     *             represent specifications of this relation.
      * @return String describing the edge of this ParseGuide.
      */
-    String getEdgeStyle(IRelation edge);
+    String getEdgeStyle(IRelationInfo info);
 
 }

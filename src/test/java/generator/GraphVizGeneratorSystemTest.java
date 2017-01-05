@@ -55,7 +55,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-
+        
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -67,7 +67,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue(actual.contains(expectedDependencies));
 
         // Count how many relations there are.
@@ -101,7 +101,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-
+        
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -113,7 +113,7 @@ public class GraphVizGeneratorSystemTest {
         assertTrue(actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue(actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -160,7 +160,7 @@ public class GraphVizGeneratorSystemTest {
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner(config);
-
+        
         try {
             runner.execute(graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());

@@ -1,5 +1,6 @@
 package dummy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,6 @@ import java.util.List;
 public class RelDummyClass {
     public RelOtherDummyClass publicDummy;
     private RelOtherDummyClass privateDummy;
-    private RelOtherDummyClass manyDummies;
 
     public RelDummyClass(RelOtherDummyClass dummy) {
         this.privateDummy = dummy;
@@ -18,10 +18,11 @@ public class RelDummyClass {
     }
 
     private void printPrivateString() {
+//        List<RelOtherDummyClass> manyDependencies = new ArrayList<>();
     }
 
     public RelOtherDummyClass getPublicString() {
-        return this.publicDummy;
+        return new RelOtherDummyClass(2);
     }
 
     protected double someProtectedMethod() {

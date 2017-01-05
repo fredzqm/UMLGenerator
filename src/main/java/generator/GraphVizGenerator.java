@@ -3,10 +3,8 @@ package generator;
 import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relParser.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import generator.relParser.IParseGuide;
+import generator.relParser.ParseGuide;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -30,13 +28,9 @@ public class GraphVizGenerator extends AbstractGenerator {
     }
 
     @Override
-    public Map<Class<? extends Relation>, IParseGuide> defineEdgeFormat(IGeneratorConfiguration config) {
-        Map<Class<? extends Relation>, IParseGuide> map = new HashMap<>();
-        map.put(RelationExtendsClass.class, new GraphVizSuperClassRelParser());
-        map.put(RelationImplement.class, new GraphVizInterfaceParser());
-        map.put(RelationHasA.class, new GraphVizHasRelParser());
-        map.put(RelationDependsOn.class, new GraphVizDependsOnRelParser());
-        return map;
+    public IParseGuide createParseGuide(IGeneratorConfiguration config) {
+        return new ParseGuide();
     }
+
 
 }

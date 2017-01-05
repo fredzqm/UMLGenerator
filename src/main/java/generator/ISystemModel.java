@@ -22,4 +22,5 @@ public interface ISystemModel {
      * @return the list of relationships that should be shown in the graph
      */
     Iterable<Relation> getRelations();
+
 }
