@@ -13,7 +13,7 @@ public class TypeParserTest {
 
 	@Test
 	public void testParseClassTypeModel1() {
-		String internalName = "Ljava/lang/Object";
+		String internalName = "Ljava/lang/Object;";
 
 		TypeModel x = TypeParser.parseTypeArg(internalName);
 
@@ -23,7 +23,7 @@ public class TypeParserTest {
 
 	@Test
 	public void testParseClassTypeModel2() {
-		String internalName = "Ljava/util/EventListener";
+		String internalName = "Ljava/util/EventListener;";
 
 		TypeModel x = TypeParser.parseTypeArg(internalName);
 
@@ -33,7 +33,7 @@ public class TypeParserTest {
 
 	@Test
 	public void testParseClassTypeModelPlaceHolder() {
-		String internalName = "TE";
+		String internalName = "TE;";
 
 		TypeModel x = TypeParser.parseTypeArg(internalName);
 
@@ -44,7 +44,7 @@ public class TypeParserTest {
 
 	@Test
 	public void testParseClassTypeModelNested() {
-		String internalName = "Ljava/lang/Comparable<TE;>";
+		String internalName = "Ljava/lang/Comparable<TE;>;";
 
 		TypeModel x = TypeParser.parseTypeArg(internalName);
 
@@ -61,11 +61,11 @@ public class TypeParserTest {
 
 	@Test
 	public void testParseGenericType() {
-		assertParseGenericType("T:Ljava/lang/Object", ASMParser.getClassByName("java/lang/Object"), "T");
-		assertParseGenericType("P:Ljava/util/spi/LocaleServiceProvider",
+		assertParseGenericType("T:Ljava/lang/Object;", ASMParser.getClassByName("java/lang/Object"), "T");
+		assertParseGenericType("P:Ljava/util/spi/LocaleServiceProvider;",
 				ASMParser.getClassByName("java/util/spi/LocaleServiceProvider"), "P");
-		assertParseGenericType("L::Ljava/util/EventListener", ASMParser.getClassByName("java/util/EventListener"), "L");
-		assertParseGenericType("T::Lsun/reflect/generics/tree/Tree",
+		assertParseGenericType("L::Ljava/util/EventListener;", ASMParser.getClassByName("java/util/EventListener"), "L");
+		assertParseGenericType("T::Lsun/reflect/generics/tree/Tree;",
 				ASMParser.getClassByName("sun/reflect/generics/tree/Tree"), "T");
 	}
 

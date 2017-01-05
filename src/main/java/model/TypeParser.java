@@ -7,7 +7,11 @@ import java.util.List;
 import org.objectweb.asm.Type;
 
 /**
- * A factory method utility for type model
+ * A factory method utility for type model. It basically parses the signature
+ * according to jVM's definition. Each method corresponds to the a context free
+ * grammar in JVM's specification
+ * 
+ * Check Java Virtual Machine Specification for more details.
  * 
  * @author zhang
  *
@@ -55,65 +59,68 @@ class TypeParser {
 
 	/**
 	 * 
-	 * @param internalName
+	 * @param typeSig
 	 *            the internal name representing a type of a class
 	 * @return the corresponding class type model
 	 */
-	static TypeModel parseTypeSignature(String internalName) {
-		char x = internalName.charAt(0);
-		if (internalName.length() == 1) {
+	static TypeModel parseTypeSignature(String typeSig) {
+		char x = typeSig.charAt(0);
+		if (typeSig.length() == 1) {
 			return PrimitiveType.parseTypeModel(x);
 		}
-		return parseFieldTypeSignature(internalName);
+		return parseFieldTypeSignature(typeSig);
 	}
 
-	static TypeModel parseFieldTypeSignature(String internalName) {
-		char x = internalName.charAt(0);
+	static TypeModel parseFieldTypeSignature(String filedTypeSig) {
+		char x = filedTypeSig.charAt(0);
 		switch (x) {
 		case 'L':
-			return parseClassTypeSignature(internalName);
+			return parseClassTypeSignature(filedTypeSig);
 		case 'T':
-			return new GenericTypeVar(internalName.substring(1));
+			return new GenericTypeVar(filedTypeSig.substring(1, filedTypeSig.length() - 1));
 		case '[':
 			int dim = 1;
-			while (dim < internalName.length()) {
-				if (internalName.charAt(dim) != '[') {
-					return new ArrayTypeModel(parseTypeSignature(internalName.substring(dim)), dim);
+			while (dim < filedTypeSig.length()) {
+				if (filedTypeSig.charAt(dim) != '[') {
+					return new ArrayTypeModel(parseTypeSignature(filedTypeSig.substring(dim)), dim);
 				}
 				dim++;
 			}
 		default:
-			throw new RuntimeException(internalName + " is not a valid field type signature");
+			throw new RuntimeException(filedTypeSig + " is not a valid field type signature");
 		}
 	}
 
-	static TypeModel parseClassTypeSignature(String internalName) {
-		int index = internalName.indexOf('<');
+	static TypeModel parseClassTypeSignature(String classTypeSig) {
+		if (classTypeSig.charAt(classTypeSig.length() - 1) != ';') {
+			throw new RuntimeException("class type signature should end with ;   : " + classTypeSig);
+		}
+		int index = classTypeSig.indexOf('<');
 		if (index < 0) {
-			return ASMParser.getClassByName(internalName.substring(1));
+			return ASMParser.getClassByName(classTypeSig.substring(1, classTypeSig.length() - 1));
 		} else {
-			ClassModel bound = ASMParser.getClassByName(internalName.substring(1, index));
-			List<TypeModel> genericEnv = parseTypeArgs(internalName.substring(index));
+			ClassModel bound = ASMParser.getClassByName(classTypeSig.substring(1, index));
+			List<TypeModel> genericEnv = parseTypeArgs(classTypeSig.substring(index, classTypeSig.length() - 1));
 			return new ParametizedClassModel(bound, genericEnv);
 		}
 	}
 
 	/**
 	 * 
-	 * @param internalName
+	 * @param typeArg
 	 *            the internal name representing a type of a class
 	 * @return the corresponding class type model
 	 */
-	static TypeModel parseTypeArg(String internalName) {
-		char x = internalName.charAt(0);
+	static TypeModel parseTypeArg(String typeArg) {
+		char x = typeArg.charAt(0);
 		if (x == '*') {
 			return GenericTypeModel.getWildType();
 		} else if (x == '+') {
-			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(internalName.substring(1)));
+			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
 		} else if (x == '-') {
-			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(internalName.substring(1)));
+			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
 		} else {
-			return parseFieldTypeSignature(internalName);
+			return parseFieldTypeSignature(typeArg);
 		}
 	}
 
@@ -154,21 +161,21 @@ class TypeParser {
 
 	/**
 	 * 
-	 * @param signature
+	 * @param classSig
 	 *            of a class or a method
 	 * @return the list of generic parameter this class or method needs
 	 */
-	static ClassSignatureParseResult parseClassSignature(String signature) {
+	static ClassSignatureParseResult parseClassSignature(String classSig) {
 		List<GenericTypeParam> typeParameters;
 		int i = 0;
-		if (signature.charAt(0) != '<') {
+		if (classSig.charAt(0) != '<') {
 			typeParameters = Collections.EMPTY_LIST;
 		} else {
-			i = indexAfterClosing(signature, 0);
-			typeParameters = parseTypeParams(signature.substring(0, i));
+			i = indexAfterClosing(classSig, 0);
+			typeParameters = parseTypeParams(classSig.substring(0, i));
 		}
 		List<TypeModel> superTypes = new ArrayList<>();
-		for (String s : splitOn(signature.substring(i))) {
+		for (String s : splitOn(classSig.substring(i))) {
 			superTypes.add(parseClassTypeSignature(s));
 		}
 		return new ClassSignatureParseResult(typeParameters, superTypes);
@@ -184,7 +191,7 @@ class TypeParser {
 			} else if (x == '>') {
 				c--;
 			} else if (x == ';' && c == 0) {
-				ls.add(str.substring(start, i - 1));
+				ls.add(str.substring(start, i));
 				start = i;
 			}
 		}
