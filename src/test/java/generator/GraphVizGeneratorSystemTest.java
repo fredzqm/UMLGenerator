@@ -31,7 +31,7 @@ public class GraphVizGeneratorSystemTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
+    public String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
 
     private ISystemModel setupSystemModel() {
         Configuration config = Configuration.getInstance();
@@ -65,11 +65,11 @@ public class GraphVizGeneratorSystemTest {
         assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=\"onormal\" style=\"\" ];", dummyClassName);
         assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
@@ -111,11 +111,11 @@ public class GraphVizGeneratorSystemTest {
         assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=\"onormal\" style=\"\" ];", dummyClassName);
         assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
-        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=vee style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+        String expectedDependencies = String.format("\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -172,13 +172,17 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         Iterable<Relation> relations = systemModel.getRelations();
-        boolean hasExpectedDependency = false;
+        boolean hasExpectedDependency1 = false;
+        boolean hasExpectedDependency2 = false;
         for (Relation relation : relations) {
             if (relation.getFrom().equals("dummy.RelDummyManyClass") && relation.getTo().equals("dummy.RelOtherDummyClass")) {
-                hasExpectedDependency = true;
+                hasExpectedDependency1 = true;
+            } else if (relation.getFrom().equals("dummy.RelDummyManyClass") && relation.getTo().equals("dummy.RelDummyClass")) {
+                hasExpectedDependency2 = true;
             }
         }
-        assertTrue("Missing expected dependency that his not listed as a field", hasExpectedDependency);
+        assertTrue("Missing expected array dependency", hasExpectedDependency1);
+        assertTrue("Missing expected generic dependency", hasExpectedDependency2);
 
         String actual = generator.generate(systemModel);
         String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\" headlabel=\"1..*\" ];";
