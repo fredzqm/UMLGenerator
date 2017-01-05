@@ -10,6 +10,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import utility.ClassType;
+import utility.IFilter;
 import utility.IMapper;
 import utility.Modifier;
 
@@ -59,9 +60,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
 		this.classType = ClassType.parse(asmClassNode.access);
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
-		if (asmClassNode.signature != null) {
-			System.out.println(asmClassNode.signature);
-		}
 	}
 
 	public String getName() {
@@ -182,8 +180,9 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 			hasARel = new HashMap<>();
 			Set<ClassModel> hasMany = new HashSet<>();
 			ClassModel iterable = ASMParser.getClassByName("java.lang.Iterable");
-			for (FieldModel field : getFields()) {
-				TypeModel hasType = field.getType();
+			IFilter<FieldModel> filter = (f) -> !f.isStatic();
+			for (FieldModel field : filter.filter(getFields())) {
+				TypeModel hasType = field.getFieldType();
 				ClassModel hasClass = hasType.getClassModel();
 				TypeModel assignableTo = hasType.assignTo(iterable);
 				if (assignableTo != null && assignableTo instanceof ParametizedClassModel) {

@@ -50,7 +50,6 @@ public class GraphVizGeneratorSystemTest {
         Configuration config = Configuration.getInstance();
         config.setNodesep(1.0);
         config.setRankDir("BT");
-        config.setParseKey("default");
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator(config);
@@ -98,7 +97,6 @@ public class GraphVizGeneratorSystemTest {
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
-        config.setParseKey("default");
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
@@ -142,7 +140,6 @@ public class GraphVizGeneratorSystemTest {
         config.setOutputFormat("svg");
         config.setExecutablePath("dot");
         config.setRankDir("BT");
-        config.setParseKey("default");
         config.setOutputDirectory(directory.toString());
 
         // generate the string
@@ -163,7 +160,6 @@ public class GraphVizGeneratorSystemTest {
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
-        config.setParseKey("default");
         List<String> classList = new ArrayList<>();
         classList.add(RelDummyManyClass.class.getPackage().getName() + "." + RelDummyManyClass.class.getName());
         config.setClasses(classList);

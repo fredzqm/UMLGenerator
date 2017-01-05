@@ -20,6 +20,7 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 	private final Modifier modifier;
 	private final boolean isFinal;
 	private final TypeModel fieldType;
+	private final boolean isStatic;
 
 	/**
 	 * creates an FieldModel given the class it belongs to, and the asmFieldNode
@@ -32,6 +33,7 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 		asmFieldNode = fieldNode;
 		modifier = Modifier.parse(asmFieldNode.access);
 		isFinal = Modifier.parseIsFinal(asmFieldNode.access);
+		isStatic = Modifier.parseIsStatic(asmFieldNode.access);
 		if (asmFieldNode.signature != null) {
 			TypeModel rawfieldType = TypeParser.parseFieldTypeSignature(asmFieldNode.signature);
 			fieldType = rawfieldType.replaceTypeVar(belongsTo.getParamsMap());
@@ -42,10 +44,6 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 
 	public String getName() {
 		return asmFieldNode.name;
-	}
-
-	public TypeModel getType() {
-		return fieldType;
 	}
 
 	@Override
@@ -63,6 +61,10 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
 
 	public boolean isFinal() {
 		return isFinal;
+	}
+
+	public boolean isStatic() {
+		return isStatic;
 	}
 
 	public TypeModel getFieldType() {

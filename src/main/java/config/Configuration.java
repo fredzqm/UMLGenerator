@@ -24,7 +24,6 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
     private boolean isRecursive;
     private String rankDir;
     private String nodeStyle;
-    private String parserKey;
 
     public static Configuration getInstance() {
         Configuration conf = new Configuration();
@@ -34,7 +33,6 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
         conf.setClasses(new ArrayList<>());
         conf.setFilters(data -> true);
         conf.setNodeStyle("node [shape=record]");
-        conf.setParseKey("default");
         return conf;
     }
 
@@ -134,14 +132,5 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 
     public void setNodeStyle(String nodeStyle) {
         this.nodeStyle = nodeStyle;
-    }
-
-    @Override
-    public String getParseKey() {
-        return this.parserKey;
-    }
-
-    public void setParseKey(String parserKey) {
-        this.parserKey = parserKey;
     }
 }

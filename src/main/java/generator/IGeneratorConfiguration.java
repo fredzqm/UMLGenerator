@@ -39,10 +39,4 @@ public interface IGeneratorConfiguration {
      */
     String getNodeStyle();
 
-    /**
-     * Returns the parser key for generator to use.
-     *
-     * @return Parser key.
-     */
-    String getParseKey();
 }

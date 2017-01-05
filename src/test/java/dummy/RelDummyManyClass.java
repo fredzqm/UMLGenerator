@@ -9,7 +9,7 @@ import java.util.List;
  * Created by lamd on 12/12/2016.
  */
 public class RelDummyManyClass {
-	List<String> stringList;
+	List<Dummy> dummyList;
 	
     public void inputManyDependencies(List<RelOtherDummyClass> many) {
         ;
