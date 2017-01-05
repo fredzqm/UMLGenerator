@@ -36,7 +36,7 @@ public class ParseGuide extends AbstractParseGuide {
             RelationHasA hasARelation = (RelationHasA) info;
             StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
 
-            if (hasARelation.getCount() > 1) {
+            if (hasARelation.isMany()) {
                 edgeBuilder.append("taillabel=\"1..*\" ");
             }
 
@@ -50,12 +50,12 @@ public class ParseGuide extends AbstractParseGuide {
             RelationHasA forward = ((RelationHasABijective) info).getForward();
             StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" dir=both ");
 
-			if (forward.getCount() > 1) {
-				edgeBuilder.append("headlabel=\"1..*\" ");
-			}
+            if (forward.isMany()) {
+                edgeBuilder.append("headlabel=\"1..*\" ");
+            }
 
-			RelationHasA backward = ((RelationHasABijective) info).getBackward();
-			if (backward.getCount() > 1) {
+            RelationHasA backward = ((RelationHasABijective) info).getBackward();
+            if (backward.isMany()) {
                 edgeBuilder.append("taillabel=\"1..*\" ");
             }
 

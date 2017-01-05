@@ -5,7 +5,7 @@ public class RelationHasA implements IRelationInfo {
     private final int count;
 
     public RelationHasA(int count) {
-        this.many = count < 1;
+        this.many = count > 1;
         this.count = Math.abs(count);
     }
 
