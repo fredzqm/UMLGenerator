@@ -2,6 +2,8 @@ package generator;
 
 import config.Configuration;
 import dummy.GenDummyClass;
+import dummy.RelDummyManyClass;
+import dummy.RelOtherDummyClass;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -149,6 +151,30 @@ public class GraphVizGeneratorSystemTest {
         String graphVizString = generator.generate(systemModel);
 
         internalRunner(config, graphVizString);
+    }
+
+    @Test
+    public void graphVizManyNoFields() {
+        // Set up the system model and config.
+        ISystemModel systemModel = setupSystemModel();
+
+        // Set up config and generator.
+        Configuration config = Configuration.getInstance();
+        config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        config.setNodesep(1.0);
+        config.setRecursive(true);
+        config.setRankDir("BT");
+        config.setParseKey("default");
+        List<String> classList = new ArrayList<>();
+        classList.add(RelDummyManyClass.class.getPackage().getName() + "." + RelDummyManyClass.class.getName());
+        config.setClasses(classList);
+
+        IGenerator generator = new GraphVizGenerator(config);
+
+        String actual = generator.generate(systemModel);
+
+        String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\" headlabel=\"1..*\" ];";
+        assertTrue(actual.contains(expectedDependencyCardinality));
     }
 
     /**

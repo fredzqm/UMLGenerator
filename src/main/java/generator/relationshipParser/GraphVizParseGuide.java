@@ -21,7 +21,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
     class GraphVizDependsOnRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
-            return "arrowhead=vee style=dashed ";
+            return "arrowhead=\"vee\" style=dashed ";
         }
     }
 
@@ -34,7 +34,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             RelationHasA hasARelation = (RelationHasA) info;
-            StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" ");
+            StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
 
             if (hasARelation.isMany()) {
                 edgeBuilder.append("taillabel=\"1..*\" ");
@@ -48,7 +48,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             RelationHasA forward = ((RelationHasABijective) info).getForward();
-            StringBuilder edgeBuilder = new StringBuilder("arrowhead=vee style=\"\" dir=both ");
+            StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
 
             if (forward.isMany()) {
                 edgeBuilder.append("headlabel=\"1..*\" ");
@@ -71,7 +71,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             ReleationBijectiveDecorator rel = (ReleationBijectiveDecorator) info;
-            return GraphVizParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=vee style=\"\" dir=both ";
+            return GraphVizParseGuide.this.getEdgeStyle(rel.getDecorated()) + "arrowtail=\"vee\" style=\"\" dir=both ";
         }
 
     }
@@ -84,7 +84,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
     public class GraphVizInterfaceParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
-            return "arrowhead=onormal style=dashed ";
+            return "arrowhead=\"onormal\" style=dashed ";
         }
     }
 
@@ -96,7 +96,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
     public class GraphVizSuperClassRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
-            return "arrowhead=onormal style=\"\" ";
+            return "arrowhead=\"onormal\" style=\"\" ";
         }
     }
 }
