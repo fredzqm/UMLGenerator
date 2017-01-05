@@ -3,7 +3,6 @@ package generator;
 import config.Configuration;
 import dummy.GenDummyClass;
 import dummy.RelDummyManyClass;
-import dummy.RelOtherDummyClass;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,7 +56,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-        
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -103,7 +102,7 @@ public class GraphVizGeneratorSystemTest {
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
-        
+
         // Test if it has the basic DOT file styling.
         assertTrue(actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
@@ -186,7 +185,7 @@ public class GraphVizGeneratorSystemTest {
     private void internalRunner(Configuration config, String graphVizString) {
         // Create the runner
         IRunner runner = new GraphVizRunner(config);
-        
+
         try {
             runner.execute(graphVizString);
             File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
