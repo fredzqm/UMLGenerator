@@ -39,12 +39,8 @@ public abstract class AbstractGenerator implements IGenerator {
 
         // Parse each relationship.
         Iterable<Relation> relations = sm.getRelations();
-
         relations.forEach(relation -> {
             IParseGuide relParser = this.relationshipFormat.get(relation.getClass());
-
-//            dotString.append(String.format("\tedge [%s];\n\t\"%s\" -> \"%s\";\n\n", relParser.getEdgeStyle(relation),
-//                    relation.getFrom(), relation.getTo()));
             dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), relParser.getEdgeStyle(relation)));
         });
 
@@ -52,8 +48,10 @@ public abstract class AbstractGenerator implements IGenerator {
     }
 
     /**
+     * Returns the String of the Basic Configuration.
+     *
      * @param config
-     * @return the basic configuration before all everything else
+     * @return String of the Basic Configuration
      */
     public abstract String createBasicConfiguration(IGeneratorConfiguration config);
 

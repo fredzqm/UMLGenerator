@@ -14,16 +14,16 @@ public class GraphVizHasRelParser implements IParseGuide {
             edgeBuilder.append("arrowtail=vee dir=both ");
         }
 
-        System.out.println(edge.getCardinalityFrom());
+        // Debug print.
+        System.out.println("From Cardinality: " + edge.getCardinalityFrom());
 
         if (edge.getCardinalityTo() > 0) {
-            edgeBuilder.append("headlabel=0..n ");
+            edgeBuilder.append("headlabel=0..* ");
         }
         if (edge.getCardinalityFrom() > 0) {
-            edgeBuilder.append("taillabel=0..n ");
+            edgeBuilder.append("taillabel=0..* ");
         }
 
         return edgeBuilder.toString();
     }
-
 }

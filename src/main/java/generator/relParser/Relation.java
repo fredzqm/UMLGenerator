@@ -1,13 +1,14 @@
 package generator.relParser;
 
 /**
- * Relation represet
+ * Abstract Class Representing a Relation.
  *
- * @author zhang
+ * @author zhang, lamd
  */
 public abstract class Relation implements IRelation, Comparable<IRelation> {
     private final String from;
     private final String to;
+
     private boolean isBijective;
     private int toCardinality;
     private int fromCardinality;
@@ -23,10 +24,10 @@ public abstract class Relation implements IRelation, Comparable<IRelation> {
     private static String getKey(IRelation x) {
         String fromName = x.getFrom();
         String toName = x.getTo();
-        if (fromName.compareTo(toName) < 0)
+        if (fromName.compareTo(toName) < 0) {
             return fromName + toName;
-        else
-            return toName + fromName;
+        }
+        return toName + fromName;
     }
 
     public void setBijective(boolean status) {
