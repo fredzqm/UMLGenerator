@@ -24,4 +24,13 @@ public class GenericTypeVar implements TypeModel {
 		return key;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof GenericTypeVar) {
+			GenericTypeVar o = (GenericTypeVar) obj;
+			return key.equals(o.key);
+		}
+		return false;
+	}
+
 }

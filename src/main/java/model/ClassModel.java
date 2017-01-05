@@ -117,23 +117,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
 				genericList = rs.getParamsList();
 				superTypes = rs.getSuperTypes();
-
-				// TOBE remoeved
-//				superTypes = new ArrayList<>();
-//				// add super class
-//				if (asmClassNode.superName == null) {
-//					superTypes.add(null);
-//				} else {
-//					ClassTypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
-//					superTypes.add(superClass);
-//				}
-//				// add interfaces
-//				List<String> ls = asmClassNode.interfaces;
-//				for (String s : ls) {
-//					ClassTypeModel m = ASMParser.getClassByName(s);
-//					if (m != null)
-//						superTypes.add(m);
-//				}
 			}
 		}
 		return superTypes;
@@ -174,8 +157,11 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	public Map<ClassModel, Integer> getHasRelation() {
 		if (hasARel == null) {
 			hasARel = new HashMap<>();
+			ClassModel iterable = ASMParser.getClassByName("java.lang.Iterable");
 			for (FieldModel field : getFields()) {
-				ClassModel hasClass = field.getType().getClassModel();
+				TypeModel hasType = field.getType();
+				ClassModel hasClass = hasType.getClassModel();
+//				TypeModel assignableTo = hasType.assignTo(iterable);
 				if (hasClass != null) {
 					if (hasARel.containsKey(hasClass)) {
 						hasARel.put(hasClass, hasARel.get(hasClass) + 1);

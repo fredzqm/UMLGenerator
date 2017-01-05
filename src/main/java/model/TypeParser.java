@@ -114,11 +114,11 @@ class TypeParser {
 	static TypeModel parseTypeArg(String typeArg) {
 		char x = typeArg.charAt(0);
 		if (x == '*') {
-			return GenericTypeModel.getWildType();
+			return GenericTypeArg.getWildType();
 		} else if (x == '+') {
-			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
+			return GenericTypeArg.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
 		} else if (x == '-') {
-			return GenericTypeModel.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
+			return GenericTypeArg.getLowerBounded(parseFieldTypeSignature(typeArg.substring(1)));
 		} else {
 			return parseFieldTypeSignature(typeArg);
 		}

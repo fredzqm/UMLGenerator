@@ -34,7 +34,7 @@ class ParametizedClassModel implements TypeModel {
 	public boolean equals(Object obj) {
 		if (obj instanceof ParametizedClassModel) {
 			ParametizedClassModel o = (ParametizedClassModel) obj;
-			return classModel == o.classModel;
+			return classModel == o.classModel && genericArguments.equals(o.genericArguments);
 		}
 		return false;
 	}
@@ -48,6 +48,5 @@ class ParametizedClassModel implements TypeModel {
 	public String toString() {
 		return getName();
 	}
-
 
 }

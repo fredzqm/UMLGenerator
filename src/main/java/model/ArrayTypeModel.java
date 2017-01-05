@@ -36,4 +36,18 @@ class ArrayTypeModel implements TypeModel {
 	public int getDimension() {
 		return dimension;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ArrayTypeModel) {
+			ArrayTypeModel o = (ArrayTypeModel) obj;
+			return dimension == o.dimension && arrayType.equals(o.arrayType);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return dimension * 31 + arrayType.hashCode();
+	}
 }
