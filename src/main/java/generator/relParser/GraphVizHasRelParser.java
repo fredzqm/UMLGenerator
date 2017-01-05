@@ -18,10 +18,10 @@ public class GraphVizHasRelParser implements IParseGuide {
         System.out.println("From Cardinality: " + edge.getCardinalityFrom());
 
         if (edge.getCardinalityTo() > 0) {
-            edgeBuilder.append("headlabel=0..* ");
+            edgeBuilder.append("headlabel=\"1..*\" ");
         }
         if (edge.getCardinalityFrom() > 0) {
-            edgeBuilder.append("taillabel=0..* ");
+            edgeBuilder.append("taillabel=\"1..*\" ");
         }
 
         return edgeBuilder.toString();
