@@ -3,6 +3,7 @@ package generator;
 import config.Configuration;
 import dummy.GenDummyClass;
 import dummy.RelDummyManyClass;
+import generator.relationshipParser.Relation;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class GraphVizGeneratorSystemTest {
         String actual = generator.generate(systemModel);
 
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
+        assertTrue("Missing nodesep.", actual.contains("nodesep=1.0;"));
         assertTrue(actual.contains("node [shape=record];"));
         assertTrue(actual.contains("rankdir=BT"));
         assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
@@ -104,10 +105,10 @@ public class GraphVizGeneratorSystemTest {
         String actual = generator.generate(systemModel);
 
         // Test if it has the basic DOT file styling.
-        assertTrue(actual.contains("nodesep=1.0;"));
-        assertTrue(actual.contains("node [shape=record];"));
-        assertTrue(actual.contains("rankdir=BT"));
-        assertTrue(actual.contains(String.format("\"%s\"", dummyClassName)));
+        assertTrue("Missing nodesep.", actual.contains("nodesep=1.0;"));
+        assertTrue("Missing node shape.", actual.contains("node [shape=record];"));
+        assertTrue("Missing rankdir.", actual.contains("rankdir=BT"));
+        assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
         String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [arrowhead=onormal style=\"\" ];", dummyClassName);
@@ -170,10 +171,18 @@ public class GraphVizGeneratorSystemTest {
 
         IGenerator generator = new GraphVizGenerator(config);
 
-        String actual = generator.generate(systemModel);
+        Iterable<Relation> relations = systemModel.getRelations();
+        boolean hasExpectedDependency = false;
+        for (Relation relation : relations) {
+            if (relation.getFrom().equals("dummy.RelDummyManyClass") && relation.getTo().equals("dummy.RelOtherDummyClass")) {
+                hasExpectedDependency = true;
+            }
+        }
+        assertTrue("Missing expected dependency that his not listed as a field", hasExpectedDependency);
 
+        String actual = generator.generate(systemModel);
         String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\" headlabel=\"1..*\" ];";
-        assertTrue(actual.contains(expectedDependencyCardinality));
+        assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 
     /**
