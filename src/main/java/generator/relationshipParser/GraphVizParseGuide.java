@@ -5,7 +5,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
     @Override
     public void initializeMap() {
         // Call map METHOD.
-        map(ReleationBijectiveDecorator.class, new GraphVizBiDirectionRelationshipParser());
+        map(ReleationBijectiveDecorator.class, new GraphVizBijectiveRelationshipParser());
         map(RelationExtendsClass.class, new GraphVizSuperClassRelationshipParser());
         map(RelationImplement.class, new GraphVizInterfaceParser());
         map(RelationHasA.class, new GraphVizHasRelationshipParser());
@@ -21,6 +21,8 @@ public class GraphVizParseGuide extends AbstractParseGuide {
     class GraphVizDependsOnRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
+            // TODO: Implement Cardinality.
+            RelationDependsOn dependsOnRelation = (RelationDependsOn) info;
             return "arrowhead=\"vee\" style=dashed ";
         }
     }
@@ -36,7 +38,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
             RelationHasA hasARelation = (RelationHasA) info;
             StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
 
-            if (hasARelation.isMany()) {
+            if (hasARelation.isMany() || hasARelation.getCount() > 1) {
                 edgeBuilder.append("taillabel=\"1..*\" ");
             }
 
@@ -50,12 +52,12 @@ public class GraphVizParseGuide extends AbstractParseGuide {
             RelationHasA forward = ((RelationHasABijective) info).getForward();
             StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
 
-            if (forward.isMany()) {
+            if (forward.isMany() || forward.getCount() > 1) {
                 edgeBuilder.append("headlabel=\"1..*\" ");
             }
 
             RelationHasA backward = ((RelationHasABijective) info).getBackward();
-            if (backward.isMany()) {
+            if (backward.isMany() || backward.getCount() > 1) {
                 edgeBuilder.append("taillabel=\"1..*\" ");
             }
 
@@ -67,7 +69,7 @@ public class GraphVizParseGuide extends AbstractParseGuide {
      *
      *
      */
-    public class GraphVizBiDirectionRelationshipParser implements IParseGuide {
+    public class GraphVizBijectiveRelationshipParser implements IParseGuide {
         @Override
         public String getEdgeStyle(IRelationInfo info) {
             ReleationBijectiveDecorator rel = (ReleationBijectiveDecorator) info;

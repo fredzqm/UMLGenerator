@@ -4,6 +4,7 @@ import analyzer.Analyzer;
 import analyzer.IAnalyzer;
 import config.Configuration;
 import dummy.RelDummyManyClass;
+import dummy.RelOtherDummyClass;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
@@ -28,6 +29,7 @@ public class LocalTester {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
 		classList.add(RelDummyManyClass.class.getName());
+		classList.add(RelOtherDummyClass.class.getName());
 		config.setClasses(classList);
 		config.setRecursive(true);
 		return SystemModel.getInstance(config);
@@ -45,7 +47,7 @@ public class LocalTester {
 		config.setOutputDirectory("./output");
 		config.setFileName("localTest");
 		config.setExecutablePath("dot");
-		config.setOutputFormat("svg");
+		config.setOutputFormat("png");
 
 		IGenerator generator = new GraphVizGenerator(config);
 		IAnalyzer analyzer = new Analyzer();

@@ -9,8 +9,9 @@ import java.util.List;
  * Created by lamd on 12/12/2016.
  */
 public class RelDummyManyClass {
-	List<Dummy> dummyList;
-	
+//	List<Dummy> dummyList;
+
+    // Method that takes RelOtherDummyClass List as input.
     public void inputManyDependencies(List<RelOtherDummyClass> many) {
         ;
     }
