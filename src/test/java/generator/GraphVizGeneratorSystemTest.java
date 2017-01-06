@@ -33,17 +33,7 @@ public class GraphVizGeneratorSystemTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    public String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
-
-    private ISystemModel setupSystemModel() {
-        Configuration config = Configuration.getInstance();
-        List<String> classList = new ArrayList<>();
-        classList.add(dummyClassName);
-        config.setClasses(classList);
-        config.setRecursive(true);
-
-        return SystemModel.getInstance(config);
-    }
+    private String dummyClassName = GenDummyClass.class.getPackage().getName() + "." + GenDummyClass.class.getSimpleName();
 
     @Test
     public void graphVizGenerate() throws IOException {
@@ -94,15 +84,18 @@ public class GraphVizGeneratorSystemTest {
 
     @Test
     public void graphVizGeneratorFilter() {
-        // Set up the system model and config.
-        ISystemModel systemModel = setupSystemModel();
-
-        // Set up config and generator.
+        // Set up the config.
         Configuration config = Configuration.getInstance();
+        List<String> classList = new ArrayList<>();
+        classList.add(dummyClassName);
+        config.setClasses(classList);
         config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
         config.setNodesep(1.0);
         config.setRecursive(true);
         config.setRankDir("BT");
+
+        // Set up the system model and generator.
+        ISystemModel systemModel = SystemModel.getInstance(config);
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
