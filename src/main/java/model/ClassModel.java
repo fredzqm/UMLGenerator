@@ -184,13 +184,20 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 			for (FieldModel field : filter.filter(getFields())) {
 				TypeModel hasType = field.getFieldType();
 				ClassModel hasClass = hasType.getClassModel();
-				TypeModel assignableTo = hasType.assignTo(iterable);
-				if (assignableTo != null && assignableTo instanceof ParametizedClassModel) {
-					ParametizedClassModel iterableSuperType = (ParametizedClassModel) assignableTo;
+				if (hasType.getDimension() > 0) {
+					if (hasClass != null)
+						hasMany.add(hasClass);
+				}
+				TypeModel collection = hasType.assignTo(iterable);
+				if (collection != null && collection instanceof ParametizedClassModel) {
+					// iterable of other things
+					ParametizedClassModel iterableSuperType = (ParametizedClassModel) collection;
 					ClassModel hasManyClass = iterableSuperType.getGenericArg(0).getClassModel();
 					if (hasManyClass != null)
 						hasMany.add(hasManyClass);
-				} else if (hasClass != null) {
+				} 
+				if (hasClass != null) {
+					// regular fields
 					if (hasARel.containsKey(hasClass)) {
 						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
 					} else {
