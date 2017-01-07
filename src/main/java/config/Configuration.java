@@ -13,9 +13,9 @@ import java.util.Arrays;
 
 import analyzer.IAnalyzer;
 import analyzer.IAnalyzerConfiguraton;
-import analyzerClassParser.ClassParserAnalyzer;
+import analyzerClassParser.AnalyzerClassParser;
 import analyzerClassParser.IClassParserConfiguration;
-import analyzerRelationParser.MergeRelationAnalyzer;
+import analyzerRelationParser.AnalyzerRelationParser;
 
 /**
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
@@ -44,7 +44,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 		conf.setClasses(new ArrayList<>());
 		conf.setFilters(data -> true);
 		conf.setNodeStyle("node [shape=record]");
-		conf.setAnalyzers(Arrays.asList(MergeRelationAnalyzer.class, ClassParserAnalyzer.class));
+		conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
 		conf.setGenerator(GraphVizGenerator.class);
 		return conf;
 	}

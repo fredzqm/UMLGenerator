@@ -1,13 +1,15 @@
-package analyzerRelationParser;
+package analyzer;
 
-import analyzerRelationParser.ClassPair;
 import generator.IEdge;
 
-public class Relation implements IEdge{
-	private final ClassPair classPair;
-	private final IRelationInfo info;
+public class Relation implements IEdge {
+	private ClassPair classPair;
+	private IRelationInfo info;
 
-	public Relation(ClassPair classPair, IRelationInfo info) {
+	public Relation() {
+	}
+
+	public void set(ClassPair classPair, IRelationInfo info) {
 		this.classPair = classPair;
 		this.info = info;
 	}
@@ -22,7 +24,7 @@ public class Relation implements IEdge{
 	 * @return String of the Class name this relationship is pointing from.
 	 */
 	public String getFrom() {
-		return this.classPair.getFrom();
+		return this.classPair.getFrom().getName();
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class Relation implements IEdge{
 	 * @return String of the Class name this relationship is pointing to.
 	 */
 	public String getTo() {
-		return this.classPair.getTo();
+		return this.classPair.getTo().getName();
 	}
 
 	/**

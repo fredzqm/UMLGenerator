@@ -1,4 +1,4 @@
-package analyzerRelationParser;
+package analyzer;
 
 /**
  * This is an immutable class representing a pair of class.
@@ -6,19 +6,19 @@ package analyzerRelationParser;
  * @author zhang
  */
 public final class ClassPair {
-	private final String from;
-	private final String to;
+	private final IClassModel from;
+	private final IClassModel to;
 
-	public ClassPair(String from, String to) {
+	public ClassPair(IClassModel from, IClassModel to) {
 		this.to = to;
 		this.from = from;
 	}
 
-	String getFrom() {
+	public IClassModel getFrom() {
 		return this.from;
 	}
 
-	public String getTo() {
+	public IClassModel getTo() {
 		return this.to;
 	}
 

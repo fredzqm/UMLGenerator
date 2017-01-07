@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import analyzer.IASystemModel;
+import analyzer.ISystemModel;
 import app.AbstractUMLEngine;
 import app.UMLEngine;
 import utility.Modifier;
@@ -40,7 +40,7 @@ public class SystemTest {
 		config.setRankDir("BT");
 
 		AbstractUMLEngine engine = UMLEngine.getInstance(config);
-		IASystemModel systemModel = engine.createSystemModel();
+		ISystemModel systemModel = engine.createSystemModel();
 		systemModel = engine.analyze(systemModel);
 		String actual = engine.generate(systemModel);
 
@@ -90,7 +90,7 @@ public class SystemTest {
 
 		// Set up the system model and generator.
 		AbstractUMLEngine engine = UMLEngine.getInstance(config);
-		IASystemModel systemModel = engine.createSystemModel();
+		ISystemModel systemModel = engine.createSystemModel();
 		systemModel = engine.analyze(systemModel);
 		String actual = engine.generate(systemModel);
 
@@ -142,7 +142,7 @@ public class SystemTest {
 
 		// Set up a System Model.
 		AbstractUMLEngine engine = UMLEngine.getInstance(config);
-		IASystemModel systemModel = engine.createSystemModel();
+		ISystemModel systemModel = engine.createSystemModel();
 		systemModel = engine.analyze(systemModel);
 		String graphVizString = engine.generate(systemModel);
 		engine.executeRunner(graphVizString);

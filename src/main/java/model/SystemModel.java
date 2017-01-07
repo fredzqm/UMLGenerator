@@ -1,7 +1,13 @@
 package model;
 
 import java.util.Collection;
-import analyzer.IASystemModel;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import analyzer.ClassPair;
+import analyzer.IRelationInfo;
+import analyzer.ISystemModel;
 
 /**
  * 
@@ -10,7 +16,7 @@ import analyzer.IASystemModel;
  * @author zhang
  *
  */
-public class SystemModel implements IASystemModel {
+public class SystemModel implements ISystemModel {
 	private Collection<ClassModel> classList;
 
 	private SystemModel(Collection<ClassModel> importantList) {
@@ -42,6 +48,11 @@ public class SystemModel implements IASystemModel {
 	@Override
 	public Collection<ClassModel> getClasses() {
 		return classList;
+	}
+
+	@Override
+	public Map<ClassPair, List<IRelationInfo>> getRelations() {
+		return Collections.EMPTY_MAP;
 	}
 
 }

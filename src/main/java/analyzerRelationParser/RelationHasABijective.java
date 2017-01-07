@@ -1,5 +1,7 @@
 package analyzerRelationParser;
 
+import analyzer.IRelationInfo;
+
 public class RelationHasABijective implements IRelationInfo {
 
 	private RelationHasA a, b;

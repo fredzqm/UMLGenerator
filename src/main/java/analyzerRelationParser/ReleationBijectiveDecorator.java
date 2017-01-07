@@ -1,5 +1,7 @@
 package analyzerRelationParser;
 
+import analyzer.IRelationInfo;
+
 public class ReleationBijectiveDecorator implements IRelationInfo {
 	private IRelationInfo decorated;
 

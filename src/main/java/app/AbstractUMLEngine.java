@@ -1,13 +1,13 @@
 package app;
-import analyzer.IASystemModel;
-import generator.ISystemModel;
+import analyzer.ISystemModel;
+import generator.IGraph;
 
 public abstract class AbstractUMLEngine implements Runnable {
 
 	@Override
 	public void run() {
 		// get the system model
-		IASystemModel systemModel = createSystemModel();
+		ISystemModel systemModel = createSystemModel();
 
 		// analyze
 		systemModel = analyze(systemModel);
@@ -19,11 +19,11 @@ public abstract class AbstractUMLEngine implements Runnable {
 		executeRunner(graphVisStr);
 	}
 
-	abstract IASystemModel createSystemModel();
+	abstract ISystemModel createSystemModel();
 
-	abstract IASystemModel analyze(IASystemModel systemModel);
+	abstract ISystemModel analyze(ISystemModel systemModel);
 
-	abstract String generate(ISystemModel systemModel);
+	abstract String generate(IGraph systemModel);
 
 	abstract void executeRunner(String graphVisStr);
 }

@@ -1,9 +1,9 @@
 package app;
-import analyzer.IASystemModel;
+import analyzer.ISystemModel;
 import analyzer.IAnalyzer;
 import config.Configuration;
 import generator.IGenerator;
-import generator.ISystemModel;
+import generator.IGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
@@ -16,12 +16,12 @@ public class UMLEngine extends AbstractUMLEngine {
 	}
 
 	@Override
-	public IASystemModel createSystemModel() {
+	public ISystemModel createSystemModel() {
 		return SystemModel.getInstance(config);
 	}
 
 	@Override
-	IASystemModel analyze(IASystemModel systemModel) {
+	ISystemModel analyze(ISystemModel systemModel) {
 		Iterable<Class<? extends IAnalyzer>> anClassLs = config.getAnalyzers();
 		for (Class<? extends IAnalyzer> anClass : anClassLs) {
 			IAnalyzer analyzer;
@@ -36,7 +36,7 @@ public class UMLEngine extends AbstractUMLEngine {
 	}
 
 	@Override
-	String generate(ISystemModel systemModel) {
+	String generate(IGraph graph) {
 		Class<? extends IGenerator> genClass = config.getGenerator();
 		IGenerator gen;
 		try {
@@ -44,7 +44,7 @@ public class UMLEngine extends AbstractUMLEngine {
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException("Generator " + genClass + " does not have an empty constructor", e);
 		}
-		return gen.generate(config, systemModel);
+		return gen.generate(config, graph);
 	}
 
 	@Override

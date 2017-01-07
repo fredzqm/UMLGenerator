@@ -11,5 +11,5 @@ public interface IAnalyzer {
 	 * @param sm
 	 * @return
 	 */
-	IASystemModel analyze(IASystemModel sm, IAnalyzerConfiguraton config);
+	ISystemModel analyze(ISystemModel sm, IAnalyzerConfiguraton config);
 }

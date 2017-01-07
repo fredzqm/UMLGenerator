@@ -1,5 +1,7 @@
 package analyzerRelationParser;
 
+import analyzer.IRelationInfo;
+
 public class RelationHasA implements IRelationInfo {
 	private final boolean many;
 	private final int count;

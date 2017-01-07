@@ -5,10 +5,15 @@ import java.util.Map;
 
 import utility.Modifier;
 
-public class ClassModelFilter implements IClassModel {
+/**
+ * a filter for IClassModel
+ * @author zhang
+ *
+ */
+public class IClassModelFilter implements IClassModel {
 	private IClassModel classModel;
 
-	public ClassModelFilter(IClassModel classModel) {
+	public IClassModelFilter(IClassModel classModel) {
 		this.classModel = classModel;
 	}
 

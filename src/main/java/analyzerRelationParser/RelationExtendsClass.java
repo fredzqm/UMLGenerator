@@ -1,5 +1,7 @@
 package analyzerRelationParser;
 
+import analyzer.IRelationInfo;
+
 public class RelationExtendsClass implements IRelationInfo {
 	@Override
 	public String toString() {
