@@ -1,8 +1,9 @@
 package analyzer;
 
+import java.util.Collection;
+
+import analyzerRelationParser.Relation;
 import generator.ISystemModel;
-import generator.classParser.IClassModel;
-import generator.relationshipParser.Relation;
 
 /**
  * An Interface for System Models.
@@ -16,13 +17,15 @@ public interface IASystemModel extends ISystemModel{
 	 *
 	 * @return Iterable of Class Models.
 	 */
-	Iterable<? extends IClassModel> getClasses();
+	Collection<? extends IClassModel> getClasses();
 
 	/**
 	 * Returns an Iterable of Relations contained within the SystemModel.
 	 *
 	 * @return Iterable of Relations contained within the SystemModel.
 	 */
-	Iterable<Relation> getRelations();
+	default Iterable<Relation> getRelations() {
+		throw new RuntimeException();
+	}
 
 }

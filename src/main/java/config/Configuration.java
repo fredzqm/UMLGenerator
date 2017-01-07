@@ -11,13 +11,17 @@ import utility.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import analyzer.Analyzer;
 import analyzer.IAnalyzer;
+import analyzer.IAnalyzerConfiguraton;
+import analyzerClassParser.ClassParserAnalyzer;
+import analyzerClassParser.IClassParserConfiguration;
+import analyzerRelationParser.MergeRelationAnalyzer;
 
 /**
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration {
+public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration,
+		IAnalyzerConfiguraton, IClassParserConfiguration {
 
 	private Iterable<String> classes;
 	private String executablePath;
@@ -40,7 +44,7 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 		conf.setClasses(new ArrayList<>());
 		conf.setFilters(data -> true);
 		conf.setNodeStyle("node [shape=record]");
-		conf.setAnalyzers(Arrays.asList(Analyzer.class));
+		conf.setAnalyzers(Arrays.asList(MergeRelationAnalyzer.class, ClassParserAnalyzer.class));
 		conf.setGenerator(GraphVizGenerator.class);
 		return conf;
 	}
@@ -151,11 +155,16 @@ public class Configuration implements IRunnerConfiguration, IGeneratorConfigurat
 		return analyzerls;
 	}
 
-	public void setGenerator( Class<? extends IGenerator> generator) {
+	public void setGenerator(Class<? extends IGenerator> generator) {
 		this.generator = generator;
 	}
-	
+
 	public Class<? extends IGenerator> getGenerator() {
 		return generator;
+	}
+
+	@Override
+	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
+		return this;
 	}
 }

@@ -1,8 +1,5 @@
 package generator;
 
-import generator.classParser.IClassModel;
-import generator.classParser.IParser;
-
 /**
  * An abstract class for Generators.
  * <p>
@@ -13,17 +10,20 @@ public abstract class AbstractGenerator implements IGenerator {
 	@Override
 	public String generate(IGeneratorConfiguration config, ISystemModel sm) {
 		// DOT parent.
-		Iterable<? extends IClassModel> classes = sm.getClasses();
 		StringBuilder dotString = new StringBuilder();
 
 		// Basic Configurations.
 		dotString.append(createBasicConfiguration(config));
 
-		// Parse the class
-		dotString.append(createClassParser(config).parse(classes)).append('\n');
+		// render the classes
+		Iterable<? extends IVertex> vertece = sm.getClasses();
+		vertece.forEach((vertex) -> {
+			dotString.append(
+					String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", vertex.getName(), vertex.getLabel()));
+		});
 
 		// Parse each relationship.
-		Iterable<? extends IRelation> relations = sm.getRelations();
+		Iterable<? extends IEdge> relations = sm.getRelations();
 		relations.forEach(relation -> {
 			dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n", relation.getFrom(), relation.getTo(),
 					relation.getEdgeStyle()));
@@ -39,12 +39,5 @@ public abstract class AbstractGenerator implements IGenerator {
 	 * @return String of the Basic Configuration
 	 */
 	public abstract String createBasicConfiguration(IGeneratorConfiguration config);
-
-	/**
-	 * Returns the class parser.
-	 *
-	 * @return GraphVizParseGuide of the Class.
-	 */
-	public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
 
 }

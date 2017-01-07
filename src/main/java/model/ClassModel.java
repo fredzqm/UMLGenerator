@@ -1,14 +1,15 @@
 package model;
 
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import generator.classParser.IClassModel;
 import model.TypeParser.ClassSignatureParseResult;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.IClassModel;
+import analyzer.IVisitable;
+import analyzer.IVisitor;
 import utility.ClassType;
 import utility.IFilter;
 import utility.IMapper;
@@ -195,7 +196,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 					ClassModel hasManyClass = iterableSuperType.getGenericArg(0).getClassModel();
 					if (hasManyClass != null)
 						hasMany.add(hasManyClass);
-				} 
+				}
 				if (hasClass != null) {
 					// regular fields
 					if (hasARel.containsKey(hasClass)) {
@@ -293,4 +294,8 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 		IVisitor.visit(this);
 	}
 
+	@Override
+	public String getLabel() {
+		return getName();
+	}
 }
