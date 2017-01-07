@@ -1,6 +1,6 @@
 import analyzer.IAnalyzer;
+import analyzer.IASystemModel;
 import generator.IGenerator;
-import generator.ISystemModel;
 import runner.IRunner;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ public abstract class AbstractUMLEngine implements Runnable {
     @Override
     public void run() {
         // get the system model
-        ISystemModel systemModel = createSystemModel();
+        IASystemModel systemModel = createSystemModel();
 
         // analyze
         IAnalyzer analyzer = createAnalyzer();
@@ -35,6 +35,6 @@ public abstract class AbstractUMLEngine implements Runnable {
 
     public abstract IAnalyzer createAnalyzer();
 
-    public abstract ISystemModel createSystemModel();
+    public abstract IASystemModel createSystemModel();
 
 }

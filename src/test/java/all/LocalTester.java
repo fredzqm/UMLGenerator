@@ -2,12 +2,12 @@ package all;
 
 import analyzer.Analyzer;
 import analyzer.IAnalyzer;
+import analyzer.IASystemModel;
 import config.Configuration;
 import dummy.RelDummyManyClass;
 import dummy.RelOtherDummyClass;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
-import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
@@ -25,7 +25,7 @@ public class LocalTester {
 		localTester();
 	}
 
-	private static ISystemModel setupSystemModel() {
+	private static IASystemModel setupSystemModel() {
 		Configuration config = Configuration.getInstance();
 		List<String> classList = new ArrayList<>();
 		classList.add(RelDummyManyClass.class.getName());
@@ -37,7 +37,7 @@ public class LocalTester {
 
 	private static void localTester() {
 		// Set up the system model and config.
-		ISystemModel systemModel = setupSystemModel();
+		IASystemModel systemModel = setupSystemModel();
 
 		// Set up config.
 		Configuration config = Configuration.getInstance();

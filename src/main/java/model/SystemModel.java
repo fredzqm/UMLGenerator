@@ -1,12 +1,13 @@
 package model;
 
-import generator.ISystemModel;
 import generator.relationshipParser.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import analyzer.IASystemModel;
 
 /**
  * 
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author zhang
  *
  */
-public class SystemModel implements ISystemModel {
+public class SystemModel implements IASystemModel {
 	private Collection<ClassModel> classList;
 
 	private SystemModel(Collection<ClassModel> importantList) {

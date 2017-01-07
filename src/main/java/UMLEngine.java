@@ -1,11 +1,11 @@
 import config.Configuration;
 import generator.GraphVizGenerator;
-import generator.ISystemModel;
 import model.SystemModel;
 import runner.GraphVizRunner;
 
 import analyzer.Analyzer;
 import analyzer.IAnalyzer;
+import analyzer.IASystemModel;
 
 public class UMLEngine extends AbstractUMLEngine {
 	private Configuration config;
@@ -14,7 +14,7 @@ public class UMLEngine extends AbstractUMLEngine {
 		config = configuration;
 	}
 
-	public ISystemModel createSystemModel() {
+	public IASystemModel createSystemModel() {
 		return SystemModel.getInstance(config);
 	}
 

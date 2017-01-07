@@ -1,6 +1,9 @@
 package generator.relationshipParser;
 
-public final class Relation {
+import generator.IRelation;
+import generator.relationshipParser.ClassPair;
+
+public class Relation implements IRelation{
 	private final ClassPair classPair;
 	private final IRelationInfo info;
 

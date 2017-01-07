@@ -2,7 +2,6 @@ package generator;
 
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relationshipParser.Relation;
 
 /**
  * An abstract class for Generators.
@@ -31,9 +30,9 @@ public abstract class AbstractGenerator implements IGenerator {
         dotString.append(classModelParser.parse(classes)).append('\n');
 
         // Parse each relationship.
-        Iterable<Relation> relations = sm.getRelations();
+        Iterable<? extends IRelation> relations = sm.getRelations();
         relations.forEach(relation -> {
-            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), relation.getEdgeStyle()));
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n", relation.getFrom(), relation.getTo(), relation.getEdgeStyle()));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());

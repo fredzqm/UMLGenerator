@@ -5,11 +5,12 @@ import dummy.GenDummyClass;
 import dummy.RelDummyClass;
 import dummy.RelDummyManyClass;
 import dummy.RelOtherDummyClass;
-import generator.relationshipParser.Relation;
 import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import analyzer.IASystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
 import utility.Modifier;
@@ -46,7 +47,7 @@ public class GraphVizGeneratorSystemTest {
         config.setNodesep(1.0);
         config.setRankDir("BT");
 
-        ISystemModel systemModel = SystemModel.getInstance(config);
+        IASystemModel systemModel = SystemModel.getInstance(config);
 
         // Create GraphVizGenerator.
         IGenerator generator = new GraphVizGenerator(config);
@@ -95,7 +96,7 @@ public class GraphVizGeneratorSystemTest {
         config.setRankDir("BT");
 
         // Set up the system model and generator.
-        ISystemModel systemModel = SystemModel.getInstance(config);
+        IASystemModel systemModel = SystemModel.getInstance(config);
         IGenerator generator = new GraphVizGenerator(config);
 
         String actual = generator.generate(systemModel);
@@ -145,7 +146,7 @@ public class GraphVizGeneratorSystemTest {
         config.setOutputDirectory(directory.toString());
 
         // Set up a System Model.
-        ISystemModel systemModel = SystemModel.getInstance(config);
+        IASystemModel systemModel = SystemModel.getInstance(config);
 
         // Generate the string
         IGenerator generator = new GraphVizGenerator(config);
