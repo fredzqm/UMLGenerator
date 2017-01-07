@@ -1,5 +1,3 @@
-package all;
-
 import analyzer.Analyzer;
 import analyzer.IAnalyzer;
 import analyzer.IASystemModel;

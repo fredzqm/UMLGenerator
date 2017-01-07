@@ -1,5 +1,4 @@
 import config.Configuration;
-import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.ISystemModel;
 import model.SystemModel;
@@ -8,7 +7,6 @@ import runner.IRunner;
 
 import java.io.IOException;
 
-import analyzer.Analyzer;
 import analyzer.IAnalyzer;
 import analyzer.IASystemModel;
 
@@ -59,6 +57,10 @@ public class UMLEngine extends AbstractUMLEngine {
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static UMLEngine getInstance(Configuration config) {
+		return new UMLEngine(config);
 	}
 
 }
