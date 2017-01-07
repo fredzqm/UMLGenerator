@@ -35,4 +35,15 @@ public class RelationHasA implements IRelationInfo {
 			return "has " + getCount();
 		}
 	}
+
+	@Override
+	public String getEdgeStyle() {
+		StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
+
+		if (isMany() || getCount() > 1) {
+			edgeBuilder.append("taillabel=\"1..*\" ");
+		}
+
+		return edgeBuilder.toString();
+	}
 }

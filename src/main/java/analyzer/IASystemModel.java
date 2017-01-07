@@ -1,8 +1,16 @@
-package generator;
+package analyzer;
 
+import generator.ISystemModel;
 import generator.classParser.IClassModel;
+import generator.relationshipParser.Relation;
 
-public interface ISystemModel {
+/**
+ * An Interface for System Models.
+ * <p>
+ * Created by lamd on 12/9/2016.
+ */
+public interface IASystemModel extends ISystemModel{
+
 	/**
 	 * Returns an Iterable of Class Models contained within the System Model.
 	 *
@@ -15,5 +23,6 @@ public interface ISystemModel {
 	 *
 	 * @return Iterable of Relations contained within the SystemModel.
 	 */
-	Iterable<? extends IRelation> getRelations();
+	Iterable<Relation> getRelations();
+
 }

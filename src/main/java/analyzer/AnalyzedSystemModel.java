@@ -1,6 +1,5 @@
 package analyzer;
 
-import generator.ISystemModel;
 import generator.classParser.IClassModel;
 import generator.relationshipParser.RelationHasABijective;
 import generator.relationshipParser.ClassPair;
@@ -18,10 +17,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-public class AnalyzedSystemModel implements ISystemModel {
-	private ISystemModel systemModel;
+public class AnalyzedSystemModel implements IASystemModel {
+	private IASystemModel systemModel;
 
-	AnalyzedSystemModel(ISystemModel sm) {
+	AnalyzedSystemModel(IASystemModel sm) {
 		this.systemModel = sm;
 	}
 

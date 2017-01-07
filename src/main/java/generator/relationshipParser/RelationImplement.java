@@ -5,4 +5,9 @@ public class RelationImplement implements IRelationInfo {
 	public String toString() {
 		return "Implements";
 	}
+
+	@Override
+	public String getEdgeStyle() {
+		return "arrowhead=\"onormal\" style=dashed ";
+	}
 }

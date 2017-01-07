@@ -21,4 +21,22 @@ public class RelationHasABijective implements IRelationInfo {
 	public String toString() {
 		return "" + a + " & " + b;
 	}
+
+	@Override
+	public String getEdgeStyle() {
+		RelationHasA forward = getForward();
+		StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
+
+		if (forward.isMany() || forward.getCount() > 1) {
+			edgeBuilder.append("headlabel=\"1..*\" ");
+		}
+
+		RelationHasA backward = getBackward();
+		if (backward.isMany() || backward.getCount() > 1) {
+			edgeBuilder.append("taillabel=\"1..*\" ");
+		}
+
+		return edgeBuilder.toString();
+	}
+
 }

@@ -1,6 +1,9 @@
 package generator.relationshipParser;
 
-public final class Relation {
+import generator.IRelation;
+import generator.relationshipParser.ClassPair;
+
+public class Relation implements IRelation{
 	private final ClassPair classPair;
 	private final IRelationInfo info;
 
@@ -43,5 +46,9 @@ public final class Relation {
 	@Override
 	public String toString() {
 		return "" + classPair.getFrom() + " -> " + classPair.getTo() + ":\t\t" + info + "\n";
+	}
+
+	public String getEdgeStyle() {
+		return info.getEdgeStyle();
 	}
 }
