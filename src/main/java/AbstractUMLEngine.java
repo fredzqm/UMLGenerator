@@ -1,40 +1,29 @@
-import analyzer.IAnalyzer;
 import analyzer.IASystemModel;
-import generator.IGenerator;
-import runner.IRunner;
-
-import java.io.IOException;
+import generator.ISystemModel;
 
 public abstract class AbstractUMLEngine implements Runnable {
 
-    @Override
-    public void run() {
-        // get the system model
-        IASystemModel systemModel = createSystemModel();
+	@Override
+	public void run() {
+		// get the system model
+		IASystemModel systemModel = createSystemModel();
 
-        // analyze
-        IAnalyzer analyzer = createAnalyzer();
-        systemModel = analyzer.analyze(systemModel);
+		// analyze
+		systemModel = analyze(systemModel);
 
-        // generate
-        IGenerator generator = createGenerator();
-        String graphVisStr = generator.generate(systemModel);
+		// generate
+		String graphVisStr = generate(systemModel);
 
-        // run graphviz to generate the image
-        IRunner runner = createRunner();
-        try {
-            runner.execute(graphVisStr);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+		// run graphviz to generate the image
+		runGraphViz(graphVisStr);
+	}
 
-    public abstract IRunner createRunner();
+	abstract IASystemModel createSystemModel();
 
-    public abstract IGenerator createGenerator();
+	abstract IASystemModel analyze(IASystemModel systemModel);
 
-    public abstract IAnalyzer createAnalyzer();
+	abstract String generate(ISystemModel systemModel);
 
-    public abstract IASystemModel createSystemModel();
+	abstract void runGraphViz(String graphVisStr);
 
 }

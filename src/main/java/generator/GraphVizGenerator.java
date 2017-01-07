@@ -10,10 +10,7 @@ import generator.classParser.IParser;
  * Created by lamd on 12/7/2016.
  */
 public class GraphVizGenerator extends AbstractGenerator {
-    public GraphVizGenerator(IGeneratorConfiguration config) {
-        super(config);
-    }
-
+	
     @Override
     public IParser<IClassModel> createClassParser(IGeneratorConfiguration config) {
         return new GraphVizClassParser(config);

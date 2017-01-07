@@ -49,11 +49,11 @@ public class LocalTester {
 		config.setExecutablePath("dot");
 		config.setOutputFormat("png");
 
-		IGenerator generator = new GraphVizGenerator(config);
+		IGenerator generator = new GraphVizGenerator();
 		IAnalyzer analyzer = new Analyzer();
 		systemModel = analyzer.analyze(systemModel);
 
-		String actual = generator.generate(systemModel);
+		String actual = generator.generate(config, systemModel);
 		internalRunner(config, actual);
 	}
 
