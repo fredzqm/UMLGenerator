@@ -2,7 +2,6 @@ package generator;
 
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relationshipParser.IParseGuide;
 import generator.relationshipParser.Relation;
 
 /**
@@ -13,12 +12,10 @@ import generator.relationshipParser.Relation;
 public abstract class AbstractGenerator implements IGenerator {
     private final IParser<IClassModel> classModelParser;
     private final String basicConfiguration;
-    private final IParseGuide parseGuide;
 
     AbstractGenerator(IGeneratorConfiguration config) {
         this.classModelParser = createClassParser(config);
         this.basicConfiguration = createBasicConfiguration(config);
-        this.parseGuide = createParseGuide(config);
     }
 
     @Override
@@ -36,7 +33,7 @@ public abstract class AbstractGenerator implements IGenerator {
         // Parse each relationship.
         Iterable<Relation> relations = sm.getRelations();
         relations.forEach(relation -> {
-            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), this.parseGuide.getEdgeStyle(relation.getInfo())));
+            dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n\n", relation.getFrom(), relation.getTo(), relation.getEdgeStyle()));
         });
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
@@ -57,11 +54,4 @@ public abstract class AbstractGenerator implements IGenerator {
      */
     public abstract IParser<IClassModel> createClassParser(IGeneratorConfiguration config);
 
-    /**
-     * Define the format of each type of relationship
-     *
-     * @param config
-     * @return
-     */
-    public abstract IParseGuide createParseGuide(IGeneratorConfiguration config);
 }

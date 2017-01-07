@@ -44,4 +44,8 @@ public final class Relation {
 	public String toString() {
 		return "" + classPair.getFrom() + " -> " + classPair.getTo() + ":\t\t" + info + "\n";
 	}
+
+	public String getEdgeStyle() {
+		return info.getEdgeStyle();
+	}
 }

@@ -3,8 +3,6 @@ package generator;
 import generator.classParser.GraphVizClassParser;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
-import generator.relationshipParser.IParseGuide;
-import generator.relationshipParser.GraphVizParseGuide;
 
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz.
@@ -26,11 +24,5 @@ public class GraphVizGenerator extends AbstractGenerator {
         return String.format("\tnodesep=%s;\n\t%s;\n\trankdir=%s;\n\n", config.getNodeSep(), config.getNodeStyle(),
                 config.getRankDir());
     }
-
-    @Override
-    public IParseGuide createParseGuide(IGeneratorConfiguration config) {
-        return new GraphVizParseGuide();
-    }
-
 
 }
