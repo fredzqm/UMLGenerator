@@ -1,6 +1,5 @@
 package generator;
 
-import config.Configuration;
 import generator.classParser.IClassModel;
 import generator.classParser.IParser;
 

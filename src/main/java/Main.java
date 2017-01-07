@@ -8,7 +8,7 @@ public class Main {
         CommandLineParser c = new CommandLineParser(args);
         Configuration conf = c.create();
 
-        UMLEngine engine = new UMLEngine(conf);
+        Runnable engine = UMLEngine.getInstance(conf);
         engine.run();
         
         Display.showWindow(conf);

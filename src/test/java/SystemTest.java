@@ -1,30 +1,18 @@
 import config.Configuration;
 import dummy.GenDummyClass;
-import dummy.RelDummyClass;
-import dummy.RelDummyManyClass;
-import dummy.RelOtherDummyClass;
-import generator.GraphVizGenerator;
-import generator.IGenerator;
-import generator.IRelation;
-import model.SystemModel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import analyzer.IASystemModel;
-import runner.GraphVizRunner;
-import runner.IRunner;
 import utility.Modifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -150,8 +138,7 @@ public class SystemTest {
 		AbstractUMLEngine engine = UMLEngine.getInstance(config);
 		IASystemModel systemModel = engine.createSystemModel();
 		String graphVizString = engine.generate(systemModel);
-
-		internalRunner(config, graphVizString);
+		engine.executeRunner(graphVizString);
 	}
 
 //	@Test
@@ -193,26 +180,4 @@ public class SystemTest {
 //		assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
 //	}
 
-	/**
-	 * Interal Testing Runner method to call for actual output.
-	 *
-	 * @param config
-	 *            Configuration for the runner to use.
-	 * @param graphVizString
-	 *            GraphViz DOT string
-	 */
-	private void internalRunner(Configuration config, String graphVizString) {
-		// Create the runner
-		IRunner runner = new GraphVizRunner(config);
-
-		try {
-			runner.execute(graphVizString);
-			File file = new File(config.getOutputDirectory(), config.getFileName() + "." + config.getOutputFormat());
-			assertTrue("Unable to detect output file", file.exists());
-		} catch (Exception e) {
-			System.err.println("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.");
-			fail("[ ERROR ]: An Exception has occurred!\n" + e.getMessage());
-			e.printStackTrace();
-		}
-	}
 }

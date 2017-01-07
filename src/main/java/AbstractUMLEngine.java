@@ -15,7 +15,7 @@ public abstract class AbstractUMLEngine implements Runnable {
 		String graphVisStr = generate(systemModel);
 
 		// run graphviz to generate the image
-		runGraphViz(graphVisStr);
+		executeRunner(graphVisStr);
 	}
 
 	abstract IASystemModel createSystemModel();
@@ -24,6 +24,5 @@ public abstract class AbstractUMLEngine implements Runnable {
 
 	abstract String generate(ISystemModel systemModel);
 
-	abstract void runGraphViz(String graphVisStr);
-
+	abstract void executeRunner(String graphVisStr);
 }

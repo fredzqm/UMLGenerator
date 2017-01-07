@@ -5,15 +5,13 @@ import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
 
-import java.io.IOException;
-
 import analyzer.IAnalyzer;
 import analyzer.IASystemModel;
 
 public class UMLEngine extends AbstractUMLEngine {
 	private Configuration config;
 
-	public UMLEngine(Configuration configuration) {
+	private UMLEngine(Configuration configuration) {
 		config = configuration;
 	}
 
@@ -50,12 +48,13 @@ public class UMLEngine extends AbstractUMLEngine {
 	}
 
 	@Override
-	void runGraphViz(String graphVisStr) {
+	void executeRunner(String graphVisStr) {
 		IRunner runner = new GraphVizRunner(config);
 		try {
 			runner.execute(graphVisStr);
-		} catch (IOException | InterruptedException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.",
+					e);
 		}
 	}
 
