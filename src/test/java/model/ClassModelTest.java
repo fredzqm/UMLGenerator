@@ -1,64 +1,56 @@
 package model;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import labTestCI.AmazonLineParser;
+import labTestCI.ILineParser;
 
 import org.junit.Test;
 
-import generator.IClassModel;
+import dummy.Dummy;
+import dummy.GenericDummyClass;
+import dummy.GenericDummyClass2;
 import utility.IFilter;
+import utility.MethodType;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class ClassModelTest {
 
 	@Test
 	public void testGetField() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ClassModel model = ASMParser.getClassByName("java.lang.String");
 		assertEquals("java.lang.String", model.getName());
 
 		Set<String> fields = new HashSet<>();
 		Set<String> actfields = new HashSet<>(
 				Arrays.asList("value", "hash", "serialVersionUID", "serialPersistentFields", "CASE_INSENSITIVE_ORDER"));
 
-		for (FieldModel field : model.getFields())
-			fields.add(field.getName());
+		model.getFields().forEach((field) -> fields.add(field.getName()));
 
 		assertEquals(actfields, fields);
 	}
 
 	@Test
 	public void testGetMethods() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("model.Dummy");
+		ClassModel model = ASMParser.getClassByName("dummy.Dummy");
 
 		Set<String> actual = new HashSet<>();
-		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "publicMethod2"));
+		Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
 
-		IFilter<MethodModel> getInstanceMethod = new IFilter<MethodModel>() {
-			@Override
-			public boolean filter(MethodModel data) {
-				switch (data.getMethodType()) {
-				case METHOD:
-					return true;
-				default:
-					return false;
-				}
-			}
-		};
+		IFilter<MethodModel> getInstanceMethod = (d) -> d.getMethodType() == MethodType.METHOD;
 
-		for (MethodModel x : getInstanceMethod.filter(model.getMethods()))
-			actual.add(x.getName());
+		getInstanceMethod.filter(model.getMethods()).forEach(methodModel -> actual.add(methodModel.getName()));
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testGetInterface() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("java.lang.String");
+		ClassModel model = ASMParser.getClassByName("java.lang.String");
 		assertEquals("java.lang.String", model.getName());
 
 		Set<String> acutalInterfaces = new HashSet<>();
@@ -68,55 +60,96 @@ public class ClassModelTest {
 		expectInterfaces.add("java.lang.Comparable");
 		expectInterfaces.add("java.lang.CharSequence");
 
-		for (IClassModel interf : model.getInterfaces())
-			acutalInterfaces.add(interf.getName());
-
-		assertEquals(expectInterfaces, acutalInterfaces);
-	}
-
-	@Test
-	public void testGetStringInterfaceNonRecursive() {
-		ASMClassTracker parser = ASMParser.getInstance(new IModelConfiguration() {
-			@Override
-			public boolean isRecursive() {
-				return false;
-			}
-
-			@Override
-			public Iterable<String> getClasses() {
-				return Arrays.asList("java.lang.String", "java/io/Serializable", "java/lang/Comparable");
-			}
-		});
-		ClassModel model = parser.getClassByName("java/lang/String");
-		assertEquals("java.lang.String", model.getName());
-
-		Set<String> acutalInterfaces = new HashSet<>();
-		Set<String> expectInterfaces = new HashSet<>();
-
-		expectInterfaces.add("java.io.Serializable");
-		expectInterfaces.add("java.lang.Comparable");
-
-		for (IClassModel interf : model.getInterfaces())
-			acutalInterfaces.add(interf.getName());
+		model.getInterfaces().forEach((interfaceModel) -> acutalInterfaces.add(interfaceModel.getName()));
 
 		assertEquals(expectInterfaces, acutalInterfaces);
 	}
 
 	@Test
 	public void testGetInterfaceLab_1_AmazonParser() {
-		ASMServiceProvider parser = new ASMParser();
-		ClassModel model = parser.getClassByName("problem.AmazonLineParser");
-		assertEquals("problem.AmazonLineParser", model.getName());
+		String amazonQualifiedString = AmazonLineParser.class.getName();
+		ClassModel model = ASMParser.getClassByName(amazonQualifiedString);
+		assertEquals(amazonQualifiedString, model.getName());
 
 		Set<String> acutalInterfaces = new HashSet<>();
 		Set<String> expectInterfaces = new HashSet<>();
 
-		expectInterfaces.add("problem.ILineParser");
+		String expected = ILineParser.class.getPackage().getName() + "." + ILineParser.class.getSimpleName();
+		expectInterfaces.add(expected);
 
-		for (IClassModel interf : model.getInterfaces())
-			acutalInterfaces.add(interf.getName());
+		model.getInterfaces().forEach((interfaceModel) -> acutalInterfaces.add(interfaceModel.getName()));
 
 		assertEquals(expectInterfaces, acutalInterfaces);
 	}
 
+	@Test
+	public void testGetGenericNonGeneric() {
+		String dummy = Dummy.class.getName();
+		ClassModel model = ASMParser.getClassByName(dummy);
+		assertEquals(dummy, model.getName());
+
+		List<GenericTypeParam> gls = model.getGenericList();
+		assertEquals(0, gls.size());
+	}
+
+	@Test
+	public void testGetGeneric() {
+		String genericDummy = GenericDummyClass.class.getPackage().getName() + "."
+				+ GenericDummyClass.class.getSimpleName();
+		ClassModel model = ASMParser.getClassByName(genericDummy);
+		assertEquals(genericDummy, model.getName());
+
+		List<GenericTypeParam> gls = model.getGenericList();
+		assertEquals(1, gls.size());
+		GenericTypeParam gene = gls.get(0);
+		assertEquals("E", gene.getName());
+		assertEquals(ASMParser.getObject(), gene.getClassModel());
+	}
+
+	@Test
+	public void testGetGeneric2() {
+		String genericDummy = GenericDummyClass2.class.getPackage().getName() + "."
+				+ GenericDummyClass2.class.getSimpleName();
+		ClassModel model = ASMParser.getClassByName(genericDummy);
+		assertEquals(genericDummy, model.getName());
+
+		// generic list
+		List<GenericTypeParam> gls = model.getGenericList();
+		assertEquals(2, gls.size());
+		GenericTypeParam gene1A = gls.get(0);
+		assertEquals("A", gene1A.getName());
+		assertEquals(ASMParser.getObject(), gene1A.getClassModel());
+
+		GenericTypeParam gene2E = gls.get(1);
+		assertEquals("E", gene2E.getName());
+		TypeModel gene2Bound1 = gene2E.getBoundSuperTypes().get(0);
+		assertEquals(ParametizedClassModel.class, gene2Bound1.getClass());
+		assertEquals(ASMParser.getClassByName("java.util.Map"), gene2Bound1.getClassModel());
+		List<TypeModel> gene2Bound1Args = ((ParametizedClassModel) gene2Bound1).getGenericArgs();
+		assertEquals(Arrays.asList(gene1A, gene1A), gene2Bound1Args);
+
+		// super types
+		List<TypeModel> superTypeLs = model.getSuperTypes();
+		assertEquals(2, superTypeLs.size());
+		TypeModel superType1 = superTypeLs.get(0);
+		assertEquals(ClassModel.class, superType1.getClass());
+		assertEquals(ASMParser.getClassByName("java.util.Observable"), superType1.getClassModel());
+
+		TypeModel superType2 = superTypeLs.get(1);
+		assertEquals(ParametizedClassModel.class, superType2.getClass());
+		assertEquals(ASMParser.getClassByName("java.lang.Iterable"), superType2.getClassModel());
+		List<TypeModel> superType2Argss = ((ParametizedClassModel) superType2).getGenericArgs();
+		assertEquals(Arrays.asList(gene2E), superType2Argss);
+
+		// fields
+		TypeModel aType = model.getFieldByName("a").getFieldType();
+		assertEquals(gene1A, aType);
+		TypeModel arrayEType = model.getFieldByName("arrayE").getFieldType();
+		assertEquals(new ArrayTypeModel(gene2E, 1), arrayEType);
+		TypeModel listAType = model.getFieldByName("listA").getFieldType();
+		assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Arrays.asList(gene1A)), listAType);
+		TypeModel mapAtoEType = model.getFieldByName("mapAtoE").getFieldType();
+		assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.Map"), Arrays.asList(gene1A, gene2E)), mapAtoEType);
+
+	}
 }

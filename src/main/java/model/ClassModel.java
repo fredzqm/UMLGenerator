@@ -2,14 +2,17 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IClassModel;
-import utility.ClassType;
-import utility.Modifier;
+import generator.classParser.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+import utility.ClassType;
+import utility.IFilter;
+import utility.IMapper;
+import utility.Modifier;
 
 import java.util.*;
 
@@ -25,8 +28,7 @@ import java.util.*;
  *
  * @author zhang
  */
-public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, IClassModel {
-	private final ASMServiceProvider asmServiceProvider;
+class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -34,11 +36,16 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	private final ClassType classType;
 	private final String name;
 
-	private ClassModel superClass;
-	private Collection<ClassModel> interfaces;
+	private List<TypeModel> superTypes;
+	private List<GenericTypeParam> genericParams;
 
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
+
+	private Map<ClassModel, Integer> hasARel;
+	private Collection<ClassModel> dependsOn;
+
+	private Map<String, GenericTypeParam> paramMap;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -47,8 +54,7 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	 * @param asmClassNode
 	 * @param important
 	 */
-	public ClassModel(ASMServiceProvider asmServiceProvider, ClassNode asmClassNode) {
-		this.asmServiceProvider = asmServiceProvider;
+	public ClassModel(ClassNode asmClassNode) {
 		this.asmClassNode = asmClassNode;
 		this.modifier = Modifier.parse(asmClassNode.access);
 		this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
@@ -56,51 +62,174 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		this.name = Type.getObjectType(asmClassNode.name).getClassName();
 	}
 
-	public IClassModel getSuperClass() {
-		if (superClass == null && asmClassNode.superName != null)
-			superClass = getClassByName(asmClassNode.superName);
-		return superClass;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public ClassType getType() {
-		return classType;
 	}
 
 	public Modifier getModifier() {
 		return modifier;
 	}
 
-	public Iterable<ClassModel> getInterfaces() {
-		if (interfaces == null) {
-			interfaces = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			List<String> ls = asmClassNode.interfaces;
-			for (String s : ls) {
-				ClassModel m = getClassByName(s);
-				if (m != null)
-					interfaces.add(m);
+	@Override
+	public ClassModel getClassModel() {
+		return this;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	public ClassType getType() {
+		return classType;
+	}
+
+	// ===================================================================
+	// ---------------- All the lazy initialized fields ------------------
+	// ===================================================================
+
+	public List<GenericTypeParam> getGenericList() {
+		if (genericParams == null) {
+			getSuperTypes();
+		}
+		return genericParams;
+	}
+
+	public List<TypeModel> getSuperTypes() {
+		if (superTypes == null) {
+			if (asmClassNode.signature == null) {
+				genericParams = Collections.EMPTY_LIST;
+				superTypes = new ArrayList<>();
+				// add super class
+				if (asmClassNode.superName != null) {
+					TypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
+					superTypes.add(superClass);
+				}
+				// add interfaces
+				List<String> ls = asmClassNode.interfaces;
+				for (String s : ls) {
+					TypeModel m = ASMParser.getClassByName(s);
+					if (m != null)
+						superTypes.add(m);
+				}
+			} else {
+				ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
+				genericParams = rs.getParamsList();
+				superTypes = rs.getSuperTypes();
+
+				// replace GenericTypeVarPlaceHolder with GenericTypeParams
+				Map<String, GenericTypeParam> paramMap = getParamsMap();
+				for (GenericTypeParam t : genericParams) {
+					t.replaceTypeVar(paramMap);
+				}
+				ListIterator<TypeModel> itr = superTypes.listIterator();
+				while (itr.hasNext()) {
+					TypeModel t = itr.next();
+					itr.set(t.replaceTypeVar(paramMap));
+				}
 			}
 		}
-		return interfaces;
+		return superTypes;
+	}
+
+	Map<String, GenericTypeParam> getParamsMap() {
+		if (paramMap == null) {
+			paramMap = new HashMap<>();
+			for (GenericTypeParam p : getGenericList()) {
+				paramMap.put(p.getName(), p);
+			}
+		}
+		return paramMap;
+	}
+
+	public ClassModel getSuperClass() {
+		List<TypeModel> ls = getSuperTypes();
+		if (ls.isEmpty())
+			return null;
+		return ls.get(0).getClassModel();
+	}
+
+	public Iterable<ClassModel> getInterfaces() {
+		List<TypeModel> ls = getSuperTypes();
+		if (ls.isEmpty())
+			return Collections.EMPTY_LIST;
+		IMapper<TypeModel, ClassModel> map = (c) -> c.getClassModel();
+		return map.map(ls.subList(1, ls.size()));
 	}
 
 	@Override
-	public List<IClassModel> getHasRelation() {
-		return new ArrayList<>();
+	public List<String> getStereoTypes() {
+		List<String> ls = new ArrayList<>();
+		switch (getType()) {
+		case INTERFACE:
+			ls.add("Interface");
+			break;
+		case CONCRETE:
+			break;
+		case ABSTRACT:
+			ls.add("Abstract");
+			break;
+		case ENUM:
+			ls.add("Enumeration");
+			break;
+		}
+		return ls;
 	}
 
-	@Override
-	public List<IClassModel> getDependsRelation() {
-		return new ArrayList<>();
+	public Map<ClassModel, Integer> getHasRelation() {
+		if (hasARel == null) {
+			hasARel = new HashMap<>();
+			Set<ClassModel> hasMany = new HashSet<>();
+			ClassModel iterable = ASMParser.getClassByName("java.lang.Iterable");
+			IFilter<FieldModel> filter = (f) -> !f.isStatic();
+			for (FieldModel field : filter.filter(getFields())) {
+				TypeModel hasType = field.getFieldType();
+				ClassModel hasClass = hasType.getClassModel();
+				if (hasType.getDimension() > 0) {
+					if (hasClass != null)
+						hasMany.add(hasClass);
+				}
+				TypeModel collection = hasType.assignTo(iterable);
+				if (collection != null && collection instanceof ParametizedClassModel) {
+					// iterable of other things
+					ParametizedClassModel iterableSuperType = (ParametizedClassModel) collection;
+					ClassModel hasManyClass = iterableSuperType.getGenericArg(0).getClassModel();
+					if (hasManyClass != null)
+						hasMany.add(hasManyClass);
+				} 
+				if (hasClass != null) {
+					// regular fields
+					if (hasARel.containsKey(hasClass)) {
+						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
+					} else {
+						hasARel.put(hasClass, 1);
+					}
+				}
+			}
+			for (ClassModel c : hasMany) {
+				if (hasARel.containsKey(c)) {
+					hasARel.put(c, -hasARel.get(c));
+				} else {
+					hasARel.put(c, 0);
+				}
+			}
+		}
+		return hasARel;
+
 	}
 
-	@Override
-	public String getSuperClassName() {
-		return this.superClass.getName();
+	public Collection<ClassModel> getDependsRelation() {
+		if (dependsOn == null) {
+			dependsOn = new HashSet<>();
+			for (MethodModel method : getMethods()) {
+				dependsOn.addAll(method.addDependsClasses());
+			}
+			dependsOn.removeAll(getHasRelation().keySet());
+			dependsOn.remove(this);
+			if (getSuperClass() != null)
+				dependsOn.remove(getSuperClass());
+			getInterfaces().forEach((i) -> dependsOn.remove(i));
+		}
+		return dependsOn;
 	}
 
 	public Iterable<MethodModel> getMethods() {
@@ -108,15 +237,16 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	}
 
 	public MethodModel getMethodBySignature(Signature signature) {
-		if (methods.containsKey(signature))
-			return methods.get(signature);
+		if (getMethodsMap().containsKey(signature))
+			return getMethodsMap().get(signature);
+		if (getSuperClass() != null)
+			getSuperClass().getMethodBySignature(signature);
 		return null;
 	}
 
 	private Map<Signature, MethodModel> getMethodsMap() {
 		if (methods == null) {
 			methods = new HashMap<>();
-
 			@SuppressWarnings("unchecked")
 			List<MethodNode> ls = asmClassNode.methods;
 			for (MethodNode methodNode : ls) {
@@ -145,12 +275,12 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 		return fields;
 	}
 
-	public boolean isFinal() {
-		return isFinal;
-	}
-
-	public ClassModel getClassByName(String name) {
-		return asmServiceProvider.getClassByName(name);
+	public FieldModel getFieldByName(String name) {
+		if (getFieldMap().containsKey(name))
+			return getFieldMap().get(name);
+		if (getSuperClass() != null)
+			return getSuperClass().getFieldByName(name);
+		return null;
 	}
 
 	@Override
@@ -162,6 +292,5 @@ public class ClassModel implements IVisitable<ClassModel>, ASMServiceProvider, I
 	public void visit(IVisitor<ClassModel> IVisitor) {
 		IVisitor.visit(this);
 	}
-
 
 }

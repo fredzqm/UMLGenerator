@@ -2,67 +2,83 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IFieldModel;
-import generator.ITypeModel;
-import utility.Modifier;
+import generator.classParser.IFieldModel;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
+import utility.Modifier;
 
 /**
  * Representing field in java programs
  *
  * @author zhang
  */
-public class FieldModel implements IVisitable<FieldModel>, IFieldModel {
-    private final FieldNode asmFieldNode;
-    private final ClassModel belongsTo;
+class FieldModel implements IVisitable<FieldModel>, IFieldModel {
+	private final FieldNode asmFieldNode;
+	private final ClassModel belongsTo;
 
-    private final Modifier modifier;
-    private final boolean isFinal;
-    private final TypeModel fieldType;
+	private final Modifier modifier;
+	private final boolean isFinal;
+	private final TypeModel fieldType;
+	private final boolean isStatic;
 
-    public FieldModel(ClassModel classModel, FieldNode fieldNode) {
-        belongsTo = classModel;
-        asmFieldNode = fieldNode;
-        modifier = Modifier.parse(asmFieldNode.access);
-        isFinal = Modifier.parseIsFinal(asmFieldNode.access);
-        fieldType = TypeModel.parse(classModel, Type.getType(asmFieldNode.desc));
-    }
+	/**
+	 * creates an FieldModel given the class it belongs to, and the asmFieldNode
+	 *
+	 * @param classModel
+	 * @param fieldNode
+	 */
+	public FieldModel(ClassModel classModel, FieldNode fieldNode) {
+		belongsTo = classModel;
+		asmFieldNode = fieldNode;
+		modifier = Modifier.parse(asmFieldNode.access);
+		isFinal = Modifier.parseIsFinal(asmFieldNode.access);
+		isStatic = Modifier.parseIsStatic(asmFieldNode.access);
+		if (asmFieldNode.signature != null) {
+			TypeModel rawfieldType = TypeParser.parseFieldTypeSignature(asmFieldNode.signature);
+			fieldType = rawfieldType.replaceTypeVar(belongsTo.getParamsMap());
+		} else {
+			fieldType = TypeParser.parse(Type.getType(asmFieldNode.desc));
+		}
+	}
 
-    public String getName() {
-        return asmFieldNode.name;
-    }
+	public String getName() {
+		return asmFieldNode.name;
+	}
 
-    @Override
-    public ITypeModel getType() {
-        return fieldType;
-    }
+	@Override
+	public String getTypeName() {
+		return fieldType.getName();
+	}
 
-    public ClassModel getParentClass() {
-        return belongsTo;
-    }
+	public ClassModel getBelongTo() {
+		return belongsTo;
+	}
 
-    public Modifier getModifier() {
-        return modifier;
-    }
+	public Modifier getModifier() {
+		return modifier;
+	}
 
-    public boolean isFinal() {
-        return isFinal;
-    }
+	public boolean isFinal() {
+		return isFinal;
+	}
 
-    public TypeModel getFieldType() {
-        return fieldType;
-    }
+	public boolean isStatic() {
+		return isStatic;
+	}
 
-    @Override
-    public String toString() {
-        return getName();
-    }
+	public TypeModel getFieldType() {
+		return fieldType;
+	}
 
-    @Override
-    public void visit(IVisitor<FieldModel> IVisitor) {
-        IVisitor.visit(this);
-    }
+	@Override
+	public String toString() {
+		return getName();
+	}
+
+	@Override
+	public void visit(IVisitor<FieldModel> IVisitor) {
+		IVisitor.visit(this);
+	}
 
 }

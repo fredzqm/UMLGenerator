@@ -28,7 +28,7 @@ This project takes a set of classes and draws the UML diagram for those set of c
 
   - [(-x|--extension) <extension>]
       - **Description:**the name extension of the output file without the dot
-      - **Default:** png
+      - **Default:** svg
 
   - [(-f|--filters) <filters>]
       - **Description:**use this flag if you want to filter out certain modifiers

@@ -1,15 +1,12 @@
 package config;
 
+import org.junit.Test;
+import utility.IFilter;
 import utility.Modifier;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CommandLineParserTest {
 
@@ -21,9 +18,10 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        assertTrue(conf.getFilters().contains(Modifier.PRIVATE));
-        assertTrue(conf.getFilters().contains(Modifier.PROTECTED));
-        assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+        IFilter<Modifier> f = conf.getModifierFilters();
+        assertFalse(f.filter(Modifier.PRIVATE));
+        assertFalse(f.filter(Modifier.PROTECTED));
+        assertTrue(f.filter(Modifier.PUBLIC));
         assertTrue(conf.isRecursive());
         for (String cla : conf.getClasses())
             assertEquals("me", cla);
@@ -44,9 +42,11 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        assertTrue(conf.getFilters().contains(Modifier.PRIVATE));
-        assertTrue(conf.getFilters().contains(Modifier.PROTECTED));
-        assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+        IFilter<Modifier> f = conf.getModifierFilters();
+
+        assertFalse(f.filter(Modifier.PRIVATE));
+        assertFalse(f.filter(Modifier.PROTECTED));
+        assertTrue(f.filter(Modifier.PUBLIC));
         assertTrue(conf.isRecursive());
         for (String cla : conf.getClasses())
             assertEquals("me", cla);
@@ -65,7 +65,7 @@ public class CommandLineParserTest {
         CommandLineParser com = new CommandLineParser(args);
 
         Configuration conf = com.create();
-        assertTrue(conf.getFilters().contains(Modifier.PRIVATE));
+        assertFalse(conf.getModifierFilters().filter(Modifier.PRIVATE));
         assertEquals(101, Math.round(10 * conf.getNodeSep()));
     }
 
@@ -131,9 +131,9 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        assertTrue(!conf.getFilters().contains(Modifier.PRIVATE));
-        assertTrue(!conf.getFilters().contains(Modifier.PROTECTED));
-        assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PRIVATE));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PROTECTED));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PUBLIC));
     }
 
     @Test
@@ -144,9 +144,9 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        assertTrue(conf.getFilters().contains(Modifier.PRIVATE));
-        assertTrue(!conf.getFilters().contains(Modifier.PROTECTED));
-        assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+        assertFalse(conf.getModifierFilters().filter(Modifier.PRIVATE));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PROTECTED));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PUBLIC));
     }
 
     @Test
@@ -157,9 +157,9 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        assertTrue(!conf.getFilters().contains(Modifier.PRIVATE));
-        assertTrue(!conf.getFilters().contains(Modifier.PROTECTED));
-        assertTrue(!conf.getFilters().contains(Modifier.PUBLIC));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PRIVATE));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PROTECTED));
+        assertTrue(conf.getModifierFilters().filter(Modifier.PUBLIC));
     }
 
     @Test
@@ -174,23 +174,6 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testToString() {
-        String[] args = "-e exepath -d outdir -o outfile -x extension -f public -k -n 10 -r me".split(" ");
-
-        CommandLineParser com = new CommandLineParser(args);
-
-        Configuration conf = com.create();
-
-        String out = "Classes:                   [me]\n" + "Executable Path:           exepath\n"
-                + "Output Extension:          extension\n" + "Output file name:          outfile\n"
-                + "Output Directory:          outdir\n" + "Node seperation value:     10.0\n"
-                + "Filters:                   [PRIVATE, PROTECTED]\n" + "Recursive?:                true\n"
-                + "Rank Dir:                  TB";
-
-        assertEquals(out, conf.toString());
-    }
-
-    @Test
     public void TestJComponentArgument() {
         String[] args = new String[]{"-e", "dot", "-r", "-d", "output", "-o", "Jcomponent", "--filters", "public",
                 "-x", "png", "javax.swing.JComponent"};
@@ -198,9 +181,12 @@ public class CommandLineParserTest {
         CommandLineParser com = new CommandLineParser(args);
 
         Configuration conf = com.create();
-        Collection<Modifier> actual = conf.getFilters();
-        Collection<Modifier> expect = new ArrayList<>(Arrays.asList(Modifier.PRIVATE, Modifier.PROTECTED));
-
-        assertEquals(expect, actual);
+        IFilter<Modifier> actual = conf.getModifierFilters();
+        // expect = new ArrayList<>(Arrays.asList(Modifier.PRIVATE,
+        // Modifier.PROTECTED));
+        assertTrue(actual.filter(Modifier.PUBLIC));
+        assertTrue(actual.filter(Modifier.DEFAULT));
+        assertFalse(actual.filter(Modifier.PRIVATE));
+        assertFalse(actual.filter(Modifier.PROTECTED));
     }
 }

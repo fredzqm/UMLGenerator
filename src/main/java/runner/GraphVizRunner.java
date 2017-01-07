@@ -11,24 +11,30 @@ import java.io.IOException;
  */
 public class GraphVizRunner implements IRunner {
     private static final String OUTPUT_FILE_EXTENSION = "dot";
+    private IRunnerConfiguration config;
 
-    public void execute(IRunnerConfiguration config, String dotString) throws IOException, InterruptedException {
+    public GraphVizRunner(IRunnerConfiguration config) {
+        this.config = config;
+    }
+
+    public void execute(String dotString) throws IOException, InterruptedException {
         String outputFilePath = config.getOutputDirectory() + "/" + config.getFileName();
         String outputFilePathDot = outputFilePath + "." + OUTPUT_FILE_EXTENSION;
         String outputFilePathImage = outputFilePath + "." + config.getOutputFormat();
 
         // write dot string into the file system
-        writeDOTFile(config, dotString, outputFilePathDot);
+        writeDOTFile(dotString, outputFilePathDot);
 
         // execute command to create the image file
         // Create command "<execPath> -T<format> <input> -o <output>
         String command = String.format("%s -T%s %s -o %s", config.getExecutablePath(), config.getOutputFormat(),
                 outputFilePathDot, outputFilePathImage);
-        Process process = Runtime.getRuntime().exec(command.toString());
+        Process process = Runtime.getRuntime().exec(command);
         process.waitFor();
     }
 
-    private void writeDOTFile(IRunnerConfiguration config, String dotString, String outputFilePathDot) throws IOException {
+    private void writeDOTFile(String dotString, String outputFilePathDot)
+            throws IOException {
         File outputDir = new File(config.getOutputDirectory());
         outputDir.mkdirs();
         try {

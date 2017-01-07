@@ -1,145 +1,69 @@
 package model;
 
-import generator.ITypeModel;
-import org.objectweb.asm.Type;
+import java.util.Map;
 
 /**
- * Representing the type in java programs
- *
+ * Representing type model in general
+ * 
  * @author zhang
+ *
  */
-public class TypeModel implements ITypeModel {
-    private final ClassModel classModel;
-    private final int dimension;
-    private final PrimitiveType primiType;
+interface TypeModel {
 
-    public TypeModel(ClassModel classModel, int dimension, PrimitiveType primiType) {
-        this.classModel = classModel;
-        this.dimension = dimension;
-        this.primiType = primiType;
-    }
+	/**
+	 * For generic type, this would return a lower bound of this type
+	 * 
+	 * @return the class model behind this type model. null if it is a primitive
+	 *         type
+	 */
+	ClassModel getClassModel();
 
-    public static TypeModel parse(ASMServiceProvider serviceProvider, Type type) {
-        int dimension = 0;
-        if (type.getSort() == Type.ARRAY) {
-            dimension = type.getDimensions();
-            type = type.getElementType();
-        }
-        PrimitiveType primiType = PrimitiveType.parse(type);
-        ClassModel classModel;
-        if (primiType == PrimitiveType.OBJECT)
-            classModel = serviceProvider.getClassByName(type.getClassName());
-        else
-            classModel = null;
-        return new TypeModel(classModel, dimension, primiType);
-    }
+	/**
+	 * 
+	 * @return the name representing this type
+	 */
+	String getName();
 
-    public static TypeModel getInstance(ClassModel classModel) {
-        return getInstance(classModel, 0);
-    }
+	/**
+	 * 
+	 * @return the dimension of this type, 0 if its is not an array
+	 */
+	default int getDimension() {
+		return 0;
+	}
 
-    public static TypeModel getInstance(ClassModel classModel, int dimension) {
-        return new TypeModel(classModel, dimension, PrimitiveType.OBJECT);
-    }
+	/**
+	 * 
+	 * @return the collection of types that this type can be directly assigned
+	 *         to
+	 */
+	Iterable<TypeModel> getSuperTypes();
 
-    public ClassModel getClassModel() {
-        return classModel;
-    }
+	/**
+	 * replace {@link GenericTypeVarPlaceHolder} with real type in the parameter
+	 * This method should be called once after generic types are first parsed
+	 * 
+	 * @param paramMap
+	 *            the parameter type map containing information about each type
+	 */
+	default TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+		return this;
+	}
 
-    public int getDimension() {
-        return dimension;
-    }
-
-    public String getName() {
-        StringBuilder sb = new StringBuilder();
-        if (classModel != null)
-            sb.append(classModel.getName());
-        else
-            sb.append(primiType.getName());
-        for (int i = 0; i < dimension; i++) {
-            sb.append("[]");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof TypeModel) {
-            TypeModel o = (TypeModel) obj;
-            return classModel == o.classModel && primiType == o.primiType && dimension == o.dimension;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        if (classModel == null)
-            return primiType.hashCode() + dimension;
-        return classModel.hashCode() + primiType.hashCode() + dimension;
-    }
-
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    private enum PrimitiveType {
-        INT, DOUBLE, FLOAT, BOOLEAN, BYTE, CHAR, SHORT, LONG, OBJECT, VOID;
-
-        public static PrimitiveType parse(Type type) {
-            switch (type.getSort()) {
-                case Type.OBJECT:
-                    return OBJECT;
-                case Type.VOID:
-                    return VOID;
-                case Type.INT:
-                    return INT;
-                case Type.DOUBLE:
-                    return DOUBLE;
-                case Type.CHAR:
-                    return CHAR;
-                case Type.BOOLEAN:
-                    return BOOLEAN;
-                case Type.LONG:
-                    return LONG;
-                case Type.BYTE:
-                    return BYTE;
-                case Type.SHORT:
-                    return SHORT;
-                case Type.FLOAT:
-                    return FLOAT;
-                case Type.ARRAY:
-                    // Should be handled before this method.
-                default:
-                    throw new RuntimeException("does not suport type sort " + type.getClassName());
-            }
-        }
-
-        String getName() {
-            switch (this) {
-                case VOID:
-                    return "void";
-                case INT:
-                    return "int";
-                case DOUBLE:
-                    return "double";
-                case FLOAT:
-                    return "float";
-                case BOOLEAN:
-                    return "boolean";
-                case BYTE:
-                    return "byte";
-                case CHAR:
-                    return "char";
-                case SHORT:
-                    return "short";
-                case LONG:
-                    return "long";
-                case OBJECT:
-                    return "Object";
-                default:
-                    throw new RuntimeException(" getName(): We missed " + this);
-            }
-        }
-    }
+	/**
+	 * The most strict version of clazz that it can be assigned to
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	default TypeModel assignTo(ClassModel clazz) {
+		if (this == clazz)
+			return clazz;
+		for (TypeModel sup : getSuperTypes()) {
+			TypeModel t = sup.assignTo(clazz);
+			if (t != null)
+				return t;
+		}
+		return null;
+	}
 }

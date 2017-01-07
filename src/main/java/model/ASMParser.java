@@ -4,9 +4,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -14,100 +12,92 @@ import java.util.Map;
  *
  * @author zhang
  */
-public class ASMParser implements ASMClassTracker {
-    public static int AUTO_CREATE_OFF = 0x1;
-    public static int RECURSE_SUPERCLASS = 0x2;
-    public static int RECURSE_INTERFACE = 0x4;
-    public static int RECURSE_FILEDS = 0x8;
+class ASMParser {
+	public static int RECURSE_SUPERCLASS = 0x2;
+	public static int RECURSE_INTERFACE = 0x4;
+	public static int RECURSE_HAS_A = 0x8;
 
-    final private int recursiveFlag;
+	private static Map<String, ClassModel> map = new HashMap<>();
 
-    private Map<String, ClassModel> map;
+	/**
+	 * ASMServiceProvider manages the parsing of ASM model model under the hood.
+	 * It should not be directly used by external user, but provides
+	 * {@link ClassModel to {@link SystemModel} transparently. It also
+	 * facilitates lazy initialization
+	 * <p>
+	 * It keeps track of all the ClassModel has been parsed, and make sure one
+	 * class is only parsed once.
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static ClassModel getClassByName(String className) {
+		className = className.replace(".", "/");
+		if (map.containsKey(className))
+			return map.get(className);
+		try {
+			ClassReader reader = new ClassReader(className);
+			ClassNode classNode = new ClassNode();
+			reader.accept(classNode, ClassReader.EXPAND_FRAMES);
+			ClassModel model = new ClassModel(classNode);
+			map.put(className, model);
+			return model;
+		} catch (IOException e) {
+			System.err.println("ASM parsing of " + className + " failed.");
+			return null;
+		}
+	}
 
-    /**
-     * create an ASM parser with a certain recursive factor
-     */
-    private ASMParser(int recursiveFlag) {
-        this.recursiveFlag = recursiveFlag;
-        map = new HashMap<>();
-    }
+	/**
+	 * @param importClassesList
+	 *            the important list of classes that are required explicitly
+	 * @param recursiveFlag
+	 *            the flag indicating how much related classes should get
+	 *            recursively parsed
+	 * @return the collection of classes acquired based on the requirement
+	 */
+	public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, int recursiveFlag) {
+		Collection<ClassModel> classesList = new HashSet<>();
+		Queue<ClassModel> unextended = new LinkedList<>();
+		for (String impClass : importClassesList) {
+			ClassModel explicitClass = getClassByName(impClass);
+			classesList.add(explicitClass);
+			unextended.add(explicitClass);
+		}
+		while (!unextended.isEmpty()) {
+			ClassModel model = unextended.poll();
+			if ((recursiveFlag & RECURSE_SUPERCLASS) != 0)
+				addToBothList(classesList, unextended, model.getSuperClass());
+			if ((recursiveFlag & RECURSE_INTERFACE) != 0)
+				addToBothList(classesList, unextended, model.getInterfaces());
+			if ((recursiveFlag & RECURSE_HAS_A) != 0)
+				addToBothList(classesList, unextended, model.getHasRelation().keySet());
+		}
+		return classesList;
+	}
 
-    /**
-     * create an non-recursive ASM parser by default
-     */
-    public ASMParser() {
-        this(0);
-    }
+	public static ClassModel getObject() {
+		return ASMParser.getClassByName("java.lang.Object");
+	}
 
-    public static ASMParser getInstance(IModelConfiguration config) {
-        int recurisveFlag = 0;
-        if (config.isRecursive()) {
-            recurisveFlag |= RECURSE_SUPERCLASS;
-            recurisveFlag |= RECURSE_INTERFACE;
-        } else {
-            recurisveFlag |= AUTO_CREATE_OFF;
-        }
-        ASMParser parser = new ASMParser(recurisveFlag);
-        parser.addClasses(config.getClasses());
-        return parser;
-    }
+	private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
+			ClassModel x) {
+		if (x != null) {
+			if (!classesList.contains(x)) {
+				classesList.add(x);
+				unextended.add(x);
+			}
+		}
+	}
 
-    @Override
-    public ClassModel getClassByName(String className) {
-        className = className.replace(".", "/");
-        if ((recursiveFlag & AUTO_CREATE_OFF) != 0 && !map.containsKey(className)) {
-            return null;
-        }
-        return getClassExplicity(className);
-    }
-
-    private ClassModel getClassExplicity(String className) {
-        ClassModel model = parseClass(className);
-        if ((recursiveFlag & RECURSE_SUPERCLASS) != 0)
-            model.getSuperClass();
-        if ((recursiveFlag & RECURSE_INTERFACE) != 0)
-            model.getInterfaces();
-        if ((recursiveFlag & RECURSE_FILEDS) != 0)
-            model.getFields();
-        return model;
-    }
-
-    private ClassModel parseClass(String className) {
-        if (map.containsKey(className))
-            return map.get(className);
-        try {
-            ClassReader reader = new ClassReader(className);
-            ClassNode classNode = new ClassNode();
-            reader.accept(classNode, ClassReader.EXPAND_FRAMES);
-            ClassModel model = new ClassModel(this, classNode);
-            map.put(className, model);
-            return model;
-        } catch (IOException e) {
-            throw new RuntimeException("ASM parsing of " + className + " failed.", e);
-        }
-    }
-
-    public void addClasses(Iterable<String> importClassesList) {
-        if (importClassesList != null) {
-            for (String importantClass : importClassesList) {
-                getClassExplicity(importantClass.replace(".", "/"));
-            }
-        }
-    }
-
-    /**
-     * Not that this method returns an Iterable. If you add more classes to
-     * ASMParser, the old list will be invalid
-     * <p>
-     * Therefore, you should always wrap it in another list or set
-     */
-    public Collection<ClassModel> getClasses() {
-        return map.values();
-    }
-
-    @Override
-    public String toString() {
-        return map.toString();
-    }
+	private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
+			Iterable<ClassModel> ls) {
+		for (ClassModel x : ls) {
+			if (!classesList.contains(x)) {
+				classesList.add(x);
+				unextended.add(x);
+			}
+		}
+	}
 
 }

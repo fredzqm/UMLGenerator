@@ -33,5 +33,9 @@ public enum Modifier {
 	public String getModifierSymbol() {
 		return modifierValue;
 	}
-	
+
+	public static boolean parseIsStatic(int access) {
+		return (access & Opcodes.ACC_STATIC) != 0;
+	}
+
 }

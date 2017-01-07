@@ -2,16 +2,16 @@ package model;
 
 import analyzer.IVisitable;
 import analyzer.IVisitor;
-import generator.IFieldModel;
-import generator.IMethodModel;
+import generator.classParser.IMethodModel;
+
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.*;
+import utility.IMapper;
 import utility.MethodType;
 import utility.Modifier;
 
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.MethodNode;
-
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -19,44 +19,51 @@ import java.util.List;
  *
  * @author zhang
  */
-public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
+class MethodModel implements IVisitable<MethodModel>, IMethodModel {
     private final MethodNode asmMethodNode;
     private final ClassModel belongsTo;
 
     private final Modifier modifier;
     private final boolean isFinal;
     private final MethodType methodtype;
+
+    private final TypeModel returnType;
     private final Signature signature;
 
-    private List<MethodModel> superMethods;
+    private Collection<MethodModel> dependenOnMethod;
+    private Collection<FieldModel> dependenOnField;
+    private Collection<ClassModel> dependsOn;
 
+    /**
+     * constructs an method model given the class it belongs to and the asm
+     * method node
+     *
+     * @param belongsTo
+     * @param methodNode
+     */
     public MethodModel(ClassModel belongsTo, MethodNode methodNode) {
         this.belongsTo = belongsTo;
         this.asmMethodNode = methodNode;
         this.modifier = Modifier.parse(methodNode.access);
         this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
         this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
-        this.signature = Signature.parse(belongsTo, parseMethodName(), asmMethodNode.desc);
+        this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
+        this.signature = Signature.parse(methodNode.name, methodNode.desc);
     }
 
-    private String parseMethodName() {
-        switch (methodtype) {
-            case CONSTRUCTOR:
-                String name = belongsTo.getName();
-                return name.substring(name.indexOf('.') + 1);
-            case STATIC_INITIALIZER:
-                return "static";
-            default:
-                return asmMethodNode.name;
-        }
-    }
-
-    public ClassModel getParentClass() {
+    public ClassModel getBelongTo() {
         return belongsTo;
     }
 
     public String getName() {
-        return signature.getName();
+        switch (methodtype) {
+            case CONSTRUCTOR:
+                return belongsTo.getName();
+            case STATIC_INITIALIZER:
+                return "static";
+            default:
+                return signature.getName();
+        }
     }
 
     public MethodType getMethodType() {
@@ -75,32 +82,28 @@ public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         return signature;
     }
 
-    public Iterable<MethodModel> getSuperMethods() {
-        if (superMethods == null) {
-            superMethods = new ArrayList<>();
-            MethodModel inherit = belongsTo.getMethodBySignature(signature);
-            if (inherit != null)
-                superMethods.add(inherit);
-            for (ClassModel interf : belongsTo.getInterfaces()) {
-                inherit = interf.getMethodBySignature(signature);
-                if (inherit != null)
-                    superMethods.add(inherit);
-            }
-        }
-        return superMethods;
+    public List<TypeModel> getArguments() {
+        return signature.getArguments();
     }
 
-    public List<TypeModel> getArguments() {
-        return signature.getArgumentList();
+    @Override
+    public Iterable<? extends String> getArgumentTypeNames() {
+        IMapper<TypeModel, String> mapper = TypeModel::getName;
+        return mapper.map(getArguments());
     }
 
     public TypeModel getReturnType() {
-        return signature.getReturnType();
+        return returnType;
+    }
+
+    @Override
+    public String getReturnTypeName() {
+        return returnType.getName();
     }
 
     @Override
     public String toString() {
-        return getSignature().toString();
+        return returnType + " " + getSignature().toString();
     }
 
     @Override
@@ -108,13 +111,71 @@ public class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         IVisitor.visit(this);
     }
 
-    // TODO: Implement this.
     public Collection<MethodModel> getDependentMethods() {
-        return null;
+        if (dependenOnMethod == null) {
+            dependenOnMethod = new HashSet<>();
+            InsnList instructions = asmMethodNode.instructions;
+            for (int i = 0; i < instructions.size(); i++) {
+                AbstractInsnNode insn = instructions.get(i);
+                if (insn instanceof MethodInsnNode) {
+                    MethodInsnNode methodCall = (MethodInsnNode) insn;
+                    TypeModel type = TypeParser.parse(Type.getObjectType(methodCall.owner));
+                    ClassModel destClass = ASMParser.getClassByName(type.getName());
+                    if (destClass == null)
+                        continue;
+                    Signature signature = Signature.parse(methodCall.name, methodCall.desc);
+                    MethodModel method = destClass.getMethodBySignature(signature);
+                    if (method == null)
+                        continue;
+                    dependenOnMethod.add(method);
+                }
+            }
+        }
+        return dependenOnMethod;
     }
 
-    public Collection<IFieldModel> getDependentFields() {
-        return null;
+    public Collection<FieldModel> getDependentFields() {
+        if (dependenOnField == null) {
+            dependenOnField = new HashSet<>();
+            InsnList instructions = asmMethodNode.instructions;
+            for (int i = 0; i < instructions.size(); i++) {
+                AbstractInsnNode insn = instructions.get(i);
+                if (insn instanceof FieldInsnNode) {
+                    FieldInsnNode fiedlCall = (FieldInsnNode) insn;
+                    TypeModel type = TypeParser.parse(Type.getObjectType(fiedlCall.owner));
+                    ClassModel destClass = ASMParser.getClassByName(type.getName());
+                    if (destClass == null)
+                        continue;
+                    FieldModel field = destClass.getFieldByName(fiedlCall.name);
+                    if (field == null)
+                        throw new RuntimeException(
+                                "The destination class " + destClass + " does not contain a field: " + fiedlCall.name);
+                    dependenOnField.add(field);
+                }
+            }
+        }
+        return dependenOnField;
+    }
+
+    public Collection<ClassModel> addDependsClasses() {
+        if (dependsOn == null) {
+            dependsOn = new HashSet<>();
+            for (TypeModel arg : getArguments()) {
+                ClassModel asArgument = arg.getClassModel();
+                if (asArgument != null)
+                    dependsOn.add(asArgument);
+            }
+            ClassModel asReturnType = getReturnType().getClassModel();
+            if (asReturnType != null)
+                dependsOn.add(asReturnType);
+            for (FieldModel field : getDependentFields()) {
+                dependsOn.add(field.getBelongTo());
+            }
+            for (MethodModel method : getDependentMethods()) {
+                dependsOn.add(method.getBelongTo());
+            }
+        }
+        return dependsOn;
     }
 
 }

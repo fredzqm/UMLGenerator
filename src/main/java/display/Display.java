@@ -8,9 +8,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class Display extends JFrame {
+    public static final Set<String> SUPPORT_EXTENSIONS;
+
+    static {
+        SUPPORT_EXTENSIONS = new HashSet<>();
+        SUPPORT_EXTENSIONS.add("jpg");
+        SUPPORT_EXTENSIONS.add("png");
+    }
+
     private BufferedImage image;
     private JPanel canvas;
 
@@ -34,7 +44,11 @@ public class Display extends JFrame {
         add(sp, BorderLayout.CENTER);
     }
 
-    public static void showWindown(IRunnerConfiguration config) {
+    public static void showWindow(IRunnerConfiguration config) {
+        if (!SUPPORT_EXTENSIONS.contains(config.getOutputFormat())) {
+            System.err.print("Currently unsupported image format " + config.getOutputFormat());
+            return;
+        }
         String outputFilePathImage = config.getOutputDirectory() + "/" + config.getFileName() + "."
                 + config.getOutputFormat();
 

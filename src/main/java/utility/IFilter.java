@@ -1,51 +1,28 @@
 package utility;
 
-import java.util.Iterator;
-
+/**
+ * IFilter is a convenient way of filtering out part of unneeded elements in an iterable
+ * We only needs to implement the {@link IFilter#filter(T)} method
+ *
+ * @param <T>
+ * @author zhang
+ */
 public interface IFilter<T> {
 
+    /**
+     * @param data
+     * @return true if the data pass the test, and should be left after the
+     * filter
+     */
     boolean filter(T data);
 
-    default Iterable<T> filter(Iterable<T> in) {
-        return new Iterable<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new FilteredIterable<T>(IFilter.this, in.iterator());
-            }
-        };
+    /**
+     * @param iterable The iterable we want to filter
+     * @return an iterable of the same type but removed all the data that do not
+     * pass the test
+     */
+    default Iterable<T> filter(Iterable<? extends T> iterable) {
+        return (Iterable<T>) () -> new FilteredIterator<>(IFilter.this, iterable);
     }
 
-    static class FilteredIterable<T> implements Iterator<T> {
-        private Iterator<T> itr;
-        private IFilter<T> filter;
-        private T data;
-
-        public FilteredIterable(IFilter<T> iFilter, Iterator<T> originIterator) {
-            itr = originIterator;
-            filter = iFilter;
-            advance();
-        }
-
-        private void advance() {
-            data = null;
-            while (itr.hasNext()) {
-                data = itr.next();
-                if (filter.filter(data))
-                    break;
-            }
-        }
-
-        @Override
-        public boolean hasNext() {
-            return itr.hasNext() && data != null;
-        }
-
-        @Override
-        public T next() {
-            T ret = data;
-            advance();
-            return ret;
-        }
-
-    }
 }
