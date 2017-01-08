@@ -16,7 +16,7 @@ public class IFilterTest {
 
         IFilter<Integer> f = (d) -> d % 2 != 0;
 
-        Iterator<? extends Integer> itr = f.filter(a).iterator();
+        Iterator<Integer> itr = f.filter(a).iterator();
         assertEquals(1, (int) itr.next());
         assertEquals(3, (int) itr.next());
         assertEquals(5, (int) itr.next());
