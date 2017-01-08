@@ -6,40 +6,60 @@ import analyzer.IMethodModel;
 import utility.IFilter;
 import utility.Modifier;
 
-/**
- * Representing a single class in the DOT language.
- */
-public class GraphVizClassParser extends AbstractClassParser {
+public class GraphVizClassParser implements IParser<IClassModel> {
 
-    public GraphVizClassParser(IClassParserConfiguration config) {
-        super(config);
-    }
+	/**
+	 * Returns the String of the Class (header, fields, methods) in DOT file
+	 * format.
+	 *
+	 * @return Class in DOT format.
+	 */
+	@Override
+	public String parse(IClassModel model, IClassParserConfiguration config) {
+		StringBuilder sb = new StringBuilder();
+		IFilter<Modifier> modifierFilter = config.getModifierFilters();
 
-    @Override
-    public IFilter<IMethodModel> createFieldMethodFilter(IClassParserConfiguration config) {
-        IFilter<Modifier> modifierFilter = config.getModifierFilters();
-        return (m) -> modifierFilter.filter(m.getModifier());
-    }
+		// Set the header.
+		Class<? extends IParser<IClassModel>> headerParserClass = config.getHeaderParser();
+		try {
+			IParser<IClassModel> header = headerParserClass.newInstance();
+			sb.append(header.parse(model, config));
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 
-    @Override
-    public IParser<IMethodModel> createMethodParser(IClassParserConfiguration config) {
-        return new GraphVizMethodParser();
-    }
+		// Filter the fields
+		Iterable<? extends IFieldModel> fields = model.getFields();
+		IFilter<IFieldModel> fieldFilters = (f) -> modifierFilter.filter(f.getModifier());
+		fields = fieldFilters.filter(fields);
+		// Render the fields
+		Class<? extends IParser<IFieldModel>> fieldParserClass = config.getFieldParser();
+		try {
+			IParser<IFieldModel> fieldParser = fieldParserClass.newInstance();
+			if (fields.iterator().hasNext()) {
+				sb.append(String.format(" | %s", fieldParser.parse(fields, config)));
+			}
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 
-    @Override
-    public IFilter<IFieldModel> createFieldFilter(IClassParserConfiguration config) {
-        IFilter<Modifier> modifierFilter = config.getModifierFilters();
-        return (f) -> modifierFilter.filter(f.getModifier());
-    }
+		// Filter the methods
+		Iterable<? extends IMethodModel> methods = model.getMethods();
+		IFilter<IMethodModel> methodFilters = (m) -> modifierFilter.filter(m.getModifier());
+		methods = methodFilters.filter(methods);
+		// Render the methods
+		Class<? extends IParser<IMethodModel>> methodParserClass = config.getMethodParser();
+		try {
+			IParser<IMethodModel> methodParser = methodParserClass.newInstance();
+			if (methods.iterator().hasNext()) {
+				sb.append(String.format(" | %s", methodParser.parse(methods, config)));
+			}
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 
-    @Override
-    public IParser<IFieldModel> createFieldParser(IClassParserConfiguration config) {
-        return new GraphVizFieldParser();
-    }
-
-    @Override
-    public IParser<IClassModel> createHeaderParser(IClassParserConfiguration config) {
-        return new GraphVizHeaderParser();
-    }
+		// Generate the full string with the label text generated above.
+		return sb.toString();
+	}
 
 }

@@ -157,7 +157,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         return dependenOnField;
     }
 
-    public Collection<ClassModel> addDependsClasses() {
+    public Collection<ClassModel> getDependsClasses() {
         if (dependsOn == null) {
             dependsOn = new HashSet<>();
             for (TypeModel arg : getArguments()) {

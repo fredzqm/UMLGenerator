@@ -20,9 +20,9 @@ public class AnalyzerClassParser implements IAnalyzer {
 		if (!(c instanceof IClassParserConfiguration))
 			throw new RuntimeException(c + " is not a IClassParserConfiguration");
 
-		IParser<IClassModel> classParser = new GraphVizClassParser((IClassParserConfiguration) c);
+		IParser<IClassModel> classParser = new GraphVizClassParser();
 
-		return new ParseClassSystemModel(systemModel, classParser);
+		return new ParseClassSystemModel(systemModel, classParser, (IClassParserConfiguration) c);
 	}
 
 }

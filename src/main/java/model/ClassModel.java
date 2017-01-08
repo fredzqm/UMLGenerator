@@ -223,7 +223,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();
 			for (MethodModel method : getMethods()) {
-				dependsOn.addAll(method.addDependsClasses());
+				dependsOn.addAll(method.getDependsClasses());
 			}
 			dependsOn.removeAll(getHasRelation().keySet());
 			dependsOn.remove(this);

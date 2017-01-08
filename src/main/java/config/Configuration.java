@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import analyzer.IAnalyzer;
+import analyzer.IClassModel;
+import analyzer.IFieldModel;
+import analyzer.IMethodModel;
 import analyzerClassParser.AnalyzerClassParser;
+import analyzerClassParser.GraphVizFieldParser;
+import analyzerClassParser.GraphVizHeaderParser;
+import analyzerClassParser.GraphVizMethodParser;
+import analyzerClassParser.IParser;
 import analyzerRelationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
@@ -14,7 +21,7 @@ import utility.Modifier;
 /**
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class Configuration implements IConfiguration{
+public class Configuration implements IConfiguration {
 
 	private Iterable<String> classes;
 	private String executablePath;
@@ -28,6 +35,9 @@ public class Configuration implements IConfiguration{
 	private String nodeStyle;
 	private Iterable<Class<? extends IAnalyzer>> analyzerls;
 	private Class<? extends IGenerator> generator;
+	private Class<? extends IParser<IClassModel>> classHeaderParser;
+	private Class<? extends IParser<IFieldModel>> fieldParser;
+	private Class<? extends IParser<IMethodModel>> methodParser;
 
 	public static Configuration getInstance() {
 		Configuration conf = new Configuration();
@@ -39,6 +49,9 @@ public class Configuration implements IConfiguration{
 		conf.setNodeStyle("node [shape=record]");
 		conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
 		conf.setGenerator(GraphVizGenerator.class);
+		conf.setHeaderParser(GraphVizHeaderParser.class);
+		conf.setFieldParser(GraphVizFieldParser.class);
+		conf.setMethodParser(GraphVizMethodParser.class);
 		return conf;
 	}
 
@@ -160,4 +173,32 @@ public class Configuration implements IConfiguration{
 	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
 		return this;
 	}
+
+	public void setFieldParser(Class<? extends IParser<IFieldModel>> fieldParser) {
+		this.fieldParser = fieldParser;
+	}
+
+	@Override
+	public Class<? extends IParser<IFieldModel>> getFieldParser() {
+		return fieldParser;
+	}
+
+	public void setMethodParser(Class<? extends IParser<IMethodModel>> methodParser) {
+		this.methodParser = methodParser;
+	}
+
+	@Override
+	public Class<? extends IParser<IMethodModel>> getMethodParser() {
+		return methodParser;
+	}
+
+	public void setHeaderParser(Class<? extends IParser<IClassModel>> classHeaderParser) {
+		this.classHeaderParser = classHeaderParser;
+	}
+
+	@Override
+	public Class<? extends IParser<IClassModel>> getHeaderParser() {
+		return classHeaderParser;
+	}
+
 }

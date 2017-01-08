@@ -9,11 +9,14 @@ import analyzer.ISystemModel;
 import analyzer.ISystemModelFilter;
 
 public class ParseClassSystemModel extends ISystemModelFilter {
-	IParser<IClassModel> classParser;
-	
-	public ParseClassSystemModel(ISystemModel systemModel, IParser<IClassModel> classParser) {
+	private IParser<IClassModel> classParser;
+	private IClassParserConfiguration config;
+
+	public ParseClassSystemModel(ISystemModel systemModel, IParser<IClassModel> classParser,
+			IClassParserConfiguration config) {
 		super(systemModel);
 		this.classParser = classParser;
+		this.config = config;
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class ParseClassSystemModel extends ISystemModelFilter {
 		super.getClasses().forEach((c) -> {
 			classes.add(new IClassModelFilter(c) {
 				public String getLabel() {
-					return classParser.parse(c);
+					return classParser.parse(c, config);
 				}
 			});
 		});
