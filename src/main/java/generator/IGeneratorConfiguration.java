@@ -1,8 +1,5 @@
 package generator;
 
-import utility.IFilter;
-import utility.Modifier;
-
 /**
  * An Interface for Generator Configuration.
  * <p>
@@ -10,19 +7,13 @@ import utility.Modifier;
  * Edited by fineral on 12/13/2016.
  */
 public interface IGeneratorConfiguration {
+	
     /**
      * Returns the Node Seperation.
      *
      * @return Node Separation value.
      */
     double getNodeSep();
-
-    /**
-     * Return the set of Method Access Filters.
-     *
-     * @return Set of Method Access Filters.
-     */
-    IFilter<Modifier> getModifierFilters();
 
     /**
      * Returns either BT or TB depending on how you want the

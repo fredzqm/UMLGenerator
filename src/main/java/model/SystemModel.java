@@ -1,13 +1,13 @@
 package model;
 
-import generator.relationshipParser.*;
-
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import analyzer.IASystemModel;
+import analyzer.ClassPair;
+import analyzer.IRelationInfo;
+import analyzer.ISystemModel;
 
 /**
  * 
@@ -16,7 +16,7 @@ import analyzer.IASystemModel;
  * @author zhang
  *
  */
-public class SystemModel implements IASystemModel {
+public class SystemModel implements ISystemModel {
 	private Collection<ClassModel> classList;
 
 	private SystemModel(Collection<ClassModel> importantList) {
@@ -46,41 +46,13 @@ public class SystemModel implements IASystemModel {
 	}
 
 	@Override
-	public Iterable<ClassModel> getClasses() {
+	public Collection<ClassModel> getClasses() {
 		return classList;
 	}
 
 	@Override
-	public Iterable<Relation> getRelations() {
-		List<Relation> ls = new ArrayList<>();
-		for (ClassModel classModel : classList) {
-			String className = classModel.getName();
-
-			// add related super class relationship
-			ClassModel superClass = classModel.getSuperClass();
-			if (superClass != null)
-				if (classList.contains(superClass))
-					ls.add(new Relation(new ClassPair(className, superClass.getName()), new RelationExtendsClass()));
-
-			// add related interface relationship
-			Iterable<ClassModel> interfaces = classModel.getInterfaces();
-			for (ClassModel x : interfaces)
-				if (classList.contains(x))
-					ls.add(new Relation(new ClassPair(className, x.getName()), new RelationImplement()));
-
-			// add related has-a relationship
-			Map<ClassModel, Integer> has_a = classModel.getHasRelation();
-			for (ClassModel x : has_a.keySet())
-				if (classList.contains(x))
-					ls.add(new Relation(new ClassPair(className, x.getName()), new RelationHasA(has_a.get(x))));
-
-			// add related depends on relationship
-			Iterable<ClassModel> depends_on = classModel.getDependsRelation();
-			for (ClassModel x : depends_on)
-				if (classList.contains(x))
-					ls.add(new Relation(new ClassPair(className, x.getName()), new RelationDependsOn()));
-		}
-		return ls;
+	public Map<ClassPair, List<IRelationInfo>> getRelations() {
+		return Collections.emptyMap();
 	}
 
 }

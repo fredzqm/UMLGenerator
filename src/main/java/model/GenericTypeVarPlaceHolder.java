@@ -39,7 +39,7 @@ class GenericTypeVarPlaceHolder implements TypeModel {
 	@Override
 	public Iterable<TypeModel> getSuperTypes() {
 		System.err.println("GenericTypeVar does not know its super types");
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override

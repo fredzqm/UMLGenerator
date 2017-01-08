@@ -53,7 +53,7 @@ enum PrimitiveType implements TypeModel {
 
 	@Override
 	public Iterable<TypeModel> getSuperTypes() {
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 }

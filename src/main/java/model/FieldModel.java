@@ -1,11 +1,11 @@
 package model;
 
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import generator.classParser.IFieldModel;
-
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
+
+import analyzer.IFieldModel;
+import analyzer.IVisitable;
+import analyzer.IVisitor;
 import utility.Modifier;
 
 /**
