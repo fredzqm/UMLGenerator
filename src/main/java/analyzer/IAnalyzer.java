@@ -8,8 +8,8 @@ package analyzer;
 public interface IAnalyzer {
 	/**
 	 * 
-	 * @param sm
+	 * @param systemModel
 	 * @return
 	 */
-	ISystemModel analyze(ISystemModel sm, IAnalyzerConfiguraton config);
+	ISystemModel analyze(ISystemModel systemModel, IAnalyzerConfiguraton config);
 }

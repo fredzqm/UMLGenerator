@@ -17,18 +17,18 @@ public class GraphVizGenerator implements IGenerator {
 		dotString.append(String.format("\tnodesep=%s;\n\t%s;\n\trankdir=%s;\n\n", config.getNodeSep(),
 				config.getNodeStyle(), config.getRankDir()));
 
-		// render the classes
-		Iterable<? extends IVertex> vertece = graph.getVertice();
-		vertece.forEach((vertex) -> {
+		// Render the classes
+		Iterable<? extends IVertex> vertices = graph.getVertices();
+		vertices.forEach((vertex) -> {
 			dotString.append(
 					String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", vertex.getName(), vertex.getLabel()));
 		});
 
 		// Parse each relationship.
-		Iterable<? extends IEdge> relations = graph.getEdges();
-		relations.forEach(relation -> {
-			dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n", relation.getFrom(), relation.getTo(),
-					relation.getEdgeStyle()));
+		Iterable<? extends IEdge> edges = graph.getEdges();
+		edges.forEach(edge -> {
+			dotString.append(String.format("\t\"%s\" -> \"%s\" [%s];\n", edge.getFrom(), edge.getTo(),
+					edge.getEdgeStyle()));
 		});
 
 		return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());

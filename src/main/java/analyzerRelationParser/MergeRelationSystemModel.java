@@ -1,16 +1,15 @@
 package analyzerRelationParser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import analyzer.ISystemModel;
 import analyzer.ClassPair;
 import analyzer.IRelationInfo;
+import analyzer.ISystemModel;
 import analyzer.ISystemModelFilter;
 
 public class MergeRelationSystemModel extends ISystemModelFilter {
@@ -28,42 +27,53 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
 			ClassPair next = oldMap.keySet().iterator().next();
 			List<IRelationInfo> a = oldMap.get(next);
 			if (next.isLoop()) {
-				for (int i = 0; i < a.size(); i++) {
-					for (int j = i + 1; j < a.size(); j++) {
-						IRelationInfo rel = merge(a.get(i), a.get(j));
-						if (rel != null) {
-							a.remove(j);
-							a.remove(i);
-							j -= 2;
-							i -= 1;
-							addToMap(newMap, next, rel);
-						}
-					}
-				}
+				mergeLoopRelation(newMap, next, a);
 			} else {
-				ClassPair reverse = next.reverse();
-				List<IRelationInfo> b = oldMap.getOrDefault(reverse, Collections.EMPTY_LIST);
-				ListIterator<IRelationInfo> aitr = a.listIterator();
-				while (aitr.hasNext()) {
-					IRelationInfo aRel = aitr.next();
-					ListIterator<IRelationInfo> bitr = b.listIterator();
-					while (bitr.hasNext()) {
-						IRelationInfo bRel = bitr.next();
-						IRelationInfo rel = merge(aRel, bRel);
-						if (rel != null) {
-							aitr.remove();
-							bitr.remove();
-							addToMap(newMap, next, rel);
-						}
-					}
-				}
-				addToMap(newMap, reverse, b);
-				oldMap.remove(reverse);
+				mergeBijectiveRelation(oldMap, newMap, next, a);
 			}
 			addToMap(newMap, next, a);
 			oldMap.remove(next);
 		}
 		return newMap;
+	}
+
+	private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
+			Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+		ClassPair reverse = next.reverse();
+		if (oldMap.containsKey(reverse)) {
+			List<IRelationInfo> b = oldMap.get(reverse);
+			ListIterator<IRelationInfo> aitr = a.listIterator();
+			while (aitr.hasNext()) {
+				IRelationInfo aRel = aitr.next();
+				ListIterator<IRelationInfo> bitr = b.listIterator();
+				while (bitr.hasNext()) {
+					IRelationInfo bRel = bitr.next();
+					IRelationInfo rel = merge(aRel, bRel);
+					if (rel != null) {
+						aitr.remove();
+						bitr.remove();
+						addToMap(newMap, next, rel);
+					}
+				}
+			}
+			addToMap(newMap, reverse, b);
+			oldMap.remove(reverse);
+		}
+	}
+
+	private void mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+		for (int i = 0; i < a.size(); i++) {
+			for (int j = i + 1; j < a.size(); j++) {
+				IRelationInfo rel = merge(a.get(i), a.get(j));
+				if (rel != null) {
+					a.remove(j);
+					a.remove(i);
+					j -= 2;
+					i -= 1;
+					addToMap(newMap, next, rel);
+				}
+			}
+		}
 	}
 
 	private void addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info) {

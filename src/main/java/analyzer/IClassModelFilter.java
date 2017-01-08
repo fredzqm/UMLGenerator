@@ -10,7 +10,7 @@ import utility.Modifier;
  * @author zhang
  *
  */
-public class IClassModelFilter implements IClassModel {
+public abstract class IClassModelFilter implements IClassModel {
 	private IClassModel classModel;
 
 	public IClassModelFilter(IClassModel classModel) {

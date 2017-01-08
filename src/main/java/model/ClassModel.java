@@ -98,7 +98,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	public List<TypeModel> getSuperTypes() {
 		if (superTypes == null) {
 			if (asmClassNode.signature == null) {
-				genericParams = Collections.EMPTY_LIST;
+				genericParams = Collections.emptyList();
 				superTypes = new ArrayList<>();
 				// add super class
 				if (asmClassNode.superName != null) {
@@ -106,6 +106,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 					superTypes.add(superClass);
 				}
 				// add interfaces
+				@SuppressWarnings("unchecked")
 				List<String> ls = asmClassNode.interfaces;
 				for (String s : ls) {
 					TypeModel m = ASMParser.getClassByName(s);
@@ -152,7 +153,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	public Iterable<ClassModel> getInterfaces() {
 		List<TypeModel> ls = getSuperTypes();
 		if (ls.isEmpty())
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		IMapper<TypeModel, ClassModel> map = (c) -> c.getClassModel();
 		return map.map(ls.subList(1, ls.size()));
 	}

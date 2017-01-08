@@ -10,7 +10,7 @@ import java.util.Map;
  * @author zhang
  *
  */
-public class ISystemModelFilter implements ISystemModel {
+public abstract class ISystemModelFilter implements ISystemModel {
 	private ISystemModel systemModel;
 
 	public ISystemModelFilter(ISystemModel systemModel) {

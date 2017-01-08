@@ -52,7 +52,7 @@ public class SystemModel implements ISystemModel {
 
 	@Override
 	public Map<ClassPair, List<IRelationInfo>> getRelations() {
-		return Collections.EMPTY_MAP;
+		return Collections.emptyMap();
 	}
 
 }

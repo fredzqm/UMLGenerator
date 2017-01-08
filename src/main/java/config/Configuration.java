@@ -1,27 +1,20 @@
 package config;
 
-import generator.GraphVizGenerator;
-import generator.IGenerator;
-import generator.IGeneratorConfiguration;
-import model.IModelConfiguration;
-import runner.IRunnerConfiguration;
-import utility.IFilter;
-import utility.Modifier;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import analyzer.IAnalyzer;
-import analyzer.IAnalyzerConfiguraton;
 import analyzerClassParser.AnalyzerClassParser;
-import analyzerClassParser.IClassParserConfiguration;
 import analyzerRelationParser.AnalyzerRelationParser;
+import generator.GraphVizGenerator;
+import generator.IGenerator;
+import utility.IFilter;
+import utility.Modifier;
 
 /**
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class Configuration implements IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration,
-		IAnalyzerConfiguraton, IClassParserConfiguration {
+public class Configuration implements IConfiguration{
 
 	private Iterable<String> classes;
 	private String executablePath;

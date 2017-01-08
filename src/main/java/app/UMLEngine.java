@@ -2,6 +2,7 @@ package app;
 import analyzer.ISystemModel;
 import analyzer.IAnalyzer;
 import config.Configuration;
+import config.IConfiguration;
 import generator.IGenerator;
 import generator.IGraph;
 import model.SystemModel;
@@ -9,9 +10,9 @@ import runner.GraphVizRunner;
 import runner.IRunner;
 
 public class UMLEngine extends AbstractUMLEngine {
-	private Configuration config;
+	private IConfiguration config;
 
-	private UMLEngine(Configuration configuration) {
+	private UMLEngine(IConfiguration configuration) {
 		config = configuration;
 	}
 
@@ -24,9 +25,8 @@ public class UMLEngine extends AbstractUMLEngine {
 	ISystemModel analyze(ISystemModel systemModel) {
 		Iterable<Class<? extends IAnalyzer>> anClassLs = config.getAnalyzers();
 		for (Class<? extends IAnalyzer> anClass : anClassLs) {
-			IAnalyzer analyzer;
 			try {
-				analyzer = anClass.newInstance();
+				IAnalyzer analyzer = anClass.newInstance();
 				systemModel = analyzer.analyze(systemModel, config);
 			} catch (InstantiationException | IllegalAccessException e) {
 				throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);

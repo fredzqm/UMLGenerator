@@ -2,6 +2,8 @@ package app;
 import config.Configuration;
 import dummy.RelDummyManyClass;
 import dummy.RelOtherDummyClass;
+import runner.IRunner;
+
 import java.util.Arrays;
 
 import app.AbstractUMLEngine;
@@ -26,7 +28,7 @@ public class LocalTester {
 		config.setExecutablePath("dot");
 		config.setOutputFormat("png");
 
-		AbstractUMLEngine engine = UMLEngine.getInstance(config);
+		Runnable engine = UMLEngine.getInstance(config);
 		engine.run();
 	}
 

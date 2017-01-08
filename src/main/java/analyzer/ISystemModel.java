@@ -31,7 +31,7 @@ public interface ISystemModel extends IGraph {
 	Map<ClassPair, List<IRelationInfo>> getRelations();
 
 	
-	default Iterable<? extends IVertex> getVertice() {
+	default Iterable<? extends IVertex> getVertices() {
 		return getClasses();
 	}
 
