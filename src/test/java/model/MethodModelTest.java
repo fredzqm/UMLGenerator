@@ -1,7 +1,6 @@
 package model;
 
 import org.junit.Test;
-
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;

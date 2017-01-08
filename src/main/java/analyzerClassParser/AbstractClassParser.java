@@ -5,6 +5,9 @@ import analyzer.IFieldModel;
 import analyzer.IMethodModel;
 import utility.IFilter;
 
+/**
+ * An abstract class parser.
+ */
 public abstract class AbstractClassParser implements IParser<IClassModel> {
     private final IParser<IClassModel> header;
     private final IFilter<IFieldModel> fieldFilters;
@@ -12,6 +15,11 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
     private final IFilter<IMethodModel> methodFilters;
     private final IParser<IMethodModel> methodParser;
 
+    /**
+     * Constructs an AbstractClassParser
+     *
+     * @param config Class Parser Configuration.
+     */
     AbstractClassParser(IClassParserConfiguration config) {
         this.fieldFilters = createFieldFilter(config);
         this.methodFilters = createFieldMethodFilter(config);
@@ -28,10 +36,10 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
      */
     @Override
     public String parse(IClassModel model) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder classBuilder = new StringBuilder();
 
         // Set the header.
-        sb.append(header.parse(model));
+        classBuilder.append(header.parse(model));
 
         // Set the fields.
         Iterable<? extends IFieldModel> fields = model.getFields();
@@ -42,17 +50,17 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
 
         // Only append to main StringBuilder if it is non-empty.
         if (fieldBuilder.length() > 0) {
-            sb.append(String.format(" | %s", fieldBuilder.toString()));
+            classBuilder.append(String.format(" | %s", fieldBuilder.toString()));
         }
 
         // Set the methods.
         Iterable<? extends IMethodModel> methods = model.getMethods();
         if (methods.iterator().hasNext()) {
-            sb.append(String.format(" | %s", methodParser.parse(this.methodFilters.filter(methods))));
+            classBuilder.append(String.format(" | %s", methodParser.parse(this.methodFilters.filter(methods))));
         }
 
         // Generate the full string with the label text generated above.
-        return sb.toString();
+        return classBuilder.toString();
     }
 
     /**
@@ -94,5 +102,4 @@ public abstract class AbstractClassParser implements IParser<IClassModel> {
      * @return Header Parser.
      */
     public abstract IParser<IClassModel> createHeaderParser(IClassParserConfiguration config);
-
 }

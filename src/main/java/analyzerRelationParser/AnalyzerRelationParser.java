@@ -1,14 +1,12 @@
 package analyzerRelationParser;
 
-import analyzer.ISystemModel;
 import analyzer.IAnalyzer;
-import analyzer.IAnalyzerConfiguraton;
+import analyzer.IAnalyzerConfiguration;
+import analyzer.ISystemModel;
 
 public class AnalyzerRelationParser implements IAnalyzer {
-
-	@Override
-	public ISystemModel analyze(ISystemModel sm, IAnalyzerConfiguraton config) {
+    @Override
+    public ISystemModel analyze(ISystemModel sm, IAnalyzerConfiguration config) {
         return new MergeRelationSystemModel(new ParseRelationSystemModel(sm));
-	}
-
+    }
 }

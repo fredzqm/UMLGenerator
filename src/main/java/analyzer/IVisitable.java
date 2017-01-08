@@ -3,11 +3,15 @@ package analyzer;
 /**
  * Any class that implements this interface can be tranversed with corresponding
  * IVisitor
- * 
- * @author zhang
  *
  * @param <T>
+ * @author zhang
  */
 public interface IVisitable<T> {
-	void visit(IVisitor<T> IVisitor);
+    /**
+     * TODO: FRED Document this.
+     *
+     * @param IVisitor
+     */
+    void visit(IVisitor<T> IVisitor);
 }

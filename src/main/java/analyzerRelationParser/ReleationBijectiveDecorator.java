@@ -2,25 +2,37 @@ package analyzerRelationParser;
 
 import analyzer.IRelationInfo;
 
+/**
+ * RelationInfo that interprets bijectvie relations.
+ */
 public class ReleationBijectiveDecorator implements IRelationInfo {
-	private IRelationInfo decorated;
+    private IRelationInfo decorated;
 
-	public ReleationBijectiveDecorator(IRelationInfo rel) {
-		this.decorated = rel;
-	}
+    /**
+     * Constructs a RelationBijectiveDecorator.
+     *
+     * @param rel
+     */
+    ReleationBijectiveDecorator(IRelationInfo rel) {
+        this.decorated = rel;
+    }
 
-	IRelationInfo getDecorated() {
-		return decorated;
-	}
+    /**
+     * Returns the RelationInfo it decorates.
+     *
+     * @return IRelationInfo decorated.
+     */
+    IRelationInfo getDecorated() {
+        return decorated;
+    }
 
-	@Override
-	public String toString() {
-		return "bir-" + decorated.toString();
-	}
+    @Override
+    public String toString() {
+        return "bir-" + decorated.toString();
+    }
 
-	@Override
-	public String getEdgeStyle() {
-		return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" style=\"\" dir=both ";
-	}
-
+    @Override
+    public String getEdgeStyle() {
+        return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" style=\"\" dir=both ";
+    }
 }

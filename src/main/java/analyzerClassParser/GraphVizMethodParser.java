@@ -8,41 +8,41 @@ import analyzer.IMethodModel;
  * Created by lamd on 12/14/2016.
  */
 class GraphVizMethodParser implements IParser<IMethodModel> {
-
     @Override
     public String parse(IMethodModel method) {
-        StringBuilder classMethod = new StringBuilder();
+        StringBuilder classMethodBuilder = new StringBuilder();
+
         // Add the modifier.
         String modifierSymbol = method.getModifier().getModifierSymbol();
         // We need to escape the space for default methods.
         if (modifierSymbol.equals(" ")) {
-            classMethod.append(" \\").append(modifierSymbol);
+            classMethodBuilder.append(" \\").append(modifierSymbol);
         } else {
-            classMethod.append(modifierSymbol);
+            classMethodBuilder.append(modifierSymbol);
         }
-        classMethod.append(" ");
+        classMethodBuilder.append(" ");
 
         // Add the name.
-        classMethod.append(method.getName());
-        classMethod.append("(");
+        classMethodBuilder.append(method.getName());
+        classMethodBuilder.append("(");
 
         // Add the arguments.
-        int methodLengthBefore = classMethod.length();
+        int methodLengthBefore = classMethodBuilder.length();
         method.getArgumentTypeNames().forEach((type) -> {
             // Java does not keep track of variable names.
-            classMethod.append(String.format("%s, ", type));
+            classMethodBuilder.append(String.format("%s, ", type));
         });
 
         // Remove the ", " and end method with parenthesis.
-        if (methodLengthBefore != classMethod.length()) {
-            classMethod.replace(classMethod.length() - 2, classMethod.length(), ")");
+        if (methodLengthBefore != classMethodBuilder.length()) {
+            classMethodBuilder.replace(classMethodBuilder.length() - 2, classMethodBuilder.length(), ")");
         } else {
-            classMethod.append(")");
+            classMethodBuilder.append(")");
         }
 
         // Add the return type.
-        classMethod.append(String.format(" : %s \\l", method.getReturnTypeName()));
+        classMethodBuilder.append(String.format(" : %s \\l", method.getReturnTypeName()));
 
-        return classMethod.toString();
+        return classMethodBuilder.toString();
     }
 }

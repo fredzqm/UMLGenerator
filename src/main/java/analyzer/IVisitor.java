@@ -2,11 +2,15 @@ package analyzer;
 
 /**
  * A visitor interface that allows analyzer to perform recursive search
- * 
- * @author zhang
  *
  * @param <T>
+ * @author zhang
  */
 public interface IVisitor<T> {
-	void visit(T node);
+    /**
+     * TODO: Fred
+     *
+     * @param node
+     */
+    void visit(T node);
 }

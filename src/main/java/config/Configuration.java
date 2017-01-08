@@ -1,8 +1,5 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import analyzer.IAnalyzer;
 import analyzerClassParser.AnalyzerClassParser;
 import analyzerRelationParser.AnalyzerRelationParser;
@@ -11,153 +8,179 @@ import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
+ * TODO: Adam Document.
+ * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class Configuration implements IConfiguration{
+public class Configuration implements IConfiguration {
+    private Iterable<String> classes;
+    private String executablePath;
+    private String outputFormat;
+    private String outputDirectory;
+    private String fileName;
+    private double nodesep;
+    private IFilter<Modifier> modifierFilter;
+    private boolean isRecursive;
+    private String rankDir;
+    private String nodeStyle;
+    private Iterable<Class<? extends IAnalyzer>> analyzerls;
+    private Class<? extends IGenerator> generator;
 
-	private Iterable<String> classes;
-	private String executablePath;
-	private String outputFormat;
-	private String outputDirectory;
-	private String fileName;
-	private double nodesep;
-	private IFilter<Modifier> modifierFilter;
-	private boolean isRecursive;
-	private String rankDir;
-	private String nodeStyle;
-	private Iterable<Class<? extends IAnalyzer>> analyzerls;
-	private Class<? extends IGenerator> generator;
+    /**
+     * TODO: Adam.
+     *
+     * @return
+     */
+    public static Configuration getInstance() {
+        Configuration conf = new Configuration();
+        conf.setOutputFormat("png");
+        conf.setFileName("out");
+        conf.setNodesep(1);
+        conf.setClasses(new ArrayList<>());
+        conf.setFilters(data -> true);
+        conf.setNodeStyle("node [shape=record]");
+        conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
+        conf.setGenerator(GraphVizGenerator.class);
+        return conf;
+    }
 
-	public static Configuration getInstance() {
-		Configuration conf = new Configuration();
-		conf.setOutputFormat("png");
-		conf.setFileName("out");
-		conf.setNodesep(1);
-		conf.setClasses(new ArrayList<>());
-		conf.setFilters(data -> true);
-		conf.setNodeStyle("node [shape=record]");
-		conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
-		conf.setGenerator(GraphVizGenerator.class);
-		return conf;
-	}
+    @Override
+    public Iterable<String> getClasses() {
+        return classes;
+    }
 
-	@Override
-	public Iterable<String> getClasses() {
-		return classes;
-	}
+    public void setClasses(Iterable<String> classes) {
+        this.classes = classes;
+    }
 
-	public void setClasses(Iterable<String> classes) {
-		this.classes = classes;
-	}
+    @Override
+    public String getExecutablePath() {
+        return executablePath;
+    }
 
-	@Override
-	public String getExecutablePath() {
-		return executablePath;
-	}
+    public void setExecutablePath(String executablePath) {
+        this.executablePath = executablePath;
+    }
 
-	public void setExecutablePath(String executablePath) {
-		this.executablePath = executablePath;
-	}
+    @Override
+    public String getOutputFormat() {
+        return outputFormat;
+    }
 
-	@Override
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+    public void setOutputFormat(String outputExtension) {
+        this.outputFormat = outputExtension;
+    }
 
-	public void setOutputFormat(String outputExtension) {
-		this.outputFormat = outputExtension;
-	}
+    @Override
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	@Override
-	public String getOutputDirectory() {
-		return outputDirectory;
-	}
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
-	public void setOutputDirectory(String outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
+    @Override
+    public String getFileName() {
+        return fileName;
+    }
 
-	@Override
-	public String getFileName() {
-		return fileName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    @Override
+    public double getNodeSep() {
+        return nodesep;
+    }
 
-	@Override
-	public double getNodeSep() {
-		return nodesep;
-	}
+    public void setNodesep(double nodesep) {
+        this.nodesep = nodesep;
+    }
 
-	public void setNodesep(double nodesep) {
-		this.nodesep = nodesep;
-	}
+    @Override
+    public boolean isRecursive() {
+        return isRecursive;
+    }
 
-	@Override
-	public boolean isRecursive() {
-		return isRecursive;
-	}
+    public void setRecursive(boolean isRecursive) {
+        this.isRecursive = isRecursive;
+    }
 
-	public void setRecursive(boolean isRecursive) {
-		this.isRecursive = isRecursive;
-	}
+    @Override
+    public IFilter<Modifier> getModifierFilters() {
+        return this.modifierFilter;
+    }
 
-	@Override
-	public IFilter<Modifier> getModifierFilters() {
-		return this.modifierFilter;
-	}
+    public void setFilters(IFilter<Modifier> filter) {
+        this.modifierFilter = filter;
+    }
 
-	public void setFilters(IFilter<Modifier> filter) {
-		this.modifierFilter = filter;
-	}
+    @Override
+    public String getRankDir() {
+        return this.rankDir;
+    }
 
-	@Override
-	public String getRankDir() {
-		return this.rankDir;
-	}
+    public void setRankDir(String rankDir) {
+        this.rankDir = rankDir;
+    }
 
-	public void setRankDir(String rankDir) {
-		this.rankDir = rankDir;
-	}
+    public String toString() {
+        return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
+                + "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
+                + "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
+                + "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
+                + isRecursive + "\n" + "Rank Dir:                  " + rankDir;
+    }
 
-	public String toString() {
-		return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
-				+ "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
-				+ "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
-				+ "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
-				+ isRecursive + "\n" + "Rank Dir:                  " + rankDir;
-	}
+    @Override
+    public String getNodeStyle() {
+        return this.nodeStyle;
+    }
 
-	@Override
-	public String getNodeStyle() {
-		return this.nodeStyle;
-	}
+    /**
+     * TODO Adam document.
+     *
+     * @param nodeStyle
+     */
+    public void setNodeStyle(String nodeStyle) {
+        this.nodeStyle = nodeStyle;
+    }
 
-	public void setNodeStyle(String nodeStyle) {
-		this.nodeStyle = nodeStyle;
-	}
+    /**
+     * @return
+     */
+    public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
+        return analyzerls;
+    }
 
-	public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
-		analyzerls = analyzers;
-	}
+    /**
+     * @param analyzers
+     */
+    public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
+        analyzerls = analyzers;
+    }
 
-	public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
-		return analyzerls;
-	}
+    /**
+     * @return
+     */
+    public Class<? extends IGenerator> getGenerator() {
+        return generator;
+    }
 
-	public void setGenerator(Class<? extends IGenerator> generator) {
-		this.generator = generator;
-	}
+    /**
+     * @param generator
+     */
+    public void setGenerator(Class<? extends IGenerator> generator) {
+        this.generator = generator;
+    }
 
-	public Class<? extends IGenerator> getGenerator() {
-		return generator;
-	}
-
-	@Override
-	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
-		return this;
-	}
+    @Override
+    public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
+        return this;
+    }
 }

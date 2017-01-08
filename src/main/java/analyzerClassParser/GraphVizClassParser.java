@@ -11,7 +11,12 @@ import utility.Modifier;
  */
 public class GraphVizClassParser extends AbstractClassParser {
 
-    public GraphVizClassParser(IClassParserConfiguration config) {
+    /**
+     * Constructs a GraphVizClassParser.
+     *
+     * @param config ClassParser Configuration.
+     */
+    GraphVizClassParser(IClassParserConfiguration config) {
         super(config);
     }
 
