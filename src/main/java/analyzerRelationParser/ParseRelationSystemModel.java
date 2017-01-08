@@ -40,7 +40,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
                     addToMap(map, new ClassPair(classModel, x), new RelationHasA(has_a.get(x)));
 
             // add related depends on relationship
-            Iterable<? extends IClassModel> depends_on = classModel.getDependsOn();
+            Iterable<? extends IClassModel> depends_on = classModel.getClassDependsOn();
             for (IClassModel x : depends_on)
                 if (classList.contains(x))
                     addToMap(map, new ClassPair(classModel, x), new RelationDependsOn());

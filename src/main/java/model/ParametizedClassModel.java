@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import analyzer.IClassModel;
-import analyzer.ITypeModel;
 import utility.IExpander;
 
 /**
@@ -102,8 +100,8 @@ class ParametizedClassModel implements TypeModel {
 	}
 
 	@Override
-	public Iterable<ClassModel> getDependsOn() {
-		IExpander<TypeModel, ClassModel> expander = TypeModel::getDependsOn;
+	public Iterable<ClassModel> getTypeDependsOn() {
+		IExpander<TypeModel, ClassModel> expander = TypeModel::getTypeDependsOn;
 		return IExpander.merge(Arrays.asList(Arrays.asList(classModel), expander.expand(genericArgs)));
 	}
 }

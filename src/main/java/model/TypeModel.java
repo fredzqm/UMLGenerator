@@ -2,9 +2,6 @@ package model;
 
 import java.util.Map;
 
-import javax.lang.model.type.IntersectionType;
-
-import analyzer.IClassModel;
 import analyzer.ITypeModel;
 
 /**
@@ -38,8 +35,9 @@ interface TypeModel extends ITypeModel {
 	/**
 	 * @return all the classes that this type depends on
 	 */
-	Iterable<ClassModel> getDependsOn();
+	Iterable<ClassModel> getTypeDependsOn();
 
+	
 	/**
 	 * @return the collection of types that this type can be directly assigned
 	 *         to

@@ -71,8 +71,8 @@ class GenericTypeParam implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getDependsOn() {
-		IExpander<TypeModel, ClassModel> expander = TypeModel::getDependsOn;
+	public Iterable<ClassModel> getTypeDependsOn() {
+		IExpander<TypeModel, ClassModel> expander = TypeModel::getTypeDependsOn;
 		return expander.expand(boundSuperTypes);
 	}
 

@@ -51,7 +51,7 @@ class GenericTypeVarPlaceHolder implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getDependsOn() {
+	public Iterable<ClassModel> getTypeDependsOn() {
         System.err.println("GenericTypeVar does not know what it depends on");
         return Collections.emptyList();
 	}

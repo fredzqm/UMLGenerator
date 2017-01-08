@@ -80,7 +80,7 @@ class ArrayTypeModel implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getDependsOn() {
-		return arrayType.getDependsOn();
+	public Iterable<ClassModel> getTypeDependsOn() {
+		return arrayType.getTypeDependsOn();
 	}
 }
