@@ -171,7 +171,7 @@ class TypeParser {
 		List<GenericTypeParam> typeParameters;
 		int i = 0;
 		if (classSig.charAt(0) != '<') {
-			typeParameters = Collections.EMPTY_LIST;
+			typeParameters = Collections.emptyList();
 		} else {
 			i = indexAfterClosing(classSig, 0);
 			typeParameters = parseTypeParams(classSig.substring(0, i));

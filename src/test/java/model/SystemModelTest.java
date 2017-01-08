@@ -1,7 +1,8 @@
 package model;
 
-import generator.classParser.IClassModel;
 import org.junit.Test;
+
+import analyzer.IClassModel;
 
 import java.util.Arrays;
 import java.util.Collections;

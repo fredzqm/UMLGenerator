@@ -6,5 +6,10 @@ package analyzer;
  * Created by lamd on 12/7/2016.
  */
 public interface IAnalyzer {
-    IASystemModel analyze(IASystemModel sm);
+	/**
+	 * 
+	 * @param systemModel
+	 * @return
+	 */
+	ISystemModel analyze(ISystemModel systemModel, IAnalyzerConfiguraton config);
 }
