@@ -1,8 +1,5 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import analyzer.IAnalyzer;
 import analyzer.IClassModel;
 import analyzer.IFieldModel;
@@ -18,11 +15,15 @@ import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
+ * TODO: Adam Document.
+ * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class Configuration implements IConfiguration {
-
 	private Iterable<String> classes;
 	private String executablePath;
 	private String outputFormat;
@@ -39,6 +40,11 @@ public class Configuration implements IConfiguration {
 	private Class<? extends IParser<IFieldModel>> fieldParser;
 	private Class<? extends IParser<IMethodModel>> methodParser;
 
+    /**
+     * TODO: Adam.
+     *
+     * @return
+     */
 	public static Configuration getInstance() {
 		Configuration conf = new Configuration();
 		conf.setOutputFormat("png");
@@ -149,25 +155,42 @@ public class Configuration implements IConfiguration {
 		return this.nodeStyle;
 	}
 
+    /**
+     * TODO Adam document.
+     *
+     * @param nodeStyle
+     */
 	public void setNodeStyle(String nodeStyle) {
 		this.nodeStyle = nodeStyle;
 	}
 
-	public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
-		analyzerls = analyzers;
-	}
-
+    /**
+     * @return
+     */
 	public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
 		return analyzerls;
 	}
 
-	public void setGenerator(Class<? extends IGenerator> generator) {
-		this.generator = generator;
+    /**
+     * @param analyzers
+     */
+    public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
+        analyzerls = analyzers;
 	}
 
+    /**
+     * @return
+     */
 	public Class<? extends IGenerator> getGenerator() {
 		return generator;
 	}
+
+    /**
+     * @param generator
+     */
+    public void setGenerator(Class<? extends IGenerator> generator) {
+        this.generator = generator;
+    }
 
 	@Override
 	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {

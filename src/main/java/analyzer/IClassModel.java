@@ -1,11 +1,10 @@
 package analyzer;
 
+import generator.IVertex;
 import utility.Modifier;
 
 import java.util.List;
 import java.util.Map;
-
-import generator.IVertex;
 
 /**
  * An interface for Class Models.
@@ -14,43 +13,67 @@ import generator.IVertex;
  */
 public interface IClassModel extends IVertex {
 
-	/**
-	 * Returns the String of the Model's Class Name.
-	 *
-	 * @return Class Name.
-	 */
-	String getName();
+    /**
+     * Returns the String of the Model's Class Name.
+     *
+     * @return Class Name.
+     */
+    String getName();
 
-	/**
-	 * Returns an Iterable of the Model's Fields. Excluding those inherited
-	 *
-	 * @return Fields of the Model.
-	 */
-	Iterable<? extends IFieldModel> getFields();
+    /**
+     * Returns an Iterable of the Model's Fields. Excluding those inherited
+     *
+     * @return Fields of the Model.
+     */
+    Iterable<? extends IFieldModel> getFields();
 
-	/**
-	 * Returns an Iterable of the Model's Methods. Excluding those inherited
-	 *
-	 * @return Methods of the Model.
-	 */
-	Iterable<? extends IMethodModel> getMethods();
+    /**
+     * Returns an Iterable of the Model's Methods. Excluding those inherited
+     *
+     * @return Methods of the Model.
+     */
+    Iterable<? extends IMethodModel> getMethods();
 
-	/**
-	 * @return the Modifier of the Class Model.
-	 */
-	Modifier getModifier();
+    /**
+     * Returns the modifer fo the Class Model.
+     *
+     * @return the Modifier of the Class Model.
+     */
+    Modifier getModifier();
 
-	/**
-	 * @return the list of stereotypes name for this class
-	 */
-	List<String> getStereoTypes();
+    /**
+     * Returns the Stereotypes of the Class Model.
+     *
+     * @return the list of stereotypes name for this class
+     */
+    List<String> getStereoTypes();
 
-	IClassModel getSuperClass();
+    /**
+     * Returns the super class's model of the Class Model.
+     *
+     * @return Class Model of the super class.
+     */
+    IClassModel getSuperClass();
 
-	Iterable<? extends IClassModel> getInterfaces();
+    /**
+     * Returns an Iterable of interfaces of the Class Model.
+     *
+     * @return Iterable of Interface Class Models.
+     */
+    Iterable<? extends IClassModel> getInterfaces();
 
-	Map<? extends IClassModel, Integer> getHasRelation();
+    /**
+     * Returns a Map of Class Models that is in a has-a relation with this class model.
+     *
+     * @return Map of Class Models in has-a relation with.
+     */
+    Map<? extends IClassModel, Integer> getHasRelation();
 
-	Iterable<? extends IClassModel> getDependsRelation();
+    /**
+     * Returns the Iterable of Class Model that is in a depends-on relation with this class model.
+     *
+     * @return Iterable of Class Model in a depends-on relation with.
+     */
+    Iterable<? extends IClassModel> getDependsRelation();
 
 }

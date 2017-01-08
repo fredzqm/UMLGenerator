@@ -1,7 +1,7 @@
 package config;
 
 import analyzer.IAnalyzer;
-import analyzer.IAnalyzerConfiguraton;
+import analyzer.IAnalyzerConfiguration;
 import analyzerClassParser.IClassParserConfiguration;
 import generator.IGenerator;
 import generator.IGeneratorConfiguration;
@@ -9,10 +9,10 @@ import model.IModelConfiguration;
 import runner.IRunnerConfiguration;
 
 public interface IConfiguration extends IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration,
-		IAnalyzerConfiguraton, IClassParserConfiguration {
+        IAnalyzerConfiguration, IClassParserConfiguration {
 
-	Iterable<Class<? extends IAnalyzer>> getAnalyzers();
+    Iterable<Class<? extends IAnalyzer>> getAnalyzers();
 
-	Class<? extends IGenerator> getGenerator();
+    Class<? extends IGenerator> getGenerator();
 
 }

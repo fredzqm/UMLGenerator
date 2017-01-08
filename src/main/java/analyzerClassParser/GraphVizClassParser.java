@@ -6,7 +6,10 @@ import analyzer.IMethodModel;
 import utility.IFilter;
 import utility.Modifier;
 
-public class GraphVizClassParser implements IParser<IClassModel> {
+/**
+ * Representing a single class in the DOT language.
+ */
+public class GraphVizClassParser implements IParser<IClassModel>{
 
 	/**
 	 * Returns the String of the Class (header, fields, methods) in DOT file

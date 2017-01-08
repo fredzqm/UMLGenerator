@@ -10,11 +10,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-
-public class CommandLineFileInput {
+/**
+ * TODO: Adam documentation.
+ */
+class CommandLineFileInput {
     private JSONObject json;
 
-    public CommandLineFileInput(String[] args) {
+    /**
+     * TODO: Adam document.
+     *
+     * @param args
+     */
+    CommandLineFileInput(String[] args) {
         JSAP jsap = new JSAP();
 
         FlaggedOption opt1 = new FlaggedOption("fileName")
@@ -30,32 +37,42 @@ public class CommandLineFileInput {
         try {
             jsap.registerParameter(opt1);
         } catch (JSAPException e) {
-            // TODO Auto-generated catch block
+            // TODO Fix this.
             e.printStackTrace();
         }
 
         JSAPResult config = jsap.parse(args);
         String fileName = config.getString("fileName");
 
-        Scanner s = null;
         try {
-            s = new Scanner(new File(fileName));
+            Scanner scanner = new Scanner(new File(fileName));
+
+            StringBuilder json = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                json.append(scanner.nextLine());
+            }
+
+            this.setJson(new JSONObject(json.toString()));
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+            // TODO Fix this.
             e.printStackTrace();
         }
-        String json = "";
-
-        while (s.hasNextLine())
-            json += s.nextLine();
-
-        this.setJson(new JSONObject(json));
     }
 
-    public JSONObject getJson() {
-        return json;
+    /**
+     * Returns the JSON object.
+     *
+     * @return JSON object.
+     */
+    JSONObject getJson() {
+        return this.json;
     }
 
+    /**
+     * Set the JSON object.
+     *
+     * @param json JSONObjecn to be set.
+     */
     public void setJson(JSONObject json) {
         this.json = json;
     }

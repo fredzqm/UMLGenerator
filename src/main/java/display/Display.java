@@ -13,7 +13,7 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class Display extends JFrame {
-    public static final Set<String> SUPPORT_EXTENSIONS;
+    private static final Set<String> SUPPORT_EXTENSIONS;
 
     static {
         SUPPORT_EXTENSIONS = new HashSet<>();
@@ -22,7 +22,6 @@ public class Display extends JFrame {
     }
 
     private BufferedImage image;
-    private JPanel canvas;
 
     public Display(String imagePath) {
         try {
@@ -31,7 +30,7 @@ public class Display extends JFrame {
             throw new RuntimeException(ex);
         }
 
-        this.canvas = new JPanel() {
+        JPanel canvas = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -49,12 +48,11 @@ public class Display extends JFrame {
             System.err.print("Currently unsupported image format " + config.getOutputFormat());
             return;
         }
-        String outputFilePathImage = config.getOutputDirectory() + "/" + config.getFileName() + "."
-                + config.getOutputFormat();
+        String outputFilePathImage = String.format("%s/%s.%s", config.getOutputDirectory(), config.getFileName(), config.getOutputFormat());
 
         JFrame frame = new Display(outputFilePathImage);
         frame.pack();
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }

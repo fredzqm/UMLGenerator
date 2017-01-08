@@ -1,8 +1,9 @@
 package config;
 
-
+/**
+ *
+ */
 public interface ConfigurationFactory {
-
     /**
      * @return create the configuration
      * @throws Exception

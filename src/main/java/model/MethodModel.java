@@ -1,11 +1,10 @@
 package model;
 
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-
 import analyzer.IMethodModel;
 import analyzer.IVisitable;
 import analyzer.IVisitor;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.*;
 import utility.IMapper;
 import utility.MethodType;
 import utility.Modifier;

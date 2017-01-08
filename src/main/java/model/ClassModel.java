@@ -1,15 +1,13 @@
 package model;
 
+import analyzer.IClassModel;
+import analyzer.IVisitable;
+import analyzer.IVisitor;
 import model.TypeParser.ClassSignatureParseResult;
-
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-
-import analyzer.IClassModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
 import utility.ClassType;
 import utility.IFilter;
 import utility.IMapper;

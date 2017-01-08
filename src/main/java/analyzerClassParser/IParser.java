@@ -6,7 +6,6 @@ package analyzerClassParser;
  * @param <T>
  */
 public interface IParser<T> {
-
 	/**
 	 * Parse single data.
 	 *

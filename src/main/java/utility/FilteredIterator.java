@@ -46,5 +46,4 @@ class FilteredIterator<T> implements Iterator<T> {
         advance();
         return ret;
     }
-
 }

@@ -1,8 +1,5 @@
 package dummy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A Dummy Class used for testing.
  * <p>
