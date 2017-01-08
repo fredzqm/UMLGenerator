@@ -33,5 +33,4 @@ public interface IRunnerConfiguration {
      * @return the file name without the extension
      */
     String getFileName();
-
 }

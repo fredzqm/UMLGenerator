@@ -8,7 +8,6 @@ package utility;
  * @author zhang
  */
 public interface IFilter<T> {
-
     /**
      * @param data
      * @return true if the data pass the test, and should be left after the
@@ -24,5 +23,4 @@ public interface IFilter<T> {
     default Iterable<T> filter(Iterable<? extends T> iterable) {
         return (Iterable<T>) () -> new FilteredIterator<>(IFilter.this, iterable);
     }
-
 }

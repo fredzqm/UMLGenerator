@@ -16,7 +16,6 @@ public class ConfigFileParserTest {
 
         Configuration config = parser.create();
 
-        System.out.println(config.toString());
         assertEquals("java.lang.String", config.getClasses().iterator().next());
         assertEquals("dot", config.getExecutablePath());
         assertEquals("svg", config.getOutputFormat());

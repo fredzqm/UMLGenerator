@@ -46,5 +46,4 @@ public class GraphVizRunner implements IRunner {
             throw new IOException("[ ERROR ]: Unable to create file.");
         }
     }
-
 }

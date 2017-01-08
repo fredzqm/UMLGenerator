@@ -9,7 +9,6 @@ import utility.Modifier;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
-
     /**
      * Returns the access Modifier of this method.
      *
@@ -52,5 +51,4 @@ public interface IMethodModel {
      * @return Iterable of Type Model of Arguments.
      */
     Iterable<? extends String> getArgumentTypeNames();
-
 }

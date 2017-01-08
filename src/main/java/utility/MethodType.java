@@ -18,5 +18,4 @@ public enum MethodType {
             return METHOD;
         }
     }
-
 }

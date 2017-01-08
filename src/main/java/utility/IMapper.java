@@ -8,7 +8,6 @@ package utility;
  * @author zhang
  */
 public interface IMapper<A, B> {
-
     /**
      * @param data
      * @return true if the data pass the test, and should be left after the
@@ -24,5 +23,4 @@ public interface IMapper<A, B> {
     default Iterable<B> map(Iterable<? extends A> iterable) {
         return () -> new MappedIterator<A, B>(IMapper.this, iterable);
     }
-
 }

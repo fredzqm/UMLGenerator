@@ -1,10 +1,10 @@
 package analyzer;
 
 public interface IRelationInfo {
-
-	/**
-	 * @return the style of this edge
-	 */
-	String getEdgeStyle();
-
+    /**
+     * Returns the String of the Relations edge style.
+     *
+     * @return String of the Edge Style.
+     */
+    String getEdgeStyle();
 }
