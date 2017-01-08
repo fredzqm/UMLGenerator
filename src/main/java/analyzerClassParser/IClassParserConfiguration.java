@@ -12,7 +12,7 @@ import utility.Modifier;
  *
  */
 public interface IClassParserConfiguration {
-	
+
 	/**
 	 * Return the set of Method Access Filters.
 	 *
@@ -22,19 +22,19 @@ public interface IClassParserConfiguration {
 
 	/**
 	 * 
-	 * @return
+	 * @return class as parser for the header
 	 */
 	Class<? extends IParser<IClassModel>> getHeaderParser();
 
 	/**
 	 * 
-	 * @return
+	 * @return class as the field parser
 	 */
 	Class<? extends IParser<IFieldModel>> getFieldParser();
 
 	/**
 	 * 
-	 * @return
+	 * @return class as the method parser
 	 */
 	Class<? extends IParser<IMethodModel>> getMethodParser();
 }
