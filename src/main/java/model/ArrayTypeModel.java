@@ -1,8 +1,8 @@
 package model;
 
-import utility.IMapper;
-
 import java.util.Map;
+
+import utility.IMapper;
 
 /**
  * A decorate class for array
@@ -78,4 +78,9 @@ class ArrayTypeModel implements TypeModel {
             return new ArrayTypeModel(t, dimension);
         return null;
     }
+
+	@Override
+	public Iterable<ClassModel> getDependsOn() {
+		return arrayType.getDependsOn();
+	}
 }

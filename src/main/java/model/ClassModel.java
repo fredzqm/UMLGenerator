@@ -217,7 +217,7 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 
 	}
 
-	public Collection<ClassModel> getDependsRelation() {
+	public Collection<ClassModel> getDependsOn() {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();
 			for (MethodModel method : getMethods()) {
@@ -297,4 +297,5 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	public String getLabel() {
 		return getName();
 	}
+
 }

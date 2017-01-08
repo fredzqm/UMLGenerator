@@ -29,7 +29,7 @@ public class ClassModelRelationshipTest {
     public void testDependsRelationship() {
         ClassModel dummyClass = ASMParser.getClassByName(dummyClassName);
 
-        Collection<ClassModel> x = dummyClass.getDependsRelation();
+        Collection<ClassModel> x = dummyClass.getDependsOn();
         assertEquals(0, x.size());
     }
 }

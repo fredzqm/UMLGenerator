@@ -16,4 +16,9 @@ public interface IExpander<A, B> {
 	default Iterable<B> expand(Iterable<? extends A> iterable) {
 		return () -> new ExpandIterator<A, B>(IExpander.this, iterable);
 	}
+
+	static <A> Iterable<A> merge(Iterable<Iterable<A>> ls) {
+		IExpander<Iterable<A>, A> merger = (x) -> x;
+		return merger.expand(ls);
+	}
 }

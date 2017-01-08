@@ -1,11 +1,11 @@
 package model;
 
-import org.objectweb.asm.Type;
-
-import model.TypeParser.MethodSignatureParseResult;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
+
+import org.objectweb.asm.Type;
 
 /**
  * A factory method utility for type model. It basically parses the signature

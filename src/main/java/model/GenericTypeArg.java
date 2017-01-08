@@ -76,4 +76,9 @@ class GenericTypeArg implements TypeModel {
         return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), upperBound.replaceTypeVar(paramMap));
     }
 
+	@Override
+	public Iterable<ClassModel> getDependsOn() {
+		return lowerBound.getDependsOn();
+	}
+
 }

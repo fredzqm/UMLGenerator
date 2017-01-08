@@ -74,6 +74,6 @@ public interface IClassModel extends IVertex {
      *
      * @return Iterable of Class Model in a depends-on relation with.
      */
-    Iterable<? extends IClassModel> getDependsRelation();
+	Iterable<? extends IClassModel> getDependsOn();
 
 }

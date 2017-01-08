@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import utility.IExpander;
+
 /**
  * serve as a place holder for generic type, we can should replace it with a
  * concrete class model
@@ -67,5 +69,11 @@ class GenericTypeParam implements TypeModel {
             return paramMap.get(key);
         }
     }
+
+	@Override
+	public Iterable<ClassModel> getDependsOn() {
+		IExpander<TypeModel, ClassModel> expander = TypeModel::getDependsOn;
+		return expander.expand(boundSuperTypes);
+	}
 
 }

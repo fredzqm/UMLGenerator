@@ -57,4 +57,9 @@ enum PrimitiveType implements TypeModel {
         return Collections.emptyList();
     }
 
+	@Override
+	public Iterable<ClassModel> getDependsOn() {
+		return Collections.emptyList();
+	}
+
 }
