@@ -19,7 +19,7 @@ public class GraphVizClassParser implements IParser<IClassModel> {
 	 */
 	@Override
 	public String parse(IClassModel model, IClassParserConfiguration config) {
-		StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 		IFilter<Modifier> modifierFilter = config.getModifierFilters();
 
 		// Set the header.

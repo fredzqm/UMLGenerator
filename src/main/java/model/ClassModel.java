@@ -185,7 +185,7 @@ class ClassModel implements IClassModel, TypeModel {
 			hasTypes = new HashSet<>();
 			for (FieldModel field : getFields()) {
 				TypeModel type = field.getFieldType();
-				hasTypes.addAll(type.getTypeDependsOn());
+				hasTypes.addAll(type.getDependsOn());
 			}
 		}
 		return hasTypes;
@@ -263,7 +263,7 @@ class ClassModel implements IClassModel, TypeModel {
 	}
 
 	@Override
-	public List<ClassModel> getTypeDependsOn() {
+	public List<ClassModel> getDependsOn() {
 		return Arrays.asList(this);
 	}
 

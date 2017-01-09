@@ -10,7 +10,7 @@ public interface IGraph {
      * @return Iterable of Class Models.
      */
     Iterable<? extends IVertex> getVertices();
-
+    
     /**
      * Returns an Iterable of Relations contained within the SystemModel.
      *

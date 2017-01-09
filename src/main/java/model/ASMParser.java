@@ -16,9 +16,9 @@ class ASMParser {
     public static int RECURSE_SUPERCLASS = 0x2;
     public static int RECURSE_INTERFACE = 0x4;
     public static int RECURSE_HAS_A = 0x8;
-
+    
     private static Map<String, ClassModel> map = new HashMap<>();
-
+    
     /**
      * ASMServiceProvider manages the parsing of ASM model model under the hood.
      * It should not be directly used by external user, but provides
@@ -47,11 +47,13 @@ class ASMParser {
             return null;
         }
     }
-
+    
     /**
-     * @param importClassesList the important list of classes that are required explicitly
-     * @param recursiveFlag     the flag indicating how much related classes should get
-     *                          recursively parsed
+     * @param importClassesList
+     *            the important list of classes that are required explicitly
+     * @param recursiveFlag
+     *            the flag indicating how much related classes should get
+     *            recursively parsed
      * @return the collection of classes acquired based on the requirement
      */
     public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, int recursiveFlag) {
@@ -73,13 +75,13 @@ class ASMParser {
         }
         return classesList;
     }
-
+    
     public static ClassModel getObject() {
         return ASMParser.getClassByName("java.lang.Object");
     }
-
+    
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-                                      ClassModel x) {
+            ClassModel x) {
         if (x != null) {
             if (!classesList.contains(x)) {
                 classesList.add(x);
@@ -87,9 +89,9 @@ class ASMParser {
             }
         }
     }
-
+    
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-                                      Iterable<ClassModel> ls) {
+            Iterable<ClassModel> ls) {
         for (ClassModel x : ls) {
             if (!classesList.contains(x)) {
                 classesList.add(x);
@@ -97,5 +99,5 @@ class ASMParser {
             }
         }
     }
-
+    
 }

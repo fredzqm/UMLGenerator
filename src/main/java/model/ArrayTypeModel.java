@@ -81,7 +81,7 @@ class ArrayTypeModel implements TypeModel {
     }
 
 	@Override
-	public Collection<ClassModel> getTypeDependsOn() {
-		return arrayType.getTypeDependsOn();
+	public Collection<ClassModel> getDependsOn() {
+		return arrayType.getDependsOn();
 	}
 }

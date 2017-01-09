@@ -71,10 +71,10 @@ class GenericTypeParam implements TypeModel {
 	}
 
 	@Override
-	public Collection<ClassModel> getTypeDependsOn() {
+	public Collection<ClassModel> getDependsOn() {
 		Collection<ClassModel> set = new HashSet<>();
 		for (TypeModel t : boundSuperTypes) {
-			set.addAll(t.getTypeDependsOn());
+			set.addAll(t.getDependsOn());
 		}
 		return set;
 	}

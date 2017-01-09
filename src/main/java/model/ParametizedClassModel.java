@@ -99,11 +99,11 @@ class ParametizedClassModel implements TypeModel {
 	}
 
 	@Override
-	public Collection<ClassModel> getTypeDependsOn() {
+	public Collection<ClassModel> getDependsOn() {
 		Collection<ClassModel> set = new HashSet<>();
 		set.add(classModel);
 		for (TypeModel t : genericArgs) {
-			set.addAll(t.getTypeDependsOn());
+			set.addAll(t.getDependsOn());
 		}
 		return set;
 	}

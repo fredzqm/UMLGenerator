@@ -78,8 +78,8 @@ class GenericTypeArg implements TypeModel {
     }
 
 	@Override
-	public Collection<ClassModel> getTypeDependsOn() {
-		return lowerBound.getTypeDependsOn();
+	public Collection<ClassModel> getDependsOn() {
+		return lowerBound.getDependsOn();
 	}
 
 }
