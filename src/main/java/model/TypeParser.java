@@ -17,7 +17,7 @@ import org.objectweb.asm.Type;
  * @author zhang
  */
 class TypeParser {
-    
+
     /**
      * convert asm's type instance to TypeModel, assume this type has empty
      * generic list
@@ -56,7 +56,7 @@ class TypeParser {
                 throw new RuntimeException("does not suport type sort " + type.getClassName());
         }
     }
-    
+
     /**
      * @param typeSig
      *            the internal name representing a type of a class
@@ -69,7 +69,7 @@ class TypeParser {
         }
         return parseFieldTypeSignature(typeSig);
     }
-    
+
     static TypeModel parseFieldTypeSignature(String filedTypeSig) {
         char x = filedTypeSig.charAt(0);
         switch (x) {
@@ -89,7 +89,7 @@ class TypeParser {
                 throw new RuntimeException(filedTypeSig + " is not a valid field type signature");
         }
     }
-    
+
     static TypeModel parseClassTypeSignature(String classTypeSig) {
         if (classTypeSig.charAt(classTypeSig.length() - 1) != ';') {
             throw new RuntimeException("class type signature should end with ;   : " + classTypeSig);
@@ -103,7 +103,7 @@ class TypeParser {
             return new ParametizedClassModel(bound, genericEnv);
         }
     }
-    
+
     /**
      * @param typeArg
      *            the internal name representing a type of a class
@@ -121,7 +121,7 @@ class TypeParser {
             return parseFieldTypeSignature(typeArg);
         }
     }
-    
+
     static List<TypeModel> parseTypeArgs(String argLs) {
         if (argLs.charAt(0) != '<' || argLs.charAt(argLs.length() - 1) != '>')
             throw new RuntimeException(argLs + " is not a valid argument list");
@@ -131,7 +131,7 @@ class TypeParser {
         }
         return ret;
     }
-    
+
     static GenericTypeParam parseTypeParam(String param) {
         String[] sp = param.split(":");
         String key = sp[0];
@@ -146,7 +146,7 @@ class TypeParser {
         }
         return new GenericTypeParam(key, ls);
     }
-    
+
     static List<GenericTypeParam> parseTypeParams(String paramList) {
         if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>')
             throw new RuntimeException(paramList + " is not a valid parameter list");
@@ -156,7 +156,7 @@ class TypeParser {
         }
         return ret;
     }
-    
+
     /**
      * @param classSig
      *            of a class or a method
@@ -177,7 +177,7 @@ class TypeParser {
         }
         return new ClassSignatureParseResult(typeParameters, superTypes);
     }
-    
+
     static MethodSignatureParseResult parseMethodSignature(String methodSig) {
         List<GenericTypeParam> typeParameters;
         int i = 0;
@@ -195,7 +195,7 @@ class TypeParser {
         List<TypeModel> argumentList = new ArrayList<>();
         for (String s : splitOn(methodSig.substring(i + 1, j), new Predicate<Character>() {
             private boolean start = true;
-            
+
             @Override
             public boolean test(Character c) {
                 if (start) {
@@ -229,9 +229,9 @@ class TypeParser {
             }
         }
         return new MethodSignatureParseResult(typeParameters, returnType, argumentList, exceptionList);
-        
+
     }
-    
+
     private static Iterable<String> splitOn(String str, Predicate<Character> stop) {
         List<String> ls = new ArrayList<>();
         int i = 0, start = 0, c = 0;
@@ -248,7 +248,7 @@ class TypeParser {
         }
         return ls;
     }
-    
+
     private static int indexAfterClosing(CharSequence signature, int i) {
         if (signature.charAt(i) != '<')
             return i;
@@ -266,31 +266,31 @@ class TypeParser {
         }
         throw new RuntimeException("bracket is not closed");
     }
-    
+
     public static class ClassSignatureParseResult {
         private List<GenericTypeParam> typeParameters;
         private List<TypeModel> superTypes;
-        
+
         public ClassSignatureParseResult(List<GenericTypeParam> typeParameters, List<TypeModel> superTypes) {
             this.typeParameters = typeParameters;
             this.superTypes = superTypes;
         }
-        
+
         public List<GenericTypeParam> getParamsList() {
             return typeParameters;
         }
-        
+
         public List<TypeModel> getSuperTypes() {
             return superTypes;
         }
     }
-    
+
     public static class MethodSignatureParseResult {
         private List<GenericTypeParam> typeParameters;
         private TypeModel returnType;
         private List<TypeModel> argumentsList;
         private List<TypeModel> exceptionList;
-        
+
         public MethodSignatureParseResult(List<GenericTypeParam> typeParameters, TypeModel returnType,
                 List<TypeModel> argumentList, List<TypeModel> exceptionList) {
             this.typeParameters = typeParameters;
@@ -298,23 +298,27 @@ class TypeParser {
             this.argumentsList = argumentList;
             this.exceptionList = exceptionList;
         }
-        
+
         public List<GenericTypeParam> getTypeParameters() {
             return typeParameters;
         }
-        
+
         public TypeModel getReturnType() {
             return returnType;
         }
-        
+
+        public List<TypeModel> getArguments() {
+            return argumentsList;
+        }
+
         public Signature getSignature(String name) {
             return new Signature(argumentsList, name);
         }
-        
+
         public List<TypeModel> getExceptionList() {
             return exceptionList;
         }
-        
+
     }
-    
+
 }

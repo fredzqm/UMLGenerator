@@ -38,6 +38,23 @@ interface TypeModel extends ITypeModel {
     Collection<ClassModel> getDependsOn();
 
     /**
+     * 
+     * @param index
+     * @return the generic argument at specific index
+     */
+    default ITypeModel getGenericArg(int index) {
+        throw new RuntimeException();
+    }
+
+    /**
+     * 
+     * @return the number of generic argument
+     */
+    default int getGenericArgNumber() {
+        return 0;
+    }
+    
+    /**
      * @return the collection of types that this type can be directly assigned
      *         to
      */
