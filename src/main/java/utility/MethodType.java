@@ -6,7 +6,7 @@ public enum MethodType {
     CONSTRUCTOR, STATIC_INITIALIZER, METHOD, STATIC, ABSTRACT;
 
     public static MethodType parse(String name, int access) {
-        if ((access & Opcodes.ACC_STATIC) != 0) {
+        if (Modifier.parseIsStatic(access)) {
             if (name.equals("<clinit>"))
                 return STATIC_INITIALIZER;
             return STATIC;

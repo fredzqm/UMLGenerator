@@ -1,10 +1,11 @@
 package model;
 
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import generator.classParser.IMethodModel;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
+
+import analyzer.IMethodModel;
+import analyzer.IVisitable;
+import analyzer.IVisitor;
 import utility.IMapper;
 import utility.MethodType;
 import utility.Modifier;
@@ -46,7 +47,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         this.modifier = Modifier.parse(methodNode.access);
         this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
         this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
-        this.returnType = TypeModel.parse(Type.getReturnType(methodNode.desc));
+        this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
         this.signature = Signature.parse(methodNode.name, methodNode.desc);
     }
 
@@ -118,7 +119,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
                 AbstractInsnNode insn = instructions.get(i);
                 if (insn instanceof MethodInsnNode) {
                     MethodInsnNode methodCall = (MethodInsnNode) insn;
-                    TypeModel type = TypeModel.parse(Type.getObjectType(methodCall.owner));
+                    TypeModel type = TypeParser.parse(Type.getObjectType(methodCall.owner));
                     ClassModel destClass = ASMParser.getClassByName(type.getName());
                     if (destClass == null)
                         continue;
@@ -141,7 +142,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
                 AbstractInsnNode insn = instructions.get(i);
                 if (insn instanceof FieldInsnNode) {
                     FieldInsnNode fiedlCall = (FieldInsnNode) insn;
-                    TypeModel type = TypeModel.parse(Type.getObjectType(fiedlCall.owner));
+                    TypeModel type = TypeParser.parse(Type.getObjectType(fiedlCall.owner));
                     ClassModel destClass = ASMParser.getClassByName(type.getName());
                     if (destClass == null)
                         continue;
