@@ -13,7 +13,6 @@ import java.util.Map;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import analyzer.IClassModel;
@@ -48,7 +47,6 @@ class ClassModel implements IClassModel, TypeModel {
     private Map<String, FieldModel> fields;
     private Map<Signature, MethodModel> methods;
 
-    private Map<String, GenericTypeParam> paramMap;
     private Collection<ClassModel> hasTypes;
     private Collection<ClassModel> dependsOn;
 
@@ -65,13 +63,14 @@ class ClassModel implements IClassModel, TypeModel {
         this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
         this.classType = ClassType.parse(asmClassNode.access);
         this.name = Type.getObjectType(asmClassNode.name).getClassName();
-//        System.out.println("Class : " + name);
-//        for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses) {
-//            System.out.println("\t\t name: " + inner.name);
-//            System.out.println("\t\t innerName: " + inner.innerName);
-//            System.out.println("\t\t outerName: " + inner.outerName);
-//            System.out.println("\t\t access: " + inner.access);
-//        }
+        // System.out.println("Class : " + name);
+        // for (InnerClassNode inner : (List<InnerClassNode>)
+        // asmClassNode.innerClasses) {
+        // System.out.println("\t\t name: " + inner.name);
+        // System.out.println("\t\t innerName: " + inner.innerName);
+        // System.out.println("\t\t outerName: " + inner.outerName);
+        // System.out.println("\t\t access: " + inner.access);
+        // }
     }
 
     public String getName() {
@@ -110,16 +109,14 @@ class ClassModel implements IClassModel, TypeModel {
         if (superTypes == null) {
             if (asmClassNode.signature == null) {
                 genericParams = Collections.emptyList();
-                superTypes = new ArrayList<>();
+                superTypes = new ArrayList<>(2);
                 // add super class
                 if (asmClassNode.superName != null) {
                     TypeModel superClass = ASMParser.getClassByName(asmClassNode.superName);
                     superTypes.add(superClass);
                 }
                 // add interfaces
-                @SuppressWarnings("unchecked")
-                List<String> ls = asmClassNode.interfaces;
-                for (String s : ls) {
+                for (String s : (List<String>) asmClassNode.interfaces) {
                     TypeModel m = ASMParser.getClassByName(s);
                     if (m != null)
                         superTypes.add(m);
@@ -145,11 +142,9 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     Map<String, GenericTypeParam> getParamsMap() {
-        if (paramMap == null) {
-            paramMap = new HashMap<>();
-            for (GenericTypeParam p : getGenericList()) {
-                paramMap.put(p.getName(), p);
-            }
+        Map<String, GenericTypeParam> paramMap = new HashMap<>(2);
+        for (GenericTypeParam p : getGenericList()) {
+            paramMap.put(p.getName(), p);
         }
         return paramMap;
     }
@@ -171,7 +166,7 @@ class ClassModel implements IClassModel, TypeModel {
 
     @Override
     public List<String> getStereoTypes() {
-        List<String> ls = new ArrayList<>();
+        List<String> ls = new ArrayList<>(1);
         switch (getType()) {
             case INTERFACE:
                 ls.add("Interface");

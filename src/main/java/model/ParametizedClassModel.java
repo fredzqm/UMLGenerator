@@ -81,7 +81,7 @@ class ParametizedClassModel implements TypeModel {
                 GenericTypeParam p = genels.get(i);
                 paramMap.put(p.getName(), genericArgs.get(i));
             }
-            superTypes = new ArrayList<>();
+            superTypes = new ArrayList<>(2);
             for (TypeModel t : classModel.getSuperTypes()) {
                 superTypes.add(t.replaceTypeVar(paramMap));
             }
@@ -91,7 +91,7 @@ class ParametizedClassModel implements TypeModel {
 
     @Override
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
-        List<TypeModel> ls = new ArrayList<>();
+        List<TypeModel> ls = new ArrayList<>(genericArgs.size());
         for (TypeModel t : genericArgs)
             ls.add(t.replaceTypeVar(paramMap));
         return new ParametizedClassModel(classModel, ls);

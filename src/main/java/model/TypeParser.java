@@ -143,7 +143,7 @@ class TypeParser {
     static List<TypeModel> parseTypeArgs(String argLs) {
         if (argLs.charAt(0) != '<' || argLs.charAt(argLs.length() - 1) != '>')
             throw new RuntimeException(argLs + " is not a valid argument list");
-        List<TypeModel> ret = new ArrayList<>();
+        List<TypeModel> ret = new ArrayList<>(1);
         for (String s : splitOn(argLs.substring(1, argLs.length() - 1), (c) -> c == ';' || c == '*')) {
             ret.add(parseTypeArg(s));
         }
@@ -153,7 +153,7 @@ class TypeParser {
     static GenericTypeParam parseTypeParam(String param) {
         String[] sp = param.split(":");
         String key = sp[0];
-        List<TypeModel> ls = new ArrayList<>();
+        List<TypeModel> ls = new ArrayList<>(1);
         for (int i = 1; i < sp.length; i++) {
             if (sp[i].equals(""))
                 continue;
@@ -168,7 +168,7 @@ class TypeParser {
     static List<GenericTypeParam> parseTypeParams(String paramList) {
         if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>')
             throw new RuntimeException(paramList + " is not a valid parameter list");
-        List<GenericTypeParam> ret = new ArrayList<>();
+        List<GenericTypeParam> ret = new ArrayList<>(1);
         for (String s : splitOn(paramList.substring(1, paramList.length() - 1), (c) -> c == ';')) {
             ret.add(parseTypeParam(s));
         }
@@ -189,7 +189,7 @@ class TypeParser {
             i = indexAfterClosing(classSig, 0);
             typeParameters = parseTypeParams(classSig.substring(0, i));
         }
-        List<TypeModel> superTypes = new ArrayList<>();
+        List<TypeModel> superTypes = new ArrayList<>(1);
         for (String s : splitOn(classSig.substring(i), (c) -> c == ';')) {
             superTypes.add(parseClassTypeSignature(s));
         }
@@ -210,7 +210,7 @@ class TypeParser {
         int j = methodSig.indexOf(')');
         if (j < 0)
             throw new RuntimeException("Cannot find the end of parameter list of " + methodSig);
-        List<TypeModel> argumentList = new ArrayList<>();
+        List<TypeModel> argumentList = new ArrayList<>(1);
         for (String s : splitOn(methodSig.substring(i + 1, j), new Predicate<Character>() {
             private boolean start = true;
 
@@ -241,7 +241,7 @@ class TypeParser {
         if (sp.length == 1) {
             exceptionList = Collections.emptyList();
         } else {
-            exceptionList = new ArrayList<>();
+            exceptionList = new ArrayList<>(1);
             for (i = 1; i < sp.length; i++) {
                 exceptionList.add(parseFieldTypeSignature(sp[i]));
             }

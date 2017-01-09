@@ -58,20 +58,20 @@ class MethodModel implements IMethodModel {
             this.signature = Signature.parse(methodNode.name, methodNode.desc);
             this.genericParams = Collections.emptyList();
         } else {
-//            System.out.println(asmMethodNode.signature);
+            // System.out.println(asmMethodNode.signature);
             MethodSignatureParseResult rs = TypeParser.parseMethodSignature(asmMethodNode.signature);
             this.genericParams = rs.getParameters();
             Map<String, GenericTypeParam> paramMap = getParamsMap();
             this.returnType = rs.getReturnType().replaceTypeVar(paramMap);
-            List<TypeModel> arguments = new ArrayList<>();
-            for (TypeModel t : arguments) {
+            List<TypeModel> arguments = new ArrayList<>(rs.getArguments().size());
+            for (TypeModel t : rs.getArguments()) {
                 arguments.add(t.replaceTypeVar(paramMap));
             }
             this.signature = new Signature(arguments, asmMethodNode.name);
         }
     }
 
-    private Map<String, GenericTypeParam> getParamsMap() {
+    Map<String, GenericTypeParam> getParamsMap() {
         Map<String, GenericTypeParam> paramMap = belongsTo.getParamsMap();
         for (GenericTypeParam p : genericParams) {
             paramMap.put(p.getName(), p);
