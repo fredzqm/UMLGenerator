@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import analyzer.IClassModel;
@@ -40,6 +40,7 @@ class ClassModel implements IClassModel, TypeModel {
     private final boolean isFinal;
     private final ClassType classType;
     private final String name;
+    private final ClassModel outterClass;
 
     private List<TypeModel> superTypes;
     private List<GenericTypeParam> genericParams;
@@ -59,18 +60,20 @@ class ClassModel implements IClassModel, TypeModel {
      */
     public ClassModel(ClassNode asmClassNode) {
         this.asmClassNode = asmClassNode;
-        this.modifier = Modifier.parse(asmClassNode.access);
-        this.isFinal = Modifier.parseIsFinal(asmClassNode.access);
-        this.classType = ClassType.parse(asmClassNode.access);
+        int access = getAccess(asmClassNode);
+        this.modifier = Modifier.parse(access);
+        this.isFinal = Modifier.parseIsFinal(access);
+        this.classType = ClassType.parse(access);
         this.name = Type.getObjectType(asmClassNode.name).getClassName();
-        // System.out.println("Class : " + name);
-        // for (InnerClassNode inner : (List<InnerClassNode>)
-        // asmClassNode.innerClasses) {
-        // System.out.println("\t\t name: " + inner.name);
-        // System.out.println("\t\t innerName: " + inner.innerName);
-        // System.out.println("\t\t outerName: " + inner.outerName);
-        // System.out.println("\t\t access: " + inner.access);
-        // }
+        int index = name.lastIndexOf('$');
+        this.outterClass = index < 0 ? null : ASMParser.getClassByName(name.substring(0, index));
+    }
+
+    private int getAccess(ClassNode asmClassNode) {
+        for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses)
+            if (asmClassNode.name.equals(inner.name))
+                return inner.access;
+        return asmClassNode.access;
     }
 
     public String getName() {
@@ -124,26 +127,22 @@ class ClassModel implements IClassModel, TypeModel {
             } else {
                 ClassSignatureParseResult rs = TypeParser.parseClassSignature(asmClassNode.signature);
                 genericParams = rs.getParamsList();
-                superTypes = rs.getSuperTypes();
-
-                // replace GenericTypeVarPlaceHolder with GenericTypeParams
                 Map<String, GenericTypeParam> paramMap = getParamsMap();
-                for (GenericTypeParam t : genericParams) {
+                for (GenericTypeParam t : genericParams)
                     t.replaceTypeVar(paramMap);
-                }
-                ListIterator<TypeModel> itr = superTypes.listIterator();
-                while (itr.hasNext()) {
-                    TypeModel t = itr.next();
-                    itr.set(t.replaceTypeVar(paramMap));
-                }
+                superTypes = new ArrayList<>(rs.getSuperTypes().size());
+                for (TypeModel t : rs.getSuperTypes())
+                    superTypes.add(t.replaceTypeVar(paramMap));
             }
         }
         return superTypes;
     }
 
     Map<String, GenericTypeParam> getParamsMap() {
-        Map<String, GenericTypeParam> paramMap = new HashMap<>(2);
-        for (GenericTypeParam p : getGenericList()) {
+        List<GenericTypeParam> genList = getGenericList();
+        Map<String, GenericTypeParam> paramMap = outterClass == null ? new HashMap<>(genList.size())
+                : outterClass.getParamsMap();
+        for (GenericTypeParam p : genList) {
             paramMap.put(p.getName(), p);
         }
         return paramMap;

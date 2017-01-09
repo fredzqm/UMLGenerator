@@ -46,20 +46,17 @@ class GenericTypeVarPlaceHolder implements TypeModel {
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         if (paramMap.containsKey(key))
             return paramMap.get(key);
-        // cannot fix it because it related to inner class
-        System.err.println("GenericTypeVar " + key + " is not found in the paraMap: " + paramMap);
-        return this;
+        throw new RuntimeException("GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: " + paramMap);
     }
 
-	@Override
-	public List<ClassModel> getDependsOn() {
-        System.err.println("GenericTypeVar does not know what it depends on");
-        return Collections.emptyList();
-	}
-	
+    @Override
+    public List<ClassModel> getDependsOn() {
+        throw new RuntimeException("GenericTypeVarPlaceHolder does not know what it depends on");
+    }
+
     @Override
     public String toString() {
         return getName();
     }
-	
+
 }

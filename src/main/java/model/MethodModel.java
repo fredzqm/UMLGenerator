@@ -54,9 +54,9 @@ class MethodModel implements IMethodModel {
         this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
         this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
         if (asmMethodNode.signature == null) {
+            this.genericParams = Collections.emptyList();
             this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
             this.signature = Signature.parse(methodNode.name, methodNode.desc);
-            this.genericParams = Collections.emptyList();
         } else {
             // System.out.println(asmMethodNode.signature);
             MethodSignatureParseResult rs = TypeParser.parseMethodSignature(asmMethodNode.signature);
@@ -64,9 +64,8 @@ class MethodModel implements IMethodModel {
             Map<String, GenericTypeParam> paramMap = getParamsMap();
             this.returnType = rs.getReturnType().replaceTypeVar(paramMap);
             List<TypeModel> arguments = new ArrayList<>(rs.getArguments().size());
-            for (TypeModel t : rs.getArguments()) {
+            for (TypeModel t : rs.getArguments())
                 arguments.add(t.replaceTypeVar(paramMap));
-            }
             this.signature = new Signature(arguments, asmMethodNode.name);
         }
     }
