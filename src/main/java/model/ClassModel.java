@@ -262,14 +262,14 @@ class ClassModel implements IClassModel, TypeModel {
 		return getName();
 	}
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+    
 	@Override
 	public List<ClassModel> getDependsOn() {
 		return Arrays.asList(this);
-	}
-
-	@Override
-	public String toString() {
-		return getName();
 	}
 
 }

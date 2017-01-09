@@ -39,11 +39,6 @@ class GenericTypeParam implements TypeModel {
 	}
 
 	@Override
-	public String toString() {
-		return this.key + " : " + boundSuperTypes;
-	}
-
-	@Override
 	public Iterable<TypeModel> getSuperTypes() {
 		if (boundSuperTypes.isEmpty())
 			return Arrays.asList(ASMParser.getObject());
@@ -78,5 +73,10 @@ class GenericTypeParam implements TypeModel {
 		}
 		return set;
 	}
+
+    @Override
+    public String toString() {
+    	return this.key + " : " + boundSuperTypes;
+    }
 
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,39 +12,29 @@ import java.util.Objects;
  *
  * @author zhang
  */
-class GenericTypeArg implements TypeModel {
-    private static GenericTypeArg wildType = getUpperBounded(null);
-    private final TypeModel lowerBound;
-    private final TypeModel upperBound;
-
-    GenericTypeArg(TypeModel lowerBound, TypeModel upperBound) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
+abstract class GenericTypeArg implements TypeModel {
+    @Override
+    public Iterable<TypeModel> getSuperTypes() {
+        return Collections.emptyList();
     }
 
-    public static GenericTypeArg getWildType() {
+    private static GenericTypeArg wildType = new WildType();
+
+    static GenericTypeArg getWildType() {
         return wildType;
     }
 
     static GenericTypeArg getLowerBounded(TypeModel classTypeModel) {
-        return new GenericTypeArg(classTypeModel, null);
+        return new LowerBound(classTypeModel);
     }
 
     static GenericTypeArg getUpperBounded(TypeModel upperBound) {
-        return new GenericTypeArg(ASMParser.getObject(), upperBound);
-    }
-
-    public TypeModel getLowerBound() {
-        return lowerBound;
-    }
-
-    public TypeModel getUpperBound() {
-        return upperBound;
+        return new UpperBound(upperBound);
     }
 
     @Override
     public ClassModel getClassModel() {
-        return lowerBound.getClassModel();
+        return null;
     }
 
     @Override
@@ -51,35 +42,102 @@ class GenericTypeArg implements TypeModel {
         return null;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof GenericTypeArg) {
-            GenericTypeArg o = (GenericTypeArg) obj;
-            return Objects.equals(upperBound, o.upperBound) && Objects.equals(lowerBound, o.lowerBound);
+    public static class LowerBound extends GenericTypeArg {
+        private TypeModel lowerBound;
+
+        LowerBound(TypeModel lowerBound) {
+            this.lowerBound = lowerBound;
         }
-        return false;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof LowerBound) {
+                LowerBound o = (LowerBound) obj;
+                return lowerBound.equals(o.lowerBound);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return lowerBound.hashCode() * 31;
+        }
+
+        @Override
+        public ClassModel getClassModel() {
+            return lowerBound.getClassModel();
+        }
+
+        @Override
+        public Iterable<TypeModel> getSuperTypes() {
+            return Arrays.asList(lowerBound);
+        }
+
+        @Override
+        public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+            return new LowerBound(lowerBound.replaceTypeVar(paramMap));
+        }
+
+        @Override
+        public Collection<ClassModel> getDependsOn() {
+            return lowerBound.getDependsOn();
+        }
+
+        @Override
+        public String toString() {
+            return String.format("<? extends %s>", lowerBound.toString());
+        }
+
     }
 
-    @Override
-    public int hashCode() {
-        return (upperBound == null ? 0 : upperBound.hashCode() * 31) + lowerBound.hashCode();
+    public static class UpperBound extends GenericTypeArg {
+        private TypeModel upperBound;
+
+        UpperBound(TypeModel upperBound) {
+            this.upperBound = upperBound;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof UpperBound) {
+                UpperBound o = (UpperBound) obj;
+                return Objects.equals(upperBound, o.upperBound);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return upperBound.hashCode() * 3;
+        }
+
+        @Override
+        public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
+            return new UpperBound(upperBound.replaceTypeVar(paramMap));
+        }
+
+        @Override
+        public Collection<ClassModel> getDependsOn() {
+            return upperBound.getDependsOn();
+        }
+
+        @Override
+        public String toString() {
+            return String.format("<? super %s>", upperBound.toString());
+        }
+
     }
 
-    @Override
-    public Iterable<TypeModel> getSuperTypes() {
-        return Arrays.asList(lowerBound);
+    static class WildType extends GenericTypeArg {
+
+        @Override
+        public String toString() {
+            return "*";
+        }
+
+        @Override
+        public Collection<ClassModel> getDependsOn() {
+            return Collections.emptyList();
+        }
     }
-
-    @Override
-    public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
-        if (upperBound == null)
-            return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), null);
-        return new GenericTypeArg(lowerBound.replaceTypeVar(paramMap), upperBound.replaceTypeVar(paramMap));
-    }
-
-	@Override
-	public Collection<ClassModel> getDependsOn() {
-		return lowerBound.getDependsOn();
-	}
-
 }
