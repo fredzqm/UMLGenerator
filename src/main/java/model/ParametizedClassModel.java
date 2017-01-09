@@ -36,7 +36,7 @@ class ParametizedClassModel implements TypeModel {
 		return genericArgs.get(index);
 	}
 
-	public int getGenericArgLength() {
+	public int getGenericArgNumber() {
 		return genericArgs.size();
 	}
 

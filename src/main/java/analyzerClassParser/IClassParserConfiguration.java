@@ -3,6 +3,7 @@ package analyzerClassParser;
 import analyzer.IClassModel;
 import analyzer.IFieldModel;
 import analyzer.IMethodModel;
+import analyzer.ITypeModel;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -24,17 +25,29 @@ public interface IClassParserConfiguration {
 	 * 
 	 * @return class as parser for the header
 	 */
-	Class<? extends IParser<IClassModel>> getHeaderParser();
+	IParser<IClassModel> getHeaderParser();
 
 	/**
 	 * 
 	 * @return class as the field parser
 	 */
-	Class<? extends IParser<IFieldModel>> getFieldParser();
+	IParser<IFieldModel> getFieldParser();
 
 	/**
 	 * 
 	 * @return class as the method parser
 	 */
-	Class<? extends IParser<IMethodModel>> getMethodParser();
+	IParser<IMethodModel> getMethodParser();
+
+	/**
+	 * 
+	 * @return class as the type parser
+	 */
+	IParser<ITypeModel> getTypeParser();
+
+	/**
+	 * 
+	 * @return
+	 */
+	IParser<Modifier> getModifierParser();
 }

@@ -1,6 +1,8 @@
 package analyzerClassParser;
 
 import analyzer.IFieldModel;
+import analyzer.ITypeModel;
+import utility.Modifier;
 
 /**
  * A GraphVizParser for the Field class.
@@ -10,7 +12,9 @@ import analyzer.IFieldModel;
 public class GraphVizFieldParser implements IParser<IFieldModel> {
 	@Override
 	public String parse(IFieldModel field, IClassParserConfiguration config) {
-		return String.format("%s %s : %s \\l", field.getModifier().getModifierSymbol(), field.getName(),
-				field.getTypeName());
+		IParser<ITypeModel> typeParser = config.getTypeParser();
+		IParser<Modifier> modifierParser = config.getModifierParser();
+		return String.format("%s %s : %s \\l", modifierParser.parse(field.getModifier(), config), field.getName(),
+				typeParser.parse(field.getFieldType(), config));
 	}
 }

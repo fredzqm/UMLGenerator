@@ -23,13 +23,6 @@ public interface IFieldModel {
 	String getName();
 
 	/**
-	 * Returns the Type MOdel of the Field.
-	 *
-	 * @return Type of the Field.
-	 */
-	String getTypeName();
-
-	/**
 	 * 
 	 * @return true if the field is static
 	 */

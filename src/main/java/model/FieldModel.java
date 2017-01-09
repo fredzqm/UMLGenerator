@@ -44,11 +44,6 @@ class FieldModel implements IFieldModel {
         return asmFieldNode.name;
     }
 
-    @Override
-    public String getTypeName() {
-        return fieldType.getName();
-    }
-
     public ClassModel getBelongTo() {
         return belongsTo;
     }

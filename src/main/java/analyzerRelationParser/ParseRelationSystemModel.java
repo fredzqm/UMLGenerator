@@ -77,7 +77,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
 					hasMany.add(hasClass);
 			}
 			ITypeModel collection = hasType.assignTo("java.lang.Iterable");
-			if (collection != null && collection.getGenericArgLength() > 0) {
+			if (collection != null && collection.getGenericArgNumber() > 0) {
 				// iterable of other things
 				IClassModel hasManyClass = collection.getGenericArg(0).getClassModel();
 				if (hasManyClass != null)
