@@ -14,18 +14,23 @@ public interface IFieldModel {
      * @return Field's Acess Modifier.
      */
     Modifier getModifier();
-
+    
     /**
      * Returns the name of the Field.
      *
      * @return Name of the Field.
      */
     String getName();
-
+    
     /**
-     * Returns the Type MOdel of the Field.
-     *
-     * @return Type of the Field.
+     * 
+     * @return true if the field is static
      */
-    String getTypeName();
+    boolean isStatic();
+    
+    /**
+     * 
+     * @return the type of this field
+     */
+    ITypeModel getFieldType();
 }

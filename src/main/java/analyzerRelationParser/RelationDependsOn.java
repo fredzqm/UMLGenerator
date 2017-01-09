@@ -10,7 +10,7 @@ public class RelationDependsOn implements IRelationInfo {
     public String toString() {
         return "Depends on";
     }
-
+    
     @Override
     public String getEdgeStyle() {
         return "arrowhead=\"vee\" style=dashed ";

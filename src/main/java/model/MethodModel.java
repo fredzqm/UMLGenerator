@@ -1,38 +1,41 @@
 package model;
 
-import analyzer.IMethodModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-import utility.IMapper;
-import utility.MethodType;
-import utility.Modifier;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.IMethodModel;
+import model.TypeParser.MethodSignatureParseResult;
+import utility.MethodType;
+import utility.Modifier;
 
 /**
  * Representing method in java program
  *
  * @author zhang
  */
-class MethodModel implements IVisitable<MethodModel>, IMethodModel {
+class MethodModel implements IMethodModel {
     private final MethodNode asmMethodNode;
     private final ClassModel belongsTo;
-
+    
     private final Modifier modifier;
     private final boolean isFinal;
     private final MethodType methodtype;
-
+    
     private final TypeModel returnType;
     private final Signature signature;
-
+    
     private Collection<MethodModel> dependenOnMethod;
     private Collection<FieldModel> dependenOnField;
     private Collection<ClassModel> dependsOn;
-
+    
     /**
      * constructs an method model given the class it belongs to and the asm
      * method node
@@ -46,14 +49,21 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         this.modifier = Modifier.parse(methodNode.access);
         this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
         this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
-        this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
-        this.signature = Signature.parse(methodNode.name, methodNode.desc);
+        if (asmMethodNode.signature == null) {
+            this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
+            this.signature = Signature.parse(methodNode.name, methodNode.desc);
+        } else {
+            System.out.println(asmMethodNode.signature);
+            MethodSignatureParseResult rs = TypeParser.parseMethodSignature(asmMethodNode.signature);
+            this.returnType = rs.getReturnType();
+            this.signature = rs.getSignature(asmMethodNode.name);
+        }
     }
-
+    
     public ClassModel getBelongTo() {
         return belongsTo;
     }
-
+    
     public String getName() {
         switch (methodtype) {
             case CONSTRUCTOR:
@@ -64,52 +74,36 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
                 return signature.getName();
         }
     }
-
+    
     public MethodType getMethodType() {
         return methodtype;
     }
-
+    
     public Modifier getModifier() {
         return modifier;
     }
-
+    
     public boolean isFinal() {
         return isFinal;
     }
-
+    
     public Signature getSignature() {
         return signature;
     }
-
+    
     public List<TypeModel> getArguments() {
         return signature.getArguments();
     }
-
-    @Override
-    public Iterable<? extends String> getArgumentTypeNames() {
-        IMapper<TypeModel, String> mapper = TypeModel::getName;
-        return mapper.map(getArguments());
-    }
-
+    
     public TypeModel getReturnType() {
         return returnType;
     }
-
-    @Override
-    public String getReturnTypeName() {
-        return returnType.getName();
-    }
-
+    
     @Override
     public String toString() {
         return returnType + " " + getSignature().toString();
     }
-
-    @Override
-    public void visit(IVisitor<MethodModel> IVisitor) {
-        IVisitor.visit(this);
-    }
-
+    
     public Collection<MethodModel> getDependentMethods() {
         if (dependenOnMethod == null) {
             dependenOnMethod = new HashSet<>();
@@ -132,7 +126,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         }
         return dependenOnMethod;
     }
-
+    
     public Collection<FieldModel> getDependentFields() {
         if (dependenOnField == null) {
             dependenOnField = new HashSet<>();
@@ -155,7 +149,7 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         }
         return dependenOnField;
     }
-
+    
     public Collection<ClassModel> getDependsClasses() {
         if (dependsOn == null) {
             dependsOn = new HashSet<>();
@@ -176,5 +170,5 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
         }
         return dependsOn;
     }
-
+    
 }

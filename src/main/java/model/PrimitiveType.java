@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * representing any primitive type
@@ -35,6 +36,8 @@ enum PrimitiveType implements TypeModel {
                 return LONG;
             case 'D':
                 return DOUBLE;
+            case 'V':
+            	return VOID;
             default:
                 throw new RuntimeException(x + " Cannot represent a primitive type");
         }
@@ -54,5 +57,10 @@ enum PrimitiveType implements TypeModel {
     public Iterable<TypeModel> getSuperTypes() {
         return Collections.emptyList();
     }
+
+	@Override
+	public List<ClassModel> getDependsOn() {
+		return Collections.emptyList();
+	}
 
 }

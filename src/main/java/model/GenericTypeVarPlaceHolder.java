@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,4 +50,10 @@ class GenericTypeVarPlaceHolder implements TypeModel {
         System.err.println("GenericTypeVar " + key + " is not found in the paraMap: " + paramMap);
         return this;
     }
+
+	@Override
+	public List<ClassModel> getDependsOn() {
+        System.err.println("GenericTypeVar does not know what it depends on");
+        return Collections.emptyList();
+	}
 }

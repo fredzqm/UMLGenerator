@@ -1,35 +1,36 @@
 package model;
 
-import dummy.RelDummyClass;
-import dummy.RelOtherDummyClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import dummy.RelDummyClass;
+import dummy.RelOtherDummyClass;
 
 public class ClassModelRelationshipTest {
-    String dummyClassName = RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName();
-    String otherDummyClassName = RelOtherDummyClass.class.getPackage().getName() + "."
-            + RelOtherDummyClass.class.getSimpleName();
+	String relDummyClassName = RelDummyClass.class.getPackage().getName() + "." + RelDummyClass.class.getSimpleName();
+	String otherDummyClassName = RelOtherDummyClass.class.getPackage().getName() + "."
+			+ RelOtherDummyClass.class.getSimpleName();
 
-    @Test
-    public void testHasARelationship() {
+	@Test
+	public void testHasARelationship() {
 
-        ClassModel dummyClass = ASMParser.getClassByName(dummyClassName);
-        ClassModel otherDummyClass = ASMParser.getClassByName(otherDummyClassName);
+		ClassModel dummyClass = ASMParser.getClassByName(relDummyClassName);
+		ClassModel otherDummyClass = ASMParser.getClassByName(otherDummyClassName);
 
-        Map<ClassModel, Integer> x = dummyClass.getHasRelation();
-        assertEquals(1, x.size());
-        assertEquals(2, (int) x.get(otherDummyClass));
-    }
+		Iterator<ClassModel> itr = dummyClass.getHasTypes().iterator();
+		assertEquals(otherDummyClass, itr.next());
+		assertFalse(itr.hasNext());
+	}
 
-    @Test
-    public void testDependsRelationship() {
-        ClassModel dummyClass = ASMParser.getClassByName(dummyClassName);
+	@Test
+	public void testDependsRelationship() {
+		ClassModel dummyClass = ASMParser.getClassByName(relDummyClassName);
 
-        Collection<ClassModel> x = dummyClass.getDependsRelation();
-        assertEquals(0, x.size());
-    }
+		Collection<ClassModel> x = dummyClass.getClassDependsOn();
+		assertEquals(0, x.size());
+	}
 }

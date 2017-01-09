@@ -3,6 +3,7 @@ package analyzerClassParser;
 import analyzer.IClassModel;
 import analyzer.IFieldModel;
 import analyzer.IMethodModel;
+import analyzer.ITypeModel;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -12,29 +13,41 @@ import utility.Modifier;
  *
  */
 public interface IClassParserConfiguration {
-	
-	/**
-	 * Return the set of Method Access Filters.
-	 *
-	 * @return Set of Method Access Filters.
-	 */
-	IFilter<Modifier> getModifierFilters();
-
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends IParser<IClassModel>> getHeaderParser();
-
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends IParser<IFieldModel>> getFieldParser();
-
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends IParser<IMethodModel>> getMethodParser();
+    
+    /**
+     * Return the set of Method Access Filters.
+     *
+     * @return Set of Method Access Filters.
+     */
+    IFilter<Modifier> getModifierFilters();
+    
+    /**
+     * 
+     * @return class as parser for the header
+     */
+    IParser<IClassModel> getHeaderParser();
+    
+    /**
+     * 
+     * @return class as the field parser
+     */
+    IParser<IFieldModel> getFieldParser();
+    
+    /**
+     * 
+     * @return class as the method parser
+     */
+    IParser<IMethodModel> getMethodParser();
+    
+    /**
+     * 
+     * @return class as the type parser
+     */
+    IParser<ITypeModel> getTypeParser();
+    
+    /**
+     * 
+     * @return
+     */
+    IParser<Modifier> getModifierParser();
 }

@@ -20,7 +20,7 @@ public class AnalyzerClassParser implements IAnalyzer {
         }
 
 		IParser<IClassModel> classParser = new GraphVizClassParser();
-
-		return new ParseClassSystemModel(systemModel, classParser, (IClassParserConfiguration) c);
+        
+        return new ParseClassSystemModel(systemModel, classParser, (IClassParserConfiguration) c);
 	}
 }

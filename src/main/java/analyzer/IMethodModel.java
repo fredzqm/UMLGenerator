@@ -1,5 +1,7 @@
 package analyzer;
 
+import java.util.List;
+
 import utility.MethodType;
 import utility.Modifier;
 
@@ -15,7 +17,7 @@ public interface IMethodModel {
      * @return Access Modifier.
      */
     Modifier getModifier();
-
+    
     /**
      * Returns the Method Type (Abstract, Contructor, Static, Static
      * Initializer, Method).
@@ -23,32 +25,32 @@ public interface IMethodModel {
      * @return Method Type.
      */
     MethodType getMethodType();
-
+    
     /**
      * Returns true if the Method is final.
      *
      * @return true if Final.
      */
     boolean isFinal();
-
+    
     /**
      * Returns the name of the Method.
      *
      * @return Name of the Method.
      */
     String getName();
-
+    
     /**
      * Returns the return type Type Model of the Method.
      *
      * @return Type Model of the Return Type.
      */
-    String getReturnTypeName();
-
+    ITypeModel getReturnType();
+    
     /**
      * Returns an Iterable of Type Models of the arguments of the Method.
      *
      * @return Iterable of Type Model of Arguments.
      */
-    Iterable<? extends String> getArgumentTypeNames();
+    List<? extends ITypeModel> getArguments();
 }

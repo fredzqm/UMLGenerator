@@ -7,7 +7,7 @@ import analyzer.IRelationInfo;
  */
 public class ReleationBijectiveDecorator implements IRelationInfo {
     private IRelationInfo decorated;
-
+    
     /**
      * Constructs a RelationBijectiveDecorator.
      *
@@ -16,7 +16,7 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
     ReleationBijectiveDecorator(IRelationInfo rel) {
         this.decorated = rel;
     }
-
+    
     /**
      * Returns the RelationInfo it decorates.
      *
@@ -25,12 +25,12 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
     IRelationInfo getDecorated() {
         return decorated;
     }
-
+    
     @Override
     public String toString() {
         return "bir-" + decorated.toString();
     }
-
+    
     @Override
     public String getEdgeStyle() {
         return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" style=\"\" dir=both ";

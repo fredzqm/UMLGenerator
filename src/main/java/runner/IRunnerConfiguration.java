@@ -14,21 +14,21 @@ public interface IRunnerConfiguration {
      * @return Output File's Format
      */
     String getOutputFormat();
-
+    
     /**
      * Returns the Output Directory.
      *
      * @return Output Directory.
      */
     String getOutputDirectory();
-
+    
     /**
      * Returns the String of the executable path.
      *
      * @return Executable Path String.
      */
     String getExecutablePath();
-
+    
     /**
      * @return the file name without the extension
      */

@@ -1,19 +1,25 @@
 package model;
 
-import analyzer.IClassModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import model.TypeParser.ClassSignatureParseResult;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
 import utility.ClassType;
-import utility.IFilter;
 import utility.IMapper;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * Representing classes in java program
@@ -27,7 +33,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
+class ClassModel implements IClassModel, TypeModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -41,10 +47,9 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	private Map<String, FieldModel> fields;
 	private Map<Signature, MethodModel> methods;
 
-	private Map<ClassModel, Integer> hasARel;
-	private Collection<ClassModel> dependsOn;
-
 	private Map<String, GenericTypeParam> paramMap;
+	private Collection<ClassModel> hasTypes;
+	private Collection<ClassModel> dependsOn;
 
 	/**
 	 * Creates an ClassModel and assign its basic properties.
@@ -175,59 +180,28 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 		return ls;
 	}
 
-	public Map<ClassModel, Integer> getHasRelation() {
-		if (hasARel == null) {
-			hasARel = new HashMap<>();
-			Set<ClassModel> hasMany = new HashSet<>();
-			ClassModel iterable = ASMParser.getClassByName("java.lang.Iterable");
-			IFilter<FieldModel> filter = (f) -> !f.isStatic();
-			for (FieldModel field : filter.filter(getFields())) {
-				TypeModel hasType = field.getFieldType();
-				ClassModel hasClass = hasType.getClassModel();
-				if (hasType.getDimension() > 0) {
-					if (hasClass != null)
-						hasMany.add(hasClass);
-				}
-				TypeModel collection = hasType.assignTo(iterable);
-				if (collection != null && collection instanceof ParametizedClassModel) {
-					// iterable of other things
-					ParametizedClassModel iterableSuperType = (ParametizedClassModel) collection;
-					ClassModel hasManyClass = iterableSuperType.getGenericArg(0).getClassModel();
-					if (hasManyClass != null)
-						hasMany.add(hasManyClass);
-				}
-				if (hasClass != null) {
-					// regular fields
-					if (hasARel.containsKey(hasClass)) {
-						hasARel.put(hasClass, hasARel.get(hasClass) + 1);
-					} else {
-						hasARel.put(hasClass, 1);
-					}
-				}
-			}
-			for (ClassModel c : hasMany) {
-				if (hasARel.containsKey(c)) {
-					hasARel.put(c, -hasARel.get(c));
-				} else {
-					hasARel.put(c, 0);
-				}
+	public Collection<ClassModel> getHasTypes() {
+		if (hasTypes == null) {
+			hasTypes = new HashSet<>();
+			for (FieldModel field : getFields()) {
+				TypeModel type = field.getFieldType();
+				hasTypes.addAll(type.getDependsOn());
 			}
 		}
-		return hasARel;
-
+		return hasTypes;
 	}
 
-	public Collection<ClassModel> getDependsRelation() {
+	public Collection<ClassModel> getClassDependsOn() {
 		if (dependsOn == null) {
 			dependsOn = new HashSet<>();
 			for (MethodModel method : getMethods()) {
 				dependsOn.addAll(method.getDependsClasses());
 			}
-			dependsOn.removeAll(getHasRelation().keySet());
-			dependsOn.remove(this);
 			if (getSuperClass() != null)
 				dependsOn.remove(getSuperClass());
 			getInterfaces().forEach((i) -> dependsOn.remove(i));
+			getHasTypes().forEach((t) -> dependsOn.remove(t));
+			dependsOn.remove(this);
 		}
 		return dependsOn;
 	}
@@ -284,17 +258,18 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	}
 
 	@Override
+	public String getLabel() {
+		return getName();
+	}
+
+	@Override
+	public List<ClassModel> getDependsOn() {
+		return Arrays.asList(this);
+	}
+
+	@Override
 	public String toString() {
 		return getName();
 	}
 
-	@Override
-	public void visit(IVisitor<ClassModel> IVisitor) {
-		IVisitor.visit(this);
-	}
-
-	@Override
-	public String getLabel() {
-		return getName();
-	}
 }

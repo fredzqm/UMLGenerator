@@ -4,10 +4,13 @@ import analyzer.IAnalyzer;
 import analyzer.IClassModel;
 import analyzer.IFieldModel;
 import analyzer.IMethodModel;
+import analyzer.ITypeModel;
 import analyzerClassParser.AnalyzerClassParser;
 import analyzerClassParser.GraphVizFieldParser;
 import analyzerClassParser.GraphVizHeaderParser;
 import analyzerClassParser.GraphVizMethodParser;
+import analyzerClassParser.GraphVizModifierParser;
+import analyzerClassParser.GraphVizTypeParser;
 import analyzerClassParser.IParser;
 import analyzerRelationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
@@ -39,12 +42,14 @@ public class Configuration implements IConfiguration {
 	private Class<? extends IParser<IClassModel>> classHeaderParser;
 	private Class<? extends IParser<IFieldModel>> fieldParser;
 	private Class<? extends IParser<IMethodModel>> methodParser;
+	private Class<? extends IParser<ITypeModel>> typeParser;
+	private Class<? extends IParser<Modifier>> modifierParser;
 
-    /**
-     * TODO: Adam.
-     *
-     * @return
-     */
+	/**
+	 * TODO: Adam.
+	 *
+	 * @return
+	 */
 	public static Configuration getInstance() {
 		Configuration conf = new Configuration();
 		conf.setOutputFormat("png");
@@ -58,6 +63,8 @@ public class Configuration implements IConfiguration {
 		conf.setHeaderParser(GraphVizHeaderParser.class);
 		conf.setFieldParser(GraphVizFieldParser.class);
 		conf.setMethodParser(GraphVizMethodParser.class);
+		conf.setTypeParser(GraphVizTypeParser.class);
+		conf.setModifierParser(GraphVizModifierParser.class);
 		return conf;
 	}
 
@@ -155,42 +162,42 @@ public class Configuration implements IConfiguration {
 		return this.nodeStyle;
 	}
 
-    /**
-     * TODO Adam document.
-     *
-     * @param nodeStyle
-     */
+	/**
+	 * TODO Adam document.
+	 *
+	 * @param nodeStyle
+	 */
 	public void setNodeStyle(String nodeStyle) {
 		this.nodeStyle = nodeStyle;
 	}
 
-    /**
-     * @return
-     */
+	/**
+	 * @return
+	 */
 	public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
 		return analyzerls;
 	}
 
-    /**
-     * @param analyzers
-     */
-    public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
-        analyzerls = analyzers;
+	/**
+	 * @param analyzers
+	 */
+	public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
+		analyzerls = analyzers;
 	}
 
-    /**
-     * @return
-     */
+	/**
+	 * @return
+	 */
 	public Class<? extends IGenerator> getGenerator() {
 		return generator;
 	}
 
-    /**
-     * @param generator
-     */
-    public void setGenerator(Class<? extends IGenerator> generator) {
-        this.generator = generator;
-    }
+	/**
+	 * @param generator
+	 */
+	public void setGenerator(Class<? extends IGenerator> generator) {
+		this.generator = generator;
+	}
 
 	@Override
 	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
@@ -202,8 +209,12 @@ public class Configuration implements IConfiguration {
 	}
 
 	@Override
-	public Class<? extends IParser<IFieldModel>> getFieldParser() {
-		return fieldParser;
+	public IParser<IFieldModel> getFieldParser() {
+		try {
+			return fieldParser.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void setMethodParser(Class<? extends IParser<IMethodModel>> methodParser) {
@@ -211,8 +222,12 @@ public class Configuration implements IConfiguration {
 	}
 
 	@Override
-	public Class<? extends IParser<IMethodModel>> getMethodParser() {
-		return methodParser;
+	public IParser<IMethodModel> getMethodParser() {
+		try {
+			return methodParser.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void setHeaderParser(Class<? extends IParser<IClassModel>> classHeaderParser) {
@@ -220,8 +235,38 @@ public class Configuration implements IConfiguration {
 	}
 
 	@Override
-	public Class<? extends IParser<IClassModel>> getHeaderParser() {
-		return classHeaderParser;
+	public IParser<IClassModel> getHeaderParser() {
+		try {
+			return classHeaderParser.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setTypeParser(Class<? extends IParser<ITypeModel>> typeParser) {
+		this.typeParser = typeParser;
+	}
+
+	@Override
+	public IParser<ITypeModel> getTypeParser() {
+		try {
+			return typeParser.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setModifierParser(Class<? extends IParser<Modifier>> modifierParser) {
+		this.modifierParser = modifierParser;
+	}
+	
+	@Override
+	public IParser<Modifier> getModifierParser() {
+		try {
+			return modifierParser.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

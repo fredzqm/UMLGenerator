@@ -14,22 +14,22 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public class Display extends JFrame {
     private static final Set<String> SUPPORT_EXTENSIONS;
-
+    
     static {
         SUPPORT_EXTENSIONS = new HashSet<>();
         SUPPORT_EXTENSIONS.add("jpg");
         SUPPORT_EXTENSIONS.add("png");
     }
-
+    
     private BufferedImage image;
-
+    
     public Display(String imagePath) {
         try {
             this.image = ImageIO.read(new File(imagePath));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
+        
         JPanel canvas = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -42,14 +42,15 @@ public class Display extends JFrame {
         setLayout(new BorderLayout());
         add(sp, BorderLayout.CENTER);
     }
-
+    
     public static void showWindow(IRunnerConfiguration config) {
         if (!SUPPORT_EXTENSIONS.contains(config.getOutputFormat())) {
             System.err.print("Currently unsupported image format " + config.getOutputFormat());
             return;
         }
-        String outputFilePathImage = String.format("%s/%s.%s", config.getOutputDirectory(), config.getFileName(), config.getOutputFormat());
-
+        String outputFilePathImage = String.format("%s/%s.%s", config.getOutputDirectory(), config.getFileName(),
+                config.getOutputFormat());
+        
         JFrame frame = new Display(outputFilePathImage);
         frame.pack();
         frame.setVisible(true);
