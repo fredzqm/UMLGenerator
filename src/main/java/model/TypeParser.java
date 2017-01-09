@@ -94,14 +94,32 @@ class TypeParser {
         if (classTypeSig.charAt(classTypeSig.length() - 1) != ';') {
             throw new RuntimeException("class type signature should end with ;   : " + classTypeSig);
         }
-        int index = classTypeSig.indexOf('<');
-        if (index < 0) {
-            return ASMParser.getClassByName(classTypeSig.substring(1, classTypeSig.length() - 1));
-        } else {
-            ClassModel bound = ASMParser.getClassByName(classTypeSig.substring(1, index));
-            List<TypeModel> genericEnv = parseTypeArgs(classTypeSig.substring(index, classTypeSig.length() - 1));
-            return new ParametizedClassModel(bound, genericEnv);
+        String[] sp = classTypeSig.substring(1, classTypeSig.length() - 1).split("\\.");
+
+        TypeModel type = null;
+        String className = null;
+        for (int i = 0; i < sp.length; i++) {
+            int index = sp[i].indexOf('<');
+            List<TypeModel> genericEnv;
+            if (index < 0) {
+                genericEnv = null;
+            } else {
+                genericEnv = parseTypeArgs(sp[i].substring(index));
+                sp[i] = sp[i].substring(0, index);
+            }
+            className = className == null ? sp[i] : className + '$' + sp[i];
+            ClassModel bound = ASMParser.getClassByName(className);
+            type = getInstance(type, bound, genericEnv);
         }
+        return type;
+    }
+
+    private static TypeModel getInstance(TypeModel type, ClassModel bound, List<TypeModel> genericEnv) {
+        if (type == null && genericEnv == null)
+            return bound;
+        if (genericEnv == null)
+            genericEnv = Collections.emptyList();
+        return new ParametizedClassModel(type, bound, genericEnv);
     }
 
     /**
@@ -299,7 +317,7 @@ class TypeParser {
             this.exceptionList = exceptionList;
         }
 
-        public List<GenericTypeParam> getTypeParameters() {
+        public List<GenericTypeParam> getParameters() {
             return typeParameters;
         }
 
@@ -309,10 +327,6 @@ class TypeParser {
 
         public List<TypeModel> getArguments() {
             return argumentsList;
-        }
-
-        public Signature getSignature(String name) {
-            return new Signature(argumentsList, name);
         }
 
         public List<TypeModel> getExceptionList() {

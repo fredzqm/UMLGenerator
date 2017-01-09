@@ -1,8 +1,11 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -24,18 +27,19 @@ import utility.Modifier;
 class MethodModel implements IMethodModel {
     private final MethodNode asmMethodNode;
     private final ClassModel belongsTo;
-    
+
     private final Modifier modifier;
     private final boolean isFinal;
     private final MethodType methodtype;
-    
+
     private final TypeModel returnType;
     private final Signature signature;
-    
+
     private Collection<MethodModel> dependenOnMethod;
     private Collection<FieldModel> dependenOnField;
     private Collection<ClassModel> dependsOn;
-    
+    private List<GenericTypeParam> genericParams;
+
     /**
      * constructs an method model given the class it belongs to and the asm
      * method node
@@ -52,18 +56,33 @@ class MethodModel implements IMethodModel {
         if (asmMethodNode.signature == null) {
             this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
             this.signature = Signature.parse(methodNode.name, methodNode.desc);
+            this.genericParams = Collections.emptyList();
         } else {
-            System.out.println(asmMethodNode.signature);
+//            System.out.println(asmMethodNode.signature);
             MethodSignatureParseResult rs = TypeParser.parseMethodSignature(asmMethodNode.signature);
-            this.returnType = rs.getReturnType();
-            this.signature = rs.getSignature(asmMethodNode.name);
+            this.genericParams = rs.getParameters();
+            Map<String, GenericTypeParam> paramMap = getParamsMap();
+            this.returnType = rs.getReturnType().replaceTypeVar(paramMap);
+            List<TypeModel> arguments = new ArrayList<>();
+            for (TypeModel t : arguments) {
+                arguments.add(t.replaceTypeVar(paramMap));
+            }
+            this.signature = new Signature(arguments, asmMethodNode.name);
         }
     }
-    
+
+    private Map<String, GenericTypeParam> getParamsMap() {
+        Map<String, GenericTypeParam> paramMap = belongsTo.getParamsMap();
+        for (GenericTypeParam p : genericParams) {
+            paramMap.put(p.getName(), p);
+        }
+        return paramMap;
+    }
+
     public ClassModel getBelongTo() {
         return belongsTo;
     }
-    
+
     public String getName() {
         switch (methodtype) {
             case CONSTRUCTOR:
@@ -74,36 +93,36 @@ class MethodModel implements IMethodModel {
                 return signature.getName();
         }
     }
-    
+
     public MethodType getMethodType() {
         return methodtype;
     }
-    
+
     public Modifier getModifier() {
         return modifier;
     }
-    
+
     public boolean isFinal() {
         return isFinal;
     }
-    
+
     public Signature getSignature() {
         return signature;
     }
-    
+
     public List<TypeModel> getArguments() {
         return signature.getArguments();
     }
-    
+
     public TypeModel getReturnType() {
         return returnType;
     }
-    
+
     @Override
     public String toString() {
         return returnType + " " + getSignature().toString();
     }
-    
+
     public Collection<MethodModel> getDependentMethods() {
         if (dependenOnMethod == null) {
             dependenOnMethod = new HashSet<>();
@@ -126,7 +145,7 @@ class MethodModel implements IMethodModel {
         }
         return dependenOnMethod;
     }
-    
+
     public Collection<FieldModel> getDependentFields() {
         if (dependenOnField == null) {
             dependenOnField = new HashSet<>();
@@ -149,7 +168,7 @@ class MethodModel implements IMethodModel {
         }
         return dependenOnField;
     }
-    
+
     public Collection<ClassModel> getDependsClasses() {
         if (dependsOn == null) {
             dependsOn = new HashSet<>();
@@ -170,5 +189,5 @@ class MethodModel implements IMethodModel {
         }
         return dependsOn;
     }
-    
+
 }

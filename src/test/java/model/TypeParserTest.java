@@ -45,6 +45,39 @@ public class TypeParserTest {
     }
 
     @Test
+    public void testParseClassTypeSignature1() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/List<TA;>;");
+
+        assertEquals(ASMParser.getClassByName("java.util.List"), type.getClassModel());
+        assertEquals(1, type.getGenericArgNumber());
+        assertEquals(new GenericTypeVarPlaceHolder("A"), type.getGenericArg(0));
+    }
+
+    @Test
+    public void testParseClassTypeSignature2() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/Map.Entry;");
+        
+        assertEquals(ASMParser.getClassByName("java.util.Map$Entry"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+
+    @Test
+    public void testParseClassTypeSignature3InnerClass() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/Vector<TE;>.Itr;");
+
+        assertEquals(ASMParser.getClassByName("java.util.Vector$Itr"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+
+    @Test
+    public void testParseClassTypeSignature4NesttedClass() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/lang/Math.RandomNumberGeneratorHolder;");
+
+        assertEquals(ASMParser.getClassByName("java.lang.Math$RandomNumberGeneratorHolder"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+    
+    @Test
     public void testParseClassTypeArg1() {
         String name = "Ljava/lang/Object;";
 
@@ -159,7 +192,7 @@ public class TypeParserTest {
     }
 
     @Test
-    public void testParseClassSignatureNested() {
+    public void testParseClassSignature2() {
         String genericDummy = "<E::Ljava/lang/Comparable<TE;>;>Ljava/lang/Object;Ljava/lang/Iterable<TE;>;";
 
         ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
@@ -199,7 +232,7 @@ public class TypeParserTest {
     public void testParseMethodSignature1() {
         MethodSignatureParseResult rs = TypeParser
                 .parseMethodSignature("(Ljava/util/List<Lsun/reflect/generics/tree/SimpleClassTypeSignature;>;)V");
-        List<GenericTypeParam> typeParamls = rs.getTypeParameters();
+        List<GenericTypeParam> typeParamls = rs.getParameters();
         TypeModel retType = rs.getReturnType();
         List<TypeModel> arguments = rs.getArguments();
         List<TypeModel> exceptionLs = rs.getExceptionList();
@@ -219,7 +252,7 @@ public class TypeParserTest {
     @Test
     public void testParseMethodSignature2() {
         MethodSignatureParseResult rs = TypeParser.parseMethodSignature("(Ljava/lang/Class<*>;)Z");
-        List<GenericTypeParam> typeParamls = rs.getTypeParameters();
+        List<GenericTypeParam> typeParamls = rs.getParameters();
         TypeModel retType = rs.getReturnType();
         List<TypeModel> arguments = rs.getArguments();
         List<TypeModel> exceptionLs = rs.getExceptionList();
@@ -239,7 +272,7 @@ public class TypeParserTest {
     public void testParseMethodSignature3() {
         MethodSignatureParseResult rs = TypeParser
                 .parseMethodSignature("(Ljava/util/List<Lsun/reflect/generics/tree/SimpleClassTypeSignature;>;)V");
-        List<GenericTypeParam> typeParamls = rs.getTypeParameters();
+        List<GenericTypeParam> typeParamls = rs.getParameters();
         TypeModel retType = rs.getReturnType();
         List<TypeModel> arguments = rs.getArguments();
         List<TypeModel> exceptionLs = rs.getExceptionList();
@@ -255,7 +288,7 @@ public class TypeParserTest {
     public void testParseMethodSignature4() {
         MethodSignatureParseResult rs = TypeParser.parseMethodSignature(
                 "<T:Ljava/lang/Object;>(Ljava/lang/ClassValue$Version<TT;>;TT;)Ljava/lang/ClassValue$Entry<TT;>;");
-        List<GenericTypeParam> typeParamls = rs.getTypeParameters();
+        List<GenericTypeParam> typeParamls = rs.getParameters();
         TypeModel retType = rs.getReturnType();
         List<TypeModel> arguments = rs.getArguments();
         List<TypeModel> exceptionLs = rs.getExceptionList();
