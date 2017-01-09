@@ -1,10 +1,9 @@
 package model;
 
-import analyzer.IFieldModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
+
+import analyzer.IFieldModel;
 import utility.Modifier;
 
 /**
@@ -12,7 +11,7 @@ import utility.Modifier;
  *
  * @author zhang
  */
-class FieldModel implements IVisitable<FieldModel>, IFieldModel {
+class FieldModel implements IFieldModel {
     private final FieldNode asmFieldNode;
     private final ClassModel belongsTo;
 
@@ -73,11 +72,6 @@ class FieldModel implements IVisitable<FieldModel>, IFieldModel {
     @Override
     public String toString() {
         return getName();
-    }
-
-    @Override
-    public void visit(IVisitor<FieldModel> IVisitor) {
-        IVisitor.visit(this);
     }
 
 }

@@ -1,10 +1,9 @@
 package analyzer;
 
+import java.util.List;
+
 import generator.IVertex;
 import utility.Modifier;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * An interface for Class Models.

@@ -1,26 +1,28 @@
 package model;
 
-import analyzer.IMethodModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
-import model.TypeParser.MethodSignatureParseResult;
-
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-import utility.IMapper;
-import utility.MethodType;
-import utility.Modifier;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.IMethodModel;
+import model.TypeParser.MethodSignatureParseResult;
+import utility.IMapper;
+import utility.MethodType;
+import utility.Modifier;
 
 /**
  * Representing method in java program
  *
  * @author zhang
  */
-class MethodModel implements IVisitable<MethodModel>, IMethodModel {
+class MethodModel implements IMethodModel {
 	private final MethodNode asmMethodNode;
 	private final ClassModel belongsTo;
 
@@ -112,11 +114,6 @@ class MethodModel implements IVisitable<MethodModel>, IMethodModel {
 	@Override
 	public String toString() {
 		return returnType + " " + getSignature().toString();
-	}
-
-	@Override
-	public void visit(IVisitor<MethodModel> IVisitor) {
-		IVisitor.visit(this);
 	}
 
 	public Collection<MethodModel> getDependentMethods() {

@@ -16,8 +16,6 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import analyzer.IClassModel;
-import analyzer.IVisitable;
-import analyzer.IVisitor;
 import model.TypeParser.ClassSignatureParseResult;
 import utility.ClassType;
 import utility.IMapper;
@@ -35,7 +33,7 @@ import utility.Modifier;
  *
  * @author zhang
  */
-class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
+class ClassModel implements IClassModel, TypeModel {
 	private final ClassNode asmClassNode;
 
 	private final Modifier modifier;
@@ -272,11 +270,6 @@ class ClassModel implements IVisitable<ClassModel>, IClassModel, TypeModel {
 	@Override
 	public String toString() {
 		return getName();
-	}
-
-	@Override
-	public void visit(IVisitor<ClassModel> IVisitor) {
-		IVisitor.visit(this);
 	}
 
 }

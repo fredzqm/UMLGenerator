@@ -1,9 +1,8 @@
 package analyzer;
 
-import utility.Modifier;
-
 import java.util.List;
-import java.util.Map;
+
+import utility.Modifier;
 
 /**
  * a filter for IClassModel
