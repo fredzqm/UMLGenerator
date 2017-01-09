@@ -26,7 +26,7 @@ class ParametizedClassModel implements TypeModel {
         this.genericArgs = genericList;
     }
 
-    public ParametizedClassModel(ClassModel classModel, List<TypeModel> genericList) {
+    ParametizedClassModel(ClassModel classModel, List<TypeModel> genericList) {
         this(null, classModel, genericList);
     }
 

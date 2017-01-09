@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -38,6 +39,7 @@ class ClassModel implements IClassModel, TypeModel {
 
     private final Modifier modifier;
     private final boolean isFinal;
+    private final boolean isStatic;
     private final ClassType classType;
     private final String name;
     private final ClassModel outterClass;
@@ -64,16 +66,26 @@ class ClassModel implements IClassModel, TypeModel {
         this.modifier = Modifier.parse(access);
         this.isFinal = Modifier.parseIsFinal(access);
         this.classType = ClassType.parse(access);
+        this.isStatic = parseIsStatic();
         this.name = Type.getObjectType(asmClassNode.name).getClassName();
         int index = name.lastIndexOf('$');
         this.outterClass = index < 0 ? null : ASMParser.getClassByName(name.substring(0, index));
+    }
+
+    private boolean parseIsStatic() {
+        for (FieldNode field : (List<FieldNode>) asmClassNode.fields) {
+            if (field.name.startsWith("this$") && (field.access & Opcodes.ACC_SYNTHETIC) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private int getAccess(ClassNode asmClassNode) {
         for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses)
             if (asmClassNode.name.equals(inner.name))
                 return inner.access;
-        return asmClassNode.access;
+        return asmClassNode.access | Opcodes.ACC_STATIC;
     }
 
     public String getName() {
@@ -95,6 +107,10 @@ class ClassModel implements IClassModel, TypeModel {
 
     public ClassType getType() {
         return classType;
+    }
+
+    public boolean isStatic() {
+        return isStatic;
     }
 
     // ===================================================================

@@ -109,12 +109,14 @@ class TypeParser {
             }
             className = className == null ? sp[i] : className + '$' + sp[i];
             ClassModel bound = ASMParser.getClassByName(className);
-            type = getInstance(type, bound, genericEnv);
+            type = parseClassType(type, bound, genericEnv);
         }
         return type;
     }
 
-    private static TypeModel getInstance(TypeModel type, ClassModel bound, List<TypeModel> genericEnv) {
+    private static TypeModel parseClassType(TypeModel type, ClassModel bound, List<TypeModel> genericEnv) {
+        if (bound.isStatic())
+            type = null;
         if (type == null && genericEnv == null)
             return bound;
         if (genericEnv == null)
