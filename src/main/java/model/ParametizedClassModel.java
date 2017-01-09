@@ -1,12 +1,11 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import utility.IExpander;
 
 /**
  * Representing the type in java programs
@@ -29,7 +28,7 @@ class ParametizedClassModel implements TypeModel {
 		return classModel;
 	}
 
-	public List<TypeModel> getGenericArgs() {
+	List<TypeModel> getGenericArgs() {
 		return genericArgs;
 	}
 
@@ -100,8 +99,12 @@ class ParametizedClassModel implements TypeModel {
 	}
 
 	@Override
-	public Iterable<ClassModel> getTypeDependsOn() {
-		IExpander<TypeModel, ClassModel> expander = TypeModel::getTypeDependsOn;
-		return IExpander.merge(Arrays.asList(Arrays.asList(classModel), expander.expand(genericArgs)));
+	public Collection<ClassModel> getTypeDependsOn() {
+		Collection<ClassModel> set = new HashSet<>();
+		set.add(classModel);
+		for (TypeModel t : genericArgs) {
+			set.addAll(t.getTypeDependsOn());
+		}
+		return set;
 	}
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,7 +52,7 @@ class GenericTypeVarPlaceHolder implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getTypeDependsOn() {
+	public List<ClassModel> getTypeDependsOn() {
         System.err.println("GenericTypeVar does not know what it depends on");
         return Collections.emptyList();
 	}

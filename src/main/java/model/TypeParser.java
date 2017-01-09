@@ -198,20 +198,26 @@ class TypeParser {
 
 			@Override
 			public boolean test(Character c) {
-				start = check(c);
-				return start;
-			}
-
-			private boolean check(Character c) {
 				if (start) {
-					return c == 'Z' || c == 'C' || c == 'B' || c == 'S' || c == 'I' || c == 'F' || c == 'J' || c == 'D';
+					if (c == 'Z' || c == 'C' || c == 'B' || c == 'S' || c == 'I' || c == 'F' || c == 'J' || c == 'D') {
+						return true;
+					}
+					if (c != '[')
+						start = false;
+					return false;
+				} else {
+					if (c == ';') {
+						start = true;
+						return true;
+					} else {
+						return false;
+					}
 				}
-				return c == ';';
 			}
 		})) {
 			argumentList.add(parseTypeSignature(s));
 		}
-		String[] sp = methodSig.substring(j + 1).split("^");
+		String[] sp = methodSig.substring(j + 1).split("\\^");
 		TypeModel returnType = parseTypeSignature(sp[0]);
 		List<TypeModel> exceptionList;
 		if (sp.length == 1) {

@@ -63,13 +63,6 @@ public interface IClassModel extends IVertex {
     Iterable<? extends IClassModel> getInterfaces();
 
     /**
-     * Returns a Map of Class Models that is in a has-a relation with this class model.
-     *
-     * @return Map of Class Models in has-a relation with.
-     */
-    Map<? extends IClassModel, Integer> getHasRelation();
-
-    /**
      * Returns the Iterable of Class Model that is in a depends-on relation with this class model.
      *
      * @return Iterable of Class Model in a depends-on relation with.

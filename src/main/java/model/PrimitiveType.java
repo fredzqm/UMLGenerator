@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * representing any primitive type
@@ -58,7 +59,7 @@ enum PrimitiveType implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getTypeDependsOn() {
+	public List<ClassModel> getTypeDependsOn() {
 		return Collections.emptyList();
 	}
 

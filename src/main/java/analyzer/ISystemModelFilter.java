@@ -10,34 +10,34 @@ import java.util.Map;
  * @author zhang
  */
 public abstract class ISystemModelFilter implements ISystemModel {
-    private ISystemModel systemModel;
+	private ISystemModel systemModel;
 
-    /**
-     * Construct a ISystemModel Filter.
-     *
-     * @param systemModel
-     */
-    public ISystemModelFilter(ISystemModel systemModel) {
-        this.systemModel = systemModel;
-    }
+	/**
+	 * Construct a ISystemModel Filter.
+	 *
+	 * @param systemModel
+	 */
+	public ISystemModelFilter(ISystemModel systemModel) {
+		this.systemModel = systemModel;
+	}
 
-    /**
-     * Returns the SystemModel it decorates.
-     *
-     * @return SystemModel decorated.
-     */
-    protected ISystemModel getSystemModel() {
-        return systemModel;
-    }
+	/**
+	 * Returns the SystemModel it decorates.
+	 *
+	 * @return SystemModel decorated.
+	 */
+	protected ISystemModel getSystemModel() {
+		return systemModel;
+	}
 
-    @Override
-    public Collection<? extends IClassModel> getClasses() {
-        return systemModel.getClasses();
-    }
+	@Override
+	public Collection<? extends IClassModel> getClasses() {
+		return systemModel.getClasses();
+	}
 
-    @Override
-    public Map<ClassPair, List<IRelationInfo>> getRelations() {
-        return systemModel.getRelations();
-    }
+	@Override
+	public Map<ClassPair, List<IRelationInfo>> getRelations() {
+		return systemModel.getRelations();
+	}
 
 }

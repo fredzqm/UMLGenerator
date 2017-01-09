@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collection;
 import java.util.Map;
 
 import analyzer.ITypeModel;
@@ -30,20 +31,17 @@ interface TypeModel extends ITypeModel {
 	default int getDimension() {
 		return 0;
 	}
-	
 
 	/**
 	 * @return all the classes that this type depends on
 	 */
-	Iterable<ClassModel> getTypeDependsOn();
+	Collection<ClassModel> getTypeDependsOn();
 
-	
 	/**
 	 * @return the collection of types that this type can be directly assigned
 	 *         to
 	 */
 	Iterable<TypeModel> getSuperTypes();
-
 
 	/**
 	 * replace {@link GenericTypeVarPlaceHolder} with real type in the parameter
@@ -71,5 +69,9 @@ interface TypeModel extends ITypeModel {
 				return t;
 		}
 		return null;
+	}
+
+	default ITypeModel assignTo(String className) {
+		return assignTo(ASMParser.getClassByName(className));
 	}
 }

@@ -67,11 +67,6 @@ public abstract class IClassModelFilter implements IClassModel {
     }
 
     @Override
-    public Map<? extends IClassModel, Integer> getHasRelation() {
-        return classModel.getHasRelation();
-    }
-
-    @Override
     public Iterable<? extends IClassModel> getClassDependsOn() {
         return classModel.getClassDependsOn();
     }

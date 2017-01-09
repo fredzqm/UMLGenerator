@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collection;
 import java.util.Map;
 
 import utility.IMapper;
@@ -80,7 +81,7 @@ class ArrayTypeModel implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getTypeDependsOn() {
+	public Collection<ClassModel> getTypeDependsOn() {
 		return arrayType.getTypeDependsOn();
 	}
 }

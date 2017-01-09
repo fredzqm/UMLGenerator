@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,7 +78,7 @@ class GenericTypeArg implements TypeModel {
     }
 
 	@Override
-	public Iterable<ClassModel> getTypeDependsOn() {
+	public Collection<ClassModel> getTypeDependsOn() {
 		return lowerBound.getTypeDependsOn();
 	}
 
