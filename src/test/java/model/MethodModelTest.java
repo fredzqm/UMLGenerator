@@ -27,7 +27,7 @@ public class MethodModelTest {
         Set<String> expected = new HashSet<>(Arrays.asList("append", "toString", "java.lang.StringBuilder"));
         Collection<String> actual = new ArrayList<>();
 
-        Collection<MethodModel> methods = methodModel.getDependentMethods();
+        Collection<MethodModel> methods = methodModel.getCalledMethods();
         methods.forEach((m) -> actual.add(m.getName()));
 
         assertEquals(expected.size(), actual.size());
@@ -52,7 +52,7 @@ public class MethodModelTest {
         Set<String> expected = new HashSet<>(Arrays.asList("proctedField", "defaultField", "publicField"));
         Collection<String> actual = new ArrayList<>();
 
-        Collection<FieldModel> method = methodModel.getDependentFields();
+        Collection<FieldModel> method = methodModel.getAccessedFields();
         method.forEach((m) -> actual.add(m.getName()));
 
         assertEquals(expected.size(), actual.size());

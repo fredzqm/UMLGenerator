@@ -9,25 +9,31 @@ import utility.Modifier;
  */
 public interface IFieldModel {
     /**
-     * Returns the access Modifier of the class.
-     *
-     * @return Field's Acess Modifier.
-     */
-    Modifier getModifier();
-    
-    /**
      * Returns the name of the Field.
      *
      * @return Name of the Field.
      */
     String getName();
-    
+
+    /**
+     * Returns the access Modifier of the class.
+     *
+     * @return Field's Acess Modifier.
+     */
+    Modifier getModifier();
+
+    /**
+     * 
+     * @return true if the field is final
+     */
+    boolean isFinal();
+
     /**
      * 
      * @return true if the field is static
      */
     boolean isStatic();
-    
+
     /**
      * 
      * @return the type of this field

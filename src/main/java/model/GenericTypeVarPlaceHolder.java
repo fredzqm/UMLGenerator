@@ -50,7 +50,7 @@ class GenericTypeVarPlaceHolder implements TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependsOn() {
+    public List<ClassModel> getDependentOnClass() {
         throw new RuntimeException("GenericTypeVarPlaceHolder does not know what it depends on");
     }
 

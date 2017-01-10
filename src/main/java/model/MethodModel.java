@@ -30,6 +30,7 @@ class MethodModel implements IMethodModel {
 
     private final Modifier modifier;
     private final boolean isFinal;
+    private final boolean isStatic;
     private final MethodType methodtype;
 
     private final TypeModel returnType;
@@ -37,7 +38,6 @@ class MethodModel implements IMethodModel {
 
     private Collection<MethodModel> dependenOnMethod;
     private Collection<FieldModel> dependenOnField;
-    private Collection<ClassModel> dependsOn;
     private List<GenericTypeParam> genericParams;
 
     /**
@@ -47,12 +47,14 @@ class MethodModel implements IMethodModel {
      * @param belongsTo
      * @param methodNode
      */
-    public MethodModel(ClassModel belongsTo, MethodNode methodNode) {
+    MethodModel(ClassModel belongsTo, MethodNode methodNode) {
         this.belongsTo = belongsTo;
         this.asmMethodNode = methodNode;
-        this.modifier = Modifier.parse(methodNode.access);
-        this.isFinal = Modifier.parseIsFinal(asmMethodNode.access);
-        this.methodtype = MethodType.parse(asmMethodNode.name, asmMethodNode.access);
+        int access = methodNode.access;
+        this.modifier = Modifier.parse(access);
+        this.isFinal = Modifier.parseIsFinal(access);
+        this.isStatic = Modifier.parseIsStatic(access);
+        this.methodtype = MethodType.parse(asmMethodNode.name, access);
         if (asmMethodNode.signature == null) {
             this.genericParams = Collections.emptyList();
             this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
@@ -105,6 +107,10 @@ class MethodModel implements IMethodModel {
         return isFinal;
     }
 
+    public boolean isStatic() {
+        return isStatic;
+    }
+
     public Signature getSignature() {
         return signature;
     }
@@ -122,7 +128,7 @@ class MethodModel implements IMethodModel {
         return returnType + " " + getSignature().toString();
     }
 
-    public Collection<MethodModel> getDependentMethods() {
+    Collection<MethodModel> getCalledMethods() {
         if (dependenOnMethod == null) {
             dependenOnMethod = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
@@ -145,7 +151,7 @@ class MethodModel implements IMethodModel {
         return dependenOnMethod;
     }
 
-    public Collection<FieldModel> getDependentFields() {
+    Collection<FieldModel> getAccessedFields() {
         if (dependenOnField == null) {
             dependenOnField = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
@@ -166,27 +172,6 @@ class MethodModel implements IMethodModel {
             }
         }
         return dependenOnField;
-    }
-
-    public Collection<ClassModel> getDependsClasses() {
-        if (dependsOn == null) {
-            dependsOn = new HashSet<>();
-            for (TypeModel arg : getArguments()) {
-                ClassModel asArgument = arg.getClassModel();
-                if (asArgument != null)
-                    dependsOn.add(asArgument);
-            }
-            ClassModel asReturnType = getReturnType().getClassModel();
-            if (asReturnType != null)
-                dependsOn.add(asReturnType);
-            for (FieldModel field : getDependentFields()) {
-                dependsOn.add(field.getBelongTo());
-            }
-            for (MethodModel method : getDependentMethods()) {
-                dependsOn.add(method.getBelongTo());
-            }
-        }
-        return dependsOn;
     }
 
 }

@@ -3,6 +3,7 @@ package app;
 import java.util.Arrays;
 
 import config.Configuration;
+import dummy.Dummy;
 import dummy.RelDummyClass;
 import dummy.RelDummyManyClass;
 import dummy.RelOtherDummyClass;
@@ -16,7 +17,7 @@ public class LocalTester {
     public static void main(String[] args) {
         // Set up the config.
         Configuration config = Configuration.getInstance();
-        config.setClasses(Arrays.asList(RelDummyManyClass.class.getName(), RelOtherDummyClass.class.getName(), RelDummyClass.class.getName()));
+        config.setClasses(Arrays.asList(Dummy.class.getName(), RelDummyManyClass.class.getName(), RelOtherDummyClass.class.getName(), RelDummyClass.class.getName()));
         config.setRecursive(false);
         config.setNodesep(1.0);
         config.setRankDir("BT");

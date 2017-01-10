@@ -20,11 +20,6 @@ public interface ITypeModel {
 	int getDimension();
 
 	/**
-	 * @return all the classes that this type depends on
-	 */
-	Iterable<? extends IClassModel> getDependsOn();
-
-	/**
 	 * 
 	 * @param index
 	 * @return the generic argument at specific index

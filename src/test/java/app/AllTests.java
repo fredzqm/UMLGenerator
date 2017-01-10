@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 
 import config.CommandLineParserTest;
 import model.ASMParserTest;
-import model.ClassModelRelationshipTest;
 import model.ClassModelTest;
 import model.MethodModelTest;
 import model.SystemModelTest;
@@ -22,8 +21,8 @@ import utility.IMapperTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ SystemTest.class, ASMParserTest.class, CommandLineParserTest.class, SystemModelTest.class,
-		ClassModelTest.class, IFilterTest.class, IMapperTest.class, IExpanderTest.class, MethodModelTest.class,
-		ClassModelRelationshipTest.class, TypeParserTest.class, TypeModelTest.class })
+        ClassModelTest.class, IFilterTest.class, IMapperTest.class, IExpanderTest.class, MethodModelTest.class,
+        TypeParserTest.class, TypeModelTest.class })
 public class AllTests {
 
 }
