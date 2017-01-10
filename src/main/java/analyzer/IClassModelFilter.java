@@ -66,8 +66,4 @@ public abstract class IClassModelFilter implements IClassModel {
         return classModel.getInterfaces();
     }
     
-    @Override
-    public Iterable<? extends IClassModel> getClassDependsOn() {
-        return classModel.getClassDependsOn();
-    }
 }

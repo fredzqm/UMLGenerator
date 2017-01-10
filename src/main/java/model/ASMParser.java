@@ -76,7 +76,7 @@ class ASMParser {
             if ((recursiveFlag & RECURSE_INTERFACE) != 0)
                 addToBothList(classesList, unextended, model.getInterfaces());
             if ((recursiveFlag & RECURSE_HAS_A) != 0)
-                addToBothList(classesList, unextended, model.getHasTypes());
+                addToBothList(classesList, unextended, model.getFieldClasses());
         }
         return classesList;
     }

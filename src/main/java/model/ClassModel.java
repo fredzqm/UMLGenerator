@@ -198,27 +198,26 @@ class ClassModel implements IClassModel, TypeModel {
         return ls;
     }
 
-    public Collection<ClassModel> getHasTypes() {
+    public Collection<ClassModel> getFieldClasses() {
         if (hasTypes == null) {
             hasTypes = new HashSet<>();
             for (FieldModel field : getFields()) {
                 TypeModel type = field.getFieldType();
-                hasTypes.addAll(type.getDependsOn());
+                hasTypes.addAll(type.getDirectDependsOnClass());
             }
         }
         return hasTypes;
     }
 
-    public Collection<ClassModel> getClassDependsOn() {
+    public Collection<ClassModel> getDependsOnClasses() {
         if (dependsOn == null) {
-            dependsOn = new HashSet<>();
+            dependsOn = new HashSet<>(getFieldClasses());
             for (MethodModel method : getMethods()) {
-                dependsOn.addAll(method.getDependsClasses());
+                dependsOn.addAll(method.getDependentClasses());
             }
             if (getSuperClass() != null)
                 dependsOn.remove(getSuperClass());
             getInterfaces().forEach((i) -> dependsOn.remove(i));
-            getHasTypes().forEach((t) -> dependsOn.remove(t));
             dependsOn.remove(this);
         }
         return dependsOn;
@@ -286,7 +285,7 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependsOn() {
+    public List<ClassModel> getDirectDependsOnClass() {
         return Arrays.asList(this);
     }
 

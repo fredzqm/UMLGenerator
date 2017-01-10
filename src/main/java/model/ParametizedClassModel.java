@@ -66,7 +66,15 @@ class ParametizedClassModel implements TypeModel {
 
     @Override
     public String toString() {
-        return getName();
+        StringBuilder sb = new StringBuilder();
+        getSuperTypes();
+        if (!superTypes.isEmpty()) {
+            sb.append(superTypes.get(0));
+            for (int i = 1; i < superTypes.size(); i++) {
+                sb.append("," + superTypes.get(i));
+            }
+        }
+        return getName() + "<" + sb.toString() + ">";
     }
 
     @Override
@@ -105,11 +113,11 @@ class ParametizedClassModel implements TypeModel {
     }
 
     @Override
-    public Collection<ClassModel> getDependsOn() {
+    public Collection<ClassModel> getDirectDependsOnClass() {
         Collection<ClassModel> set = new HashSet<>();
         set.add(classModel);
         for (TypeModel t : genericArgs) {
-            set.addAll(t.getDependsOn());
+            set.addAll(t.getDirectDependsOnClass());
         }
         return set;
     }
