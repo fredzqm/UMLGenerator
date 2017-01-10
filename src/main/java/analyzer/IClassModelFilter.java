@@ -2,8 +2,6 @@ package analyzer;
 
 import java.util.List;
 
-import utility.Modifier;
-
 /**
  * a filter for IClassModel
  *
@@ -44,11 +42,6 @@ public abstract class IClassModelFilter implements IClassModel {
     @Override
     public Iterable<? extends IMethodModel> getMethods() {
         return classModel.getMethods();
-    }
-    
-    @Override
-    public Modifier getModifier() {
-        return classModel.getModifier();
     }
     
     @Override
