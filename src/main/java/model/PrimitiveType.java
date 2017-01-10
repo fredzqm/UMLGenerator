@@ -62,5 +62,5 @@ enum PrimitiveType implements TypeModel {
 	public List<ClassModel> getDependsOn() {
 		return Collections.emptyList();
 	}
-
+	
 }

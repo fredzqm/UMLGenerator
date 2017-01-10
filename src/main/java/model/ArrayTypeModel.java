@@ -13,10 +13,10 @@ import utility.IMapper;
 class ArrayTypeModel implements TypeModel {
     private final TypeModel arrayType;
     private final int dimension;
-
+    
     /**
-     * TODO: Fred Document.
-     *
+     * creates an array type
+     * 
      * @param arrayType
      * @param dimension
      */
@@ -27,12 +27,12 @@ class ArrayTypeModel implements TypeModel {
         this.dimension = dimension;
         this.arrayType = arrayType;
     }
-
+    
     @Override
     public ClassModel getClassModel() {
         return arrayType.getClassModel();
     }
-
+    
     @Override
     public String getName() {
         StringBuilder sb = new StringBuilder(arrayType.getName());
@@ -41,12 +41,12 @@ class ArrayTypeModel implements TypeModel {
         }
         return sb.toString();
     }
-
+    
     @Override
     public int getDimension() {
         return dimension;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ArrayTypeModel) {
@@ -55,23 +55,23 @@ class ArrayTypeModel implements TypeModel {
         }
         return false;
     }
-
+    
     @Override
     public int hashCode() {
         return dimension * 31 + arrayType.hashCode();
     }
-
+    
     @Override
     public Iterable<TypeModel> getSuperTypes() {
         IMapper<TypeModel, TypeModel> mapper = (x) -> new ArrayTypeModel(x, dimension);
         return mapper.map(arrayType.getSuperTypes());
     }
-
+    
     @Override
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         return new ArrayTypeModel(arrayType.replaceTypeVar(paramMap), dimension);
     }
-
+    
     @Override
     public TypeModel assignTo(ClassModel clazz) {
         TypeModel t = arrayType.assignTo(clazz);
@@ -79,9 +79,15 @@ class ArrayTypeModel implements TypeModel {
             return new ArrayTypeModel(t, dimension);
         return null;
     }
-
-	@Override
-	public Collection<ClassModel> getDependsOn() {
-		return arrayType.getDependsOn();
-	}
+    
+    @Override
+    public Collection<ClassModel> getDependsOn() {
+        return arrayType.getDependsOn();
+    }
+    
+    @Override
+    public String toString() {
+        return getName();
+    }
+    
 }

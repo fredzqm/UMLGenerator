@@ -1,27 +1,73 @@
 package model;
 
-import dummy.Dummy;
-import dummy.GenericDummyClass;
-import dummy.GenericDummyClass2;
-import labTestCI.AmazonLineParser;
-import labTestCI.ILineParser;
-import org.junit.Test;
-import utility.IFilter;
-import utility.MethodType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import dummy.Dummy;
+import dummy.GenericDummyClass;
+import dummy.GenericDummyClass2;
+import labTestCI.AmazonLineParser;
+import labTestCI.ILineParser;
+import utility.ClassType;
+import utility.IFilter;
+import utility.MethodType;
+import utility.Modifier;
 
 public class ClassModelTest {
+
+    @Test
+    public void testGetBasicProperties1() {
+        ClassModel model = ASMParser.getClassByName("java.lang.String");
+        assertEquals("java.lang.String", model.getName());
+        assertEquals(Modifier.PUBLIC, model.getModifier());
+        assertEquals(ClassType.CONCRETE, model.getType());
+        assertTrue(model.isFinal());
+        assertTrue(model.isStatic());
+    }
+
+    @Test
+    public void testGetBasicProperties2() {
+        ClassModel model = ASMParser.getClassByName("java.util.Map$Entry");
+        assertEquals("java.util.Map$Entry", model.getName());
+        assertEquals(Modifier.PUBLIC, model.getModifier());
+        assertEquals(ClassType.INTERFACE, model.getType());
+        assertFalse(model.isFinal());
+        assertTrue(model.isStatic());
+    }
+
+    @Test
+    public void testGetBasicProperties3() {
+        ClassModel model = ASMParser.getClassByName("java.util.LinkedList$ListItr");
+        assertEquals("java.util.LinkedList$ListItr", model.getName());
+        assertEquals(Modifier.PRIVATE, model.getModifier());
+        assertEquals(ClassType.CONCRETE, model.getType());
+        assertFalse(model.isFinal());
+        assertFalse(model.isStatic());
+    }
+
+    @Test
+    public void testGetBasicProperties4() {
+        ClassModel model = ASMParser.getClassByName("java.util.LinkedList$Node");
+        assertEquals("java.util.LinkedList$Node", model.getName());
+        assertEquals(Modifier.PRIVATE, model.getModifier());
+        assertEquals(ClassType.CONCRETE, model.getType());
+        assertFalse(model.isFinal());
+        assertTrue(model.isStatic());
+    }
 
     @Test
     public void testGetField() {
         ClassModel model = ASMParser.getClassByName("java.lang.String");
         assertEquals("java.lang.String", model.getName());
+        assertEquals(Modifier.PUBLIC, model.getModifier());
 
         Set<String> fields = new HashSet<>();
         Set<String> actfields = new HashSet<>(
@@ -145,9 +191,12 @@ public class ClassModelTest {
         TypeModel arrayEType = model.getFieldByName("arrayE").getFieldType();
         assertEquals(new ArrayTypeModel(gene2E, 1), arrayEType);
         TypeModel listAType = model.getFieldByName("listA").getFieldType();
-        assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Arrays.asList(gene1A)), listAType);
+        assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Arrays.asList(gene1A)),
+                listAType);
         TypeModel mapAtoEType = model.getFieldByName("mapAtoE").getFieldType();
-        assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.Map"), Arrays.asList(gene1A, gene2E)), mapAtoEType);
+        assertEquals(
+                new ParametizedClassModel(ASMParser.getClassByName("java.util.Map"), Arrays.asList(gene1A, gene2E)),
+                mapAtoEType);
 
     }
 }

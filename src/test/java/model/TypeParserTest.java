@@ -1,13 +1,15 @@
 package model;
 
-import model.TypeParser.ClassSignatureParseResult;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+
+import model.TypeParser.ClassSignatureParseResult;
+import model.TypeParser.MethodSignatureParseResult;
 
 public class TypeParserTest {
 
@@ -24,7 +26,7 @@ public class TypeParserTest {
         TypeModel x = TypeParser.parseTypeSignature(name);
         assertEquals(ParametizedClassModel.class, x.getClass());
         assertEquals(ASMParser.getClassByName("java.util.List"), x.getClassModel());
-        assertEquals(Arrays.asList(new TypeModel[]{new GenericTypeVarPlaceHolder("E")}),
+        assertEquals(Arrays.asList(new TypeModel[] { new GenericTypeVarPlaceHolder("E") }),
                 ((ParametizedClassModel) x).getGenericArgs());
     }
 
@@ -42,6 +44,39 @@ public class TypeParserTest {
         assertNull(x.getClassModel());
     }
 
+    @Test
+    public void testParseClassTypeSignature1() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/List<TA;>;");
+
+        assertEquals(ASMParser.getClassByName("java.util.List"), type.getClassModel());
+        assertEquals(1, type.getGenericArgNumber());
+        assertEquals(new GenericTypeVarPlaceHolder("A"), type.getGenericArg(0));
+    }
+
+    @Test
+    public void testParseClassTypeSignature2() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/Map.Entry;");
+        
+        assertEquals(ASMParser.getClassByName("java.util.Map$Entry"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+
+    @Test
+    public void testParseClassTypeSignature3InnerClass() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/Vector<TE;>.Itr;");
+
+        assertEquals(ASMParser.getClassByName("java.util.Vector$Itr"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+
+    @Test
+    public void testParseClassTypeSignature4NesttedClass() {
+        TypeModel type = TypeParser.parseClassTypeSignature("Ljava/lang/Math.RandomNumberGeneratorHolder;");
+
+        assertEquals(ASMParser.getClassByName("java.lang.Math$RandomNumberGeneratorHolder"), type.getClassModel());
+        assertEquals(0, type.getGenericArgNumber());
+    }
+    
     @Test
     public void testParseClassTypeArg1() {
         String name = "Ljava/lang/Object;";
@@ -153,11 +188,11 @@ public class TypeParserTest {
 
         // super type list
         List<TypeModel> spls = rs.getSuperTypes();
-        assertEquals(spls, Arrays.asList(new TypeModel[]{ASMParser.getObject()}));
+        assertEquals(spls, Arrays.asList(new TypeModel[] { ASMParser.getObject() }));
     }
 
     @Test
-    public void testParseClassSignatureNested() {
+    public void testParseClassSignature2() {
         String genericDummy = "<E::Ljava/lang/Comparable<TE;>;>Ljava/lang/Object;Ljava/lang/Iterable<TE;>;";
 
         ClassSignatureParseResult rs = TypeParser.parseClassSignature(genericDummy);
@@ -193,4 +228,88 @@ public class TypeParserTest {
         assertEquals("E", iterPalsTE.getName());
     }
 
+    @Test
+    public void testParseMethodSignature1() {
+        MethodSignatureParseResult rs = TypeParser
+                .parseMethodSignature("(Ljava/util/List<Lsun/reflect/generics/tree/SimpleClassTypeSignature;>;)V");
+        List<GenericTypeParam> typeParamls = rs.getParameters();
+        TypeModel retType = rs.getReturnType();
+        List<TypeModel> arguments = rs.getArguments();
+        List<TypeModel> exceptionLs = rs.getExceptionList();
+
+        assertEquals(PrimitiveType.VOID, retType);
+        assertEquals(0, typeParamls.size());
+        assertEquals(1, arguments.size());
+        assertEquals(0, exceptionLs.size());
+
+        TypeModel a = arguments.get(0);
+        assertEquals(ASMParser.getClassByName("java.util.List"), a.getClassModel());
+        assertEquals(1, a.getGenericArgNumber());
+        assertEquals(ASMParser.getClassByName("sun.reflect.generics.tree.SimpleClassTypeSignature"),
+                a.getGenericArg(0));
+    }
+
+    @Test
+    public void testParseMethodSignature2() {
+        MethodSignatureParseResult rs = TypeParser.parseMethodSignature("(Ljava/lang/Class<*>;)Z");
+        List<GenericTypeParam> typeParamls = rs.getParameters();
+        TypeModel retType = rs.getReturnType();
+        List<TypeModel> arguments = rs.getArguments();
+        List<TypeModel> exceptionLs = rs.getExceptionList();
+
+        assertEquals(PrimitiveType.BOOLEAN, retType);
+        assertEquals(0, typeParamls.size());
+        assertEquals(1, arguments.size());
+        assertEquals(0, exceptionLs.size());
+
+        TypeModel a = arguments.get(0);
+        assertEquals(ASMParser.getClassByName("java.lang.Class"), a.getClassModel());
+        assertEquals(1, a.getGenericArgNumber());
+        assertEquals(GenericTypeArg.getWildType(), a.getGenericArg(0));
+    }
+
+    @Test
+    public void testParseMethodSignature3() {
+        MethodSignatureParseResult rs = TypeParser
+                .parseMethodSignature("(Ljava/util/List<Lsun/reflect/generics/tree/SimpleClassTypeSignature;>;)V");
+        List<GenericTypeParam> typeParamls = rs.getParameters();
+        TypeModel retType = rs.getReturnType();
+        List<TypeModel> arguments = rs.getArguments();
+        List<TypeModel> exceptionLs = rs.getExceptionList();
+
+        assertEquals(PrimitiveType.VOID, retType);
+        assertEquals(0, typeParamls.size());
+        assertEquals(1, arguments.size());
+        assertEquals(0, exceptionLs.size());
+
+    }
+
+    @Test
+    public void testParseMethodSignature4() {
+        MethodSignatureParseResult rs = TypeParser.parseMethodSignature(
+                "<T:Ljava/lang/Object;>(Ljava/lang/ClassValue$Version<TT;>;TT;)Ljava/lang/ClassValue$Entry<TT;>;");
+        List<GenericTypeParam> typeParamls = rs.getParameters();
+        TypeModel retType = rs.getReturnType();
+        List<TypeModel> arguments = rs.getArguments();
+        List<TypeModel> exceptionLs = rs.getExceptionList();
+
+        assertEquals(ASMParser.getClassByName("java.lang.ClassValue$Entry"), retType.getClassModel());
+        assertEquals(1, retType.getGenericArgNumber());
+        assertEquals(new GenericTypeVarPlaceHolder("T"), retType.getGenericArg(0));
+
+        assertEquals(1, typeParamls.size());
+        GenericTypeParam b = typeParamls.get(0);
+        assertEquals(ASMParser.getObject(), b.getClassModel());
+        assertEquals("T", b.getName());
+
+        assertEquals(2, arguments.size());
+        assertEquals(new GenericTypeVarPlaceHolder("T"), arguments.get(1));
+        TypeModel a = arguments.get(0);
+        assertEquals(ASMParser.getClassByName("java.lang.ClassValue$Version"), a.getClassModel());
+        assertEquals(1, a.getGenericArgNumber());
+        assertEquals(new GenericTypeVarPlaceHolder("T"), a.getGenericArg(0));
+
+        assertEquals(0, exceptionLs.size());
+
+    }
 }

@@ -1,6 +1,9 @@
 package model;
 
 import org.junit.Test;
+
+import dummy.Dummy;
+import dummy.GenericDummyClass;
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;
@@ -13,9 +16,9 @@ public class MethodModelTest {
 
     @Test
     public void testGetDependentMethods() {
-        ClassModel dummy = ASMParser.getClassByName("dummy.Dummy");
-
-        assertEquals("dummy.Dummy", dummy.getName());
+        String dummyClass = Dummy.class.getName();
+        ClassModel dummy = ASMParser.getClassByName(dummyClass);
+        assertEquals(dummyClass, dummy.getName());
 
         MethodModel methodModel = dummy.getMethodBySignature(Signature.parse("publicMethod", "()LString"));
 
@@ -33,7 +36,8 @@ public class MethodModelTest {
 
     @Test
     public void testGetDependentFields() {
-        ClassModel dummy = ASMParser.getClassByName("dummy.Dummy");
+        String dummyClass = Dummy.class.getName();
+        ClassModel dummy = ASMParser.getClassByName(dummyClass);
 
         IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
                 && d.getMethodType() == MethodType.METHOD;
@@ -53,5 +57,19 @@ public class MethodModelTest {
 
         assertEquals(expected.size(), actual.size());
         assertEquals(expected, new HashSet<>(actual));
+    }
+    
+    
+    @Test
+    public void testGetMethodType1() {
+        String dummyClass = GenericDummyClass.class.getName();
+        ClassModel genericdummy = ASMParser.getClassByName(dummyClass);
+
+        MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Arrays.asList(), "iterator"));
+        
+        assertEquals("iterator", iteratorMethod.getName());
+        TypeModel ret = iteratorMethod.getReturnType();
+        assertEquals(ASMParser.getClassByName("java.util.Iterator"), ret.getClassModel());
+        assertEquals(genericdummy.getGenericList().get(0), ret.getGenericArg(0));
     }
 }

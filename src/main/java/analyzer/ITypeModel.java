@@ -29,17 +29,13 @@ public interface ITypeModel {
 	 * @param index
 	 * @return the generic argument at specific index
 	 */
-	default ITypeModel getGenericArg(int index) {
-		throw new RuntimeException();
-	}
+	ITypeModel getGenericArg(int index);
 
 	/**
 	 * 
 	 * @return the number of generic argument
 	 */
-	default int getGenericArgNumber() {
-		return 0;
-	}
+	int getGenericArgNumber();
 
 	/**
 	 * 

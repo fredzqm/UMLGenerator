@@ -1,25 +1,46 @@
 package model;
 
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.junit.Test;
-
-import java.util.*;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class ASMParserTest {
 
+    // 
+
     @Test
-    public void getClassesRecursive() {
-        Set<String> expected;
-        Iterable<ClassModel> ls;
-        Set<String> actual;
+    public void testGetObject() {
+        ClassModel a = ASMParser.getObject();
+        ClassModel b = ASMParser.getObject();
+        assertEquals(a, b);
+    }
+    
+    @Test
+    public void testGetClassByNameInnerClass() {
+        ClassModel a = ASMParser.getClassByName("java.util.Map$Entry");
+        assertEquals("java.util.Map$Entry", a.getName());
+    }
+    
+    @Test
+    public void testGetClassByNameNestedClass() {
+        ClassModel a = ASMParser.getClassByName("java.lang.Math$RandomNumberGeneratorHolder");
+        assertEquals("java.lang.Math$RandomNumberGeneratorHolder", a.getName());
+    }
 
-        expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object", "java.lang.CharSequence",
-                "java.lang.Comparable", "java.io.Serializable"));
+    @Test
+    public void testGetClassesRecursive() {
+        Set<String> expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object",
+                "java.lang.CharSequence", "java.lang.Comparable", "java.io.Serializable"));
 
-        ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
-        actual = new HashSet<>();
+        Iterable<ClassModel> ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"),
+                ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
+        Set<String> actual = new HashSet<>();
         for (ClassModel c : ls)
             actual.add(c.getName());
 
@@ -42,4 +63,5 @@ public class ASMParserTest {
         FieldModel field = x.getFieldByName("modalBlocker");
         assertTrue(field != null);
     }
+
 }
