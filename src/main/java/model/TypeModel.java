@@ -42,7 +42,7 @@ interface TypeModel extends ITypeModel {
      * @param index
      * @return the generic argument at specific index
      */
-    default ITypeModel getGenericArg(int index) {
+    default TypeModel getGenericArg(int index) {
         throw new RuntimeException();
     }
 

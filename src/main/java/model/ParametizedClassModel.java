@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Representing the type in java programs
@@ -54,14 +55,16 @@ class ParametizedClassModel implements TypeModel {
     public boolean equals(Object obj) {
         if (obj instanceof ParametizedClassModel) {
             ParametizedClassModel o = (ParametizedClassModel) obj;
-            return classModel == o.classModel && genericArgs.equals(o.genericArgs);
+            return classModel == o.classModel && Objects.equals(outterClassType, outterClassType)
+                    && genericArgs.equals(o.genericArgs);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return classModel.hashCode();
+        return classModel.hashCode() + genericArgs.hashCode() * 31
+                + (outterClassType == null ? 0 : outterClassType.hashCode() * 127);
     }
 
     @Override
@@ -85,9 +88,16 @@ class ParametizedClassModel implements TypeModel {
                 throw new RuntimeException("The number of generic arguments and parameters do not match"
                         + classModel.getGenericList() + " " + genels);
             Map<String, TypeModel> paramMap = new HashMap<>();
-            for (int i = 0; i < genericArgs.size(); i++) {
+            if (outterClassType != null) {
+                List<GenericTypeParam> outterGenels = outterClassType.getClassModel().getGenericList();
+                for (int i = 0; i < outterClassType.getGenericArgNumber(); i++) {
+                    GenericTypeParam p = outterGenels.get(i);
+                    paramMap.put(p.getName(), outterClassType.getGenericArg(i));
+                }
+            }
+            for (int i = 0; i < getGenericArgNumber(); i++) {
                 GenericTypeParam p = genels.get(i);
-                paramMap.put(p.getName(), genericArgs.get(i));
+                paramMap.put(p.getName(), getGenericArg(i));
             }
             superTypes = new ArrayList<>(2);
             for (TypeModel t : classModel.getSuperTypes()) {
@@ -102,7 +112,7 @@ class ParametizedClassModel implements TypeModel {
         List<TypeModel> ls = new ArrayList<>(genericArgs.size());
         for (TypeModel t : genericArgs)
             ls.add(t.replaceTypeVar(paramMap));
-        return new ParametizedClassModel(classModel, ls);
+        return new ParametizedClassModel(outterClassType, classModel, ls);
     }
 
     @Override

@@ -115,7 +115,7 @@ class TypeParser {
     }
 
     private static TypeModel parseClassType(TypeModel type, ClassModel bound, List<TypeModel> genericEnv) {
-        if (bound.isStatic())
+        if (bound.isStatic() || type != null && type.getGenericArgNumber() == 0)
             type = null;
         if (type == null && genericEnv == null)
             return bound;
