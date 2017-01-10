@@ -24,6 +24,12 @@ public interface IFieldModel {
 
     /**
      * 
+     * @return true if the field is final
+     */
+    boolean isFinal();
+
+    /**
+     * 
      * @return true if the field is static
      */
     boolean isStatic();

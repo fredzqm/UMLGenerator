@@ -2,14 +2,16 @@ package analyzer;
 
 import java.util.List;
 
+import utility.ClassType;
+
 /**
  * a filter for IClassModel
  *
  * @author zhang
  */
-public abstract class IClassModelFilter implements IClassModel {
+public class IClassModelFilter implements IClassModel {
     private IClassModel classModel;
-    
+
     /**
      * Constructs a Class Model Filter
      *
@@ -19,44 +21,49 @@ public abstract class IClassModelFilter implements IClassModel {
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
     }
-    
+
     protected IClassModel getClassModel() {
         return classModel;
     }
-    
-    @Override
+
     public String getName() {
         return classModel.getName();
     }
-    
-    @Override
-    public String getLabel() {
-        return classModel.getLabel();
+
+    public ClassType getType() {
+        return classModel.getType();
     }
-    
-    @Override
-    public Iterable<? extends IFieldModel> getFields() {
-        return classModel.getFields();
+
+    public boolean isFinal() {
+        return classModel.isFinal();
     }
-    
-    @Override
-    public Iterable<? extends IMethodModel> getMethods() {
-        return classModel.getMethods();
+
+    public boolean isStatic() {
+        return classModel.isStatic();
     }
-    
-    @Override
-    public List<String> getStereoTypes() {
-        return classModel.getStereoTypes();
-    }
-    
-    @Override
+
     public IClassModel getSuperClass() {
         return classModel.getSuperClass();
     }
-    
-    @Override
+
     public Iterable<? extends IClassModel> getInterfaces() {
         return classModel.getInterfaces();
     }
-    
+
+    public Iterable<? extends IFieldModel> getFields() {
+        return classModel.getFields();
+    }
+
+    public Iterable<? extends IMethodModel> getMethods() {
+        return classModel.getMethods();
+    }
+
+    public List<String> getStereoTypes() {
+        return classModel.getStereoTypes();
+    }
+
+    public String getLabel() {
+        return classModel.getLabel();
+    }
+
 }

@@ -2,7 +2,6 @@ package analyzerClassParser;
 
 import analyzer.IAnalyzer;
 import analyzer.IAnalyzerConfiguration;
-import analyzer.IClassModel;
 import analyzer.ISystemModel;
 
 /**
@@ -18,9 +17,6 @@ public class AnalyzerClassParser implements IAnalyzer {
         if (!(c instanceof IClassParserConfiguration)) {
 			throw new RuntimeException(c + " is not a IClassParserConfiguration");
         }
-
-		IParser<IClassModel> classParser = new GraphVizClassParser();
-        
-        return new ParseClassSystemModel(systemModel, classParser, (IClassParserConfiguration) c);
+        return new ParseClassSystemModel(systemModel, (IClassParserConfiguration) c);
 	}
 }

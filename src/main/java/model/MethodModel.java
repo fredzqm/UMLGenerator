@@ -38,7 +38,6 @@ class MethodModel implements IMethodModel {
 
     private Collection<MethodModel> dependenOnMethod;
     private Collection<FieldModel> dependenOnField;
-    private Collection<ClassModel> dependsOn;
     private List<GenericTypeParam> genericParams;
 
     /**
@@ -129,7 +128,7 @@ class MethodModel implements IMethodModel {
         return returnType + " " + getSignature().toString();
     }
 
-    public Collection<MethodModel> getDependentMethods() {
+    Collection<MethodModel> getCalledMethods() {
         if (dependenOnMethod == null) {
             dependenOnMethod = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
@@ -152,7 +151,7 @@ class MethodModel implements IMethodModel {
         return dependenOnMethod;
     }
 
-    public Collection<FieldModel> getDependentFields() {
+    Collection<FieldModel> getAccessedFields() {
         if (dependenOnField == null) {
             dependenOnField = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
@@ -173,27 +172,6 @@ class MethodModel implements IMethodModel {
             }
         }
         return dependenOnField;
-    }
-
-    public Collection<ClassModel> getDependentClasses() {
-        if (dependsOn == null) {
-            dependsOn = new HashSet<>();
-            for (TypeModel arg : getArguments()) {
-                ClassModel asArgument = arg.getClassModel();
-                if (asArgument != null)
-                    dependsOn.add(asArgument);
-            }
-            ClassModel asReturnType = getReturnType().getClassModel();
-            if (asReturnType != null)
-                dependsOn.add(asReturnType);
-            for (FieldModel field : getDependentFields()) {
-                dependsOn.add(field.getBelongTo());
-            }
-            for (MethodModel method : getDependentMethods()) {
-                dependsOn.add(method.getBelongTo());
-            }
-        }
-        return dependsOn;
     }
 
 }

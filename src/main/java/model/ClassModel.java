@@ -2,10 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +47,6 @@ class ClassModel implements IClassModel, TypeModel {
 
     private Map<String, FieldModel> fields;
     private Map<Signature, MethodModel> methods;
-
-    private Collection<ClassModel> hasTypes;
-    private Collection<ClassModel> dependsOn;
 
     /**
      * Creates an ClassModel and assign its basic properties.
@@ -117,7 +112,7 @@ class ClassModel implements IClassModel, TypeModel {
     // ---------------- All the lazy initialized fields ------------------
     // ===================================================================
 
-    public List<GenericTypeParam> getGenericList() {
+    List<GenericTypeParam> getGenericList() {
         if (genericParams == null) {
             getSuperTypes();
         }
@@ -179,55 +174,11 @@ class ClassModel implements IClassModel, TypeModel {
         return map.map(ls.subList(1, ls.size()));
     }
 
-    @Override
-    public List<String> getStereoTypes() {
-        List<String> ls = new ArrayList<>(1);
-        switch (getType()) {
-            case INTERFACE:
-                ls.add("Interface");
-                break;
-            case CONCRETE:
-                break;
-            case ABSTRACT:
-                ls.add("Abstract");
-                break;
-            case ENUM:
-                ls.add("Enumeration");
-                break;
-        }
-        return ls;
-    }
-
-    public Collection<ClassModel> getFieldClasses() {
-        if (hasTypes == null) {
-            hasTypes = new HashSet<>();
-            for (FieldModel field : getFields()) {
-                TypeModel type = field.getFieldType();
-                hasTypes.addAll(type.getDirectDependsOnClass());
-            }
-        }
-        return hasTypes;
-    }
-
-    public Collection<ClassModel> getDependsOnClasses() {
-        if (dependsOn == null) {
-            dependsOn = new HashSet<>(getFieldClasses());
-            for (MethodModel method : getMethods()) {
-                dependsOn.addAll(method.getDependentClasses());
-            }
-            if (getSuperClass() != null)
-                dependsOn.remove(getSuperClass());
-            getInterfaces().forEach((i) -> dependsOn.remove(i));
-            dependsOn.remove(this);
-        }
-        return dependsOn;
-    }
-
     public Iterable<MethodModel> getMethods() {
         return getMethodsMap().values();
     }
 
-    public MethodModel getMethodBySignature(Signature signature) {
+    MethodModel getMethodBySignature(Signature signature) {
         if (getMethodsMap().containsKey(signature))
             return getMethodsMap().get(signature);
         if (getSuperClass() != null)
@@ -266,7 +217,7 @@ class ClassModel implements IClassModel, TypeModel {
         return fields;
     }
 
-    public FieldModel getFieldByName(String name) {
+    FieldModel getFieldByName(String name) {
         if (getFieldMap().containsKey(name))
             return getFieldMap().get(name);
         if (getSuperClass() != null)
@@ -275,17 +226,12 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public String getLabel() {
-        return getName();
-    }
-
-    @Override
     public String toString() {
         return getName();
     }
 
     @Override
-    public List<ClassModel> getDirectDependsOnClass() {
+    public List<ClassModel> getDependentOnClass() {
         return Arrays.asList(this);
     }
 

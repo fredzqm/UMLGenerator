@@ -21,9 +21,9 @@ class ASMParser {
     public static int RECURSE_SUPERCLASS = 0x2;
     public static int RECURSE_INTERFACE = 0x4;
     public static int RECURSE_HAS_A = 0x8;
-    
+
     private static Map<String, ClassModel> map = new HashMap<>();
-    
+
     /**
      * ASMServiceProvider manages the parsing of ASM model model under the hood.
      * It should not be directly used by external user, but provides
@@ -52,7 +52,7 @@ class ASMParser {
             return null;
         }
     }
-    
+
     /**
      * @param importClassesList
      *            the important list of classes that are required explicitly
@@ -75,16 +75,20 @@ class ASMParser {
                 addToBothList(classesList, unextended, model.getSuperClass());
             if ((recursiveFlag & RECURSE_INTERFACE) != 0)
                 addToBothList(classesList, unextended, model.getInterfaces());
-            if ((recursiveFlag & RECURSE_HAS_A) != 0)
-                addToBothList(classesList, unextended, model.getFieldClasses());
+            if ((recursiveFlag & RECURSE_HAS_A) != 0) {
+                for (FieldModel field : model.getFields()) {
+                    TypeModel type = field.getFieldType();
+                    addToBothList(classesList, unextended, type.getDependentOnClass());
+                }
+            }
         }
         return classesList;
     }
-    
+
     public static ClassModel getObject() {
         return ASMParser.getClassByName("java.lang.Object");
     }
-    
+
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
             ClassModel x) {
         if (x != null) {
@@ -94,7 +98,7 @@ class ASMParser {
             }
         }
     }
-    
+
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
             Iterable<ClassModel> ls) {
         for (ClassModel x : ls) {
@@ -104,5 +108,5 @@ class ASMParser {
             }
         }
     }
-    
+
 }

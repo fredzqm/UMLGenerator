@@ -35,7 +35,7 @@ interface TypeModel extends ITypeModel {
     /**
      * @return all the classes that this type depends on
      */
-    Collection<ClassModel> getDirectDependsOnClass();
+    Collection<ClassModel> getDependentOnClass();
 
     /**
      * 
