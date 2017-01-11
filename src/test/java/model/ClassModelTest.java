@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -205,7 +206,7 @@ public class ClassModelTest {
         ClassModel model = ASMParser.getClassByName("java.lang.String");
         String label = model.getLabel();
         assertEquals("", label);
-        List<String> stereoTypes = model.getStereoTypes();
+        Collection<String> stereoTypes = model.getStereoTypes();
         assertTrue(stereoTypes.isEmpty());
     }
 }

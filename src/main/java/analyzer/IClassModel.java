@@ -1,7 +1,7 @@
 package analyzer;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import generator.IVertex;
 import utility.ClassType;
@@ -50,28 +50,28 @@ public interface IClassModel extends IVertex {
      *
      * @return Iterable of Interface Class Models.
      */
-    Iterable<? extends IClassModel> getInterfaces();
+    Collection<? extends IClassModel> getInterfaces();
 
     /**
      * Returns an Iterable of the Model's Fields. Excluding those inherited
      *
      * @return Fields of the Model.
      */
-    Iterable<? extends IFieldModel> getFields();
+    Collection<? extends IFieldModel> getFields();
 
     /**
      * Returns an Iterable of the Model's Methods. Excluding those inherited
      *
      * @return Methods of the Model.
      */
-    Iterable<? extends IMethodModel> getMethods();
+    Collection<? extends IMethodModel> getMethods();
 
     /**
      * Returns the Stereotypes of the Class Model.
      *
      * @return the list of stereotypes name for this class
      */
-    default List<String> getStereoTypes() {
+    default Collection<String> getStereoTypes() {
         return Collections.emptyList();
     }
 
@@ -81,5 +81,5 @@ public interface IClassModel extends IVertex {
     default String getLabel() {
         return "";
     }
-    
+
 }

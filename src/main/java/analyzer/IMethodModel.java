@@ -1,5 +1,6 @@
 package analyzer;
 
+import java.util.Collection;
 import java.util.List;
 
 import utility.MethodType;
@@ -10,7 +11,24 @@ import utility.Modifier;
  * <p>
  * Created by lamd on 12/7/2016.
  */
+/**
+ * @author zhang
+ *
+ */
 public interface IMethodModel {
+    /**
+     * Returns the name of the Method.
+     *
+     * @return Name of the Method.
+     */
+    String getName();
+
+    /**
+     * 
+     * @return the class it belongs to
+     */
+    IClassModel getBelongTo();
+
     /**
      * Returns the access Modifier of this method.
      *
@@ -27,18 +45,17 @@ public interface IMethodModel {
     MethodType getMethodType();
 
     /**
+     * 
+     * @return true if this method is static
+     */
+    boolean isStatic();
+
+    /**
      * Returns true if the Method is final.
      *
      * @return true if Final.
      */
     boolean isFinal();
-
-    /**
-     * Returns the name of the Method.
-     *
-     * @return Name of the Method.
-     */
-    String getName();
 
     /**
      * Returns the return type Type Model of the Method.
@@ -56,7 +73,13 @@ public interface IMethodModel {
 
     /**
      * 
-     * @return true if this method is static
+     * @return the list of method it called
      */
-    boolean isStatic();
+    Collection<? extends IMethodModel> getCalledMethods();
+
+    /**
+     * @return the list of fields it accessed
+     */
+    Collection<? extends IFieldModel> getAccessedFields();
+
 }

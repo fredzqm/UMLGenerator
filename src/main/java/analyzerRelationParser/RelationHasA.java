@@ -8,7 +8,7 @@ import analyzer.IRelationInfo;
 public class RelationHasA implements IRelationInfo {
     private final boolean many;
     private final int count;
-    
+
     /**
      * Constructs a RelationHasA object.
      *
@@ -19,7 +19,7 @@ public class RelationHasA implements IRelationInfo {
         this.many = count <= 0;
         this.count = Math.abs(count);
     }
-    
+
     /**
      * Returns true if this is a one-to-many relationship.
      *
@@ -28,7 +28,7 @@ public class RelationHasA implements IRelationInfo {
     boolean isMany() {
         return this.many;
     }
-    
+
     /**
      * Returns the exact cardinality of this relationship.
      *
@@ -37,7 +37,7 @@ public class RelationHasA implements IRelationInfo {
     public int getCount() {
         return this.count;
     }
-    
+
     @Override
     public String toString() {
         if (isMany()) {
@@ -46,29 +46,29 @@ public class RelationHasA implements IRelationInfo {
             return "has " + getCount();
         }
     }
-    
+
     @Override
     public String getEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
-        
-        if (isMany() || getCount() > 1) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
+        if (isMany()) {
+            edgeBuilder.append(String.format("taillabel=\"%d..*\" ", getCount()));
+        } else {
+            edgeBuilder.append(String.format("taillabel=\"%d\" ", getCount()));
         }
-        
         return edgeBuilder.toString();
     }
-    
-    @Override
-	public boolean equals(Object obj) {
-		if (obj.getClass() == RelationHasA.class) {
-			RelationHasA x = (RelationHasA) obj;
-			return x.count == this.count && x.many == this.many;
-		}
-		return false;
-	}
 
-	@Override
-	public int hashCode() {
-		return count * 31 + (many ? 1 : 15);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == RelationHasA.class) {
+            RelationHasA x = (RelationHasA) obj;
+            return x.count == this.count && x.many == this.many;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return count * 31 + (many ? 1 : 15);
+    }
 }

@@ -1,6 +1,6 @@
 package analyzer;
 
-import java.util.List;
+import java.util.Collection;
 
 import utility.ClassType;
 
@@ -46,19 +46,19 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getSuperClass();
     }
 
-    public Iterable<? extends IClassModel> getInterfaces() {
+    public Collection<? extends IClassModel> getInterfaces() {
         return classModel.getInterfaces();
     }
 
-    public Iterable<? extends IFieldModel> getFields() {
+    public Collection<? extends IFieldModel> getFields() {
         return classModel.getFields();
     }
 
-    public Iterable<? extends IMethodModel> getMethods() {
+    public Collection<? extends IMethodModel> getMethods() {
         return classModel.getMethods();
     }
 
-    public List<String> getStereoTypes() {
+    public Collection<String> getStereoTypes() {
         return classModel.getStereoTypes();
     }
 
@@ -66,21 +66,4 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getLabel();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof IClassModel) {
-            IClassModel a = this, b = (IClassModel) obj;
-            b = getUnderlyingClassModel(b);
-            a = getUnderlyingClassModel(a);
-            return a.equals(b);
-        }
-        return false;
-    }
-
-    private IClassModel getUnderlyingClassModel(IClassModel x) {
-        while (x instanceof IClassModelFilter) {
-            x = ((IClassModelFilter) x).getClassModel();
-        }
-        return x;
-    }
 }

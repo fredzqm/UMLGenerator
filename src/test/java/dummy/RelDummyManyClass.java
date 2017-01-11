@@ -21,7 +21,7 @@ public class RelDummyManyClass {
         RelOtherDummyClass[] manyDependencies = new RelOtherDummyClass[10];
 
         // Internal use of a generic.
-        List<RelDummyClass> genericManyDependecies = new ArrayList<>();
+        RelDummyClass genericManyDependecies = new RelDummyClass(null);
     }
 
     // Method that returns RelOtherDummyClass

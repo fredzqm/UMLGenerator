@@ -22,7 +22,6 @@ import analyzer.ClassPair;
 import analyzer.IClassModel;
 import analyzer.IRelationInfo;
 import analyzer.ISystemModel;
-import analyzer.Relation;
 import analyzerRelationParser.RelationDependsOn;
 import analyzerRelationParser.RelationExtendsClass;
 import analyzerRelationParser.RelationImplement;
@@ -45,8 +44,7 @@ public class SystemTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private String dummyClassName = GenDummyClass.class.getPackage().getName() + "."
-            + GenDummyClass.class.getSimpleName();
+    private String dummyClassName = GenDummyClass.class.getName();
 
     @Test
     public void graphVizGenerate() throws IOException {
@@ -75,7 +73,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
@@ -125,7 +123,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -168,28 +166,24 @@ public class SystemTest {
 
     @Test
     public void testOverImplementing() throws IOException {
-        // Create a TemporaryFolder that will be deleted after the test runs.
-        File directory = this.folder.newFolder("testDirectory");
-
         // Set up config.
         Configuration config = Configuration.getInstance();
         config.setClasses(Arrays.asList(DummyInterface.class.getName(), DummySubClass.class.getName(),
                 DummySuperClass.class.getName()));
         config.setRecursive(false);
         config.setFileName("testImplements");
-        config.setOutputDirectory(directory.toString());
 
         // Set up a System Model.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
         systemModel = engine.analyze(systemModel);
-        
+
         // get classes
         Collection<? extends IClassModel> classes = systemModel.getClasses();
         IClassModel dummyInterface = getClassFromCollection(DummyInterface.class.getName(), classes);
         IClassModel dummyStub = getClassFromCollection(DummySubClass.class.getName(), classes);
         IClassModel dummySuperClass = getClassFromCollection(DummySuperClass.class.getName(), classes);
-        
+
         // get relations
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
         List<IRelationInfo> relFromStubToSuperClass = relations.get(new ClassPair(dummyStub, dummySuperClass));
@@ -203,21 +197,12 @@ public class SystemTest {
         assertEquals(Arrays.asList(new RelationImplement()), relFromSuperToInterfaceClass);
     }
 
-    private IClassModel getClassFromCollection(String name, Collection<? extends IClassModel> classes) {
-        for (IClassModel c : classes) {
-            if (c.getName().equals(name))
-                return c;
-        }
-        fail("Class " + name + " does not exist");
-        return null;
-    }
-
     @Test
     public void graphVizManyNoFields() {
         // Set up config.
         Configuration config = Configuration.getInstance();
         config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
-        config.setRecursive(true);
+        config.setRecursive(false);
         List<String> classList = new ArrayList<>();
         classList.add(RelDummyManyClass.class.getName());
         classList.add(RelOtherDummyClass.class.getName());
@@ -227,25 +212,38 @@ public class SystemTest {
         // Set up SystemModel and Generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
+        systemModel = engine.analyze(systemModel);
 
         // get classes
         Collection<? extends IClassModel> classes = systemModel.getClasses();
         IClassModel RelDummyManyClass = getClassFromCollection(RelDummyManyClass.class.getName(), classes);
         IClassModel RelOtherDummyClass = getClassFromCollection(RelOtherDummyClass.class.getName(), classes);
         IClassModel RelDummyClass = getClassFromCollection(RelDummyClass.class.getName(), classes);
-        
+
         // get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-        List<IRelationInfo> relFromManyToOther = relations.get(new ClassPair(RelDummyManyClass, RelOtherDummyClass));
-        assertTrue("Missing expected array dependency", relFromManyToOther.contains(new RelationDependsOn(0)));
         
+        List<IRelationInfo> relFromManyToOther = relations.get(new ClassPair(RelDummyManyClass, RelOtherDummyClass));
+        assertEquals(1, relFromManyToOther.size());
+        assertEquals(new RelationDependsOn(true), relFromManyToOther.get(0));
+
         List<IRelationInfo> relFromOtherToRel = relations.get(new ClassPair(RelDummyManyClass, RelDummyClass));
-        assertTrue("Missing expected generic dependency", relFromOtherToRel.contains(new RelationDependsOn(0)));
+        assertEquals(1, relFromOtherToRel.size());
+        assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" ->"
-                + "\"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\"" + "headlabel=\"1..*\" ];";
+        String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> "
+                + "\"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\"" + " taillabel=\"0..*\" ];";
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
+    }
+
+    private IClassModel getClassFromCollection(String name, Collection<? extends IClassModel> classes) {
+        for (IClassModel c : classes) {
+            if (c.getName().equals(name))
+                return c;
+        }
+        fail("Class " + name + " does not exist");
+        return null;
     }
 
 }
