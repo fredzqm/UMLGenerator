@@ -7,11 +7,11 @@ import display.Display;
 public class Application {
     public static void main(String[] args) throws Exception {
         CommandLineParser c = new CommandLineParser(args);
-        Configuration conf = c.create();
+        Configuration config = c.create();
 
-        Runnable engine = UMLEngine.getInstance(conf);
+        Runnable engine = UMLEngine.getInstance(config);
         engine.run();
 
-        Display.showWindow(conf);
+        Display.showWindow(config);
     }
 }

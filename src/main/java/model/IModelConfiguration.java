@@ -6,7 +6,6 @@ package model;
  * @author zhang
  */
 public interface IModelConfiguration {
-
     /**
      * return the name of classes that the model needs to analyzer
      */
@@ -16,5 +15,4 @@ public interface IModelConfiguration {
      * @return true if the Model should recursively explore related classes
      */
     boolean isRecursive();
-
 }
