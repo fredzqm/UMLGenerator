@@ -2,6 +2,7 @@ package config;
 
 import analyzer.IAnalyzer;
 import analyzer.IAnalyzerConfiguration;
+import analyzerClassParser.AnalyzerClassParser;
 
 /**
  * An AnalyzerConfiguration.
@@ -29,6 +30,6 @@ public class AnalyzerConfiguration implements IAnalyzerConfiguration, Configurab
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-//        this.mapAnalyzerToConfig(, config);
+        this.mapAnalyzerToConfig(AnalyzerClassParser.class, config.createConfiguration(ClassParserConfiguration.class));
     }
 }

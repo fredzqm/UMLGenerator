@@ -146,7 +146,7 @@ public class CommandLineParserTest {
         Configuration conf = com.create();
 
         IFilter<Modifier> filter = conf.getModifierFilter();
-        assertTrue(filter.filter(Modifier.PRIVATE));
+        assertFalse(filter.filter(Modifier.PRIVATE));
         assertTrue(filter.filter(Modifier.PROTECTED));
         assertTrue(filter.filter(Modifier.PUBLIC));
     }

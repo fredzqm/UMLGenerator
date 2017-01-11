@@ -62,12 +62,6 @@ public class SystemTest {
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
         config.set(GeneratorConfiguration.NODE_SEP, "1.0");
         config.set(GeneratorConfiguration.RANK_DIR, "BT");
-        config.addAnalyzer(AnalyzerClassParser.class);
-
-        IClassParserConfiguration classParserConfiguration = (IClassParserConfiguration) config.createConfiguration(ClassParserConfiguration.class);
-        config.mapAnalyzerConfig(AnalyzerClassParser.class, classParserConfiguration);
-        config.addAnalyzer(AnalyzerRelationParser.class);
-        config.mapAnalyzerConfig(AnalyzerRelationParser.class, classParserConfiguration);
 
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();

@@ -1,15 +1,19 @@
 package config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import analyzer.IAnalyzer;
 import analyzerClassParser.AnalyzerClassParser;
-import analyzerClassParser.AnalyzerClassParserTest;
 import analyzerRelationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * TODO: Adam Document.
@@ -34,8 +38,9 @@ public class Configuration implements IConfiguration {
      */
     public static Configuration getInstance() {
         Configuration config = new Configuration();
-        config.addAnalyzer(AnalyzerClassParser.class);
         config.addAnalyzer(AnalyzerRelationParser.class);
+        config.addAnalyzer(AnalyzerClassParser.class);
+        config.setFilter((x) -> true);
         return config;
     }
 
@@ -43,7 +48,7 @@ public class Configuration implements IConfiguration {
         this.classMap = new HashMap<>();
         this.classesMap = new HashMap<>();
         this.valueMap = new HashMap<>();
-//        this.valuesMap = new HashMap<>();
+        // this.valuesMap = new HashMap<>();
         this.analyzerToConfigurationMap = new HashMap<>();
         this.modifierFilter = null;
 
@@ -96,7 +101,9 @@ public class Configuration implements IConfiguration {
             configurable.setup(this);
             return configurable;
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Configurable unable to be instantiated. Ensure that the Configurable has an empty constructor.", e);
+            throw new RuntimeException(
+                    "Configurable unable to be instantiated. Ensure that the Configurable has an empty constructor.",
+                    e);
         }
     }
 
