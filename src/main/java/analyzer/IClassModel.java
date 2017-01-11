@@ -81,5 +81,5 @@ public interface IClassModel extends IVertex {
     default String getLabel() {
         return "";
     }
-
+    
 }

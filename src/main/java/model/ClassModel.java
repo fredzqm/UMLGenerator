@@ -234,5 +234,5 @@ class ClassModel implements IClassModel, TypeModel {
     public List<ClassModel> getDependentOnClass() {
         return Arrays.asList(this);
     }
-
+    
 }

@@ -98,7 +98,7 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
     private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
         if (aRel.getClass() == bRel.getClass()) {
             if (aRel instanceof RelationDependsOn) {
-                return new ReleationBijectiveDecorator(aRel);
+                return new RelationBijectiveDecorator(aRel);
             } else if (aRel instanceof RelationHasA) {
                 return new RelationHasABijective((RelationHasA) aRel, (RelationHasA) bRel);
             }

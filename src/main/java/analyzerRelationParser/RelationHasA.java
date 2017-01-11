@@ -57,4 +57,18 @@ public class RelationHasA implements IRelationInfo {
         
         return edgeBuilder.toString();
     }
+    
+    @Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() == RelationHasA.class) {
+			RelationHasA x = (RelationHasA) obj;
+			return x.count == this.count && x.many == this.many;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return count * 31 + (many ? 1 : 15);
+	}
 }

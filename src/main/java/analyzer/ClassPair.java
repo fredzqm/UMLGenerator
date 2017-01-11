@@ -41,6 +41,6 @@ public final class ClassPair {
     }
     
     public boolean isLoop() {
-        return from == to;
+        return from.equals(to);
     }
 }

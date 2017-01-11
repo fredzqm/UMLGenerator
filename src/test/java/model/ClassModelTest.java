@@ -199,4 +199,13 @@ public class ClassModelTest {
                 mapAtoEType);
 
     }
+    
+    @Test
+    public void testGetLabelAndPrototype(){
+        ClassModel model = ASMParser.getClassByName("java.lang.String");
+        String label = model.getLabel();
+        assertEquals("", label);
+        List<String> stereoTypes = model.getStereoTypes();
+        assertTrue(stereoTypes.isEmpty());
+    }
 }
