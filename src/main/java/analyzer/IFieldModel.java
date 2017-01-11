@@ -16,11 +16,10 @@ public interface IFieldModel {
     String getName();
 
     /**
-     * 
      * @return the class it belongs to
      */
     IClassModel getBelongTo();
-    
+
     /**
      * Returns the access Modifier of the class.
      *

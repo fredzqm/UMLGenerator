@@ -10,19 +10,19 @@ public class RelationImplement implements IRelationInfo {
     public String toString() {
         return "Implements";
     }
-    
+
     @Override
     public String getEdgeStyle() {
         return "arrowhead=\"onormal\" style=dashed ";
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-    	return obj.getClass() == RelationImplement.class;
+        return obj.getClass() == RelationImplement.class;
     }
-    
+
     @Override
     public int hashCode() {
-    	return 42;
+        return 42;
     }
 }

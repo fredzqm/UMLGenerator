@@ -1,12 +1,5 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import analyzer.IAnalyzer;
 import analyzerClassParser.AnalyzerClassParser;
 import analyzerRelationParser.AnalyzerRelationParser;
@@ -14,6 +7,8 @@ import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
+
+import java.util.*;
 
 /**
  * TODO: Adam Document.
@@ -31,6 +26,18 @@ public class Configuration implements IConfiguration {
     private Class<? extends IGenerator> generator;
     private IFilter<Modifier> modifierFilter;
 
+    private Configuration() {
+        this.classMap = new HashMap<>();
+        this.classesMap = new HashMap<>();
+        this.valueMap = new HashMap<>();
+        // this.valuesMap = new HashMap<>();
+        this.analyzerToConfigurationMap = new HashMap<>();
+        this.modifierFilter = null;
+
+        this.generator = GraphVizGenerator.class;
+        this.analyzers = new ArrayList<>();
+    }
+
     /**
      * Returns an instance of the Configuration.
      *
@@ -42,18 +49,6 @@ public class Configuration implements IConfiguration {
         config.addAnalyzer(AnalyzerClassParser.class);
         config.setFilter((x) -> true);
         return config;
-    }
-
-    private Configuration() {
-        this.classMap = new HashMap<>();
-        this.classesMap = new HashMap<>();
-        this.valueMap = new HashMap<>();
-        // this.valuesMap = new HashMap<>();
-        this.analyzerToConfigurationMap = new HashMap<>();
-        this.modifierFilter = null;
-
-        this.generator = GraphVizGenerator.class;
-        this.analyzers = new ArrayList<>();
     }
 
     @Override

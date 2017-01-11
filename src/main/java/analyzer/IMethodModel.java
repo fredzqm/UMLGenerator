@@ -1,10 +1,10 @@
 package analyzer;
 
-import java.util.Collection;
-import java.util.List;
-
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * An Interface of the Method Models.
@@ -20,7 +20,6 @@ public interface IMethodModel {
     String getName();
 
     /**
-     * 
      * @return the class it belongs to
      */
     IClassModel getBelongTo();
@@ -41,7 +40,6 @@ public interface IMethodModel {
     MethodType getMethodType();
 
     /**
-     *
      * @return true if this method is static
      */
     boolean isStatic();
@@ -68,7 +66,6 @@ public interface IMethodModel {
     List<? extends ITypeModel> getArguments();
 
     /**
-     * 
      * @return the list of method it called
      */
     Collection<? extends IMethodModel> getCalledMethods();
