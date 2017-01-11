@@ -3,6 +3,8 @@ package config;
 import analyzer.IAnalyzer;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
+import utility.IFilter;
+import utility.Modifier;
 
 import java.util.*;
 
@@ -17,10 +19,10 @@ public class Configuration implements IConfiguration {
     private Map<String, Class> classMap;
     private Map<String, List<Class>> classesMap;
     private Map<String, String> valueMap;
-//    private Map<String, String> valuesMap;
     private Map<Class<? extends IAnalyzer>, Object> analyzerToConfigurationMap;
     private List<Class<? extends IAnalyzer>> analyzers;
     private Class<? extends IGenerator> generator;
+    private IFilter<Modifier> modifierFilter;
 
     /**
      * Returns an instance of the Configuration.
@@ -37,6 +39,7 @@ public class Configuration implements IConfiguration {
         this.valueMap = new HashMap<>();
 //        this.valuesMap = new HashMap<>();
         this.analyzerToConfigurationMap = new HashMap<>();
+        this.modifierFilter = null;
 
         this.generator = GraphVizGenerator.class;
         this.analyzers = new ArrayList<>();
@@ -88,6 +91,23 @@ public class Configuration implements IConfiguration {
             return configurable;
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Configurable unable to be instantiated. Ensure that the Configurable has an empty constructor.", e);
+        }
+    }
+
+    @Override
+    public IFilter<Modifier> getModifierFilter() {
+        return this.modifierFilter;
+    }
+
+    @Override
+    public void setFilter(IFilter<Modifier> modifierIFilter) {
+        this.modifierFilter = modifierIFilter;
+    }
+
+    @Override
+    public void setFilterIfMissing(IFilter<Modifier> modifierIFilter) {
+        if (this.modifierFilter == null) {
+            this.modifierFilter = modifierIFilter;
         }
     }
 

@@ -24,7 +24,7 @@ public class ConfigFileParserTest {
         assertEquals(10, (int) (10 * Double.parseDouble(config.getValue(GeneratorConfiguration.NODE_SEP))));
         assertTrue(!Boolean.parseBoolean(config.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
 
-        IFilter<Modifier> filter = (IFilter<Modifier>) config.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = config.getModifierFilter();
         assertTrue(!filter.filter(Modifier.PRIVATE));
         assertTrue(!filter.filter(Modifier.PROTECTED));
         assertTrue(filter.filter(Modifier.PUBLIC));

@@ -18,7 +18,7 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        IFilter<Modifier> f = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> f = conf.getModifierFilter();
         assertFalse(f.filter(Modifier.PRIVATE));
         assertFalse(f.filter(Modifier.PROTECTED));
         assertTrue(f.filter(Modifier.PUBLIC));
@@ -42,7 +42,7 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        IFilter<Modifier> f = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> f = conf.getModifierFilter();
         assertFalse(f.filter(Modifier.PRIVATE));
         assertFalse(f.filter(Modifier.PROTECTED));
         assertTrue(f.filter(Modifier.PUBLIC));
@@ -64,7 +64,7 @@ public class CommandLineParserTest {
         CommandLineParser com = new CommandLineParser(args);
 
         Configuration conf = com.create();
-        IFilter<Modifier> filter = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = conf.getModifierFilter();
         assertFalse((filter.filter(Modifier.PRIVATE)));
         assertEquals(101, Math.round(10 * Double.parseDouble(conf.getValue(GeneratorConfiguration.NODE_SEP))));
     }
@@ -131,7 +131,7 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        IFilter<Modifier> filter = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = conf.getModifierFilter();
         assertTrue(filter.filter(Modifier.PRIVATE));
         assertTrue(filter.filter(Modifier.PROTECTED));
         assertTrue(filter.filter(Modifier.PUBLIC));
@@ -145,7 +145,7 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        IFilter<Modifier> filter = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = conf.getModifierFilter();
         assertTrue(filter.filter(Modifier.PRIVATE));
         assertTrue(filter.filter(Modifier.PROTECTED));
         assertTrue(filter.filter(Modifier.PUBLIC));
@@ -159,7 +159,7 @@ public class CommandLineParserTest {
 
         Configuration conf = com.create();
 
-        IFilter<Modifier> filter = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = conf.getModifierFilter();
         assertTrue(filter.filter(Modifier.PRIVATE));
         assertTrue(filter.filter(Modifier.PROTECTED));
         assertTrue(filter.filter(Modifier.PUBLIC));
@@ -184,7 +184,7 @@ public class CommandLineParserTest {
         CommandLineParser com = new CommandLineParser(args);
 
         Configuration conf = com.create();
-        IFilter<Modifier> filter = (IFilter<Modifier>) conf.getClass(ClassParserConfiguration.FILTER).newInstance();
+        IFilter<Modifier> filter = conf.getModifierFilter();
         assertTrue(filter.filter(Modifier.PUBLIC));
         assertTrue(filter.filter(Modifier.DEFAULT));
         assertFalse(filter.filter(Modifier.PRIVATE));

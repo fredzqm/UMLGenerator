@@ -96,7 +96,7 @@ public class ConfigFileParser implements ConfigurationFactory {
                 }
             };
 
-            conf.set(ClassParserConfiguration.FILTER, modifierFilter.getClass());
+            conf.setFilter(modifierFilter);
         }
 
         if (jsonConf.has("isRecursive")) {

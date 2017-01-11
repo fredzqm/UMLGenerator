@@ -159,7 +159,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         IFilter<Modifier> filter = data -> !filters.contains(data);
 
-        conf.set(ClassParserConfiguration.FILTER, filter.getClass());
+        conf.setFilter(filter);
 
         conf.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(config.getBoolean("recursive")));
 

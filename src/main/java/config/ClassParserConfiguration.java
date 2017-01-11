@@ -12,7 +12,6 @@ import utility.Modifier;
  * Created by lamd on 1/11/2017.
  */
 public class ClassParserConfiguration implements IClassParserConfiguration, Configurable {
-    public static final String FILTER = "class_filter";
     public static final String HEADER = "class_header";
     public static final String FIELD = "class_field";
     public static final String METHOD = "class_method";
@@ -30,7 +29,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
         this.config = config;
 
         IFilter<Modifier> filter = data -> false;
-        this.config.setIfMissing(ClassParserConfiguration.FILTER, filter.getClass());
+        this.config.setFilterIfMissing(filter);
         this.config.setIfMissing(ClassParserConfiguration.HEADER, GraphVizHeaderParser.class);
         this.config.setIfMissing(ClassParserConfiguration.FIELD, GraphVizFieldParser.class);
         this.config.setIfMissing(ClassParserConfiguration.METHOD, GraphVizMethodParser.class);
@@ -40,11 +39,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
 
     @Override
     public IFilter<Modifier> getModifierFilters() {
-        try {
-            return (IFilter<Modifier>) this.config.getClass(ClassParserConfiguration.FILTER).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Filter missing empty contructor", e);
-        }
+        return this.config.getModifierFilter();
     }
 
     @Override

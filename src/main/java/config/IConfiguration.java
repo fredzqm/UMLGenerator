@@ -2,6 +2,8 @@ package config;
 
 import analyzer.IAnalyzer;
 import generator.IGenerator;
+import utility.IFilter;
+import utility.Modifier;
 
 public interface IConfiguration {
     /**
@@ -65,7 +67,16 @@ public interface IConfiguration {
     Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass);
 
     void setIfMissing(String key, String value);
+
     void setIfMissing(String key, Class value);
+
     void addIfMissing(String key, String value);
+
     void addIfMissing(String key, Class value);
+
+    void setFilter(IFilter<Modifier> modifierIFilter);
+
+    void setFilterIfMissing(IFilter<Modifier> modifierIFilter);
+
+    IFilter<Modifier> getModifierFilter();
 }

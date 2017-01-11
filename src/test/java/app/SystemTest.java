@@ -1,11 +1,15 @@
 package app;
 
 import analyzer.ISystemModel;
+import analyzerClassParser.AnalyzerClassParser;
+import analyzerClassParser.IClassParserConfiguration;
+import analyzerRelationParser.AnalyzerRelationParser;
 import config.*;
 import dummy.GenDummyClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.objectweb.asm.tree.analysis.Analyzer;
 import utility.IFilter;
 import utility.Modifier;
 
@@ -36,6 +40,12 @@ public class SystemTest {
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
         config.set(GeneratorConfiguration.NODE_SEP, "1.0");
         config.set(GeneratorConfiguration.RANK_DIR, "BT");
+        config.addAnalyzer(AnalyzerClassParser.class);
+
+        IClassParserConfiguration classParserConfiguration = (IClassParserConfiguration) config.createConfiguration(ClassParserConfiguration.class);
+        config.mapAnalyzerConfig(AnalyzerClassParser.class, classParserConfiguration);
+        config.addAnalyzer(AnalyzerRelationParser.class);
+        config.mapAnalyzerConfig(AnalyzerRelationParser.class, classParserConfiguration);
 
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
@@ -86,7 +96,7 @@ public class SystemTest {
         config.set(GeneratorConfiguration.RANK_DIR, "BT");
         IFilter<Modifier> filter = data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC;
 
-        config.set(ClassParserConfiguration.FILTER, filter.getClass());
+        config.setFilter(filter);
 
         // Set up the system model and generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
