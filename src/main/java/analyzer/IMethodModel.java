@@ -1,9 +1,9 @@
 package analyzer;
 
-import java.util.List;
-
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.List;
 
 /**
  * An Interface of the Method Models.
@@ -55,7 +55,6 @@ public interface IMethodModel {
     List<? extends ITypeModel> getArguments();
 
     /**
-     * 
      * @return true if this method is static
      */
     boolean isStatic();

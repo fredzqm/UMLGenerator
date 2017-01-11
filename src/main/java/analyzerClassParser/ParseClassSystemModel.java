@@ -1,11 +1,11 @@
 package analyzerClassParser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.IClassModel;
 import analyzer.ISystemModel;
 import analyzer.ISystemModelFilter;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ParseClassSystemModel extends ISystemModelFilter {
     private IClassParserConfiguration config;

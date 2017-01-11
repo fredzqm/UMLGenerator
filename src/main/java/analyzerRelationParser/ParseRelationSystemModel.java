@@ -1,29 +1,14 @@
 package analyzerRelationParser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import analyzer.ClassPair;
-import analyzer.IClassModel;
-import analyzer.IFieldModel;
-import analyzer.IMethodModel;
-import analyzer.IRelationInfo;
-import analyzer.ISystemModel;
-import analyzer.ISystemModelFilter;
-import analyzer.ITypeModel;
+import analyzer.*;
 import utility.IFilter;
 import utility.IMapper;
+
+import java.util.*;
 
 /**
  * It decorates ISystem model and supplies extends, implements, has-a and
  * depends-on relationship
- * 
  */
 public class ParseRelationSystemModel extends ISystemModelFilter {
     /**

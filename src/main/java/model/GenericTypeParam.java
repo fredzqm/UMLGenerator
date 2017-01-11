@@ -1,11 +1,6 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -16,6 +11,7 @@ import java.util.Map;
 class GenericTypeParam implements TypeModel {
     private final List<TypeModel> boundSuperTypes;
     private final String key;
+    private boolean processed = false;
 
     public GenericTypeParam(String key, List<TypeModel> boundLs) {
         this.boundSuperTypes = boundLs;
@@ -44,8 +40,6 @@ class GenericTypeParam implements TypeModel {
             return Arrays.asList(ASMParser.getObject());
         return boundSuperTypes;
     }
-
-    private boolean processed = false;
 
     @Override
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {

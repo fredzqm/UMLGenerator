@@ -9,7 +9,7 @@ import org.objectweb.asm.Opcodes;
  */
 public enum Modifier {
     PUBLIC, DEFAULT, PROTECTED, PRIVATE;
-    
+
     public static Modifier parse(int access) {
         if ((access & Opcodes.ACC_PUBLIC) != 0)
             return PUBLIC;
@@ -19,13 +19,13 @@ public enum Modifier {
             return PROTECTED;
         return DEFAULT;
     }
-    
+
     public static boolean parseIsFinal(int access) {
         return (access & Opcodes.ACC_FINAL) != 0;
     }
-    
+
     public static boolean parseIsStatic(int access) {
         return (access & Opcodes.ACC_STATIC) != 0;
     }
-    
+
 }

@@ -5,7 +5,9 @@ import generator.IVertex;
 import utility.IExpander;
 import utility.IMapper;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An Interface for System Models.
@@ -19,14 +21,14 @@ public interface ISystemModel extends IGraph {
      * @return Iterable of Class Models.
      */
     Collection<? extends IClassModel> getClasses();
-    
+
     /**
      * Returns an Iterable of Relations contained within the SystemModel.
      *
      * @return Iterable of Relations contained within the SystemModel.
      */
     Map<ClassPair, List<IRelationInfo>> getRelations();
-    
+
     /**
      * Returns the vertices of the System Model. Class getClasses.
      *
@@ -35,7 +37,7 @@ public interface ISystemModel extends IGraph {
     default Iterable<? extends IVertex> getVertices() {
         return getClasses();
     }
-    
+
     /**
      * Returns the Iterable of Relation edges.
      *
@@ -49,5 +51,5 @@ public interface ISystemModel extends IGraph {
         };
         return expander.expand(relations.keySet());
     }
-    
+
 }

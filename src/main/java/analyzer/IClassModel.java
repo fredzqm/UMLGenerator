@@ -1,10 +1,10 @@
 package analyzer;
 
-import java.util.Collections;
-import java.util.List;
-
 import generator.IVertex;
 import utility.ClassType;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An interface for Class Models.
@@ -21,19 +21,16 @@ public interface IClassModel extends IVertex {
     String getName();
 
     /**
-     * 
      * @return the type of the class
      */
     ClassType getType();
 
     /**
-     * 
      * @return true if this class is a final class
      */
     boolean isFinal();
 
     /**
-     * 
      * @return true if this class is static
      */
     boolean isStatic();

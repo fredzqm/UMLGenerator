@@ -3,7 +3,7 @@ package analyzerClassParser;
 import utility.Modifier;
 
 public class GraphVizModifierParser implements IParser<Modifier> {
-    
+
     @Override
     public String parse(Modifier modifier, IClassParserConfiguration config) {
         switch (modifier) {
@@ -19,5 +19,5 @@ public class GraphVizModifierParser implements IParser<Modifier> {
                 throw new RuntimeException();
         }
     }
-    
+
 }

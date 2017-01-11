@@ -1,17 +1,7 @@
 package config;
 
-import analyzer.IAnalyzer;
-import analyzer.IClassModel;
-import analyzer.IFieldModel;
-import analyzer.IMethodModel;
-import analyzer.ITypeModel;
-import analyzerClassParser.AnalyzerClassParser;
-import analyzerClassParser.GraphVizFieldParser;
-import analyzerClassParser.GraphVizHeaderParser;
-import analyzerClassParser.GraphVizMethodParser;
-import analyzerClassParser.GraphVizModifierParser;
-import analyzerClassParser.GraphVizTypeParser;
-import analyzerClassParser.IParser;
+import analyzer.*;
+import analyzerClassParser.*;
 import analyzerRelationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
@@ -27,246 +17,246 @@ import java.util.Arrays;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class Configuration implements IConfiguration {
-	private Iterable<String> classes;
-	private String executablePath;
-	private String outputFormat;
-	private String outputDirectory;
-	private String fileName;
-	private double nodesep;
-	private IFilter<Modifier> modifierFilter;
-	private boolean isRecursive;
-	private String rankDir;
-	private String nodeStyle;
-	private Iterable<Class<? extends IAnalyzer>> analyzerls;
-	private Class<? extends IGenerator> generator;
-	private Class<? extends IParser<IClassModel>> classHeaderParser;
-	private Class<? extends IParser<IFieldModel>> fieldParser;
-	private Class<? extends IParser<IMethodModel>> methodParser;
-	private Class<? extends IParser<ITypeModel>> typeParser;
-	private Class<? extends IParser<Modifier>> modifierParser;
+    private Iterable<String> classes;
+    private String executablePath;
+    private String outputFormat;
+    private String outputDirectory;
+    private String fileName;
+    private double nodesep;
+    private IFilter<Modifier> modifierFilter;
+    private boolean isRecursive;
+    private String rankDir;
+    private String nodeStyle;
+    private Iterable<Class<? extends IAnalyzer>> analyzerls;
+    private Class<? extends IGenerator> generator;
+    private Class<? extends IParser<IClassModel>> classHeaderParser;
+    private Class<? extends IParser<IFieldModel>> fieldParser;
+    private Class<? extends IParser<IMethodModel>> methodParser;
+    private Class<? extends IParser<ITypeModel>> typeParser;
+    private Class<? extends IParser<Modifier>> modifierParser;
 
-	/**
-	 * TODO: Adam.
-	 *
-	 * @return
-	 */
-	public static Configuration getInstance() {
-		Configuration conf = new Configuration();
-		conf.setOutputFormat("png");
-		conf.setFileName("out");
-		conf.setNodesep(1);
-		conf.setClasses(new ArrayList<>());
-		conf.setFilters(data -> true);
-		conf.setNodeStyle("node [shape=record]");
-		conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
-		conf.setGenerator(GraphVizGenerator.class);
-		conf.setHeaderParser(GraphVizHeaderParser.class);
-		conf.setFieldParser(GraphVizFieldParser.class);
-		conf.setMethodParser(GraphVizMethodParser.class);
-		conf.setTypeParser(GraphVizTypeParser.class);
-		conf.setModifierParser(GraphVizModifierParser.class);
-		return conf;
-	}
+    /**
+     * TODO: Adam.
+     *
+     * @return
+     */
+    public static Configuration getInstance() {
+        Configuration conf = new Configuration();
+        conf.setOutputFormat("png");
+        conf.setFileName("out");
+        conf.setNodesep(1);
+        conf.setClasses(new ArrayList<>());
+        conf.setFilters(data -> true);
+        conf.setNodeStyle("node [shape=record]");
+        conf.setAnalyzers(Arrays.asList(AnalyzerRelationParser.class, AnalyzerClassParser.class));
+        conf.setGenerator(GraphVizGenerator.class);
+        conf.setHeaderParser(GraphVizHeaderParser.class);
+        conf.setFieldParser(GraphVizFieldParser.class);
+        conf.setMethodParser(GraphVizMethodParser.class);
+        conf.setTypeParser(GraphVizTypeParser.class);
+        conf.setModifierParser(GraphVizModifierParser.class);
+        return conf;
+    }
 
-	@Override
-	public Iterable<String> getClasses() {
-		return classes;
-	}
+    @Override
+    public Iterable<String> getClasses() {
+        return classes;
+    }
 
-	public void setClasses(Iterable<String> classes) {
-		this.classes = classes;
-	}
+    public void setClasses(Iterable<String> classes) {
+        this.classes = classes;
+    }
 
-	@Override
-	public String getExecutablePath() {
-		return executablePath;
-	}
+    @Override
+    public String getExecutablePath() {
+        return executablePath;
+    }
 
-	public void setExecutablePath(String executablePath) {
-		this.executablePath = executablePath;
-	}
+    public void setExecutablePath(String executablePath) {
+        this.executablePath = executablePath;
+    }
 
-	@Override
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+    @Override
+    public String getOutputFormat() {
+        return outputFormat;
+    }
 
-	public void setOutputFormat(String outputExtension) {
-		this.outputFormat = outputExtension;
-	}
+    public void setOutputFormat(String outputExtension) {
+        this.outputFormat = outputExtension;
+    }
 
-	@Override
-	public String getOutputDirectory() {
-		return outputDirectory;
-	}
+    @Override
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	public void setOutputDirectory(String outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
-	@Override
-	public String getFileName() {
-		return fileName;
-	}
+    @Override
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	@Override
-	public double getNodeSep() {
-		return nodesep;
-	}
+    @Override
+    public double getNodeSep() {
+        return nodesep;
+    }
 
-	public void setNodesep(double nodesep) {
-		this.nodesep = nodesep;
-	}
+    public void setNodesep(double nodesep) {
+        this.nodesep = nodesep;
+    }
 
-	@Override
-	public boolean isRecursive() {
-		return isRecursive;
-	}
+    @Override
+    public boolean isRecursive() {
+        return isRecursive;
+    }
 
-	public void setRecursive(boolean isRecursive) {
-		this.isRecursive = isRecursive;
-	}
+    public void setRecursive(boolean isRecursive) {
+        this.isRecursive = isRecursive;
+    }
 
-	@Override
-	public IFilter<Modifier> getModifierFilters() {
-		return this.modifierFilter;
-	}
+    @Override
+    public IFilter<Modifier> getModifierFilters() {
+        return this.modifierFilter;
+    }
 
-	public void setFilters(IFilter<Modifier> filter) {
-		this.modifierFilter = filter;
-	}
+    public void setFilters(IFilter<Modifier> filter) {
+        this.modifierFilter = filter;
+    }
 
-	@Override
-	public String getRankDir() {
-		return this.rankDir;
-	}
+    @Override
+    public String getRankDir() {
+        return this.rankDir;
+    }
 
-	public void setRankDir(String rankDir) {
-		this.rankDir = rankDir;
-	}
+    public void setRankDir(String rankDir) {
+        this.rankDir = rankDir;
+    }
 
-	public String toString() {
-		return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
-				+ "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
-				+ "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
-				+ "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
-				+ isRecursive + "\n" + "Rank Dir:                  " + rankDir;
-	}
+    public String toString() {
+        return "Classes:                   " + classes + "\n" + "Executable Path:           " + executablePath + "\n"
+                + "Output Extension:          " + outputFormat + "\n" + "Output file name:          " + fileName + "\n"
+                + "Output Directory:          " + outputDirectory + "\n" + "Node seperation value:     " + nodesep
+                + "\n" + "Filters:                   " + modifierFilter + "\n" + "Recursive?:                "
+                + isRecursive + "\n" + "Rank Dir:                  " + rankDir;
+    }
 
-	@Override
-	public String getNodeStyle() {
-		return this.nodeStyle;
-	}
+    @Override
+    public String getNodeStyle() {
+        return this.nodeStyle;
+    }
 
-	/**
-	 * TODO Adam document.
-	 *
-	 * @param nodeStyle
-	 */
-	public void setNodeStyle(String nodeStyle) {
-		this.nodeStyle = nodeStyle;
-	}
+    /**
+     * TODO Adam document.
+     *
+     * @param nodeStyle
+     */
+    public void setNodeStyle(String nodeStyle) {
+        this.nodeStyle = nodeStyle;
+    }
 
-	/**
-	 * @return
-	 */
-	public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
-		return analyzerls;
-	}
+    /**
+     * @return
+     */
+    public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
+        return analyzerls;
+    }
 
-	/**
-	 * @param analyzers
-	 */
-	public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
-		analyzerls = analyzers;
-	}
+    /**
+     * @param analyzers
+     */
+    public void setAnalyzers(Iterable<Class<? extends IAnalyzer>> analyzers) {
+        analyzerls = analyzers;
+    }
 
-	/**
-	 * @return
-	 */
-	public Class<? extends IGenerator> getGenerator() {
-		return generator;
-	}
+    /**
+     * @return
+     */
+    public Class<? extends IGenerator> getGenerator() {
+        return generator;
+    }
 
-	/**
-	 * @param generator
-	 */
-	public void setGenerator(Class<? extends IGenerator> generator) {
-		this.generator = generator;
-	}
+    /**
+     * @param generator
+     */
+    public void setGenerator(Class<? extends IGenerator> generator) {
+        this.generator = generator;
+    }
 
-	@Override
-	public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
-		return this;
-	}
+    @Override
+    public Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass) {
+        return this;
+    }
 
-	public void setFieldParser(Class<? extends IParser<IFieldModel>> fieldParser) {
-		this.fieldParser = fieldParser;
-	}
+    @Override
+    public IParser<IFieldModel> getFieldParser() {
+        try {
+            return fieldParser.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public IParser<IFieldModel> getFieldParser() {
-		try {
-			return fieldParser.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public void setFieldParser(Class<? extends IParser<IFieldModel>> fieldParser) {
+        this.fieldParser = fieldParser;
+    }
 
-	public void setMethodParser(Class<? extends IParser<IMethodModel>> methodParser) {
-		this.methodParser = methodParser;
-	}
+    @Override
+    public IParser<IMethodModel> getMethodParser() {
+        try {
+            return methodParser.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public IParser<IMethodModel> getMethodParser() {
-		try {
-			return methodParser.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public void setMethodParser(Class<? extends IParser<IMethodModel>> methodParser) {
+        this.methodParser = methodParser;
+    }
 
-	public void setHeaderParser(Class<? extends IParser<IClassModel>> classHeaderParser) {
-		this.classHeaderParser = classHeaderParser;
-	}
+    @Override
+    public IParser<IClassModel> getHeaderParser() {
+        try {
+            return classHeaderParser.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public IParser<IClassModel> getHeaderParser() {
-		try {
-			return classHeaderParser.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public void setHeaderParser(Class<? extends IParser<IClassModel>> classHeaderParser) {
+        this.classHeaderParser = classHeaderParser;
+    }
 
-	public void setTypeParser(Class<? extends IParser<ITypeModel>> typeParser) {
-		this.typeParser = typeParser;
-	}
+    @Override
+    public IParser<ITypeModel> getTypeParser() {
+        try {
+            return typeParser.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public IParser<ITypeModel> getTypeParser() {
-		try {
-			return typeParser.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public void setTypeParser(Class<? extends IParser<ITypeModel>> typeParser) {
+        this.typeParser = typeParser;
+    }
 
-	public void setModifierParser(Class<? extends IParser<Modifier>> modifierParser) {
-		this.modifierParser = modifierParser;
-	}
-	
-	@Override
-	public IParser<Modifier> getModifierParser() {
-		try {
-			return modifierParser.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public IParser<Modifier> getModifierParser() {
+        try {
+            return modifierParser.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setModifierParser(Class<? extends IParser<Modifier>> modifierParser) {
+        this.modifierParser = modifierParser;
+    }
 
 }

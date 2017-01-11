@@ -15,11 +15,11 @@ import runner.IRunner;
  */
 public class UMLEngine extends AbstractUMLEngine {
     private IConfiguration config;
-    
+
     private UMLEngine(IConfiguration configuration) {
         config = configuration;
     }
-    
+
     /**
      * TODO: Fred Documentation.
      *
@@ -29,12 +29,12 @@ public class UMLEngine extends AbstractUMLEngine {
     static UMLEngine getInstance(Configuration config) {
         return new UMLEngine(config);
     }
-    
+
     @Override
     public ISystemModel createSystemModel() {
         return SystemModel.getInstance(config);
     }
-    
+
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
         Iterable<Class<? extends IAnalyzer>> anClassLs = config.getAnalyzers();
@@ -48,7 +48,7 @@ public class UMLEngine extends AbstractUMLEngine {
         }
         return systemModel;
     }
-    
+
     @Override
     String generate(IGraph graph) {
         Class<? extends IGenerator> genClass = config.getGenerator();
@@ -60,7 +60,7 @@ public class UMLEngine extends AbstractUMLEngine {
         }
         return gen.generate(config, graph);
     }
-    
+
     @Override
     void executeRunner(String graphVisStr) {
         IRunner runner = new GraphVizRunner(config);

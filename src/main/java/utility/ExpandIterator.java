@@ -9,14 +9,14 @@ public class ExpandIterator<A, B> implements Iterator<B> {
     private Iterator<B> valueIterator;
     private boolean hasNext;
     private B next;
-    
+
     public ExpandIterator(IExpander<A, B> iExpander, Iterable<? extends A> iterable) {
         this.expander = iExpander;
         this.dataIterator = iterable.iterator();
         this.valueIterator = Collections.emptyIterator();
         hasNext = advance();
     }
-    
+
     private boolean advance() {
         while (!this.valueIterator.hasNext()) {
             if (!this.dataIterator.hasNext()) {
@@ -28,12 +28,12 @@ public class ExpandIterator<A, B> implements Iterator<B> {
         next = valueIterator.next();
         return true;
     }
-    
+
     @Override
     public boolean hasNext() {
         return hasNext;
     }
-    
+
     @Override
     public B next() {
         B ret = next;

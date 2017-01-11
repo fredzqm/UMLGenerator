@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public abstract class ISystemModelFilter implements ISystemModel {
     private ISystemModel systemModel;
-    
+
     /**
      * Construct a ISystemModel Filter.
      *
@@ -20,7 +20,7 @@ public abstract class ISystemModelFilter implements ISystemModel {
     public ISystemModelFilter(ISystemModel systemModel) {
         this.systemModel = systemModel;
     }
-    
+
     /**
      * Returns the SystemModel it decorates.
      *
@@ -29,15 +29,15 @@ public abstract class ISystemModelFilter implements ISystemModel {
     protected ISystemModel getSystemModel() {
         return systemModel;
     }
-    
+
     @Override
     public Collection<? extends IClassModel> getClasses() {
         return systemModel.getClasses();
     }
-    
+
     @Override
     public Map<ClassPair, List<IRelationInfo>> getRelations() {
         return systemModel.getRelations();
     }
-    
+
 }

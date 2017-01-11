@@ -16,7 +16,7 @@ class Signature {
     private final List<TypeModel> args;
     private final String name;
     private int hashCode;
-    
+
     /**
      * creates a Signature
      *
@@ -28,7 +28,7 @@ class Signature {
         this.args = argumentList;
         this.name = name;
     }
-    
+
     public static Signature parse(String name, String desc) {
         List<TypeModel> args = new ArrayList<>();
         for (Type argType : Type.getArgumentTypes(desc)) {
@@ -36,15 +36,15 @@ class Signature {
         }
         return new Signature(args, name);
     }
-    
+
     public List<TypeModel> getArguments() {
         return args;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Signature) {
@@ -53,7 +53,7 @@ class Signature {
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         if (hashCode == 0) {
@@ -61,10 +61,10 @@ class Signature {
         }
         return hashCode;
     }
-    
+
     @Override
     public String toString() {
         return String.format("%s(%s)", name, args.toString());
     }
-    
+
 }

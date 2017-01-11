@@ -1,9 +1,9 @@
 package model;
 
+import analyzer.ITypeModel;
+
 import java.util.Collection;
 import java.util.Map;
-
-import analyzer.ITypeModel;
 
 /**
  * Representing type model in general
@@ -16,7 +16,7 @@ interface TypeModel extends ITypeModel {
      * For generic type, this would return a lower bound of this type
      *
      * @return the class model behind this type model. null if it is a primitive
-     *         type
+     * type
      */
     ClassModel getClassModel();
 
@@ -38,7 +38,6 @@ interface TypeModel extends ITypeModel {
     Collection<ClassModel> getDependentOnClass();
 
     /**
-     * 
      * @param index
      * @return the generic argument at specific index
      */
@@ -47,16 +46,15 @@ interface TypeModel extends ITypeModel {
     }
 
     /**
-     * 
      * @return the number of generic argument
      */
     default int getGenericArgNumber() {
         return 0;
     }
-    
+
     /**
      * @return the collection of types that this type can be directly assigned
-     *         to
+     * to
      */
     Iterable<TypeModel> getSuperTypes();
 
@@ -64,8 +62,7 @@ interface TypeModel extends ITypeModel {
      * replace {@link GenericTypeVarPlaceHolder} with real type in the parameter
      * This method should be called once after generic types are first parsed
      *
-     * @param paramMap
-     *            the parameter type map containing information about each type
+     * @param paramMap the parameter type map containing information about each type
      */
     default TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         return this;

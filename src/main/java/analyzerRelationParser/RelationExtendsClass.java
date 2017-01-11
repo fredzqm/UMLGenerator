@@ -10,7 +10,7 @@ public class RelationExtendsClass implements IRelationInfo {
     public String toString() {
         return "Extends";
     }
-    
+
     @Override
     public String getEdgeStyle() {
         return "arrowhead=\"onormal\" style=\"\" ";

@@ -8,18 +8,17 @@ import analyzer.IRelationInfo;
 public class RelationDependsOn implements IRelationInfo {
     private final boolean many;
     private final int count;
-    
+
     /**
      * Constructs a RelationHasA object.
      *
-     * @param count
-     *            count value of the relation.
+     * @param count count value of the relation.
      */
     RelationDependsOn(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
     }
-    
+
     /**
      * Returns true if this is a one-to-many relationship.
      *
@@ -28,7 +27,7 @@ public class RelationDependsOn implements IRelationInfo {
     boolean isMany() {
         return this.many;
     }
-    
+
     /**
      * Returns the exact cardinality of this relationship.
      *
@@ -37,7 +36,7 @@ public class RelationDependsOn implements IRelationInfo {
     public int getCount() {
         return this.count;
     }
-    
+
     @Override
     public String toString() {
         if (isMany()) {
@@ -46,16 +45,16 @@ public class RelationDependsOn implements IRelationInfo {
             return "has " + getCount();
         }
     }
-    
+
     @Override
     public String getEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=dashed ");
-        
+
         if (isMany() || getCount() > 1) {
             edgeBuilder.append("taillabel=\"1..*\" ");
         }
-        
+
         return edgeBuilder.toString();
     }
-    
+
 }

@@ -1,14 +1,14 @@
 package analyzerClassParser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import analyzer.IClassModel;
 import analyzer.IClassModelFilter;
 import analyzer.IFieldModel;
 import analyzer.IMethodModel;
 import utility.IFilter;
 import utility.Modifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphVizClass extends IClassModelFilter {
     private IClassParserConfiguration config;
@@ -24,10 +24,10 @@ public class GraphVizClass extends IClassModelFilter {
         IParser<IClassModel> header = config.getHeaderParser();
         IParser<IFieldModel> fieldParser = config.getFieldParser();
         IParser<IMethodModel> methodParser = config.getMethodParser();
-        
+
         StringBuilder sb = new StringBuilder();
         // Set the header.
-        
+
         sb.append(header.parse(model, config));
         // Filter the fields
         Iterable<? extends IFieldModel> fields = model.getFields();

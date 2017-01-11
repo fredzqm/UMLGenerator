@@ -1,23 +1,13 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-
 import analyzer.IMethodModel;
 import model.TypeParser.MethodSignatureParseResult;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.*;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.*;
 
 /**
  * Representing method in java program

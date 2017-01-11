@@ -37,7 +37,7 @@ enum PrimitiveType implements TypeModel {
             case 'D':
                 return DOUBLE;
             case 'V':
-            	return VOID;
+                return VOID;
             default:
                 throw new RuntimeException(x + " Cannot represent a primitive type");
         }
@@ -58,9 +58,9 @@ enum PrimitiveType implements TypeModel {
         return Collections.emptyList();
     }
 
-	@Override
-	public List<ClassModel> getDependentOnClass() {
-		return Collections.emptyList();
-	}
-	
+    @Override
+    public List<ClassModel> getDependentOnClass() {
+        return Collections.emptyList();
+    }
+
 }

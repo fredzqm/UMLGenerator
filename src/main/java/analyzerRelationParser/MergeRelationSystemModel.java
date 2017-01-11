@@ -16,12 +16,12 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
     MergeRelationSystemModel(ISystemModel systemModel) {
         super(systemModel);
     }
-    
+
     @Override
     public Map<ClassPair, List<IRelationInfo>> getRelations() {
         Map<ClassPair, List<IRelationInfo>> oldMap = super.getRelations();
         Map<ClassPair, List<IRelationInfo>> newMap = new HashMap<>();
-        
+
         // go through the map merge or remove relation according to rules
         while (!oldMap.isEmpty()) {
             ClassPair next = oldMap.keySet().iterator().next();
@@ -36,9 +36,9 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
         }
         return newMap;
     }
-    
+
     private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
-            Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+                                        Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         ClassPair reverse = next.reverse();
         if (oldMap.containsKey(reverse)) {
             List<IRelationInfo> b = oldMap.get(reverse);
@@ -60,7 +60,7 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
             oldMap.remove(reverse);
         }
     }
-    
+
     private void mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         for (int i = 0; i < a.size(); i++) {
             for (int j = i + 1; j < a.size(); j++) {
@@ -75,7 +75,7 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
             }
         }
     }
-    
+
     private void addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info) {
         if (map.containsKey(pair)) {
             map.get(pair).add(info);
@@ -85,7 +85,7 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
             map.put(pair, ls2);
         }
     }
-    
+
     private void addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, List<IRelationInfo> ls) {
         if (map.containsKey(pair)) {
             map.get(pair).addAll(ls);
@@ -94,7 +94,7 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
             map.put(pair, ls2);
         }
     }
-    
+
     private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
         if (aRel.getClass() == bRel.getClass()) {
             if (aRel instanceof RelationDependsOn) {

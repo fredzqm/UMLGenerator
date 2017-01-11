@@ -23,19 +23,16 @@ public interface IFieldModel {
     Modifier getModifier();
 
     /**
-     * 
      * @return true if the field is final
      */
     boolean isFinal();
 
     /**
-     * 
      * @return true if the field is static
      */
     boolean isStatic();
 
     /**
-     * 
      * @return the type of this field
      */
     ITypeModel getFieldType();
