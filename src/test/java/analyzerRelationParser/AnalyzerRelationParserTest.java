@@ -1,24 +1,16 @@
 package analyzerRelationParser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import analyzer.*;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
-import analyzer.ClassPair;
-import analyzer.IAnalyzerConfiguration;
-import analyzer.IClassModel;
-import analyzer.IRelationInfo;
-import analyzer.ISystemModel;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 public class AnalyzerRelationParserTest {
 

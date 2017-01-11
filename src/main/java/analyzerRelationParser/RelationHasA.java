@@ -64,7 +64,7 @@ public class RelationHasA implements IRelationInfo {
             return x.count == this.count && x.many == this.many;
         }
         return false;
-        }
+    }
 
     @Override
     public int hashCode() {

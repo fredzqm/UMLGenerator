@@ -9,16 +9,16 @@ public final class ClassPair {
     private final IClassModel from;
     private final IClassModel to;
 
+    public ClassPair(IClassModel from, IClassModel to) {
+        this.to = to;
+        this.from = from;
+    }
+
     private IClassModel getUnderlyingClassModel(IClassModel x) {
         while (x instanceof IClassModelFilter) {
             x = ((IClassModelFilter) x).getClassModel();
         }
         return x;
-    }
-
-    public ClassPair(IClassModel from, IClassModel to) {
-        this.to = to;
-        this.from = from;
     }
 
     IClassModel getFrom() {

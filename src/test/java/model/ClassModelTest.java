@@ -1,26 +1,19 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Test;
-
 import dummy.generic.GenericDummyClass;
 import dummy.generic.GenericDummyClass2;
 import dummy.hasDependsRel.Dummy;
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
+import org.junit.Test;
 import utility.ClassType;
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class ClassModelTest {
 
