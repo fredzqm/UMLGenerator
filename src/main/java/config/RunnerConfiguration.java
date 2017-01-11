@@ -3,6 +3,8 @@ package config;
 import runner.IRunnerConfiguration;
 
 /**
+ * A RunnerConfiguration.
+ * <p>
  * Created by lamd on 1/11/2017.
  */
 public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
@@ -13,6 +15,9 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
 
     private IConfiguration config;
 
+    /**
+     * Empty Constructor for newInstance calls.
+     */
     public RunnerConfiguration() {
         this.config = null;
     }

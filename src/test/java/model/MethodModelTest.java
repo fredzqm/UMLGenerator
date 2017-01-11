@@ -1,9 +1,8 @@
 package model;
 
-import org.junit.Test;
-
 import dummy.generic.GenericDummyClass;
 import dummy.hasDependsRel.Dummy;
+import org.junit.Test;
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;
@@ -58,15 +57,15 @@ public class MethodModelTest {
         assertEquals(expected.size(), actual.size());
         assertEquals(expected, new HashSet<>(actual));
     }
-    
-    
+
+
     @Test
     public void testGetMethodType1() {
         String dummyClass = GenericDummyClass.class.getName();
         ClassModel genericdummy = ASMParser.getClassByName(dummyClass);
 
         MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Arrays.asList(), "iterator"));
-        
+
         assertEquals("iterator", iteratorMethod.getName());
         TypeModel ret = iteratorMethod.getReturnType();
         assertEquals(ASMParser.getClassByName("java.util.Iterator"), ret.getClassModel());

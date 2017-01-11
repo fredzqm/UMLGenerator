@@ -1,10 +1,10 @@
 package analyzer;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import generator.IVertex;
 import utility.ClassType;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * An interface for Class Models.
@@ -54,6 +54,15 @@ public interface IClassModel extends IVertex {
      * @return Fields of the Model.
      */
     Collection<? extends IFieldModel> getFields();
+
+    /**
+     * This method is used to ensure that even if a classModel is decorated, it
+     * still equals to the original classModel
+     * 
+     * @return get the reference to the innest {@link ClassModel} that is
+     *         decorated
+     */
+    IClassModel getUnderlyingClassModel();
 
     /**
      * Returns an Iterable of the Model's Methods. Excluding those inherited

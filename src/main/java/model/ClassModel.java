@@ -1,24 +1,17 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import analyzer.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
-
-import analyzer.IClassModel;
-import model.TypeParser.ClassSignatureParseResult;
 import utility.ClassType;
 import utility.Modifier;
+
+import java.util.*;
 
 /**
  * Representing classes in java program
@@ -237,8 +230,22 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependentOnClass() {
+    public List<ClassModel> getDependentClass() {
         return Arrays.asList(this);
+    }
+
+    @Override
+    public IClassModel getUnderlyingClassModel() {
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof IClassModel) {
+            IClassModel c = (IClassModel) obj;
+            return this == c.getUnderlyingClassModel();
+        }
+        return false;
     }
 
 }

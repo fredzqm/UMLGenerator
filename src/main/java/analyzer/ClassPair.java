@@ -7,22 +7,18 @@ package analyzer;
  */
 public final class ClassPair {
     private final IClassModel from;
-    private final IClassModel underLyingfrom;
     private final IClassModel to;
-    private final IClassModel underLyingto;
+
+    public ClassPair(IClassModel from, IClassModel to) {
+        this.to = to;
+        this.from = from;
+    }
 
     private IClassModel getUnderlyingClassModel(IClassModel x) {
         while (x instanceof IClassModelFilter) {
             x = ((IClassModelFilter) x).getClassModel();
         }
         return x;
-    }
-
-    public ClassPair(IClassModel from, IClassModel to) {
-        this.to = to;
-        this.from = from;
-        this.underLyingto = getUnderlyingClassModel(to);
-        this.underLyingfrom = getUnderlyingClassModel(from);
     }
 
     IClassModel getFrom() {
@@ -43,14 +39,15 @@ public final class ClassPair {
 
     @Override
     public int hashCode() {
-        return underLyingfrom.hashCode() + underLyingto.hashCode() * 127;
+        return from.getUnderlyingClassModel().hashCode() + to.getUnderlyingClassModel().hashCode() * 127;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ClassPair) {
             ClassPair rel = (ClassPair) obj;
-            return rel.underLyingfrom.equals(rel.underLyingfrom) && underLyingto.equals(rel.underLyingto);
+            return to.getUnderlyingClassModel().equals(rel.to.getUnderlyingClassModel())
+                    && from.getUnderlyingClassModel().equals(rel.from.getUnderlyingClassModel());
         }
         return false;
     }

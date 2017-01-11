@@ -3,6 +3,8 @@ package config;
 import generator.IGeneratorConfiguration;
 
 /**
+ * A GeneratorConfiguration.
+ * <p>
  * Created by lamd on 1/11/2017.
  */
 public class GeneratorConfiguration implements IGeneratorConfiguration, Configurable {

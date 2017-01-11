@@ -1,34 +1,12 @@
 package app;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
 import analyzer.ClassPair;
 import analyzer.IClassModel;
 import analyzer.IRelationInfo;
 import analyzer.ISystemModel;
-import analyzerClassParser.AnalyzerClassParser;
-import analyzerClassParser.IClassParserConfiguration;
-import analyzerRelationParser.AnalyzerRelationParser;
 import analyzerRelationParser.RelationDependsOn;
 import analyzerRelationParser.RelationExtendsClass;
 import analyzerRelationParser.RelationImplement;
-import config.ClassParserConfiguration;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;
@@ -40,8 +18,21 @@ import dummy.hasDependsRel.RelOtherDummyClass;
 import dummy.inheritanceRel.DummyInterface;
 import dummy.inheritanceRel.DummySubClass;
 import dummy.inheritanceRel.DummySuperClas;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import utility.IFilter;
 import utility.Modifier;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.*;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.

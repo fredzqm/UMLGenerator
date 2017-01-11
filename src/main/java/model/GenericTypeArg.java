@@ -75,8 +75,8 @@ abstract class GenericTypeArg implements TypeModel {
         }
 
         @Override
-        public Collection<ClassModel> getDependentOnClass() {
-            return lowerBound.getDependentOnClass();
+        public Collection<ClassModel> getDependentClass() {
+            return lowerBound.getDependentClass();
         }
 
         @Override
@@ -113,8 +113,8 @@ abstract class GenericTypeArg implements TypeModel {
         }
 
         @Override
-        public Collection<ClassModel> getDependentOnClass() {
-            return upperBound.getDependentOnClass();
+        public Collection<ClassModel> getDependentClass() {
+            return upperBound.getDependentClass();
         }
 
         @Override
@@ -132,7 +132,7 @@ abstract class GenericTypeArg implements TypeModel {
         }
 
         @Override
-        public Collection<ClassModel> getDependentOnClass() {
+        public Collection<ClassModel> getDependentClass() {
             return Collections.emptyList();
         }
     }
