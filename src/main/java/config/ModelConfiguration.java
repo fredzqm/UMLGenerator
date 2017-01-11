@@ -3,6 +3,8 @@ package config;
 import model.IModelConfiguration;
 
 /**
+ * A ModelConfiguration.
+ * <p>
  * Created by lamd on 1/10/2017.
  */
 public class ModelConfiguration implements IModelConfiguration, Configurable {
@@ -11,6 +13,9 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
 
     private IConfiguration config;
 
+    /**
+     * Empty constructor for newInstance calls.
+     */
     public ModelConfiguration() {
         this.config = null;
     }
@@ -18,7 +23,7 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.addIfMissing(ModelConfiguration.CLASSES_KEY, "");
+        this.config.setIfMissing(ModelConfiguration.CLASSES_KEY, "");
         this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
     }
 

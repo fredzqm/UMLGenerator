@@ -11,7 +11,7 @@ import utility.Modifier;
 import java.util.*;
 
 /**
- * TODO: Adam Document.
+ * An IConfiguration concrete class. It uses Maps to store a variety of configuration objects.
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
@@ -84,6 +84,11 @@ public class Configuration implements IConfiguration {
         return this.generator;
     }
 
+    /**
+     * Sets the Configuration generator.
+     *
+     * @param generator IGenerator class to be set.
+     */
     public void setGenerator(Class<? extends IGenerator> generator) {
         this.generator = generator;
     }
@@ -142,19 +147,19 @@ public class Configuration implements IConfiguration {
         }
     }
 
-    @Override
-    public void addIfMissing(String key, String value) {
-        if (!this.valueMap.containsKey(key)) {
-            this.valueMap.put(key, value);
-        }
-    }
-
-    @Override
-    public void addIfMissing(String key, Class value) {
-        if (!this.classesMap.containsKey(key)) {
-            this.classesMap.put(key, Collections.singletonList(value));
-        }
-    }
+//    @Override
+//    public void addIfMissing(String key, String value) {
+//        if (!this.valueMap.containsKey(key)) {
+//            this.valueMap.put(key, value);
+//        }
+//    }
+//
+//    @Override
+//    public void addIfMissing(String key, Class value) {
+//        if (!this.classesMap.containsKey(key)) {
+//            this.classesMap.put(key, Collections.singletonList(value));
+//        }
+//    }
 
     @Override
     public void add(String key, String value) {
