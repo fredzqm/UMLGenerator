@@ -1,4 +1,4 @@
-package dummy;
+package dummy.generic;
 
 import java.util.Iterator;
 import java.util.List;

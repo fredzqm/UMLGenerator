@@ -6,22 +6,20 @@ package analyzerClassParser;
  * @param <T>
  */
 public interface IParser<T> {
-    
+
     /**
      * Parse single data.
      *
-     * @param data
-     *            Data to be parsed.
+     * @param data   Data to be parsed.
      * @param config
      * @return String of Parsed Data.
      */
     String parse(T data, IClassParserConfiguration config);
-    
+
     /**
      * Parse a data list and append them together.
      *
-     * @param dataList
-     *            List of Data to be parsed.
+     * @param dataList List of Data to be parsed.
      * @param config
      * @return String of all parsed data.
      */

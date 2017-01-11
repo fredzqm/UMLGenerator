@@ -1,12 +1,13 @@
 package app;
 
-import java.util.Arrays;
-
 import config.Configuration;
-import dummy.Dummy;
-import dummy.RelDummyClass;
-import dummy.RelDummyManyClass;
-import dummy.RelOtherDummyClass;
+import config.GeneratorConfiguration;
+import config.ModelConfiguration;
+import config.RunnerConfiguration;
+import dummy.hasDependsRel.Dummy;
+import dummy.hasDependsRel.RelDummyClass;
+import dummy.hasDependsRel.RelDummyManyClass;
+import dummy.hasDependsRel.RelOtherDummyClass;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -17,14 +18,19 @@ public class LocalTester {
     public static void main(String[] args) {
         // Set up the config.
         Configuration config = Configuration.getInstance();
-        config.setClasses(Arrays.asList(Dummy.class.getName(), RelDummyManyClass.class.getName(), RelOtherDummyClass.class.getName(), RelDummyClass.class.getName()));
-        config.setRecursive(false);
-        config.setNodesep(1.0);
-        config.setRankDir("BT");
-        config.setOutputDirectory("./output");
-        config.setFileName("localTest");
-        config.setExecutablePath("dot");
-        config.setOutputFormat("svg");
+        config.add(ModelConfiguration.CLASSES_KEY, Dummy.class);
+        config.add(ModelConfiguration.CLASSES_KEY, RelDummyManyClass.class);
+        config.add(ModelConfiguration.CLASSES_KEY, RelOtherDummyClass.class);
+        config.add(ModelConfiguration.CLASSES_KEY, RelDummyClass.class);
+        config.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(false));
+
+        config.set(GeneratorConfiguration.NODE_SEP, Double.toString(1.0));
+        config.set(GeneratorConfiguration.RANK_DIR, ("BT"));
+
+        config.set(RunnerConfiguration.OUTPUT_DIRECTORY, "./output");
+        config.set(RunnerConfiguration.FILE_NAME, "localTest");
+        config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
+        config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
 
         Runnable engine = UMLEngine.getInstance(config);
         engine.run();

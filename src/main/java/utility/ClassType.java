@@ -4,7 +4,7 @@ import org.objectweb.asm.Opcodes;
 
 public enum ClassType {
     ABSTRACT, INTERFACE, CONCRETE, ENUM;
-    
+
     public static ClassType parse(int access) {
         if ((access & Opcodes.ACC_ENUM) != 0)
             return ClassType.ENUM;

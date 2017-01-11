@@ -1,11 +1,11 @@
 package model;
 
+import org.objectweb.asm.Type;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-
-import org.objectweb.asm.Type;
 
 /**
  * A factory method utility for type model. It basically parses the signature
@@ -58,8 +58,7 @@ class TypeParser {
     }
 
     /**
-     * @param typeSig
-     *            the internal name representing a type of a class
+     * @param typeSig the internal name representing a type of a class
      * @return the corresponding class type model
      */
     static TypeModel parseTypeSignature(String typeSig) {
@@ -125,8 +124,7 @@ class TypeParser {
     }
 
     /**
-     * @param typeArg
-     *            the internal name representing a type of a class
+     * @param typeArg the internal name representing a type of a class
      * @return the corresponding class type model
      */
     static TypeModel parseTypeArg(String typeArg) {
@@ -178,8 +176,7 @@ class TypeParser {
     }
 
     /**
-     * @param classSig
-     *            of a class or a method
+     * @param classSig of a class or a method
      * @return the list of generic parameter this class or method needs
      */
     static ClassSignatureParseResult parseClassSignature(String classSig) {
@@ -312,7 +309,7 @@ class TypeParser {
         private List<TypeModel> exceptionList;
 
         public MethodSignatureParseResult(List<GenericTypeParam> typeParameters, TypeModel returnType,
-                List<TypeModel> argumentList, List<TypeModel> exceptionList) {
+                                          List<TypeModel> argumentList, List<TypeModel> exceptionList) {
             this.typeParameters = typeParameters;
             this.returnType = returnType;
             this.argumentsList = argumentList;

@@ -1,10 +1,6 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -13,11 +9,6 @@ import java.util.Objects;
  * @author zhang
  */
 abstract class GenericTypeArg implements TypeModel {
-    @Override
-    public Iterable<TypeModel> getSuperTypes() {
-        return Collections.emptyList();
-    }
-
     private static GenericTypeArg wildType = new WildType();
 
     static GenericTypeArg getWildType() {
@@ -30,6 +21,11 @@ abstract class GenericTypeArg implements TypeModel {
 
     static GenericTypeArg getUpperBounded(TypeModel upperBound) {
         return new UpperBound(upperBound);
+    }
+
+    @Override
+    public Iterable<TypeModel> getSuperTypes() {
+        return Collections.emptyList();
     }
 
     @Override

@@ -16,6 +16,12 @@ public interface IFieldModel {
     String getName();
 
     /**
+     * 
+     * @return the class it belongs to
+     */
+    IClassModel getBelongTo();
+    
+    /**
      * Returns the access Modifier of the class.
      *
      * @return Field's Acess Modifier.
@@ -23,20 +29,18 @@ public interface IFieldModel {
     Modifier getModifier();
 
     /**
-     * 
      * @return true if the field is final
      */
     boolean isFinal();
 
     /**
-     * 
      * @return true if the field is static
      */
     boolean isStatic();
 
     /**
-     * 
      * @return the type of this field
      */
     ITypeModel getFieldType();
+
 }

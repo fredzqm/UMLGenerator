@@ -5,7 +5,7 @@ import analyzer.IRelationInfo;
 /**
  * RelationInfo that interprets bijectvie relations.
  */
-public class ReleationBijectiveDecorator implements IRelationInfo {
+public class RelationBijectiveDecorator implements IRelationInfo {
     private IRelationInfo decorated;
     
     /**
@@ -13,7 +13,7 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
      *
      * @param rel
      */
-    ReleationBijectiveDecorator(IRelationInfo rel) {
+    RelationBijectiveDecorator(IRelationInfo rel) {
         this.decorated = rel;
     }
     
@@ -34,5 +34,19 @@ public class ReleationBijectiveDecorator implements IRelationInfo {
     @Override
     public String getEdgeStyle() {
         return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" style=\"\" dir=both ";
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj.getClass() == RelationBijectiveDecorator.class){
+    		RelationBijectiveDecorator x = (RelationBijectiveDecorator) obj;
+    		return x.decorated.equals(this.decorated);
+    	}
+    	return false;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return decorated.hashCode();
     }
 }

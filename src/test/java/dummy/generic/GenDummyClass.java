@@ -1,4 +1,4 @@
-package dummy;
+package dummy.generic;
 
 /**
  * A Dummy Class used for testing.

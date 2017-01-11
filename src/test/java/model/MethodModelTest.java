@@ -2,8 +2,8 @@ package model;
 
 import org.junit.Test;
 
-import dummy.Dummy;
-import dummy.GenericDummyClass;
+import dummy.generic.GenericDummyClass;
+import dummy.hasDependsRel.Dummy;
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;
@@ -42,7 +42,7 @@ public class MethodModelTest {
         IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
                 && d.getMethodType() == MethodType.METHOD;
 
-        assertEquals("dummy.Dummy", dummy.getName());
+        assertEquals(dummyClass, dummy.getName());
         Iterator<? extends MethodModel> itr = filter.filter(dummy.getMethods()).iterator();
 
         MethodModel methodModel = itr.next();

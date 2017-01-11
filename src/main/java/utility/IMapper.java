@@ -13,10 +13,9 @@ public interface IMapper<A, B> {
      * @return the corresponding element of B that it maps to
      */
     B map(A data);
-    
+
     /**
-     * @param iterable
-     *            The iterable we want to map
+     * @param iterable The iterable we want to map
      * @return an iterable of type B mapped to
      */
     default Iterable<B> map(Iterable<? extends A> iterable) {

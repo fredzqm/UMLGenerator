@@ -1,4 +1,4 @@
-package dummy;
+package dummy.hasDependsRel;
 
 /**
  * A Dummy Class used for testing.

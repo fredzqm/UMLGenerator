@@ -1,18 +1,82 @@
 package config;
 
 import analyzer.IAnalyzer;
-import analyzer.IAnalyzerConfiguration;
-import analyzerClassParser.IClassParserConfiguration;
 import generator.IGenerator;
-import generator.IGeneratorConfiguration;
-import model.IModelConfiguration;
-import runner.IRunnerConfiguration;
+import utility.IFilter;
+import utility.Modifier;
 
-public interface IConfiguration extends IRunnerConfiguration, IGeneratorConfiguration, IModelConfiguration,
-        IAnalyzerConfiguration, IClassParserConfiguration {
+public interface IConfiguration {
+    /**
+     * Constructs the given configurable object.
+     *
+     * @param configClass class of the Configurable object.
+     * @return Configurable object.
+     */
+    Configurable createConfiguration(Class<? extends Configurable> configClass);
+
+    /**
+     * Sets the key value to the given class value.
+     *
+     * @param key   String key to set within the map.
+     * @param value Class to map the key to.
+     */
+    void set(String key, Class value);
+
+    /**
+     * Sets the String key to the String value.
+     *
+     * @param key   String key to set value for.
+     * @param value String value of the key.
+     */
+    void set(String key, String value);
+
+    /**
+     * Adds to the String key to a list of String values.
+     *
+     * @param key   String key to append value String to.
+     * @param value String value to be appened.
+     */
+    void add(String key, String value);
+
+    /**
+     * Adds the String key to a list of Classes.
+     *
+     * @param key   String key to append value to.
+     * @param value String value to be appened.
+     */
+    void add(String key, Class value);
+
+    Iterable<String> getValues(String key);
+
+    Iterable<Class> getClasses(String key);
+
+    String getValue(String key);
+
+    Class getClass(String key);
 
     Iterable<Class<? extends IAnalyzer>> getAnalyzers();
 
+    void addAnalyzer(Class<? extends IAnalyzer> analyzer);
+
+    void removeAnalyzer(Class<? extends IAnalyzer> analyzer);
+
     Class<? extends IGenerator> getGenerator();
 
+    void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config);
+
+    Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass);
+
+    void setIfMissing(String key, String value);
+
+    void setIfMissing(String key, Class value);
+
+    void addIfMissing(String key, String value);
+
+    void addIfMissing(String key, Class value);
+
+    void setFilter(IFilter<Modifier> modifierIFilter);
+
+    void setFilterIfMissing(IFilter<Modifier> modifierIFilter);
+
+    IFilter<Modifier> getModifierFilter();
 }
