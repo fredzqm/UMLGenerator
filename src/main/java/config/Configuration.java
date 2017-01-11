@@ -30,7 +30,6 @@ public class Configuration implements IConfiguration {
         this.classMap = new HashMap<>();
         this.classesMap = new HashMap<>();
         this.valueMap = new HashMap<>();
-        // this.valuesMap = new HashMap<>();
         this.analyzerToConfigurationMap = new HashMap<>();
         this.modifierFilter = null;
 
@@ -160,7 +159,7 @@ public class Configuration implements IConfiguration {
     @Override
     public void add(String key, String value) {
         if (this.valueMap.containsKey(key)) {
-            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), DELIMITER, value));
+            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), Configuration.DELIMITER, value));
         } else {
             this.valueMap.put(key, value);
         }
@@ -182,7 +181,7 @@ public class Configuration implements IConfiguration {
     public Iterable<String> getValues(String key) {
         if (this.valueMap.containsKey(key)) {
             String values = this.valueMap.get(key);
-            return Arrays.asList(values.split(DELIMITER));
+            return Arrays.asList(values.split(Configuration.DELIMITER));
         }
         return null;
     }

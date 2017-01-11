@@ -1,14 +1,10 @@
 package model;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class ASMParserTest {
 
@@ -20,13 +16,13 @@ public class ASMParserTest {
         ClassModel b = ASMParser.getObject();
         assertEquals(a, b);
     }
-    
+
     @Test
     public void testGetClassByNameInnerClass() {
         ClassModel a = ASMParser.getClassByName("java.util.Map$Entry");
         assertEquals("java.util.Map$Entry", a.getName());
     }
-    
+
     @Test
     public void testGetClassByNameNestedClass() {
         ClassModel a = ASMParser.getClassByName("java.lang.Math$RandomNumberGeneratorHolder");
