@@ -1,15 +1,14 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import model.TypeParser.ClassSignatureParseResult;
+import model.TypeParser.MethodSignatureParseResult;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
-import model.TypeParser.ClassSignatureParseResult;
-import model.TypeParser.MethodSignatureParseResult;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TypeParserTest {
 
@@ -26,7 +25,7 @@ public class TypeParserTest {
         TypeModel x = TypeParser.parseTypeSignature(name);
         assertEquals(ParametizedClassModel.class, x.getClass());
         assertEquals(ASMParser.getClassByName("java.util.List"), x.getClassModel());
-        assertEquals(Arrays.asList(new TypeModel[] { new GenericTypeVarPlaceHolder("E") }),
+        assertEquals(Arrays.asList(new TypeModel[]{new GenericTypeVarPlaceHolder("E")}),
                 ((ParametizedClassModel) x).getGenericArgs());
     }
 
@@ -56,7 +55,7 @@ public class TypeParserTest {
     @Test
     public void testParseClassTypeSignature2() {
         TypeModel type = TypeParser.parseClassTypeSignature("Ljava/util/Map.Entry;");
-        
+
         assertEquals(ASMParser.getClassByName("java.util.Map$Entry"), type.getClassModel());
         assertEquals(0, type.getGenericArgNumber());
     }
@@ -76,7 +75,7 @@ public class TypeParserTest {
         assertEquals(ASMParser.getClassByName("java.lang.Math$RandomNumberGeneratorHolder"), type.getClassModel());
         assertEquals(0, type.getGenericArgNumber());
     }
-    
+
     @Test
     public void testParseClassTypeArg1() {
         String name = "Ljava/lang/Object;";
@@ -188,7 +187,7 @@ public class TypeParserTest {
 
         // super type list
         List<TypeModel> spls = rs.getSuperTypes();
-        assertEquals(spls, Arrays.asList(new TypeModel[] { ASMParser.getObject() }));
+        assertEquals(spls, Arrays.asList(new TypeModel[]{ASMParser.getObject()}));
     }
 
     @Test

@@ -20,6 +20,9 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
 
     private IConfiguration config;
 
+    /**
+     * Empty constructor for newInstance calls.
+     */
     public ClassParserConfiguration() {
         this.config = null;
     }

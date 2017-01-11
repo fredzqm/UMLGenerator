@@ -1,10 +1,10 @@
 package analyzer;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import generator.IVertex;
 import utility.ClassType;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * An interface for Class Models.

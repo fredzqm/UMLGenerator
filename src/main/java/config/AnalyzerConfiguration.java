@@ -10,9 +10,11 @@ import analyzerClassParser.AnalyzerClassParser;
  * Created by lamd on 1/9/2017.
  */
 public class AnalyzerConfiguration implements IAnalyzerConfiguration, Configurable {
-
     private IConfiguration config;
 
+    /**
+     * Empty constructor for newInstance calls.
+     */
     public AnalyzerConfiguration() {
         this.config = null;
     }
