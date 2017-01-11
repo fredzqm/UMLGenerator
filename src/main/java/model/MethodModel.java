@@ -118,7 +118,7 @@ class MethodModel implements IMethodModel {
         return returnType + " " + getSignature().toString();
     }
 
-    Collection<MethodModel> getCalledMethods() {
+    public Collection<MethodModel> getCalledMethods() {
         if (dependenOnMethod == null) {
             dependenOnMethod = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
@@ -141,7 +141,7 @@ class MethodModel implements IMethodModel {
         return dependenOnMethod;
     }
 
-    Collection<FieldModel> getAccessedFields() {
+    public Collection<FieldModel> getAccessedFields() {
         if (dependenOnField == null) {
             dependenOnField = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;

@@ -48,4 +48,19 @@ public class RelationHasABijective implements IRelationInfo {
 
         return edgeBuilder.toString();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if( obj.getClass() == RelationHasABijective.class ){
+    		RelationHasABijective x = (RelationHasABijective) obj;
+    		return x.a.equals(this.a) && x.b.equals(this.b);
+    	}
+    	return false;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return this.a.hashCode()*28 + this.b.hashCode()*15;
+    }
+    
 }

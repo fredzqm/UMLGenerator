@@ -1,24 +1,47 @@
 package app;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import analyzer.ClassPair;
+import analyzer.IClassModel;
+import analyzer.IRelationInfo;
 import analyzer.ISystemModel;
 import analyzerClassParser.AnalyzerClassParser;
 import analyzerClassParser.IClassParserConfiguration;
 import analyzerRelationParser.AnalyzerRelationParser;
-import config.*;
-import dummy.GenDummyClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.objectweb.asm.tree.analysis.Analyzer;
+import analyzerRelationParser.RelationDependsOn;
+import analyzerRelationParser.RelationExtendsClass;
+import analyzerRelationParser.RelationImplement;
+import config.ClassParserConfiguration;
+import config.Configuration;
+import config.GeneratorConfiguration;
+import config.ModelConfiguration;
+import config.RunnerConfiguration;
+import dummy.generic.GenDummyClass;
+import dummy.hasDependsRel.RelDummyClass;
+import dummy.hasDependsRel.RelDummyManyClass;
+import dummy.hasDependsRel.RelOtherDummyClass;
+import dummy.inheritanceRel.DummyInterface;
+import dummy.inheritanceRel.DummySubClass;
+import dummy.inheritanceRel.DummySuperClas;
 import utility.IFilter;
 import utility.Modifier;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -29,8 +52,7 @@ public class SystemTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private String dummyClassName = GenDummyClass.class.getPackage().getName() + "."
-            + GenDummyClass.class.getSimpleName();
+    private String dummyClassName = GenDummyClass.class.getName();
 
     @Test
     public void graphVizGenerate() throws IOException {
@@ -65,7 +87,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
@@ -117,7 +139,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"1..*\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -159,48 +181,88 @@ public class SystemTest {
         engine.executeRunner(graphVizString);
     }
 
-    // @Test
-    // public void graphVizManyNoFields() {
-    // // Set up config.
-    // Configuration config = Configuration.getInstance();
-    // config.setFilters(data -> data == Modifier.DEFAULT || data ==
-    // Modifier.PUBLIC);
-    // config.setNodesep(1.0);
-    // config.setRecursive(true);
-    // config.setRankDir("BT");
-    // List<String> classList = new ArrayList<>();
-    // classList.add(RelDummyManyClass.class.getName());
-    // classList.add(RelOtherDummyClass.class.getName());
-    // classList.add(RelDummyClass.class.getName());
-    // config.setClasses(classList);
-    //
-    // // Set up SystemModel and Generator.
-    // AbstractUMLEngine engine = UMLEngine.getInstance(config);
-    // IASystemModel systemModel = engine.createSystemModel();
-    //
-    // // System Model Verification.
-    // Iterable<? extends IRelation> relations = systemModel.getRelations();
-    // boolean hasExpectedDependency1 = false;
-    // boolean hasExpectedDependency2 = false;
-    // for (IRelation relation : relations) {
-    // if (relation.getFrom().equals(RelDummyManyClass.class.getName())
-    // && relation.getTo().equals(RelOtherDummyClass.class.getName())) {
-    // hasExpectedDependency1 = true;
-    // } else if (relation.getFrom().equals(RelDummyManyClass.class.getName())
-    // && relation.getTo().equals("dummy.RelDummyClass")) {
-    // hasExpectedDependency2 = true;
-    // }
-    // }
-    // assertTrue("Missing expected array dependency", hasExpectedDependency1);
-    // assertTrue("Missing expected generic dependency",
-    // hasExpectedDependency2);
-    //
-    // String actual = engine.generate(systemModel);
-    // String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" ->
-    // \"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\"
-    // headlabel=\"1..*\" ];";
-    // assertTrue("Missing GraphViz dependency",
-    // actual.contains(expectedDependencyCardinality));
-    // }
+    @Test
+    public void testOverImplementing() throws IOException {
+        // Set up config.
+        Configuration config = Configuration.getInstance();
+        config.add(ModelConfiguration.CLASSES_KEY, DummyInterface.class.getName());
+        config.add(ModelConfiguration.CLASSES_KEY, DummySubClass.class.getName());
+        config.add(ModelConfiguration.CLASSES_KEY, DummySuperClas.class.getName());
+        config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
+
+        // Set up a System Model.
+        AbstractUMLEngine engine = UMLEngine.getInstance(config);
+        ISystemModel systemModel = engine.createSystemModel();
+        systemModel = engine.analyze(systemModel);
+
+        // get classes
+        Collection<? extends IClassModel> classes = systemModel.getClasses();
+        IClassModel dummyInterface = getClassFromCollection(DummyInterface.class.getName(), classes);
+        IClassModel dummyStub = getClassFromCollection(DummySubClass.class.getName(), classes);
+        IClassModel dummySuperClass = getClassFromCollection(DummySuperClas.class.getName(), classes);
+
+        // get relations
+        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
+        List<IRelationInfo> relFromStubToSuperClass = relations.get(new ClassPair(dummyStub, dummySuperClass));
+        assertEquals(Arrays.asList(new RelationExtendsClass()), relFromStubToSuperClass);
+
+        List<IRelationInfo> relFromStubToInterface = relations.get(new ClassPair(dummyStub, dummyInterface));
+        assertNull(relFromStubToInterface);
+
+        List<IRelationInfo> relFromSuperToInterfaceClass = relations
+                .get(new ClassPair(dummySuperClass, dummyInterface));
+        assertEquals(Arrays.asList(new RelationImplement()), relFromSuperToInterfaceClass);
+    }
+
+    @Test
+    public void graphVizManyNoFields() {
+        String relDummyMany = RelDummyManyClass.class.getName();
+        String relOtherDummy = RelOtherDummyClass.class.getName();
+        String relDummy = RelDummyClass.class.getName();
+
+        // Set up config.
+        Configuration config = Configuration.getInstance();
+        config.add(ModelConfiguration.CLASSES_KEY, relDummyMany);
+        config.add(ModelConfiguration.CLASSES_KEY, relOtherDummy);
+        config.add(ModelConfiguration.CLASSES_KEY, relDummy);
+        config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
+        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+
+        // Set up SystemModel and Generator.
+        AbstractUMLEngine engine = UMLEngine.getInstance(config);
+        ISystemModel systemModel = engine.createSystemModel();
+        systemModel = engine.analyze(systemModel);
+
+        // get classes
+        Collection<? extends IClassModel> classes = systemModel.getClasses();
+        IClassModel RelDummyManyClass = getClassFromCollection(relDummyMany, classes);
+        IClassModel RelOtherDummyClass = getClassFromCollection(relOtherDummy, classes);
+        IClassModel RelDummyClass = getClassFromCollection(relDummy, classes);
+
+        // get relations.
+        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
+
+        List<IRelationInfo> relFromManyToOther = relations.get(new ClassPair(RelDummyManyClass, RelOtherDummyClass));
+        assertEquals(1, relFromManyToOther.size());
+        assertEquals(new RelationDependsOn(true), relFromManyToOther.get(0));
+
+        List<IRelationInfo> relFromOtherToRel = relations.get(new ClassPair(RelDummyManyClass, RelDummyClass));
+        assertEquals(1, relFromOtherToRel.size());
+        assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
+
+        String actual = engine.generate(systemModel);
+        String expectedDependencyCardinality = "\"" + relDummyMany + "\" -> " + "\"" + relOtherDummy
+                + "\" [arrowhead=\"vee\" style=\"dashed\" taillabel=\"0..*\" ];";
+        assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
+    }
+
+    private IClassModel getClassFromCollection(String name, Collection<? extends IClassModel> classes) {
+        for (IClassModel c : classes) {
+            if (c.getName().equals(name))
+                return c;
+        }
+        fail("Class " + name + " does not exist");
+        return null;
+    }
 
 }

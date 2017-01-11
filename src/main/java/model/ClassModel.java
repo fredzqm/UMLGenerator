@@ -1,18 +1,24 @@
 package model;
 
-import analyzer.IClassModel;
-import model.TypeParser.ClassSignatureParseResult;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
-import utility.ClassType;
-import utility.IMapper;
-import utility.Modifier;
 
-import java.util.*;
+import analyzer.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
+import utility.ClassType;
+import utility.Modifier;
 
 /**
  * Representing classes in java program
@@ -37,6 +43,9 @@ class ClassModel implements IClassModel, TypeModel {
     private final ClassModel outterClass;
 
     private List<TypeModel> superTypes;
+    private ClassModel superClass;
+    private List<ClassModel> interfaces;
+
     private List<GenericTypeParam> genericParams;
 
     private Map<String, FieldModel> fields;
@@ -154,21 +163,24 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     public ClassModel getSuperClass() {
-        List<TypeModel> ls = getSuperTypes();
-        if (ls.isEmpty())
-            return null;
-        return ls.get(0).getClassModel();
+        if (superClass == null && asmClassNode.superName != null)
+            superClass = ASMParser.getClassByName(asmClassNode.superName);
+        return superClass;
     }
 
-    public Iterable<ClassModel> getInterfaces() {
-        List<TypeModel> ls = getSuperTypes();
-        if (ls.isEmpty())
-            return Collections.emptyList();
-        IMapper<TypeModel, ClassModel> map = (c) -> c.getClassModel();
-        return map.map(ls.subList(1, ls.size()));
+    public Collection<ClassModel> getInterfaces() {
+        if (interfaces == null) {
+            interfaces = new ArrayList<>();
+            for (String s : (List<String>) asmClassNode.interfaces) {
+                ClassModel m = ASMParser.getClassByName(s);
+                if (m != null)
+                    interfaces.add(m);
+            }
+        }
+        return interfaces;
     }
 
-    public Iterable<MethodModel> getMethods() {
+    public Collection<MethodModel> getMethods() {
         return getMethodsMap().values();
     }
 
@@ -194,7 +206,7 @@ class ClassModel implements IClassModel, TypeModel {
         return methods;
     }
 
-    public Iterable<FieldModel> getFields() {
+    public Collection<FieldModel> getFields() {
         return getFieldMap().values();
     }
 

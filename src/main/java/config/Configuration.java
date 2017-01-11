@@ -1,6 +1,9 @@
 package config;
 
 import analyzer.IAnalyzer;
+import analyzerClassParser.AnalyzerClassParser;
+import analyzerClassParser.AnalyzerClassParserTest;
+import analyzerRelationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;
@@ -30,7 +33,10 @@ public class Configuration implements IConfiguration {
      * @return Configuration instance.
      */
     public static Configuration getInstance() {
-        return new Configuration();
+        Configuration config = new Configuration();
+        config.addAnalyzer(AnalyzerClassParser.class);
+        config.addAnalyzer(AnalyzerRelationParser.class);
+        return config;
     }
 
     private Configuration() {

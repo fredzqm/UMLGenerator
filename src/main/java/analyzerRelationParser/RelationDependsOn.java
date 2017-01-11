@@ -7,16 +7,14 @@ import analyzer.IRelationInfo;
  */
 public class RelationDependsOn implements IRelationInfo {
     private final boolean many;
-    private final int count;
 
     /**
      * Constructs a RelationHasA object.
      *
      * @param count count value of the relation.
      */
-    RelationDependsOn(int count) {
-        this.many = count <= 0;
-        this.count = Math.abs(count);
+    public RelationDependsOn(boolean many) {
+        this.many = many;
     }
 
     /**
@@ -28,33 +26,38 @@ public class RelationDependsOn implements IRelationInfo {
         return this.many;
     }
 
-    /**
-     * Returns the exact cardinality of this relationship.
-     *
-     * @return Integer of the cardinality.
-     */
-    public int getCount() {
-        return this.count;
-    }
-
     @Override
     public String toString() {
         if (isMany()) {
-            return String.format("Depends on %d..n", this.count);
+            return "Depends on many";
         } else {
-            return "has " + getCount();
+            return "Depends on ";
         }
     }
 
     @Override
     public String getEdgeStyle() {
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=dashed ");
+        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
 
-        if (isMany() || getCount() > 1) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
+        if (isMany()) {
+            edgeBuilder.append("taillabel=\"0..*\" ");
         }
 
         return edgeBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == RelationDependsOn.class) {
+            RelationDependsOn x = (RelationDependsOn) obj;
+            return x.many == this.many;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (many ? 1 : 15);
     }
 
 }

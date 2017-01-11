@@ -49,11 +49,25 @@ public class RelationHasA implements IRelationInfo {
     @Override
     public String getEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
+        if (isMany()) {
+            edgeBuilder.append(String.format("taillabel=\"%d..*\" ", getCount()));
+        } else {
+            edgeBuilder.append(String.format("taillabel=\"%d\" ", getCount()));
+        }
+        return edgeBuilder.toString();
+    }
 
-        if (isMany() || getCount() > 1) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == RelationHasA.class) {
+            RelationHasA x = (RelationHasA) obj;
+            return x.count == this.count && x.many == this.many;
+        }
+        return false;
         }
 
-        return edgeBuilder.toString();
+    @Override
+    public int hashCode() {
+        return count * 31 + (many ? 1 : 15);
     }
 }

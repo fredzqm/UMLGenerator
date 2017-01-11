@@ -29,5 +29,6 @@ public class AnalyzerConfiguration implements IAnalyzerConfiguration, Configurab
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+//        this.mapAnalyzerToConfig(, config);
     }
 }

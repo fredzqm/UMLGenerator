@@ -3,6 +3,9 @@ package app;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import analyzer.ClassPairTest;
+import analyzerClassParser.AnalyzerClassParserTest;
+import analyzerRelationParser.AnalyzerRelationParserTest;
 import config.CommandLineParserTest;
 import model.ASMParserTest;
 import model.ClassModelTest;
@@ -22,7 +25,8 @@ import utility.IMapperTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ SystemTest.class, ASMParserTest.class, CommandLineParserTest.class, SystemModelTest.class,
         ClassModelTest.class, IFilterTest.class, IMapperTest.class, IExpanderTest.class, MethodModelTest.class,
-        TypeParserTest.class, TypeModelTest.class })
+        TypeParserTest.class, TypeModelTest.class, AnalyzerRelationParserTest.class, AnalyzerClassParserTest.class,
+        ClassPairTest.class })
 public class AllTests {
 
 }
