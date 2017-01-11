@@ -15,7 +15,8 @@ public class IClassModelFilter implements IClassModel {
     /**
      * Constructs a Class Model Filter
      *
-     * @param classModel classModel decorated.
+     * @param classModel
+     *            classModel decorated.
      */
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
@@ -65,4 +66,22 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getLabel();
     }
 
+    @Override
+    public IClassModel getUnderlyingClassModel() {
+        return classModel.getUnderlyingClassModel();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof IClassModel) {
+            IClassModel c = (IClassModel) obj;
+            return getUnderlyingClassModel().equals(c.getUnderlyingClassModel());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getUnderlyingClassModel().hashCode();
+    }
 }

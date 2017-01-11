@@ -71,7 +71,7 @@ class ASMParser {
             if ((recursiveFlag & RECURSE_HAS_A) != 0) {
                 for (FieldModel field : model.getFields()) {
                     TypeModel type = field.getFieldType();
-                    addToBothList(classesList, unextended, type.getDependentOnClass());
+                    addToBothList(classesList, unextended, type.getDependentClass());
                 }
             }
         }

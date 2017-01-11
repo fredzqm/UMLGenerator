@@ -56,6 +56,15 @@ public interface IClassModel extends IVertex {
     Collection<? extends IFieldModel> getFields();
 
     /**
+     * This method is used to ensure that even if a classModel is decorated, it
+     * still equals to the original classModel
+     * 
+     * @return get the reference to the innest {@link ClassModel} that is
+     *         decorated
+     */
+    IClassModel getUnderlyingClassModel();
+
+    /**
      * Returns an Iterable of the Model's Methods. Excluding those inherited
      *
      * @return Methods of the Model.

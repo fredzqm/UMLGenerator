@@ -237,8 +237,22 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependentOnClass() {
+    public List<ClassModel> getDependentClass() {
         return Arrays.asList(this);
+    }
+
+    @Override
+    public IClassModel getUnderlyingClassModel() {
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof IClassModel) {
+            IClassModel c = (IClassModel) obj;
+            return this == c.getUnderlyingClassModel();
+        }
+        return false;
     }
 
 }

@@ -67,7 +67,7 @@ public class TypeModelTest {
     public void testDependsOn0() {
         TypeModel t = TypeParser.parseTypeSignature("I");
 
-        Collection<ClassModel> dp = t.getDependentOnClass();
+        Collection<ClassModel> dp = t.getDependentClass();
 
         assertTrue(dp.isEmpty());
     }
@@ -77,7 +77,7 @@ public class TypeModelTest {
         TypeModel t = TypeParser.parseTypeSignature("Ljava/lang/String;");
         assertEquals("java.lang.String", t.getName());
 
-        Iterator<ClassModel> dp = t.getDependentOnClass().iterator();
+        Iterator<ClassModel> dp = t.getDependentClass().iterator();
 
         assertEquals(t, dp.next());
         assertFalse(dp.hasNext());
@@ -88,7 +88,7 @@ public class TypeModelTest {
         TypeModel t = TypeParser.parseTypeSignature("Ljava/util/List<Ljava/lang/Integer;>;");
         assertEquals("java.util.List", t.getName());
 
-        Collection<ClassModel> dp = t.getDependentOnClass();
+        Collection<ClassModel> dp = t.getDependentClass();
         assertEquals(2, dp.size());
         assertTrue(dp.contains(t.getClassModel()));
         assertTrue(dp.contains(ASMParser.getClassByName("java.lang.Integer")));
@@ -99,7 +99,7 @@ public class TypeModelTest {
         TypeModel t = TypeParser
                 .parseTypeSignature("Ljava/util/Map<Ljava/lang/String;Ljava/util/List<[Ljava/lang/Double;>;>;");
 
-        Collection<ClassModel> dp = t.getDependentOnClass();
+        Collection<ClassModel> dp = t.getDependentClass();
         assertEquals(4, dp.size());
         assertTrue(dp.contains(ASMParser.getClassByName("java.util.Map")));
         assertTrue(dp.contains(ASMParser.getClassByName("java.lang.String")));

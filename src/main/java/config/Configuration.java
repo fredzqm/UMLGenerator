@@ -38,8 +38,8 @@ public class Configuration implements IConfiguration {
      */
     public static Configuration getInstance() {
         Configuration config = new Configuration();
-        config.addAnalyzer(AnalyzerRelationParser.class);
         config.addAnalyzer(AnalyzerClassParser.class);
+        config.addAnalyzer(AnalyzerRelationParser.class);
         config.setFilter((x) -> true);
         return config;
     }
