@@ -3,10 +3,10 @@ package app;
 import java.util.Arrays;
 
 import config.Configuration;
-import dummy.Dummy;
-import dummy.RelDummyClass;
-import dummy.RelDummyManyClass;
-import dummy.RelOtherDummyClass;
+import dummy.hasDependsRel.Dummy;
+import dummy.hasDependsRel.RelDummyClass;
+import dummy.hasDependsRel.RelDummyManyClass;
+import dummy.hasDependsRel.RelOtherDummyClass;
 
 /**
  * A Test Class that will generate files for local inspection.

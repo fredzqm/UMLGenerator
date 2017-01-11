@@ -1,9 +1,6 @@
 package app;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,13 +23,13 @@ import analyzerRelationParser.RelationDependsOn;
 import analyzerRelationParser.RelationExtendsClass;
 import analyzerRelationParser.RelationImplement;
 import config.Configuration;
-import dummy.DummyInterface;
-import dummy.DummySubClass;
-import dummy.DummySuperClass;
-import dummy.GenDummyClass;
-import dummy.RelDummyClass;
-import dummy.RelDummyManyClass;
-import dummy.RelOtherDummyClass;
+import dummy.generic.GenDummyClass;
+import dummy.hasDependsRel.RelDummyClass;
+import dummy.hasDependsRel.RelDummyManyClass;
+import dummy.hasDependsRel.RelOtherDummyClass;
+import dummy.inheritanceRel.DummyInterface;
+import dummy.inheritanceRel.DummySubClass;
+import dummy.inheritanceRel.DummySuperClas;
 import utility.Modifier;
 
 /**
@@ -169,7 +166,7 @@ public class SystemTest {
         // Set up config.
         Configuration config = Configuration.getInstance();
         config.setClasses(Arrays.asList(DummyInterface.class.getName(), DummySubClass.class.getName(),
-                DummySuperClass.class.getName()));
+                DummySuperClas.class.getName()));
         config.setRecursive(false);
         config.setFileName("testImplements");
 
@@ -182,7 +179,7 @@ public class SystemTest {
         Collection<? extends IClassModel> classes = systemModel.getClasses();
         IClassModel dummyInterface = getClassFromCollection(DummyInterface.class.getName(), classes);
         IClassModel dummyStub = getClassFromCollection(DummySubClass.class.getName(), classes);
-        IClassModel dummySuperClass = getClassFromCollection(DummySuperClass.class.getName(), classes);
+        IClassModel dummySuperClass = getClassFromCollection(DummySuperClas.class.getName(), classes);
 
         // get relations
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
@@ -199,14 +196,18 @@ public class SystemTest {
 
     @Test
     public void graphVizManyNoFields() {
+        String relDummyMany = RelDummyManyClass.class.getName();
+        String relOtherDummy = RelOtherDummyClass.class.getName();
+        String relDummy = RelDummyClass.class.getName();
+
         // Set up config.
         Configuration config = Configuration.getInstance();
         config.setFilters(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
         config.setRecursive(false);
         List<String> classList = new ArrayList<>();
-        classList.add(RelDummyManyClass.class.getName());
-        classList.add(RelOtherDummyClass.class.getName());
-        classList.add(RelDummyClass.class.getName());
+        classList.add(relDummyMany);
+        classList.add(relOtherDummy);
+        classList.add(relDummy);
         config.setClasses(classList);
 
         // Set up SystemModel and Generator.
@@ -216,13 +217,13 @@ public class SystemTest {
 
         // get classes
         Collection<? extends IClassModel> classes = systemModel.getClasses();
-        IClassModel RelDummyManyClass = getClassFromCollection(RelDummyManyClass.class.getName(), classes);
-        IClassModel RelOtherDummyClass = getClassFromCollection(RelOtherDummyClass.class.getName(), classes);
-        IClassModel RelDummyClass = getClassFromCollection(RelDummyClass.class.getName(), classes);
+        IClassModel RelDummyManyClass = getClassFromCollection(relDummyMany, classes);
+        IClassModel RelOtherDummyClass = getClassFromCollection(relOtherDummy, classes);
+        IClassModel RelDummyClass = getClassFromCollection(relDummy, classes);
 
         // get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-        
+
         List<IRelationInfo> relFromManyToOther = relations.get(new ClassPair(RelDummyManyClass, RelOtherDummyClass));
         assertEquals(1, relFromManyToOther.size());
         assertEquals(new RelationDependsOn(true), relFromManyToOther.get(0));
@@ -232,8 +233,8 @@ public class SystemTest {
         assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedDependencyCardinality = "\"dummy.RelDummyManyClass\" -> "
-                + "\"dummy.RelOtherDummyClass\" [arrowhead=\"vee\" style=\"dashed\"" + " taillabel=\"0..*\" ];";
+        String expectedDependencyCardinality = "\"" + relDummyMany + "\" -> " + "\"" + relOtherDummy
+                + "\" [arrowhead=\"vee\" style=\"dashed\" taillabel=\"0..*\" ];";
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 

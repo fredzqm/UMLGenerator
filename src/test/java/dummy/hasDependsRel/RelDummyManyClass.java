@@ -1,6 +1,5 @@
-package dummy;
+package dummy.hasDependsRel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

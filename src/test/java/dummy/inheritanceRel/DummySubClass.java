@@ -1,6 +1,6 @@
-package dummy;
+package dummy.inheritanceRel;
 
-public class DummySubClass extends DummySuperClass{
+public class DummySubClass extends DummySuperClas{
 
 	public DummySubClass(String s) {
 		super(s);

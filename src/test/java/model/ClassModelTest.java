@@ -12,9 +12,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import dummy.Dummy;
-import dummy.GenericDummyClass;
-import dummy.GenericDummyClass2;
+import dummy.generic.GenericDummyClass;
+import dummy.generic.GenericDummyClass2;
+import dummy.hasDependsRel.Dummy;
 import labTestCI.AmazonLineParser;
 import labTestCI.ILineParser;
 import utility.ClassType;
@@ -81,7 +81,8 @@ public class ClassModelTest {
 
     @Test
     public void testGetMethods() {
-        ClassModel model = ASMParser.getClassByName("dummy.Dummy");
+        String dummy = Dummy.class.getName();
+        ClassModel model = ASMParser.getClassByName(dummy);
 
         Set<String> actual = new HashSet<>();
         Set<String> expected = new HashSet<>(Arrays.asList("publicMethod", "privateMethod"));
@@ -200,9 +201,9 @@ public class ClassModelTest {
                 mapAtoEType);
 
     }
-    
+
     @Test
-    public void testGetLabelAndPrototype(){
+    public void testGetLabelAndPrototype() {
         ClassModel model = ASMParser.getClassByName("java.lang.String");
         String label = model.getLabel();
         assertEquals("", label);
