@@ -1,6 +1,7 @@
 package config;
 
 import org.junit.Test;
+import utility.IFilter;
 import utility.Modifier;
 
 import static org.junit.Assert.assertEquals;
@@ -16,16 +17,19 @@ public class ConfigFileParserTest {
 
         Configuration config = parser.create();
 
-        assertEquals("java.lang.String", config.getClasses().iterator().next());
-        assertEquals("dot", config.getExecutablePath());
-        assertEquals("svg", config.getOutputFormat());
-        assertEquals("out", config.getFileName());
-        assertEquals(10, (int) (10 * config.getNodeSep()));
-        assertTrue(!config.isRecursive());
-        assertTrue(!config.getModifierFilters().filter(Modifier.PRIVATE));
-        assertTrue(!config.getModifierFilters().filter(Modifier.PROTECTED));
-        assertTrue(config.getModifierFilters().filter(Modifier.PUBLIC));
-        assertEquals("BT", config.getRankDir());
+        assertEquals("java.lang.String", config.getValues(ModelConfiguration.CLASSES_KEY).iterator().next());
+        assertEquals("dot", config.getValue(RunnerConfiguration.EXECUTABLE_PATH));
+        assertEquals("svg", config.getValue(RunnerConfiguration.OUTPUT_FORMAT));
+        assertEquals("output", config.getValue(RunnerConfiguration.OUTPUT_DIRECTORY));
+        assertEquals(10, (int) (10 * Double.parseDouble(config.getValue(GeneratorConfiguration.NODE_SEP))));
+        assertTrue(!Boolean.parseBoolean(config.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
+
+        IFilter<Modifier> filter = (IFilter<Modifier>) config.getClass(ClassParserConfiguration.FILTER).newInstance();
+        assertTrue(!filter.filter(Modifier.PRIVATE));
+        assertTrue(!filter.filter(Modifier.PROTECTED));
+        assertTrue(filter.filter(Modifier.PUBLIC));
+
+        assertEquals("BT", config.getValue(GeneratorConfiguration.RANK_DIR));
     }
 
 }

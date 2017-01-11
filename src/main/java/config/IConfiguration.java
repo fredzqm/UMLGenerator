@@ -1,5 +1,8 @@
 package config;
 
+import analyzer.IAnalyzer;
+import generator.IGenerator;
+
 public interface IConfiguration {
     /**
      * Constructs the given configurable object.
@@ -42,7 +45,27 @@ public interface IConfiguration {
     void add(String key, Class value);
 
     Iterable<String> getValues(String key);
+
     Iterable<Class> getClasses(String key);
+
     String getValue(String key);
+
     Class getClass(String key);
+
+    Iterable<Class<? extends IAnalyzer>> getAnalyzers();
+
+    void addAnalyzer(Class<? extends IAnalyzer> analyzer);
+
+    void removeAnalyzer(Class<? extends IAnalyzer> analyzer);
+
+    Class<? extends IGenerator> getGenerator();
+
+    void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config);
+
+    Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass);
+
+    void setIfMissing(String key, String value);
+    void setIfMissing(String key, Class value);
+    void addIfMissing(String key, String value);
+    void addIfMissing(String key, Class value);
 }

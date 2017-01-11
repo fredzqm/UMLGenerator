@@ -1,10 +1,10 @@
 package config;
 
 import com.martiansoftware.jsap.*;
+import utility.IFilter;
 import utility.Modifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -131,12 +131,16 @@ public class CommandLineParser implements ConfigurationFactory {
         }
 
         Configuration conf = Configuration.getInstance();
-        conf.setClasses(Arrays.asList(config.getStringArray("class")));
-        conf.setExecutablePath(config.getString("path"));
-        conf.setOutputFormat(config.getString("extension"));
-        conf.setOutputDirectory(config.getString("outputDirectory"));
-        conf.setFileName(config.getString("outputfile"));
-        conf.setNodesep(config.getDouble("nodeseparationvalue"));
+        String[] classes = config.getStringArray("class");
+        for (String c : classes) {
+            conf.add(ModelConfiguration.CLASSES_KEY, c);
+        }
+        conf.set(RunnerConfiguration.EXECUTABLE_PATH, config.getString("path"));
+        conf.set(RunnerConfiguration.OUTPUT_FORMAT, config.getString("extension"));
+        conf.set(RunnerConfiguration.OUTPUT_DIRECTORY, config.getString("outputDirectory"));
+        conf.set(RunnerConfiguration.FILE_NAME, config.getString("outputfile"));
+
+        conf.set(GeneratorConfiguration.NODE_SEP, Double.toString(config.getDouble("nodeseparationvalue")));
 
         List<Modifier> filters = new ArrayList<Modifier>();
         switch (config.getString("filters")) {
@@ -152,14 +156,17 @@ public class CommandLineParser implements ConfigurationFactory {
             default:
                 System.err.println("modifier not found");
         }
-        conf.setFilters((d) -> !filters.contains(d));
 
-        conf.setRecursive(config.getBoolean("recursive"));
+        IFilter<Modifier> filter = data -> !filters.contains(data);
+
+        conf.set(ClassParserConfiguration.FILTER, filter.getClass());
+
+        conf.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(config.getBoolean("recursive")));
 
         if (config.getBoolean("rankdir")) {
-            conf.setRankDir("TB");
+            conf.set(GeneratorConfiguration.RANK_DIR, "TB");
         } else {
-            conf.setRankDir("BT");
+            conf.set(GeneratorConfiguration.RANK_DIR, "BT");
         }
 
         return conf;

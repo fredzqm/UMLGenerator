@@ -12,7 +12,6 @@ import java.util.List;
  * Created by lamd on 12/9/2016.
  */
 public interface IClassModel extends IVertex {
-
     /**
      * Returns the String of the Model's Class Name.
      *

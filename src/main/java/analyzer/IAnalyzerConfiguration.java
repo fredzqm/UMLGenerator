@@ -8,4 +8,12 @@ public interface IAnalyzerConfiguration {
      * @return the specific configuration object for this analyzer
      */
     Object getConfigurationFor(Class<? extends IAnalyzer> analyzerClass);
+
+    /**
+     * Stores the correspondance of analyzerClass with Config.
+     *
+     * @param analyzerClass IAnalyzer to link to correspondance.
+     * @param config        A Configuration Object.
+     */
+    void mapAnalyzerToConfig(Class<? extends IAnalyzer> analyzerClass, Object config);
 }

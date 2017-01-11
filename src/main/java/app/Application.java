@@ -2,6 +2,7 @@ package app;
 
 import config.CommandLineParser;
 import config.Configuration;
+import config.RunnerConfiguration;
 import display.Display;
 
 public class Application {
@@ -12,6 +13,6 @@ public class Application {
         Runnable engine = UMLEngine.getInstance(config);
         engine.run();
 
-        Display.showWindow(config);
+        Display.showWindow(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
     }
 }

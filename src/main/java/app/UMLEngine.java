@@ -2,8 +2,7 @@ package app;
 
 import analyzer.IAnalyzer;
 import analyzer.ISystemModel;
-import config.Configuration;
-import config.IConfiguration;
+import config.*;
 import generator.IGenerator;
 import generator.IGraph;
 import model.SystemModel;
@@ -32,16 +31,16 @@ public class UMLEngine extends AbstractUMLEngine {
 
     @Override
     public ISystemModel createSystemModel() {
-        return SystemModel.getInstance(config);
+        return SystemModel.getInstance(ModelConfiguration.class.cast(config.createConfiguration(ModelConfiguration.class)));
     }
 
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
-        Iterable<Class<? extends IAnalyzer>> anClassLs = config.getAnalyzers();
+        Iterable<Class<? extends IAnalyzer>> anClassLs = this.config.getAnalyzers();
         for (Class<? extends IAnalyzer> anClass : anClassLs) {
             try {
                 IAnalyzer analyzer = anClass.newInstance();
-                systemModel = analyzer.analyze(systemModel, config);
+                systemModel = analyzer.analyze(systemModel, AnalyzerConfiguration.class.cast(config.createConfiguration(AnalyzerConfiguration.class)));
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);
             }
@@ -58,12 +57,12 @@ public class UMLEngine extends AbstractUMLEngine {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Generator " + genClass + " does not have an empty constructor", e);
         }
-        return gen.generate(config, graph);
+        return gen.generate(GeneratorConfiguration.class.cast(this.config.createConfiguration(GeneratorConfiguration.class)), graph);
     }
 
     @Override
     void executeRunner(String graphVisStr) {
-        IRunner runner = new GraphVizRunner(config);
+        IRunner runner = new GraphVizRunner(RunnerConfiguration.class.cast(this.config.createConfiguration(RunnerConfiguration.class)));
         try {
             runner.execute(graphVisStr);
         } catch (Exception e) {

@@ -43,30 +43,29 @@ public class ConfigFileParser implements ConfigurationFactory {
         if (jsonConf.has("classes")) {
             JSONArray classes = jsonConf.getJSONArray("classes");
 
-            List<String> listClasses = new ArrayList<>();
-            for (int i = 0; i < classes.length(); i++)
-                listClasses.add(classes.getString(i));
-            conf.setClasses(listClasses);
+            for (int i = 0; i < classes.length(); i++) {
+                conf.add(ModelConfiguration.CLASSES_KEY, classes.getString(i));
+            }
         }
 
         if (jsonConf.has("executablePath")) {
-            conf.setExecutablePath(jsonConf.getString("executablePath"));
+            conf.set(RunnerConfiguration.EXECUTABLE_PATH, jsonConf.getString("executablePath"));
         }
 
         if (jsonConf.has("outputFormat")) {
-            conf.setOutputFormat(jsonConf.getString("outputFormat"));
+            conf.set(RunnerConfiguration.OUTPUT_FORMAT, jsonConf.getString("outputFormat"));
         }
 
         if (jsonConf.has("outputDir")) {
-            conf.setOutputDirectory(jsonConf.getString("outputDir"));
+            conf.set(RunnerConfiguration.OUTPUT_DIRECTORY, jsonConf.getString("outputDir"));
         }
 
         if (jsonConf.has("fileName")) {
-            conf.setFileName(jsonConf.getString("fileName"));
+            conf.set(RunnerConfiguration.FILE_NAME, jsonConf.getString("fileName"));
         }
 
         if (jsonConf.has("nodeSep")) {
-            conf.setNodesep(jsonConf.getDouble("nodeSep"));
+            conf.set(GeneratorConfiguration.NODE_SEP, Double.toString(jsonConf.getDouble("nodeSep")));
         }
 
         if (jsonConf.has("modifierFilter")) {
@@ -86,7 +85,7 @@ public class ConfigFileParser implements ConfigurationFactory {
                 default:
                     System.err.println("modifier not found");
             }
-            conf.setFilters(new IFilter<Modifier>() {
+            IFilter<Modifier> modifierFilter = new IFilter<Modifier>() {
                 @Override
                 public boolean filter(Modifier data) {
                     return !filters.contains(data);
@@ -95,15 +94,17 @@ public class ConfigFileParser implements ConfigurationFactory {
                 public String toString() {
                     return filters.toString();
                 }
-            });
+            };
+
+            conf.set(ClassParserConfiguration.FILTER, modifierFilter.getClass());
         }
 
         if (jsonConf.has("isRecursive")) {
-            conf.setRecursive(jsonConf.getBoolean("isRecursive"));
+            conf.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(jsonConf.getBoolean("isRecursive")));
         }
 
         if (jsonConf.has("rankDir")) {
-            conf.setRankDir(jsonConf.getString("rankDir"));
+            conf.set(GeneratorConfiguration.RANK_DIR, jsonConf.getString("rankDir"));
         }
 
         return conf;

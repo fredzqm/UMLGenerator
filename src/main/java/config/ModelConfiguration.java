@@ -18,8 +18,8 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.add(ModelConfiguration.CLASSES_KEY, "");
-        this.config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
+        this.config.addIfMissing(ModelConfiguration.CLASSES_KEY, "");
+        this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
     }
 
     @Override

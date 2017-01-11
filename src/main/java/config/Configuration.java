@@ -1,12 +1,8 @@
 package config;
 
-import analyzer.*;
-import analyzerClassParser.*;
-import analyzerRelationParser.AnalyzerRelationParser;
+import analyzer.IAnalyzer;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
-import utility.IFilter;
-import utility.Modifier;
 
 import java.util.*;
 
@@ -16,35 +12,20 @@ import java.util.*;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class Configuration implements IConfiguration {
-//    private Iterable<String> classes;
-//    private String executablePath;
-//    private String outputFormat;
-//    private String outputDirectory;
-//    private String fileName;
-//    private double nodesep;
-//    private IFilter<Modifier> modifierFilter;
-//    private boolean isRecursive;
-//    private String rankDir;
-//    private String nodeStyle;
-//    private Iterable<Class<? extends IAnalyzer>> analyzerls;
-//    private Class<? extends IGenerator> generator;
-//    private Class<? extends IParser<IClassModel>> classHeaderParser;
-//    private Class<? extends IParser<IFieldModel>> fieldParser;
-//    private Class<? extends IParser<IMethodModel>> methodParser;
-//    private Class<? extends IParser<ITypeModel>> typeParser;
-//    private Class<? extends IParser<Modifier>> modifierParser;
-
     private static final String DELIMITER = " ";
 
     private Map<String, Class> classMap;
     private Map<String, List<Class>> classesMap;
     private Map<String, String> valueMap;
-    private Map<String, String> valuesMap;
+//    private Map<String, String> valuesMap;
+    private Map<Class<? extends IAnalyzer>, Object> analyzerToConfigurationMap;
+    private List<Class<? extends IAnalyzer>> analyzers;
+    private Class<? extends IGenerator> generator;
 
     /**
-     * TODO: Adam.
+     * Returns an instance of the Configuration.
      *
-     * @return
+     * @return Configuration instance.
      */
     public static Configuration getInstance() {
         return new Configuration();
@@ -54,13 +35,55 @@ public class Configuration implements IConfiguration {
         this.classMap = new HashMap<>();
         this.classesMap = new HashMap<>();
         this.valueMap = new HashMap<>();
-        this.valuesMap = new HashMap<>();
+//        this.valuesMap = new HashMap<>();
+        this.analyzerToConfigurationMap = new HashMap<>();
+
+        this.generator = GraphVizGenerator.class;
+        this.analyzers = new ArrayList<>();
+    }
+
+    @Override
+    public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
+        return this.analyzers;
+    }
+
+    @Override
+    public void addAnalyzer(Class<? extends IAnalyzer> analyzer) {
+        this.analyzers.add(analyzer);
+    }
+
+    @Override
+    public void removeAnalyzer(Class<? extends IAnalyzer> analyzer) {
+        this.analyzers.remove(analyzer);
+    }
+
+    @Override
+    public void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config) {
+        if (analyzerClass == null) {
+            throw new NullPointerException("Analyzer Class cannot be null");
+        }
+
+        this.analyzerToConfigurationMap.put(analyzerClass, config);
+    }
+
+    @Override
+    public Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass) {
+        return this.analyzerToConfigurationMap.get(analyzerClass);
+    }
+
+    @Override
+    public Class<? extends IGenerator> getGenerator() {
+        return this.generator;
+    }
+
+    public void setGenerator(Class<? extends IGenerator> generator) {
+        this.generator = generator;
     }
 
     @Override
     public Configurable createConfiguration(Class<? extends Configurable> configClass) {
         try {
-            Configurable configurable = configClass.newInstance();
+            Configurable configurable = configClass.cast(configClass.newInstance());
             configurable.setup(this);
             return configurable;
         } catch (InstantiationException | IllegalAccessException e) {
@@ -79,9 +102,37 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
+    public void setIfMissing(String key, String value) {
+        if (!this.valueMap.containsKey(key)) {
+            this.valueMap.put(key, value);
+        }
+    }
+
+    @Override
+    public void setIfMissing(String key, Class value) {
+        if (!this.classMap.containsKey(key)) {
+            this.classMap.put(key, value);
+        }
+    }
+
+    @Override
+    public void addIfMissing(String key, String value) {
+        if (!this.valueMap.containsKey(key)) {
+            this.valueMap.put(key, value);
+        }
+    }
+
+    @Override
+    public void addIfMissing(String key, Class value) {
+        if (!this.classesMap.containsKey(key)) {
+            this.classesMap.put(key, Collections.singletonList(value));
+        }
+    }
+
+    @Override
     public void add(String key, String value) {
-        if (this.valuesMap.containsKey(key)) {
-            this.valuesMap.put(key, String.format("%s%s%s", this.valueMap.get(key), DELIMITER, value));
+        if (this.valueMap.containsKey(key)) {
+            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), DELIMITER, value));
         } else {
             this.valueMap.put(key, value);
         }
@@ -101,8 +152,8 @@ public class Configuration implements IConfiguration {
 
     @Override
     public Iterable<String> getValues(String key) {
-        if (this.valuesMap.containsKey(key)) {
-            String values = this.valuesMap.get(key);
+        if (this.valueMap.containsKey(key)) {
+            String values = this.valueMap.get(key);
             return Arrays.asList(values.split(DELIMITER));
         }
         return null;
