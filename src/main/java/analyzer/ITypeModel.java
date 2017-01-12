@@ -29,7 +29,26 @@ public interface ITypeModel {
     int getGenericArgNumber();
 
     /**
-     * @param className the name of the class
+     * 
+     * @return if the bound of a wild character type
+     */
+    ITypeModel getLowerBound();
+
+    /**
+     * 
+     * @return
+     */
+    ITypeModel getUpperBound();
+    
+    /**
+     * 
+     * @return
+     */
+    boolean isWildCharacter();
+    
+    /**
+     * @param className
+     *            the name of the class
      * @return the strictest type of className that this type can be assigned to
      */
     ITypeModel assignTo(String className);

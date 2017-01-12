@@ -32,8 +32,7 @@ class TypeParser {
                 type = type.getElementType();
                 return new ArrayTypeModel(parse(type), dimension);
             case Type.OBJECT:
-                ClassModel classModel = ASMParser.getClassByName(type.getClassName());
-                return classModel;
+                return ASMParser.getClassByName(type.getClassName());
             case Type.VOID:
                 return PrimitiveType.VOID;
             case Type.INT:
@@ -288,12 +287,12 @@ class TypeParser {
         private List<GenericTypeParam> typeParameters;
         private List<TypeModel> superTypes;
 
-        public ClassSignatureParseResult(List<GenericTypeParam> typeParameters, List<TypeModel> superTypes) {
+        ClassSignatureParseResult(List<GenericTypeParam> typeParameters, List<TypeModel> superTypes) {
             this.typeParameters = typeParameters;
             this.superTypes = superTypes;
         }
 
-        public List<GenericTypeParam> getParamsList() {
+        List<GenericTypeParam> getParamsList() {
             return typeParameters;
         }
 
@@ -308,27 +307,27 @@ class TypeParser {
         private List<TypeModel> argumentsList;
         private List<TypeModel> exceptionList;
 
-        public MethodSignatureParseResult(List<GenericTypeParam> typeParameters, TypeModel returnType,
-                                          List<TypeModel> argumentList, List<TypeModel> exceptionList) {
+        MethodSignatureParseResult(List<GenericTypeParam> typeParameters, TypeModel returnType,
+                                   List<TypeModel> argumentList, List<TypeModel> exceptionList) {
             this.typeParameters = typeParameters;
             this.returnType = returnType;
             this.argumentsList = argumentList;
             this.exceptionList = exceptionList;
         }
 
-        public List<GenericTypeParam> getParameters() {
+        List<GenericTypeParam> getParameters() {
             return typeParameters;
         }
 
-        public TypeModel getReturnType() {
+        TypeModel getReturnType() {
             return returnType;
         }
 
-        public List<TypeModel> getArguments() {
+        List<TypeModel> getArguments() {
             return argumentsList;
         }
 
-        public List<TypeModel> getExceptionList() {
+        List<TypeModel> getExceptionList() {
             return exceptionList;
         }
 

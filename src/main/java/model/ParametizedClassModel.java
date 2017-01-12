@@ -68,7 +68,7 @@ class ParametizedClassModel implements TypeModel {
         if (!superTypes.isEmpty()) {
             sb.append(superTypes.get(0));
             for (int i = 1; i < superTypes.size(); i++) {
-                sb.append("," + superTypes.get(i));
+                sb.append(",").append(superTypes.get(i));
             }
         }
         return getName() + "<" + sb.toString() + ">";

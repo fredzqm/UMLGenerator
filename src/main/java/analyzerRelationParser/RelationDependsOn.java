@@ -11,7 +11,7 @@ public class RelationDependsOn implements IRelationInfo {
     /**
      * Constructs a RelationHasA object.
      *
-     * @param count count value of the relation.
+     * @param many
      */
     public RelationDependsOn(boolean many) {
         this.many = many;

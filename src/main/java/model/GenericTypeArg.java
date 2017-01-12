@@ -1,6 +1,9 @@
 package model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -38,11 +41,15 @@ abstract class GenericTypeArg implements TypeModel {
         return null;
     }
 
-    public static class LowerBound extends GenericTypeArg {
+    static class LowerBound extends GenericTypeArg {
         private TypeModel lowerBound;
 
         LowerBound(TypeModel lowerBound) {
             this.lowerBound = lowerBound;
+        }
+
+        public TypeModel getLowerBound() {
+            return lowerBound;
         }
 
         @Override
@@ -66,7 +73,7 @@ abstract class GenericTypeArg implements TypeModel {
 
         @Override
         public Iterable<TypeModel> getSuperTypes() {
-            return Arrays.asList(lowerBound);
+            return Collections.singletonList(lowerBound);
         }
 
         @Override
@@ -86,11 +93,15 @@ abstract class GenericTypeArg implements TypeModel {
 
     }
 
-    public static class UpperBound extends GenericTypeArg {
+    static class UpperBound extends GenericTypeArg {
         private TypeModel upperBound;
 
         UpperBound(TypeModel upperBound) {
             this.upperBound = upperBound;
+        }
+
+        public TypeModel getUpperBound() {
+            return upperBound;
         }
 
         @Override
@@ -129,6 +140,10 @@ abstract class GenericTypeArg implements TypeModel {
         @Override
         public String toString() {
             return "*";
+        }
+
+        public boolean isWildCharacter() {
+            return true;
         }
 
         @Override

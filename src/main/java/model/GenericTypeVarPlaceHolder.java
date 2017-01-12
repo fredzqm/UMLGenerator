@@ -13,7 +13,7 @@ import java.util.Map;
 class GenericTypeVarPlaceHolder implements TypeModel {
     private final String key;
 
-    public GenericTypeVarPlaceHolder(String name) {
+    GenericTypeVarPlaceHolder(String name) {
         key = name;
     }
 

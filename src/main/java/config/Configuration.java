@@ -1,5 +1,11 @@
 package config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import analyzer.IAnalyzer;
 import analyzerClassParser.AnalyzerClassParser;
 import analyzerRelationParser.AnalyzerRelationParser;
@@ -7,8 +13,6 @@ import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of configuration objects.
@@ -18,8 +22,8 @@ import java.util.*;
 public class Configuration implements IConfiguration {
     private static final String DELIMITER = " ";
 
-    private Map<String, Class> classMap;
-    private Map<String, List<Class>> classesMap;
+    private Map<String, Class<?>> classMap;
+    private Map<String, List<Class<?>>> classesMap;
     private Map<String, String> valueMap;
     private Map<Class<? extends IAnalyzer>, Object> analyzerToConfigurationMap;
     private List<Class<? extends IAnalyzer>> analyzers;
@@ -124,7 +128,7 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void set(String key, Class value) {
+    public void set(String key, Class<?> value) {
         this.classMap.put(key, value);
     }
 
@@ -141,25 +145,11 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void setIfMissing(String key, Class value) {
+    public void setIfMissing(String key, Class<?> value) {
         if (!this.classMap.containsKey(key)) {
             this.classMap.put(key, value);
         }
     }
-
-//    @Override
-//    public void addIfMissing(String key, String value) {
-//        if (!this.valueMap.containsKey(key)) {
-//            this.valueMap.put(key, value);
-//        }
-//    }
-//
-//    @Override
-//    public void addIfMissing(String key, Class value) {
-//        if (!this.classesMap.containsKey(key)) {
-//            this.classesMap.put(key, Collections.singletonList(value));
-//        }
-//    }
 
     @Override
     public void add(String key, String value) {
@@ -171,8 +161,8 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void add(String key, Class value) {
-        List<Class> classesList;
+    public void add(String key, Class<?> value) {
+        List<Class<?>> classesList;
         if (this.classesMap.containsKey(key)) {
             classesList = this.classesMap.get(key);
             classesList.add(value);
@@ -192,7 +182,7 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public Iterable<Class> getClasses(String key) {
+    public Iterable<Class<?>> getClasses(String key) {
         return this.classesMap.get(key);
     }
 
@@ -202,7 +192,7 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public Class getClass(String key) {
+    public Class<?> getClass(String key) {
         return this.classMap.get(key);
     }
 }
