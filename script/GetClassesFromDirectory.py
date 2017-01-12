@@ -22,11 +22,12 @@ def getJavaFiles(direct):
                 ret = ret + dir.split(".")[0] + "\""
             else:
                 print(dir)
-    return ret
+    return ret[1 : len(ret)]
 
 def main():
     ret = ''
     ret = getJavaFiles(sys.argv[1])
-    print(ret)
+    print("\"" + ret)
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
