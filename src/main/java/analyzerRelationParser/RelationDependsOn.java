@@ -40,7 +40,7 @@ public class RelationDependsOn implements IRelationInfo {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
 
         if (isMany()) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
+            edgeBuilder.append("taillabel=\"0..*\" ");
         }
 
         return edgeBuilder.toString();

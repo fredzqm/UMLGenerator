@@ -32,8 +32,7 @@ class TypeParser {
                 type = type.getElementType();
                 return new ArrayTypeModel(parse(type), dimension);
             case Type.OBJECT:
-                ClassModel classModel = ASMParser.getClassByName(type.getClassName());
-                return classModel;
+                return ASMParser.getClassByName(type.getClassName());
             case Type.VOID:
                 return PrimitiveType.VOID;
             case Type.INT:
