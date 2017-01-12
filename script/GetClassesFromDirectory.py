@@ -14,7 +14,7 @@ def getJavaFiles(direct):
         else:
             nameSplit = os.path.splitext(dir)
             if nameSplit[1] == '.java':
-                folders = direct.split("/")
+                folders = os.path.split(direct)
                 qualifiedName = ''
                 for k in range(1, len(folders)):
                     qualifiedName += folders[k] + '.'
