@@ -1,0 +1,477 @@
+@startuml
+package config <<Folder>> {
+    class Configuration {
+        -DELIMITER = " ": String
+        -classMap: Map<String, Class>
+        -classesMap: Map<String, List<Class>>
+        -valueMap: Map<String, String>
+        -analyzerToConfigurationMap: Map<Class<? extends IAnalyzer>, Object>
+        -analyzers: List<Class<? extends IAnalyzer>>
+        -generator: Class<? extends IGenerator>
+        -modifierFilter: IFilter<Modifier>
+        +getInstance(): Configuration
+        +getAnalyzers(): Iterable<Class<? extends IAnalyzer>>
+        +addAnalyzer(Class<? extends IAnalyzer> analyzer): void
+        +removeAnalyzer(Class<? extends IAnalyzer> analyzer): void
+        +mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config): void
+        +getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass): Object
+        +getGenerator(): Class<? extends IGenerator>
+        +setGenerator(Class<? extends IGenerator> generator): void
+        +createConfiguration(Class<? extends Configurable> configClass): Configurable
+        +getModifierFilter(): IFilter<Modifier>
+        +setFilter(IFilter<Modifier> modifierIFilter): void
+        +setFilterIfMissing(IFilter<Modifier> modifierIFilter): void
+        +set(String key, Class value): void
+        +set(String key, String value): void
+        +setIfMissing(String key, String value): void
+        +setIfMissing(String key, Class value): void
+        +addIfMissing(String key, String value): void
+        +addIfMissing(String key, Class value): void
+        +add(String key, String value): void
+        +add(String key, Class value): void
+        +getValues(String key): Iterable<String>
+        +getClasses(String key): Iterable<Class>
+        +getValue(String key): String
+        +getClass(String key): Class
+    }
+
+    class ModifierFilter{
+        +filter(Modifier data): boolean
+    }
+
+    together {
+        
+        class AnalyzerConfiguration {
+            -config: IConfiguration
+            +getConfigurationFor(Class<? extends IAnalyzer> analyzerClass): Object
+            +mapAnalyzerToConfig(Class<? extends IAnalyzer> analyzerClass, Object config): void
+            +setup(IConfiguration config): void
+        }
+        
+        class RunnerConfiguration{
+            +OUTPUT_FORMAT = "runner_output_format": String
+            +OUTPUT_DIRECTORY = "runner_output_directory": String
+            +EXECUTABLE_PATH = "runner_executable_path": String
+            +FILE_NAME = "runner_file_name": String
+            -config: IConfiguration
+            +setup(IConfiguration config): void
+            +getOutputFormat(): String
+            +getOutputDirectory(): String
+            +getExecutablePath(): String
+            +getFileName(): String
+        }
+
+        class GeneratorConfiguration {
+            +NODE_SEP = "generator_node_sep": String
+            +RANK_DIR = "generator_rank_dir": String
+            +NODE_STYLE = "generator_node_style": String
+            -config: IConfiguration
+            +setup(IConfiguration config): void
+            +getNodeSep(): double
+            +getRankDir(): String
+            +getNodeStyle(): String
+        }
+
+        class ModelConfiguration {
+            +CLASSES_KEY = "model_classes": String
+            +IS_RECURSIVE_KEY = "model_is_recursive": String
+            -config: IConfiguration
+            +ModelConfiguration(): ctor
+            +setup(IConfiguration config): void
+            +getClasses(): Iterable<String>
+            +isRecursive(): boolean
+        }
+
+        class ClassParserConfiguration {
+            +HEADER = "class_header": String
+            +FIELD = "class_field": String
+            +METHOD = "class_method": String
+            +TYPE = "class_type": String
+            +MODIFIER = "class_modifier": String
+            -config: IConfiguration
+            +setup(IConfiguration config): void
+            +getModifierFilters(): IFilter<Modifier>
+            +getHeaderParser(): IParser<IClassModel>
+            +getFieldParser(): IParser<IFieldModel>
+            +getMethodParser(): IParser<IMethodModel>
+            +getTypeParser(): IParser<ITypeModel>
+            +getModifierParser(): IParser<Modifier>
+        }
+
+    }
+
+    together {
+        class ConfigFileParser {
+            -json: JSONObject
+            +getJson(): JSONObject
+            -setJson(JSONObject json): void
+            +create(): Configuration
+            +getString(String name, JSONObject jsonConf): String
+        }
+
+        class CommandLineParser {
+            -args: String[]
+            -jsap: JSAP
+            +CommandLineParser(String[] args): ctor
+            +create(): Configuration
+            +addOption(Parameter opt): void
+        }
+
+    }
+
+
+    interface ConfigurationFactory {
+        ~create(): Configuration
+    }
+
+    interface IConfiguration {
+        ~createConfiguration(Class<? extends Configurable> configClass): Configurable
+        ~set(String key, Class value): void
+        ~set(String key, String value): void
+        ~add(String key, String value): void
+        ~add(String key, Class value): void
+        ~getValues(String key): Iterable<String>
+        ~getClasses(String key): Iterable<Class>
+        ~getValue(String key): String
+        ~getClass(String key): Class
+        ~getAnalyzers(): Iterable<Class<? extends IAnalyzer>>
+        ~addAnalyzer(Class<? extends IAnalyzer> analyzer): void
+        ~removeAnalyzer(Class<? extends IAnalyzer> analyzer): void
+        ~getGenerator(): Class<? extends IGenerator>
+        ~mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config): void
+        ~getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass): Object
+        ~setIfMissing(String key, String value): void
+        ~setIfMissing(String key, Class value): void
+        ~addIfMissing(String key, String value): void
+        ~addIfMissing(String key, Class value): void
+        ~setFilter(IFilter<Modifier> modifierIFilter): void
+        ~setFilterIfMissing(IFilter<Modifier> modifierIFilter): void
+        ~getModifierFilter(): IFilter<Modifier>
+    }
+
+    interface Configurable {
+        setup(IConfiguration config): void
+    }
+
+    class CommandLineFileInput {
+        -json: JSONObject
+        ~getJson(): JSONObject
+        +setJson(JSONObject json): void
+    }
+
+}
+
+package runner <<Folder>> {
+    class GraphVizRunner {
+        -OUTPUT_FILE_EXTENSION = "dot": String
+        -config: IRunnerConfiguration
+        +GraphVizRunner(IRunnerConfiguration config): ctor
+        +execute(String dotString): void
+        -writeDOTFile(String dotString, String outputFilePathDot): void
+    }
+
+    interface IRunnerConfiguration {
+        ~getOutputFormat(): String
+        ~getOutputDirectory(): String
+        ~getExecutablePath(): String
+        ~getFileName(): String
+    }
+
+    interface IRunner {
+        ~execute(String dotString): void
+    }
+}
+
+package analyzer <<Folder>>{
+    interface IAnalyzerConfiguration {
+        getConfigurationFor(Class<? extends IAnalyzer> analyzerClass): Object
+        mapAnalyzerToConfig(Class<? extends IAnalyzer> analyzerClass, Object config): void
+    }
+}
+
+package app <<Folder>> {
+    class UMLEngine {
+        -config: IConfiguration
+        ~getInstance(Configuration config): UMLEngine
+        +createSystemModel(): ISystemModel
+        ~analyze(ISystemModel systemModel): ISystemModel
+        ~generate(IGraph graph): String
+        ~executeRunner(String graphVisStr): void
+    }
+
+    class Application {
+        +main(String[] args): void
+    }
+
+    abstract class AbstractUMLEngine{
+        +run(): void
+        {abstract} ~createSystemModel(): ISystemModel
+        {abstract} ~analyze(ISystemModel systemModel): ISystemModel
+        {abstract} ~generate(IGraph systemModel): String
+        {abstract} ~executeRunner(String graphVisStr): void
+    }
+}
+
+package model <<Folder>> {
+    class ClassModel {
+        -asmClassNode: ClassNode
+        -modifier: Modifier
+        -isFinal: boolean
+        -isStatic: boolean
+        -classType: ClassType
+        -name: String
+        -outterClass: ClassModel
+        -superTypes: List<TypeModel>
+        -superClass: ClassModel
+        -interfaces: List<ClassModel>
+        -genericParams: List<GenericTypeParam>
+        -fields: Map<String, FieldModel>
+        -methods: Map<Signature, MethodModel>
+        +ClassModel(ClassNode asmClassNode): ctor
+        -parseIsStatic(): boolean
+        -getAccess(ClassNode asmClassNode): int
+        +getName(): String
+        +getModifier(): Modifier
+        +getClassModel(): ClassModel
+        +isFinal(): boolean
+        +getType(): ClassType
+        +isStatic(): boolean
+        ~getGenericList(): List<GenericTypeParam>
+        +getSuperTypes(): List<TypeModel>
+        ~getParamsMap(): Map<String, GenericTypeParam>
+        +getSuperClass(): ClassModel
+        +getInterfaces(): Collection<ClassModel>
+        +getMethods(): Collection<MethodModel>
+        ~getMethodBySignature(Signature signature): MethodModel
+        -getMethodsMap(): Map<Signature, MethodModel>
+        +getFields(): Collection<FieldModel>
+        -getFieldMap(): Map<String, FieldModel>
+        ~getFieldByName(String name): FieldModel
+        +toString(): String
+        +getDependentClass(): List<ClassModel>
+        +getUnderlyingClassModel(): IClassModel
+        +equals(Object obj): boolean
+    }
+
+    class MethodModel {
+        -asmMethodNode: MethodNode
+        -belongsTo: ClassModel
+        -modifier: Modifier
+        -isFinal: boolean
+        -isStatic: boolean
+        -methodtype: MethodType
+        -returnType: TypeModel
+        -signature: Signature
+        -dependenOnMethod: Collection<MethodModel>
+        -dependenOnField: Collection<FieldModel>
+        -genericParams: List<GenericTypeParam>
+        ~MethodModel(ClassModel belongsTo, MethodNode methodNode): ctor
+        ~getParamsMap(): Map<String, GenericTypeParam>
+        +getBelongTo(): ClassModel
+        +getName(): String
+        +getMethodType(): MethodType
+        +getModifier(): Modifier
+        +isFinal(): boolean
+        +isStatic(): boolean
+        +getSignature(): Signature
+        +getArguments(): List<TypeModel>
+        +getReturnType(): TypeModel
+        +toString(): String
+        +getCalledMethods(): Collection<MethodModel>
+        +getAccessedFields(): Collection<FieldModel>
+    }
+
+    class ParametizedClassModel {
+        -outterClassType: TypeModel
+        -classModel: ClassModel
+        -genericArgs: List<TypeModel>
+        -superTypes: List<TypeModel>
+        ~ParametizedClassModel(TypeModel outterClassType, ClassModel classModel, List<TypeModel> genericList): ctor
+        ~ParametizedClassModel(ClassModel classModel, List<TypeModel> genericList): ctor
+        +getClassModel(): ClassModel
+        ~getGenericArgs(): List<TypeModel>
+        +getGenericArg(int index): TypeModel
+        +getGenericArgNumber(): int
+        +getName(): String
+        +equals(Object obj): boolean
+        +hashCode(): int
+        +toString(): String
+        +getSuperTypes(): Iterable<TypeModel>
+        +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+        +assignTo(ClassModel clazz): TypeModel
+        +getDependentClass(): Collection<ClassModel>
+    }
+
+    class FieldModel {
+        -asmFieldNode: FieldNode
+        -belongsTo: ClassModel
+        -modifier: Modifier
+        -isFinal: boolean
+        -fieldType: TypeModel
+        -isStatic: boolean
+        ~FieldModel(ClassModel classModel, FieldNode fieldNode): ctor
+        +getName(): String
+        +getBelongTo(): ClassModel
+        +getModifier(): Modifier
+        +isFinal(): boolean
+        +isStatic(): boolean
+        +getFieldType(): TypeModel
+        +toString(): String
+    }
+
+    class ArrayTypeModel {
+        -arrayType: TypeModel
+        -dimension: int
+        ~ArrayTypeModel(TypeModel arrayType, int dimension): ctor
+        +getClassModel(): ClassModel
+        +getName(): String
+        +getDimension(): int
+        +equals(Object obj): boolean
+        +hashCode(): int
+        +getSuperTypes(): Iterable<TypeModel>
+        +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+        +assignTo(ClassModel clazz): TypeModel
+        +getDependentClass(): Collection<ClassModel>
+        +toString(): String
+    }
+
+    class TypeParser {
+        ~parse(Type type): TypeModel
+        ~parseTypeSignature(String typeSig): TypeModel
+        ~parseFieldTypeSignature(String filedTypeSig): TypeModel
+        ~parseClassTypeSignature(String classTypeSig): TypeModel
+        -parseClassType(TypeModel type, ClassModel bound, List<TypeModel> genericEnv): TypeModel
+        ~parseTypeArg(String typeArg): TypeModel
+        ~parseTypeArgs(String argLs): List<TypeModel>
+        ~parseTypeParam(String param): GenericTypeParam
+        ~parseTypeParams(String paramList): List<GenericTypeParam>
+        ~parseClassSignature(String classSig): ClassSignatureParseResult
+        ~parseMethodSignature(String methodSig): MethodSignatureParseResult
+        -splitOn(String str, Predicate<Character> stop): Iterable<String>
+        -indexAfterClosing(CharSequence signature, int i): int
+    }
+
+    class GenericTypeParam {
+        -boundSuperTypes: List<TypeModel>
+        -key: String
+        -processed = false: boolean
+        +GenericTypeParam(String key, List<TypeModel> boundLs): ctor
+        +getBoundSuperTypes(): List<TypeModel>
+        +getClassModel(): ClassModel
+        +getName(): String
+        +getSuperTypes(): Iterable<TypeModel>
+        +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+        +getDependentClass(): Collection<ClassModel>
+        +toString(): String
+    }
+
+    interface TypeModel {
+        ~getClassModel(): ClassModel
+        ~getName(): String
+        ~getDimension(): int
+        ~getDependentClass(): Collection<ClassModel>
+        ~getGenericArg(int index): TypeModel
+        ~getGenericArgNumber(): int
+        ~getSuperTypes(): Iterable<TypeModel>
+        ~replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+        ~assignTo(ClassModel clazz): TypeModel
+        ~assignTo(String className): ITypeModel
+    }
+
+    class Signature {
+        -args: List<TypeModel>
+        -name: String
+        -hashCode: int
+        +Signature(List<TypeModel> argumentList, String name): ctor
+        +parse(String name, String desc): Signature
+        +getArguments(): List<TypeModel>
+        +getName(): String
+        +equals(Object obj): boolean
+        +hashCode(): int
+        +toString(): String
+    }
+
+    class ASMParser {
+        +RECURSE_SUPERCLASS = 0x2: int
+        +RECURSE_INTERFACE = 0x4: int
+        +RECURSE_HAS_A = 0x8: int
+        -map = new HashMap(): Map<String, ClassModel>
+        +getClassByName(String className): ClassModel
+        +getClasses(Iterable<String> importClassesList, int recursiveFlag): Collection<ClassModel>
+        +getObject(): ClassModel
+        -addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended, ClassModel x): void
+        -addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended, Iterable<ClassModel> ls): void
+    }
+
+    class GenericTypeVarPlaceHolder {
+        -key: String
+        +GenericTypeVarPlaceHolder(String name): ctor
+        +getClassModel(): ClassModel
+        +getName(): String
+        +equals(Object obj): boolean
+        +getSuperTypes(): Iterable<TypeModel>
+        +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+        +getDependentClass(): List<ClassModel>
+        +toString(): String
+    }
+
+    abstract class GenericTypeArg {
+        -wildType = new WildType(): GenericTypeArg
+        ~getWildType(): GenericTypeArg
+        ~getLowerBounded(TypeModel classTypeModel): GenericTypeArg
+        ~getUpperBounded(TypeModel upperBound): GenericTypeArg
+        +getSuperTypes(): Iterable<TypeModel>
+        +getClassModel(): ClassModel
+        +getName(): String
+    }
+
+    class systemModel {
+        -classList: Collection<ClassModel>
+        -SystemModel(Collection<ClassModel> importantList): ctor
+        +getInstance(IModelConfiguration config): SystemModel
+        +getClasses(): Collection<ClassModel>
+        +getRelations(): Map<ClassPair, List<IRelationInfo>>
+    }
+
+    interface IModelConfiguration {
+        ~getClasses(): Iterable<String>
+        ~isRecursive(): boolean
+    }
+}
+
+IAnalyzerConfiguration <|. AnalyzerConfiguration
+IConfiguration <--"1..n" ModelConfiguration
+ModelConfiguration <. ModelConfiguration 
+Configurable <|. ModelConfiguration
+ClassParserConfiguration <. ClassParserConfiguration
+Configurable <|. ClassParserConfiguration
+IConfiguration <--"1..n" ClassParserConfiguration
+Configurable <--> IConfiguration
+Configurable <. Configuration
+Configuration <. Configuration
+Configurable <|. GeneratorConfiguration
+GeneratorConfiguration <. GeneratorConfiguration
+IConfiguration <-"1..n" GeneratorConfiguration
+AnalyzerConfiguration <. AnalyzerConfiguration
+Configurable <|. AnalyzerConfiguration
+IConfiguration <-"1..n" AnalyzerConfiguration
+RunnerConfiguration <. RunnerConfiguration
+IConfiguration <-"1..n" RunnerConfiguration
+Configurable <|. RunnerConfiguration
+Configuration <. ConfigurationFactory
+Configuration <. CommandLineParser
+ConfigurationFactory <|. CommandLineParser
+CommandLineParser <. CommandLineParser
+ConfigurationFactory <|. ConfigFileParser
+ConfigFileParser <. ConfigFileParser
+CommandLineFileInput <. CommandLineFileInput
+GraphVizRunner <. GraphVizRunner
+IRunner <|.. GraphVizRunner
+IRunnerConfiguration <-"1..n" GraphVizRunner
+IRunnerConfiguration <|. RunnerConfiguration
+AbstractUMLEngine <|- UMLEngine
+GraphVizRunner <. UMLEngine
+IConfiguration <-"1..n" UMLEngine
+IRunner <. UMLEngine
+
+@enduml
