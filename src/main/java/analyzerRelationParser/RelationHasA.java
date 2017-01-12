@@ -39,7 +39,7 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public String toString() {
-        if (isMany()) {
+        if (isMany() || getCount() > 1) {
             return String.format("has many %d..n", this.count);
         } else {
             return "has " + getCount();
@@ -49,7 +49,7 @@ public class RelationHasA implements IRelationInfo {
     @Override
     public String getEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
-        if (isMany()) {
+        if (isMany() || getCount() > 1) {
             edgeBuilder.append(String.format("taillabel=\"%d..*\" ", getCount()));
         } else {
             edgeBuilder.append(String.format("taillabel=\"%d\" ", getCount()));

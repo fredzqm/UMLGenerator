@@ -11,7 +11,7 @@ public class GraphVizTypeParser implements IParser<ITypeModel> {
         StringBuilder sb = new StringBuilder();
         sb.append(type.getGenericArg(0));
         for (int i = 1; i < type.getGenericArgNumber(); i++) {
-            sb.append("," + type.getGenericArg(i));
+            sb.append("," + parse(type.getGenericArg(i), config));
         }
         return String.format("%s\\<%s\\>", type.getName(), sb);
     }

@@ -11,7 +11,7 @@ public class RelationDependsOn implements IRelationInfo {
     /**
      * Constructs a RelationHasA object.
      *
-     * @param count count value of the relation.
+     * @param many
      */
     public RelationDependsOn(boolean many) {
         this.many = many;
@@ -40,7 +40,7 @@ public class RelationDependsOn implements IRelationInfo {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
 
         if (isMany()) {
-            edgeBuilder.append("taillabel=\"0..*\" ");
+            edgeBuilder.append("taillabel=\"1..*\" ");
         }
 
         return edgeBuilder.toString();
