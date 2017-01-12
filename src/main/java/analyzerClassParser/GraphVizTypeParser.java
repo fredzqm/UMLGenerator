@@ -7,7 +7,7 @@ public class GraphVizTypeParser implements IParser<ITypeModel> {
     @Override
     public String parse(ITypeModel type, IClassParserConfiguration config) {
         if (type.isWildCharacter()) {
-            return "*";
+            return " ? ";
         } else if (type.getLowerBound() != null) {
             return String.format(" ? extends %s", parse(type.getLowerBound(), config));
         } else if (type.getUpperBound() != null) {

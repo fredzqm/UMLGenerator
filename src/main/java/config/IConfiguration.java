@@ -23,7 +23,7 @@ public interface IConfiguration {
      * @param key   String key to set within the map.
      * @param value Class to map the key to.
      */
-    void set(String key, Class value);
+    void set(String key, Class<?> value);
 
     /**
      * Sets the String key to the String value.
@@ -47,7 +47,7 @@ public interface IConfiguration {
      * @param key   String key to append value to.
      * @param value String value to be appened.
      */
-    void add(String key, Class value);
+    void add(String key, Class<?> value);
 
     /**
      * Returns an Iterable of String corresponding to the given key.
@@ -65,7 +65,7 @@ public interface IConfiguration {
      * @param key String key for desired Iterable of Classes.
      * @return Iterable of Classes corresponding to that key.
      */
-    Iterable<Class> getClasses(String key);
+    Iterable<Class<?>> getClasses(String key);
 
     /**
      * Return the String value associated with the given key.
@@ -81,7 +81,7 @@ public interface IConfiguration {
      * @param key String key for desired Class.
      * @return Class corresponding to that key.
      */
-    Class getClass(String key);
+    Class<?> getClass(String key);
 
     /**
      * Returns an Iterable of IAnalyzers.
@@ -141,7 +141,7 @@ public interface IConfiguration {
      * @param key   String key value.
      * @param value Class value corresponding to the key.
      */
-    void setIfMissing(String key, Class value);
+    void setIfMissing(String key, Class<?> value);
 
     /**
      * Set the modifier filter.

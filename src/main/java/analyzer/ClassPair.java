@@ -14,13 +14,6 @@ public final class ClassPair {
         this.from = from;
     }
 
-    private IClassModel getUnderlyingClassModel(IClassModel x) {
-        while (x instanceof IClassModelFilter) {
-            x = ((IClassModelFilter) x).getClassModel();
-        }
-        return x;
-    }
-
     IClassModel getFrom() {
         return this.from;
     }

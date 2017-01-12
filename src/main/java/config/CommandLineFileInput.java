@@ -24,14 +24,9 @@ class CommandLineFileInput {
     CommandLineFileInput(String[] args) {
         JSAP jsap = new JSAP();
 
-        FlaggedOption opt1 = new FlaggedOption("fileName")
-                .setStringParser(JSAP.STRING_PARSER)
-                .setDefault("configs/ConfigModel.json")
-                .setRequired(false)
-                .setShortFlag('f')
-                .setLongFlag("filename");
-        opt1.setHelp("This is a JSON file that will "
-                + "contain all elements of the config"
+        FlaggedOption opt1 = new FlaggedOption("fileName").setStringParser(JSAP.STRING_PARSER)
+                .setDefault("configs/ConfigModel.json").setRequired(false).setShortFlag('f').setLongFlag("filename");
+        opt1.setHelp("This is a JSON file that will " + "contain all elements of the config"
                 + "to find an example, check the default.");
 
         try {
@@ -43,9 +38,9 @@ class CommandLineFileInput {
 
         JSAPResult config = jsap.parse(args);
         String fileName = config.getString("fileName");
-
+        Scanner scanner = null;
         try {
-            Scanner scanner = new Scanner(new File(fileName));
+            scanner = new Scanner(new File(fileName));
 
             StringBuilder json = new StringBuilder();
             while (scanner.hasNextLine()) {
@@ -54,8 +49,10 @@ class CommandLineFileInput {
 
             this.setJson(new JSONObject(json.toString()));
         } catch (FileNotFoundException e) {
-            // TODO Fix this.
             e.printStackTrace();
+        } finally {
+            if (scanner != null)
+                scanner.close();
         }
     }
 
@@ -71,7 +68,8 @@ class CommandLineFileInput {
     /**
      * Set the JSON object.
      *
-     * @param json JSONObjecn to be set.
+     * @param json
+     *            JSONObjecn to be set.
      */
     public void setJson(JSONObject json) {
         this.json = json;

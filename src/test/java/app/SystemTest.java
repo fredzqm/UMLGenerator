@@ -236,7 +236,6 @@ public class SystemTest {
         assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
 
         String actual = engine.generate(systemModel);
-        System.out.println(actual);
         String expectedDependencyCardinality = "\"" + relDummyMany + "\" -> " + "\"" + relOtherDummy
                 + "\" [arrowhead=\"vee\" style=\"dashed\" taillabel=\"0..*\" ];";
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
