@@ -46,7 +46,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
             Map<? extends IClassModel, Boolean> depends_on = getDependsRelationship(classModel);
             for (IClassModel x : depends_on.keySet())
                 if (classList.contains(x))
-                    if (!has_a.containsKey(x) && !interfaces.contains(x) && !superClass.equals(x) && !classModel.equals(x))
+                    if (!has_a.containsKey(x) && !interfaces.contains(x) && !Objects.equals(superClass, x) && !Objects.equals(classModel, x))
                         addToMap(map, new ClassPair(classModel, x), new RelationDependsOn(depends_on.get(x)));
         }
         return map;
