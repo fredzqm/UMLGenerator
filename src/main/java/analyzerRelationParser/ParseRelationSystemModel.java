@@ -46,7 +46,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
             Map<? extends IClassModel, Boolean> depends_on = getDependsRelationship(classModel);
             for (IClassModel x : depends_on.keySet())
                 if (classList.contains(x))
-                    if (!has_a.containsKey(x) && !interfaces.contains(x) && superClass != x && classModel != x)
+                    if (!has_a.containsKey(x) && !interfaces.contains(x) && !superClass.equals(x) && !classModel.equals(x))
                         addToMap(map, new ClassPair(classModel, x), new RelationDependsOn(depends_on.get(x)));
         }
         return map;
@@ -102,8 +102,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
     private Map<? extends IClassModel, Boolean> getDependsRelationship(IClassModel classModel) {
         HashMap<IClassModel, Boolean> map = new HashMap<>();
 
-        IFilter<IMethodModel> filter = (f) -> !f.isStatic();
-        for (IMethodModel method : filter.filter(classModel.getMethods())) {
+        for (IMethodModel method : classModel.getMethods()) {
             List<? extends ITypeModel> args = method.getArguments();
             checkType(method.getReturnType(), map);
             for (ITypeModel t : args)
