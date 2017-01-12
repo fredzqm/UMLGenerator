@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import analyzer.ITypeModel;
+
 /**
  * serve as a place holder for generic type, we can should replace it with a
  * concrete class model
@@ -45,6 +47,10 @@ abstract class GenericTypeArg implements TypeModel {
             this.lowerBound = lowerBound;
         }
 
+        public TypeModel getLowerBound() {
+            return lowerBound;
+        }
+
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof LowerBound) {
@@ -66,7 +72,7 @@ abstract class GenericTypeArg implements TypeModel {
 
         @Override
         public Iterable<TypeModel> getSuperTypes() {
-            return Arrays.asList(lowerBound);
+            return Collections.singletonList(lowerBound);
         }
 
         @Override
@@ -91,6 +97,10 @@ abstract class GenericTypeArg implements TypeModel {
 
         UpperBound(TypeModel upperBound) {
             this.upperBound = upperBound;
+        }
+
+        public TypeModel getUpperBound() {
+            return upperBound;
         }
 
         @Override
@@ -129,6 +139,10 @@ abstract class GenericTypeArg implements TypeModel {
         @Override
         public String toString() {
             return "*";
+        }
+
+        public boolean isWildCharacter() {
+            return true;
         }
 
         @Override

@@ -17,7 +17,7 @@ class ArrayTypeModel implements TypeModel {
     /**
      * creates an array type
      *
-     * @param arrayType
+     * @param arrayType TODO: Fred
      * @param dimension
      */
     ArrayTypeModel(TypeModel arrayType, int dimension) {

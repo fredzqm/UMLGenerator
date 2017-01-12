@@ -8,7 +8,7 @@ public class GraphVizModifierParser implements IParser<Modifier> {
     public String parse(Modifier modifier, IClassParserConfiguration config) {
         switch (modifier) {
             case DEFAULT:
-                return "\\ ";
+                return "\\ \\ ";
             case PRIVATE:
                 return "-";
             case PROTECTED:

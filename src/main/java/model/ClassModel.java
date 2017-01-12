@@ -47,9 +47,7 @@ class ClassModel implements IClassModel, TypeModel {
     /**
      * Creates an ClassModel and assign its basic properties.
      *
-     * @param asmServiceProvider
      * @param asmClassNode
-     * @param important
      */
     public ClassModel(ClassNode asmClassNode) {
         this.asmClassNode = asmClassNode;
@@ -231,7 +229,7 @@ class ClassModel implements IClassModel, TypeModel {
 
     @Override
     public List<ClassModel> getDependentClass() {
-        return Arrays.asList(this);
+        return Collections.singletonList(this);
     }
 
     @Override

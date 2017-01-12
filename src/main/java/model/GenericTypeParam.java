@@ -13,12 +13,12 @@ class GenericTypeParam implements TypeModel {
     private final String key;
     private boolean processed = false;
 
-    public GenericTypeParam(String key, List<TypeModel> boundLs) {
+    GenericTypeParam(String key, List<TypeModel> boundLs) {
         this.boundSuperTypes = boundLs;
         this.key = key;
     }
 
-    public List<TypeModel> getBoundSuperTypes() {
+    List<TypeModel> getBoundSuperTypes() {
         return boundSuperTypes;
     }
 
@@ -37,7 +37,7 @@ class GenericTypeParam implements TypeModel {
     @Override
     public Iterable<TypeModel> getSuperTypes() {
         if (boundSuperTypes.isEmpty())
-            return Arrays.asList(ASMParser.getObject());
+            return Collections.singletonList(ASMParser.getObject());
         return boundSuperTypes;
     }
 

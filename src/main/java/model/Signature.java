@@ -20,11 +20,10 @@ class Signature {
     /**
      * creates a Signature
      *
-     * @param returnType
      * @param argumentList
      * @param name
      */
-    public Signature(List<TypeModel> argumentList, String name) {
+    Signature(List<TypeModel> argumentList, String name) {
         this.args = argumentList;
         this.name = name;
     }
@@ -37,7 +36,7 @@ class Signature {
         return new Signature(args, name);
     }
 
-    public List<TypeModel> getArguments() {
+    List<TypeModel> getArguments() {
         return args;
     }
 
