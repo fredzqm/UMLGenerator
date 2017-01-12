@@ -33,7 +33,7 @@ public class RelationBijectiveDecorator implements IRelationInfo {
 
     @Override
     public String getEdgeStyle() {
-        return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" style=\"\" dir=both ";
+        return getDecorated().getEdgeStyle() + "arrowtail=\"vee\" dir=both ";
     }
 
     @Override
