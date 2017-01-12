@@ -53,6 +53,30 @@ interface TypeModel extends ITypeModel {
     }
 
     /**
+     * 
+     * @return if the bound of a wild character type
+     */
+    default ITypeModel getLowerBound(){
+        return null;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    default ITypeModel getUpperBound(){
+        return null;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    default boolean isWildCharacter(){
+        return false;
+    }
+    
+    /**
      * @return the collection of types that this type can be directly assigned
      * to
      */
