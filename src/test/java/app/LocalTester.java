@@ -8,7 +8,10 @@ import dummy.hasDependsRel.Dummy;
 import dummy.hasDependsRel.RelDummyClass;
 import dummy.hasDependsRel.RelDummyManyClass;
 import dummy.hasDependsRel.RelOtherDummyClass;
+import runner.ExplorerRunner;
+import runner.IRunner;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -39,6 +42,16 @@ public class LocalTester {
 
         Runnable engine = UMLEngine.getInstance(config);
         engine.run();
+
+        config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
+        IRunner explorerRunner = new ExplorerRunner(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        try {
+            explorerRunner.execute(null);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.err.println("Failed to execute ExplorerRunner");
+        }
+
         System.out.println("Done");
     }
 

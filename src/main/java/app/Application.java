@@ -3,7 +3,7 @@ package app;
 import config.CommandLineParser;
 import config.Configuration;
 import config.RunnerConfiguration;
-import display.Display;
+import runner.ExplorerRunner;
 
 public class Application {
     public static void main(String[] args) throws Exception {
@@ -13,6 +13,8 @@ public class Application {
         Runnable engine = UMLEngine.getInstance(config);
         engine.run();
 
-        Display.showWindow(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
+        ExplorerRunner explorerRunner = new ExplorerRunner(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        explorerRunner.execute(null);
     }
 }
