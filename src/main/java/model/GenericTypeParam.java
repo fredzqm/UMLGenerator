@@ -37,7 +37,7 @@ class GenericTypeParam implements TypeModel {
     @Override
     public Iterable<TypeModel> getSuperTypes() {
         if (boundSuperTypes.isEmpty())
-            return Arrays.asList(ASMParser.getObject());
+            return Collections.singletonList(ASMParser.getObject());
         return boundSuperTypes;
     }
 
