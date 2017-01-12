@@ -66,7 +66,7 @@ abstract class GenericTypeArg implements TypeModel {
 
         @Override
         public Iterable<TypeModel> getSuperTypes() {
-            return Arrays.asList(lowerBound);
+            return Collections.singletonList(lowerBound);
         }
 
         @Override

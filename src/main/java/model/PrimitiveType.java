@@ -14,7 +14,7 @@ enum PrimitiveType implements TypeModel {
 
     private final String name;
 
-    private PrimitiveType(String name) {
+    PrimitiveType(String name) {
         this.name = name;
     }
 
