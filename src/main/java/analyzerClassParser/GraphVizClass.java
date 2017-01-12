@@ -19,7 +19,6 @@ public class GraphVizClass extends IClassModelFilter {
     }
 
     public String getLabel() {
-        IClassModel model = getClassModel();
         IFilter<Modifier> modifierFilter = config.getModifierFilters();
         IParser<IClassModel> header = config.getHeaderParser();
         IParser<IFieldModel> fieldParser = config.getFieldParser();
@@ -28,9 +27,9 @@ public class GraphVizClass extends IClassModelFilter {
         StringBuilder sb = new StringBuilder();
         // Set the header.
 
-        sb.append(header.parse(model, config));
+        sb.append(header.parse(this, config));
         // Filter the fields
-        Iterable<? extends IFieldModel> fields = model.getFields();
+        Iterable<? extends IFieldModel> fields = this.getFields();
         IFilter<IFieldModel> fieldFilters = (f) -> modifierFilter.filter(f.getModifier());
         fields = fieldFilters.filter(fields);
         // Render the fields
@@ -39,7 +38,7 @@ public class GraphVizClass extends IClassModelFilter {
         }
 
         // Filter the methods
-        Iterable<? extends IMethodModel> methods = model.getMethods();
+        Iterable<? extends IMethodModel> methods = this.getMethods();
         IFilter<IMethodModel> methodFilters = (m) -> modifierFilter.filter(m.getModifier());
         methods = methodFilters.filter(methods);
         // Render the methods

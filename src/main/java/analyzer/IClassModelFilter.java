@@ -3,6 +3,7 @@ package analyzer;
 import utility.ClassType;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * a filter for IClassModel
@@ -69,6 +70,12 @@ public class IClassModelFilter implements IClassModel {
     @Override
     public IClassModel getUnderlyingClassModel() {
         return classModel.getUnderlyingClassModel();
+    }
+    
+    
+    @Override
+    public String toString() {
+        return classModel.toString();
     }
 
     @Override
