@@ -31,7 +31,7 @@ import utility.Modifier;
  *
  * @author zhang
  */
-class ClassModel implements IClassModel, TypeModel {
+class ClassModel extends TypeModel implements IClassModel {
     private final ClassNode asmClassNode;
 
     private final Modifier modifier;

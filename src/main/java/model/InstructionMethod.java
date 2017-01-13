@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
 import org.objectweb.asm.tree.MethodInsnNode;
 
 public class InstructionMethod extends InstructionModel {

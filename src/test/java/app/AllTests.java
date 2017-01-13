@@ -9,6 +9,7 @@ import config.CommandLineParserTest;
 import model.ASMParserTest;
 import model.ClassModelTest;
 import model.MethodModelTest;
+import model.SignatureTest;
 import model.SystemModelTest;
 import model.TypeModelTest;
 import model.TypeParserTest;
@@ -22,9 +23,10 @@ import utility.IMapperTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SystemTest.class, ASMParserTest.class, CommandLineParserTest.class, SystemModelTest.class,
+@Suite.SuiteClasses({ SystemTest.class, ASMParserTest.class, CommandLineParserTest.class, SystemModelTest.class,
         ClassModelTest.class, IFilterTest.class, IMapperTest.class, IExpanderTest.class, MethodModelTest.class,
-        TypeParserTest.class, TypeModelTest.class, AnalyzerRelationParserTest.class, AnalyzerClassParserTest.class, })
+        TypeParserTest.class, TypeModelTest.class, AnalyzerRelationParserTest.class, AnalyzerClassParserTest.class,
+        SignatureTest.class })
 public class AllTests {
 
 }

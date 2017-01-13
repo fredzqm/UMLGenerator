@@ -8,9 +8,16 @@ import java.util.List;
  *
  * @author zhang
  */
-enum PrimitiveType implements TypeModel {
-    INT("int"), DOUBLE("double"), FLOAT("float"), BOOLEAN("boolean"), BYTE("byte"), CHAR("char"), SHORT("short"), LONG(
-            "long"), VOID("void");
+class PrimitiveType extends TypeModel {
+    public static PrimitiveType INT = new PrimitiveType("int");
+    public static PrimitiveType DOUBLE = new PrimitiveType("double");
+    public static PrimitiveType FLOAT = new PrimitiveType("float");
+    public static PrimitiveType BOOLEAN = new PrimitiveType("boolean");
+    public static PrimitiveType BYTE = new PrimitiveType("byte");
+    public static PrimitiveType CHAR = new PrimitiveType("char");
+    public static PrimitiveType SHORT = new PrimitiveType("short");
+    public static PrimitiveType LONG = new PrimitiveType("long");
+    public static PrimitiveType VOID = new PrimitiveType("void");
 
     private final String name;
 
@@ -43,27 +50,22 @@ enum PrimitiveType implements TypeModel {
         }
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public ClassModel getClassModel() {
         return null;
     }
 
-    @Override
     public Iterable<TypeModel> getSuperTypes() {
         return Collections.emptyList();
     }
 
-    @Override
     public List<ClassModel> getDependentClass() {
         return Collections.emptyList();
     }
 
-    @Override
     public String toString() {
         return getName();
     }

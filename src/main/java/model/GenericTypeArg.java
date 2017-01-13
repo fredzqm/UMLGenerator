@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author zhang
  */
-abstract class GenericTypeArg implements TypeModel {
+abstract class GenericTypeArg extends TypeModel {
     private static GenericTypeArg wildType = new WildType();
 
     static GenericTypeArg getWildType() {

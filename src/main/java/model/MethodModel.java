@@ -63,9 +63,13 @@ class MethodModel implements IMethodModel {
         }
     }
 
+    List<GenericTypeParam> getGenericList() {
+        return genericParams;
+    }
+
     Map<String, GenericTypeParam> getParamsMap() {
         Map<String, GenericTypeParam> paramMap = belongsTo.getParamsMap();
-        for (GenericTypeParam p : genericParams) {
+        for (GenericTypeParam p : getGenericList()) {
             paramMap.put(p.getName(), p);
         }
         return paramMap;

@@ -7,7 +7,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ParametizedClassModel implements TypeModel {
+class ParametizedClassModel extends TypeModel {
     private final TypeModel outterClassType;
     private final ClassModel classModel;
     private final List<TypeModel> genericArgs;
@@ -100,7 +100,7 @@ class ParametizedClassModel implements TypeModel {
     public TypeModel assignTo(ClassModel clazz) {
         if (getClassModel() == clazz)
             return this;
-        return TypeModel.super.assignTo(clazz);
+        return super.assignTo(clazz);
     }
 
     @Override

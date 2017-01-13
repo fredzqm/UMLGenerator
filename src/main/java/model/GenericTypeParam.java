@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author zhang
  */
-class GenericTypeParam implements TypeModel {
+class GenericTypeParam extends TypeModel {
     private final List<TypeModel> boundSuperTypes;
     private final String key;
     private boolean processed = false;

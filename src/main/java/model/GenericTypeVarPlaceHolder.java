@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author zhang
  */
-class GenericTypeVarPlaceHolder implements TypeModel {
+class GenericTypeVarPlaceHolder extends TypeModel {
     private final String key;
 
     GenericTypeVarPlaceHolder(String name) {

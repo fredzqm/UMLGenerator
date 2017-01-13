@@ -24,13 +24,12 @@ public class MethodModelTest {
         assertTrue(methodModel != null);
 
         Set<String> expected = new HashSet<>(Arrays.asList("append", "toString", "java.lang.StringBuilder"));
-        Collection<String> actual = new ArrayList<>();
+        Collection<String> actual = new HashSet<>();
 
         Collection<MethodModel> methods = methodModel.getCalledMethods();
         methods.forEach((m) -> actual.add(m.getName()));
 
-        assertEquals(expected.size(), actual.size());
-        assertEquals(expected, new HashSet<>(actual));
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -103,10 +102,10 @@ public class MethodModelTest {
     public void testGetMethodBySignature4() {
         ClassModel clazz = ASMParser.getClassByName("java.security.AccessController");
 
-        MethodModel method = clazz
-                .getMethodBySignature(new Signature(Arrays.asList(ASMParser.getClassByName("java.security.PrivilegedAction")), "doPrivileged"));
+        List<TypeModel> argsLs = Arrays.asList(ASMParser.getClassByName("java.security.PrivilegedAction"));
+        MethodModel method = clazz.getMethodBySignature(new Signature(argsLs, "doPrivileged"));
         assertEquals("doPrivileged", method.getName());
         assertEquals(clazz, method.getBelongTo());
-        assertEquals(clazz, method.getReturnType());
+        assertEquals(method.getGenericList().get(0), method.getReturnType());
     }
 }
