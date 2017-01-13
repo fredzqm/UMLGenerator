@@ -200,7 +200,7 @@ class ClassModel implements IClassModel, TypeModel {
             @SuppressWarnings("unchecked")
             List<MethodNode> ls = asmClassNode.methods;
             for (MethodNode methodNode : ls) {
-                MethodModel methodModel = new ConcreteMethodModel(this, methodNode);
+                MethodModel methodModel = new MethodModel(this, methodNode);
                 Signature signature = methodModel.getSignature();
                 methods.put(signature, methodModel);
             }
