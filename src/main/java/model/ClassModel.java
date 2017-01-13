@@ -228,7 +228,7 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependentClass() {
+    public Collection<ClassModel> getDependentClass() {
         return Collections.singletonList(this);
     }
 

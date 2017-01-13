@@ -46,12 +46,23 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
             Map<? extends IClassModel, Boolean> depends_on = getDependsRelationship(classModel);
             for (IClassModel x : depends_on.keySet())
                 if (classList.contains(x))
-                    if (!has_a.containsKey(x) && !interfaces.contains(x) && !Objects.equals(superClass, x) && !Objects.equals(classModel, x))
+                    if (!has_a.containsKey(x) && !interfaces.contains(x) && !Objects.equals(superClass, x)
+                            && !Objects.equals(classModel, x))
                         addToMap(map, new ClassPair(classModel, x), new RelationDependsOn(depends_on.get(x)));
         }
         return map;
     }
 
+    /**
+     * add the info to the relations map
+     * 
+     * @param map
+     *            relations map
+     * @param pair
+     *            the class pair this relation is on
+     * @param info
+     *            the relationtype
+     */
     private void addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info) {
         if (map.containsKey(pair)) {
             map.get(pair).add(info);
@@ -73,15 +84,22 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
                 if (hasClass != null)
                     set.add(hasClass);
             }
-            ITypeModel collection = hasType.assignTo("java.lang.Iterable");
-            if (collection != null && collection.getGenericArgNumber() > 0) {
-                // Iterable of other things
-                IClassModel hasManyClass = collection.getGenericArg(0).getClassModel();
+            ITypeModel collectionSuperType = hasType.assignTo("java.lang.Iterable");
+            if (collectionSuperType != null && collectionSuperType.getGenericArgNumber() > 0) {
+                IClassModel hasManyClass = collectionSuperType.getGenericArg(0).getClassModel();
+                if (hasManyClass != null)
+                    set.add(hasManyClass);
+            }
+            ITypeModel mapSuperType = hasType.assignTo("java.util.Map");
+            if (mapSuperType != null && mapSuperType.getGenericArgNumber() > 0) {
+                IClassModel hasManyClass = mapSuperType.getGenericArg(0).getClassModel();
+                if (hasManyClass != null)
+                    set.add(hasManyClass);
+                hasManyClass = mapSuperType.getGenericArg(1).getClassModel();
                 if (hasManyClass != null)
                     set.add(hasManyClass);
             }
             if (hasClass != null) {
-                // regular class
                 if (map.containsKey(hasClass)) {
                     map.put(hasClass, map.get(hasClass) + 1);
                 } else {
@@ -118,21 +136,23 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
     }
 
     private void checkType(ITypeModel type, HashMap<IClassModel, Boolean> map) {
-        IClassModel hasClass = type.getClassModel();
-        if (type.getDimension() > 0) {
-            if (hasClass != null)
-                map.put(hasClass, true);
-        }
-        ITypeModel collection = type.assignTo("java.lang.Iterable");
-        if (collection != null && collection.getGenericArgNumber() > 0) {
-            // iterable of other things
-            IClassModel hasManyClass = collection.getGenericArg(0).getClassModel();
+        ITypeModel collectionSuperType = type.assignTo("java.lang.Iterable");
+        if (collectionSuperType != null && collectionSuperType.getGenericArgNumber() > 0) {
+            IClassModel hasManyClass = collectionSuperType.getGenericArg(0).getClassModel();
             if (hasManyClass != null)
                 map.put(hasManyClass, true);
         }
-        if (hasClass != null) {
-            checkClass(hasClass, map);
+        ITypeModel mapSuperType = type.assignTo("java.util.Map");
+        if (mapSuperType != null && mapSuperType.getGenericArgNumber() > 0) {
+            IClassModel hasManyClass = mapSuperType.getGenericArg(0).getClassModel();
+            if (hasManyClass != null)
+                map.put(hasManyClass, true);
+            hasManyClass = mapSuperType.getGenericArg(1).getClassModel();
+            if (hasManyClass != null)
+                map.put(hasManyClass, true);
         }
+        for (IClassModel c : type.getDependentClass())
+            checkClass(c, map);
     }
 
     private void checkClass(IClassModel clazz, HashMap<IClassModel, Boolean> map) {

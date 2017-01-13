@@ -62,19 +62,6 @@ class ParametizedClassModel implements TypeModel {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        getSuperTypes();
-        if (!superTypes.isEmpty()) {
-            sb.append(superTypes.get(0));
-            for (int i = 1; i < superTypes.size(); i++) {
-                sb.append(",").append(superTypes.get(i));
-            }
-        }
-        return getName() + "<" + sb.toString() + ">";
-    }
-
-    @Override
     public Iterable<TypeModel> getSuperTypes() {
         if (superTypes == null) {
             List<GenericTypeParam> genels = classModel.getGenericList();
@@ -124,5 +111,18 @@ class ParametizedClassModel implements TypeModel {
             set.addAll(t.getDependentClass());
         }
         return set;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        getSuperTypes();
+        if (!genericArgs.isEmpty()) {
+            sb.append(genericArgs.get(0));
+            for (int i = 1; i < genericArgs.size(); i++) {
+                sb.append(",").append(genericArgs.get(i));
+            }
+        }
+        return getName() + "<" + sb.toString() + ">";
     }
 }

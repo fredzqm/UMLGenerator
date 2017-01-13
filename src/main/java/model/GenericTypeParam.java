@@ -1,6 +1,11 @@
 package model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -68,14 +73,24 @@ class GenericTypeParam implements TypeModel {
     public Collection<ClassModel> getDependentClass() {
         Collection<ClassModel> set = new HashSet<>();
         for (TypeModel t : boundSuperTypes) {
-            set.addAll(t.getDependentClass());
+            if (t.getClassModel() != ASMParser.getEnum())
+                set.addAll(t.getDependentClass());
+            else
+                set.add(ASMParser.getEnum());
         }
         return set;
     }
 
     @Override
     public String toString() {
-        return "[Param: " + key + "]";
+        StringBuilder sb = new StringBuilder();
+        for (TypeModel t : boundSuperTypes) {
+            if (t.getClassModel() != ASMParser.getEnum())
+                sb.append(" :" + t.toString());
+            else
+                sb.append(" : Enum<? extends " + key + ">");
+        }
+        return "[" + key + sb.toString() + "]";
     }
 
 }
