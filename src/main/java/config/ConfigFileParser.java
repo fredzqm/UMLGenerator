@@ -39,6 +39,8 @@ public class ConfigFileParser implements ConfigurationFactory {
     @Override
     public Configuration create() throws Exception {
         Configuration conf = Configuration.getInstance();
+        if(json.keySet().size() <= 0)
+        	return conf;
         JSONObject jsonConf = json.getJSONObject("config");
         if (jsonConf.has("classes")) {
             JSONArray classes = jsonConf.getJSONArray("classes");
@@ -65,7 +67,7 @@ public class ConfigFileParser implements ConfigurationFactory {
         }
 
         if (jsonConf.has("nodeSep")) {
-            conf.set(GeneratorConfiguration.NODE_SEP, Double.toString(jsonConf.getDouble("nodeSep")));
+            conf.set(GeneratorConfiguration.NODE_SEP, jsonConf.getString("nodeSep"));
         }
 
         if (jsonConf.has("modifierFilter")) {
@@ -82,6 +84,8 @@ public class ConfigFileParser implements ConfigurationFactory {
                     break;
                 case ("private"):
                     break;
+                case (""):
+                	break;
                 default:
                     System.err.println("modifier not found");
             }

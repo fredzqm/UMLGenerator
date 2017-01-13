@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class CommandLineParserTest {
 
     @Test
-    public void testCommandAllShortFlags() throws IllegalAccessException, InstantiationException {
+    public void testCommandAllShortFlags() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f public -k -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -34,7 +34,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testCommandAllLongFlags() throws IllegalAccessException, InstantiationException {
+    public void testCommandAllLongFlags() throws Exception {
         String[] args = "--executable exepath --directory outdir --outputfile outfile --extension extension --filters public --direction --nodesep 10 --recursive me"
                 .split(" ");
 
@@ -58,7 +58,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testNodeSep() throws IllegalAccessException, InstantiationException {
+    public void testNodeSep() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f public -n 10.1 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -70,7 +70,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testMultipleClasses() {
+    public void testMultipleClasses() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r me you us".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -89,7 +89,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testEmptyClasses() {
+    public void testEmptyClasses() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -105,7 +105,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testRecus() {
+    public void testRecus() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -124,7 +124,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testPrivate() throws IllegalAccessException, InstantiationException {
+    public void testPrivate() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f private -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -138,7 +138,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testProtected() throws IllegalAccessException, InstantiationException {
+    public void testProtected() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -f protected -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -152,7 +152,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testDefault() throws IllegalAccessException, InstantiationException {
+    public void testDefault() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -166,7 +166,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void testRankDirDefault() {
+    public void testRankDirDefault() throws Exception {
         String[] args = "-e exepath -d outdir -o outfile -x extension -n 10 -r me".split(" ");
 
         CommandLineParser com = new CommandLineParser(args);
@@ -177,7 +177,7 @@ public class CommandLineParserTest {
     }
 
     @Test
-    public void TestJComponentArgument() throws IllegalAccessException, InstantiationException {
+    public void TestJComponentArgument() throws Exception {
         String[] args = new String[]{"-e", "dot", "-r", "-d", "output", "-o", "Jcomponent", "--filters", "public",
                 "-x", "png", "javax.swing.JComponent"};
 
