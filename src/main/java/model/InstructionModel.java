@@ -8,7 +8,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 
 import analyzer.IInstructionModel;
 
-public abstract class InstructionModel implements IInstructionModel{
+/**
+ * Represent a java byte code instruction
+ * 
+ * @author zhang
+ *
+ */
+public abstract class InstructionModel implements IInstructionModel {
     private final MethodModel belongTo;
 
     public InstructionModel(MethodModel belongTo) {
@@ -20,7 +26,7 @@ public abstract class InstructionModel implements IInstructionModel{
     }
 
     public abstract Collection<TypeModel> getDependentClass();
-    
+
     public static InstructionModel parseInstruction(MethodModel method, AbstractInsnNode insn) {
         switch (insn.getType()) {
             case AbstractInsnNode.METHOD_INSN:

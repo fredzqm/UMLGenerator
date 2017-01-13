@@ -5,6 +5,12 @@ import java.util.HashSet;
 
 import org.objectweb.asm.tree.MethodInsnNode;
 
+/**
+ * represent a java byte code instruction that calls a method
+ * 
+ * @author zhang
+ *
+ */
 public class InstructionMethod extends InstructionModel {
     private final TypeModel calledOn;
     private final MethodModel method;
@@ -36,6 +42,10 @@ public class InstructionMethod extends InstructionModel {
         return depends;
     }
 
+    /**
+     * 
+     * @return the method this instruction calls
+     */
     public MethodModel getMethod() {
         return method;
     }

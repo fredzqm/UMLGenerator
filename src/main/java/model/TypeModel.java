@@ -35,7 +35,7 @@ abstract class TypeModel implements ITypeModel {
     /**
      * @return all the classes that this type depends on
      */
-    public abstract  Collection<ClassModel> getDependentClass();
+    public abstract Collection<ClassModel> getDependentClass();
 
     /**
      * @param index
@@ -114,6 +114,13 @@ abstract class TypeModel implements ITypeModel {
         return assignTo(ASMParser.getClassByName(className));
     }
 
+    /**
+     * {@link Signature} used by signature to erase the generic type so that we
+     * do not have to specify the generic type when getting a getting a method
+     * with signature {@link ClassModel#getMethodBySignature(Signature)}
+     * 
+     * @return
+     */
     public TypeModel eraseGenericType() {
         return this;
     }

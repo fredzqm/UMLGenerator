@@ -5,6 +5,12 @@ import java.util.Collection;
 
 import org.objectweb.asm.tree.FieldInsnNode;
 
+/**
+ * represent a java byte code that accesses a field
+ * 
+ * @author zhang
+ *
+ */
 public class InstructionField extends InstructionModel {
     private final TypeModel calledOn;
     private final FieldModel field;
@@ -29,6 +35,10 @@ public class InstructionField extends InstructionModel {
         return Arrays.asList(calledOn, field.getFieldType());
     }
 
+    /**
+     * 
+     * @return the field it accesses
+     */
     public FieldModel getField() {
         return field;
     }
