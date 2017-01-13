@@ -108,11 +108,24 @@ class ParametizedClassModel implements TypeModel {
         Collection<ClassModel> set = new HashSet<>();
         set.add(classModel);
         for (TypeModel t : genericArgs) {
+            if (checkRecursive(t))
+                continue;
             set.addAll(t.getDependentClass());
         }
         return set;
     }
 
+    private boolean checkRecursive(TypeModel t) {
+        if (t.getGenericArgNumber() > 0) {
+            for (int i = 0; i < t.getGenericArgNumber(); i++) {
+                TypeModel x = t.getGenericArg(i);
+                if (x == this)
+                    return true;
+            }
+        }
+        return false;
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

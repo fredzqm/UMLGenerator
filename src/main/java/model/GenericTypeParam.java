@@ -99,7 +99,10 @@ class GenericTypeParam implements TypeModel {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (TypeModel t : boundSuperTypes) {
-            sb.append(" :" + t.toString());
+            if (checkRecursive(t))
+                sb.append(" : ? extends " + getName());
+            else
+                sb.append(" :" + t.toString());
         }
         return "[" + key + sb.toString() + "]";
     }

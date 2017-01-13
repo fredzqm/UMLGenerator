@@ -29,6 +29,7 @@ class MethodModel implements IMethodModel {
     private Collection<MethodModel> dependenOnMethod;
     private Collection<FieldModel> dependenOnField;
     private List<GenericTypeParam> genericParams;
+    private List<InstructionModel> instructions;
 
     /**
      * constructs an method model given the class it belongs to and the asm
@@ -60,6 +61,7 @@ class MethodModel implements IMethodModel {
                 arguments.add(t.replaceTypeVar(paramMap));
             this.signature = new Signature(arguments, asmMethodNode.name);
         }
+        getInstructions();
     }
 
     Map<String, GenericTypeParam> getParamsMap() {
@@ -115,7 +117,27 @@ class MethodModel implements IMethodModel {
 
     @Override
     public String toString() {
-        return returnType + " " + getSignature().toString();
+        StringBuilder sb = new StringBuilder();
+        List<TypeModel> args = getArguments();
+        if (args.size() > 0) {
+            sb.append(args.get(0));
+            for (int i = 0; i < args.size(); i++)
+                sb.append("," + args.get(i));
+        }
+        return String.format("%s %s(%s)", returnType.toString(), getName(), sb.toString());
+    }
+
+    public List<InstructionModel> getInstructions() {
+        if (instructions == null) {
+            instructions = new ArrayList<>();
+            InsnList insnList = asmMethodNode.instructions;
+            ListIterator<AbstractInsnNode> itr = insnList.iterator();
+            while (itr.hasNext()) {
+                InstructionModel i = InstructionModel.parseInstruction(this, itr.next());
+                instructions.add(i);
+            }
+        }
+        return instructions;
     }
 
     public Collection<MethodModel> getCalledMethods() {
