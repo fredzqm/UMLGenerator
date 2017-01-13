@@ -42,10 +42,13 @@ abstract class GenericTypeArg implements TypeModel {
     }
 
     static class LowerBound extends GenericTypeArg {
-        private TypeModel lowerBound;
+        private final TypeModel lowerBound;
 
         LowerBound(TypeModel lowerBound) {
-            this.lowerBound = lowerBound;
+            if (lowerBound == null)
+                this.lowerBound = lowerBound;
+            else
+                this.lowerBound = lowerBound;
         }
 
         public TypeModel getLowerBound() {
@@ -94,7 +97,7 @@ abstract class GenericTypeArg implements TypeModel {
     }
 
     static class UpperBound extends GenericTypeArg {
-        private TypeModel upperBound;
+        private final TypeModel upperBound;
 
         UpperBound(TypeModel upperBound) {
             this.upperBound = upperBound;

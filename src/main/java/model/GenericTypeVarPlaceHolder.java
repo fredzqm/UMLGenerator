@@ -38,7 +38,7 @@ class GenericTypeVarPlaceHolder implements TypeModel {
 
     @Override
     public Iterable<TypeModel> getSuperTypes() {
-        System.err.println("GenericTypeVar does not know its super types");
+        System.err.println(getClass().getName() + " does not know its super types");
         return Collections.emptyList();
     }
 
@@ -46,7 +46,9 @@ class GenericTypeVarPlaceHolder implements TypeModel {
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         if (paramMap.containsKey(key))
             return paramMap.get(key);
-        throw new RuntimeException("GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: " + paramMap);
+        System.err.println(getClass().getName() + " GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: "
+                + paramMap);
+        return this;
     }
 
     @Override

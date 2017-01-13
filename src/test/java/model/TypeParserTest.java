@@ -309,6 +309,15 @@ public class TypeParserTest {
         assertEquals(new GenericTypeVarPlaceHolder("T"), a.getGenericArg(0));
 
         assertEquals(0, exceptionLs.size());
-
+    }
+    
+    @Test
+    public void testParseTypeArgs(){
+        List<TypeModel> t = TypeParser.parseTypeArgs("<Ljava/lang/Integer;[ILjava/util/function/IntConsumer;>");
+        
+        assertEquals(3, t.size());
+        assertEquals(ASMParser.getClassByName("java.lang.Integer"), t.get(0));
+        assertEquals(new ArrayTypeModel(PrimitiveType.INT, 1), t.get(1));
+        assertEquals(ASMParser.getClassByName("java.util.function.IntConsumer"), t.get(2));
     }
 }

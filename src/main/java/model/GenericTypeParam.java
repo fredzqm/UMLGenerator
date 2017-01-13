@@ -69,26 +69,37 @@ class GenericTypeParam implements TypeModel {
         }
     }
 
+    int c = 0;
+
     @Override
     public Collection<ClassModel> getDependentClass() {
         Collection<ClassModel> set = new HashSet<>();
         for (TypeModel t : boundSuperTypes) {
-            if (t.getClassModel() != ASMParser.getEnum())
-                set.addAll(t.getDependentClass());
-            else
-                set.add(ASMParser.getEnum());
+            if (checkRecursive(t))
+                continue;
+            if (c == 30)
+                System.out.println();
+            set.addAll(t.getDependentClass());
         }
         return set;
+    }
+
+    private boolean checkRecursive(TypeModel t) {
+        if (t.getGenericArgNumber() > 0) {
+            for (int i = 0; i < t.getGenericArgNumber(); i++) {
+                TypeModel x = t.getGenericArg(i);
+                if (x == this)
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (TypeModel t : boundSuperTypes) {
-            if (t.getClassModel() != ASMParser.getEnum())
-                sb.append(" :" + t.toString());
-            else
-                sb.append(" : Enum<? extends " + key + ">");
+            sb.append(" :" + t.toString());
         }
         return "[" + key + sb.toString() + "]";
     }
