@@ -72,7 +72,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" headlabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
@@ -124,7 +124,7 @@ public class SystemTest {
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" taillabel=\"2\" ];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [arrowhead=\"vee\" style=\"\" headlabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -236,8 +236,7 @@ public class SystemTest {
         assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedDependencyCardinality = "\"" + relDummyMany + "\" -> " + "\"" + relOtherDummy
-                + "\" [arrowhead=\"vee\" style=\"dashed\" taillabel=\"0..*\" ];";
+        String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy, "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 
