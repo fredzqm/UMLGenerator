@@ -60,15 +60,32 @@ public class MethodModelTest {
 
 
     @Test
-    public void testGetMethodType1() {
+    public void testGetMethodBySignature1() {
         String dummyClass = GenericDummyClass.class.getName();
         ClassModel genericdummy = ASMParser.getClassByName(dummyClass);
 
         MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Arrays.asList(), "iterator"));
 
         assertEquals("iterator", iteratorMethod.getName());
+        assertEquals(genericdummy, iteratorMethod.getBelongTo());
         TypeModel ret = iteratorMethod.getReturnType();
         assertEquals(ASMParser.getClassByName("java.util.Iterator"), ret.getClassModel());
         assertEquals(genericdummy.getGenericList().get(0), ret.getGenericArg(0));
+    }
+    
+    @Test
+    public void testGetMethodBySignature2() {
+        String string = String.class.getName();
+        ClassModel stringClass = ASMParser.getClassByName(string);
+
+        MethodModel constructor = stringClass.getMethodBySignature(new Signature(Arrays.asList(), "<init>"));
+        assertEquals("java.lang.String", constructor.getName());
+        assertEquals(stringClass, constructor.getBelongTo());
+        assertEquals(PrimitiveType.VOID, constructor.getReturnType());
+        
+        MethodModel chars = stringClass.getMethodBySignature(new Signature(Arrays.asList(), "chars"));
+        assertEquals("chars", chars.getName());
+        assertEquals(stringClass, chars.getBelongTo());
+        assertEquals(ASMParser.getClassByName("java.util.stream.IntStream"), chars.getReturnType());
     }
 }

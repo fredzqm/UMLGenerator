@@ -78,10 +78,10 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
-        String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
-                "- privateString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
-                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double"};
+        String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
+                "- privateString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "- printPrivateString() : void", "getPublicInt() : int",
+                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double" };
 
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
@@ -130,8 +130,8 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
-        String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};
+        String[] expectedFields = { "+ publicString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "getPublicInt() : int", "+ getPublicString() : java.lang.String" };
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
@@ -252,7 +252,9 @@ public class SystemTest {
         // Set up config.
         Configuration config = Configuration.getInstance();
         config.add(ModelConfiguration.CLASSES_KEY, dummy);
-        config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
+        config.add(ModelConfiguration.CLASSES_KEY, intStream);
+        config.add(ModelConfiguration.CLASSES_KEY, string);
+        config.set(ModelConfiguration.IS_RECURSIVE_KEY, "false");
         config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
 
         // Set up SystemModel and Generator.
@@ -268,9 +270,16 @@ public class SystemTest {
         // Stored as variable.
         IClassModel stringModel = getClassFromCollection(string, classes);
 
+        assertNotNull(dummyModel);
+        assertNotNull(intStreamModel);
+        assertNotNull(stringModel);
+
         // Get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-
+//        System.out.println(relations);
+        for (ClassPair p : relations.keySet()) {
+                System.out.println(p + "\t\t" + relations.get(p));
+        }
         List<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel));
         assertEquals(1, dummyStringRelation.size());
         assertEquals(new RelationDependsOn(true), dummyStringRelation.get(0));
@@ -280,8 +289,10 @@ public class SystemTest {
         assertEquals(new RelationDependsOn(false), dummyIntStreamRelation.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedStringDependency = String.format("\"%s\" -> \"%s %s\"", dummy, string, "\" [arrowhead=\"vee\" style=\"dashed\" ];");
-        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s %s\"", dummy, intStream, "\" [arrowhead=\"vee\" style=\"dashed\" ];");
+        String expectedStringDependency = String.format("\"%s\" -> \"%s %s\"", dummy, string,
+                "\" [arrowhead=\"vee\" style=\"dashed\" ];");
+        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s %s\"", dummy, intStream,
+                "\" [arrowhead=\"vee\" style=\"dashed\" ];");
 
         assertTrue("Missing GraphViz dependency", actual.contains(expectedStringDependency));
         assertTrue("Missing GraphViz dependency", actual.contains(expectedIntStreamDependency));

@@ -186,6 +186,11 @@ class ClassModel implements IClassModel, TypeModel {
             return getMethodsMap().get(signature);
         if (getSuperClass() != null)
             getSuperClass().getMethodBySignature(signature);
+        for (ClassModel c : getInterfaces()) {
+            MethodModel m = c.getMethodBySignature(signature);
+            if (m != null)
+                return m;
+        }
         return null;
     }
 
@@ -195,7 +200,7 @@ class ClassModel implements IClassModel, TypeModel {
             @SuppressWarnings("unchecked")
             List<MethodNode> ls = asmClassNode.methods;
             for (MethodNode methodNode : ls) {
-                MethodModel methodModel = new MethodModel(this, methodNode);
+                MethodModel methodModel = new ConcreteMethodModel(this, methodNode);
                 Signature signature = methodModel.getSignature();
                 methods.put(signature, methodModel);
             }

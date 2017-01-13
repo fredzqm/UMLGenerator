@@ -122,14 +122,16 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
 
         for (IMethodModel method : classModel.getMethods()) {
             List<? extends ITypeModel> args = method.getArguments();
-            checkType(method.getReturnType(), map);
             for (ITypeModel t : args)
                 checkType(t, map);
+            checkType(method.getReturnType(), map);
             for (IFieldModel t : method.getAccessedFields()) {
                 checkClass(t.getBelongTo(), map);
             }
             for (IMethodModel m : method.getCalledMethods()) {
                 args = m.getArguments();
+                for (ITypeModel t : args)
+                    checkType(t, map);
                 checkType(m.getReturnType(), map);
                 checkClass(m.getBelongTo(), map);
             }
