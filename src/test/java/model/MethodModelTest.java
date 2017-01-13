@@ -1,61 +1,79 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Test;
+
 import dummy.generic.GenericDummyClass;
 import dummy.hasDependsRel.Dummy;
-import org.junit.Test;
 import utility.IFilter;
 import utility.MethodType;
 import utility.Modifier;
 
-import java.util.*;
-
-import static org.junit.Assert.*;
-
 public class MethodModelTest {
 
-//    @Test
-//    public void testGetDependentMethods() {
-//        String dummyClass = Dummy.class.getName();
-//        ClassModel dummy = ASMParser.getClassByName(dummyClass);
-//        assertEquals(dummyClass, dummy.getName());
-//
-//        MethodModel methodModel = dummy.getMethodBySignature(Signature.parse("publicMethod", "()LString"));
-//
-//        assertTrue(methodModel != null);
-//
-//        Set<String> expected = new HashSet<>(Arrays.asList("append", "toString", "java.lang.StringBuilder"));
-//        Collection<String> actual = new HashSet<>();
-//
-//        Collection<MethodModel> methods = methodModel.getCalledMethods();
-//        methods.forEach((m) -> actual.add(m.getName()));
-//
-//        assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void testGetDependentFields() {
-//        String dummyClass = Dummy.class.getName();
-//        ClassModel dummy = ASMParser.getClassByName(dummyClass);
-//
-//        IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
-//                && d.getMethodType() == MethodType.METHOD;
-//
-//        assertEquals(dummyClass, dummy.getName());
-//        Iterator<? extends MethodModel> itr = filter.filter(dummy.getMethods()).iterator();
-//
-//        MethodModel methodModel = itr.next();
-//        assertEquals("privateMethod", methodModel.getName());
-//        assertFalse(itr.hasNext());
-//
-//        Set<String> expected = new HashSet<>(Arrays.asList("proctedField", "defaultField", "publicField"));
-//        Collection<String> actual = new ArrayList<>();
-//
-//        Collection<FieldModel> method = methodModel.getAccessedFields();
-//        method.forEach((m) -> actual.add(m.getName()));
-//
-//        assertEquals(expected.size(), actual.size());
-//        assertEquals(expected, new HashSet<>(actual));
-//    }
+    @Test
+    public void testGetDependentMethods() {
+        String dummyClass = Dummy.class.getName();
+        ClassModel dummy = ASMParser.getClassByName(dummyClass);
+        assertEquals(dummyClass, dummy.getName());
+
+        MethodModel methodModel = dummy.getMethodBySignature(Signature.parse("publicMethod", "()LString"));
+
+        assertTrue(methodModel != null);
+
+        Set<String> expected = new HashSet<>(Arrays.asList("append", "toString", "java.lang.StringBuilder"));
+        Collection<String> actual = new HashSet<>();
+
+        Collection<InstructionModel> instructions = methodModel.getInstructions();
+        instructions.forEach((m) -> {
+            if (m instanceof InstructionMethod) {
+                InstructionMethod minsn = InstructionMethod.class.cast(m);
+                if (minsn != null)
+                    actual.add(minsn.getMethod().getName());
+            }
+        });
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetDependentFields() {
+        String dummyClass = Dummy.class.getName();
+        ClassModel dummy = ASMParser.getClassByName(dummyClass);
+
+        IFilter<MethodModel> filter = (d) -> d.getModifier() == Modifier.PRIVATE
+                && d.getMethodType() == MethodType.METHOD;
+
+        assertEquals(dummyClass, dummy.getName());
+        Iterator<? extends MethodModel> itr = filter.filter(dummy.getMethods()).iterator();
+
+        MethodModel methodModel = itr.next();
+        assertEquals("privateMethod", methodModel.getName());
+        assertFalse(itr.hasNext());
+
+        Set<String> expected = new HashSet<>(Arrays.asList("proctedField", "defaultField", "publicField"));
+        Collection<String> actual = new HashSet<>();
+
+        Collection<InstructionModel> method = methodModel.getInstructions();
+        method.forEach((m) -> {
+            if (m instanceof InstructionField) {
+                InstructionField minsn = InstructionField.class.cast(m);
+                actual.add(minsn.getField().getName());
+            }
+        });
+
+        assertEquals(expected, actual);
+    }
 
     @Test
     public void testGetMethodBySignature1() {

@@ -50,8 +50,7 @@ class ASMParser {
             map.put(className, model);
             return model;
         } catch (IOException e) {
-            System.err.println("ASM parsing of " + className + " failed.");
-            return null;
+            throw new RuntimeException("ASM parsing of " + className + " failed.");
         }
     }
 

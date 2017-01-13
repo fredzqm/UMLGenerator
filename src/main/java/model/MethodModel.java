@@ -33,8 +33,6 @@ class MethodModel implements IMethodModel {
     private final TypeModel returnType;
     private final Signature signature;
 
-    // private Collection<MethodModel> dependenOnMethod;
-    // private Collection<FieldModel> dependenOnField;
     private List<GenericTypeParam> genericParams;
     private List<InstructionModel> instructions;
 

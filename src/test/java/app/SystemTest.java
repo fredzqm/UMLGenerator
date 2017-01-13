@@ -276,9 +276,7 @@ public class SystemTest {
 
         // Get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-        for (ClassPair p : relations.keySet()) {
-            System.out.println(p + "\t\t" + relations.get(p));
-        }
+        
         List<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel));
         assertEquals(1, dummyStringRelation.size());
         assertEquals(new RelationDependsOn(false), dummyStringRelation.get(0));
@@ -292,7 +290,6 @@ public class SystemTest {
                 "arrowhead=\"vee\" style=\"dashed\" ");
         String expectedIntStreamDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, intStream,
                 "arrowhead=\"vee\" style=\"dashed\" ");
-        System.out.println(actual);
         assertTrue("Missing GraphViz dependency", actual.contains(expectedStringDependency));
         assertTrue("Missing GraphViz dependency", actual.contains(expectedIntStreamDependency));
     }

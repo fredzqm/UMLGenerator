@@ -29,4 +29,7 @@ public class InstructionField extends InstructionModel {
         return Arrays.asList(calledOn, field.getFieldType());
     }
 
+    public FieldModel getField() {
+        return field;
+    }
 }

@@ -36,4 +36,7 @@ public class InstructionMethod extends InstructionModel {
         return depends;
     }
 
+    public MethodModel getMethod() {
+        return method;
+    }
 }
