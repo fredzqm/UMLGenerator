@@ -155,8 +155,7 @@ class MethodModel implements IMethodModel {
                         continue;
                     FieldModel field = destClass.getFieldByName(fiedlCall.name);
                     if (field == null)
-                        throw new RuntimeException(
-                                "The destination class " + destClass + " does not contain a field: " + fiedlCall.name);
+                    	continue;
                     dependenOnField.add(field);
                 }
             }

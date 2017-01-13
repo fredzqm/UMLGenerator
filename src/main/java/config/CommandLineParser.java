@@ -56,7 +56,7 @@ public class CommandLineParser implements ConfigurationFactory {
         jsap = new JSAP();
 
         UnflaggedOption opt1 = new UnflaggedOption("class").setStringParser(JSAP.STRING_PARSER)
-                .setDefault("java.lang.String").setRequired(true).setGreedy(true);
+                .setDefault("java.lang.String").setGreedy(true);
         opt1.setHelp("desc: space separated list of the name of the classes you want the UML for\n");
         addOption(opt1);
 
@@ -66,17 +66,17 @@ public class CommandLineParser implements ConfigurationFactory {
         addOption(opt2);
 
         FlaggedOption opt3 = new FlaggedOption("outputDirectory").setStringParser(JSAP.STRING_PARSER)
-                .setDefault("output").setRequired(true).setShortFlag('d').setLongFlag("directory");
+                .setDefault("output").setShortFlag('d').setLongFlag("directory");
         opt3.setHelp("desc: the name of the directory which you want output to go to\n");
         addOption(opt3);
 
         FlaggedOption opt4 = new FlaggedOption("outputfile").setStringParser(JSAP.STRING_PARSER).setDefault("output")
-                .setRequired(true).setShortFlag('o').setLongFlag("outputfile");
+                .setShortFlag('o').setLongFlag("outputfile");
         opt4.setHelp("desc: the name of the output file\n");
         addOption(opt4);
 
         FlaggedOption opt5 = new FlaggedOption("extension").setStringParser(JSAP.STRING_PARSER).setDefault("svg")
-                .setRequired(false).setShortFlag('x').setLongFlag("extension");
+                .setShortFlag('x').setLongFlag("extension");
         opt5.setHelp("desc: the name extension of the output file without the dot\n");
         addOption(opt5);
 
@@ -88,7 +88,7 @@ public class CommandLineParser implements ConfigurationFactory {
         addOption(opt6);
 
         FlaggedOption opt7 = new FlaggedOption("nodeseparationvalue").setStringParser(JSAP.DOUBLE_PARSER)
-                .setRequired(false).setShortFlag('n').setLongFlag("nodesep").setDefault("1");
+                .setShortFlag('n').setLongFlag("nodesep").setDefault("1");
         opt7.setHelp("desc: the node seperation value which is greater than 0\n");
         addOption(opt7);
 
@@ -99,14 +99,21 @@ public class CommandLineParser implements ConfigurationFactory {
         Switch opt9 = new Switch("rankdir").setShortFlag('k').setLongFlag("direction");
         opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
         addOption(opt9);
+        
+        FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j')
+        		.setDefault("none").setStringParser(JSAP.STRING_PARSER);
+        opt10.setHelp("include this to specify a configuration file to use instead of command"
+				+ "line arguments.");
+        addOption(opt10);
     }
 
     /**
      * This method creates a new configuration based on the arguments passed
      * into the constructor
+     * @throws Exception 
      */
     @Override
-    public Configuration create() {
+    public Configuration create() throws Exception {
 
         JSAPResult config = jsap.parse(this.args);
 
@@ -131,6 +138,11 @@ public class CommandLineParser implements ConfigurationFactory {
         }
 
         Configuration conf = Configuration.getInstance();
+        
+        String configJ = config.getString("JSONfile");
+        if(!configJ.equals("none"))
+        	return (new ConfigFileParser((new CommandLineFileInput(configJ)).getJson())).create(); 
+        
         String[] classes = config.getStringArray("class");
         for (String c : classes) {
             conf.add(ModelConfiguration.CLASSES_KEY, c);

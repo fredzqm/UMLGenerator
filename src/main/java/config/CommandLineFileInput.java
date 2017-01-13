@@ -1,14 +1,10 @@
 package config;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import org.json.JSONObject;
 
 /**
  * TODO: Adam documentation.
@@ -21,26 +17,13 @@ class CommandLineFileInput {
      *
      * @param args
      */
-    CommandLineFileInput(String[] args) {
-        JSAP jsap = new JSAP();
-
-        FlaggedOption opt1 = new FlaggedOption("fileName").setStringParser(JSAP.STRING_PARSER)
-                .setDefault("configs/ConfigModel.json").setRequired(false).setShortFlag('f').setLongFlag("filename");
-        opt1.setHelp("This is a JSON file that will " + "contain all elements of the config"
-                + "to find an example, check the default.");
-
-        try {
-            jsap.registerParameter(opt1);
-        } catch (JSAPException e) {
-            // TODO Fix this.
-            e.printStackTrace();
-        }
-
-        JSAPResult config = jsap.parse(args);
-        String fileName = config.getString("fileName");
+    CommandLineFileInput(String arg) {
         Scanner scanner = null;
         try {
-            scanner = new Scanner(new File(fileName));
+        	if(arg.length() <= 0)
+        		scanner = new Scanner(new File("configs/ConfigModel.json"));
+        	else
+        		scanner = new Scanner(new File(arg));
 
             StringBuilder json = new StringBuilder();
             while (scanner.hasNextLine()) {
@@ -49,7 +32,7 @@ class CommandLineFileInput {
 
             this.setJson(new JSONObject(json.toString()));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            this.setJson(new JSONObject());
         } finally {
             if (scanner != null)
                 scanner.close();

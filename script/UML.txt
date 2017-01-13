@@ -187,6 +187,255 @@ package analyzer <<Folder>>{
         getConfigurationFor(Class<? extends IAnalyzer> analyzerClass): Object
         mapAnalyzerToConfig(Class<? extends IAnalyzer> analyzerClass, Object config): void
     }
+
+    class IClassModelFilter {
+        -classModel: IClassModel
+        +IClassModelFilter(IClassModel classModel): ctor
+        #getClassModel(): IClassModel
+        +getName(): String
+        +getType(): ClassType
+        +isFinal(): boolean
+        +isStatic(): boolean
+        +getSuperClass(): IClassModel
+        +getInterfaces(): Collection<? extends IClassModel>
+        +getFields(): Collection<? extends IFieldModel>
+        +getMethods(): Collection<? extends IMethodModel>
+        +getStereoTypes(): Collection<String>
+        +getLabel(): String
+        +getUnderlyingClassModel(): IClassModel
+        +toString(): String
+        +equals(Object obj): boolean
+        +hashCode(): int
+    }
+
+    interface IClassModel {
+        ~getName(): String
+        ~getType(): ClassType
+        ~isFinal(): boolean
+        ~isStatic(): boolean
+        ~getSuperClass(): IClassModel
+        ~getInterfaces(): Collection<? extends IClassModel>
+        ~getFields(): Collection<? extends IFieldModel>
+        ~getUnderlyingClassModel(): IClassModel
+        ~getMethods(): Collection<? extends IMethodModel>
+        ~getStereoTypes(): Collection<String>
+        ~getLabel(): String
+    }
+
+    interface IMethodModel {
+        ~getName(): String
+        ~getBelongTo(): IClassModel
+        ~getModifier(): Modifier
+        ~getMethodType(): MethodType
+        ~isStatic(): boolean
+        ~isFinal(): boolean
+        ~getReturnType(): ITypeModel
+        ~getArguments(): List<? extends ITypeModel>
+        ~getCalledMethods(): Collection<? extends IMethodModel>
+        ~getAccessedFields(): Collection<? extends IFieldModel>
+    }
+
+    class ClassPair {
+        -from: IClassModel
+        -to: IClassModel
+        +ClassPair(IClassModel from, IClassModel to): ctor
+        ~getFrom(): IClassModel
+        +getTo(): IClassModel
+        +reverse(): ClassPair
+        +isLoop(): boolean
+        +hashCode(): int
+        +equals(Object obj): boolean
+        +toString(): String
+    }
+
+    interface ITypeModel {
+        ~getName(): String
+        ~getClassModel(): IClassModel
+        ~getDimension(): int
+        ~getGenericArg(int index): ITypeModel
+        ~getGenericArgNumber(): int
+        ~getLowerBound(): ITypeModel
+        ~getUpperBound(): ITypeModel
+        ~isWildCharacter(): boolean
+        ~assignTo(String className): ITypeModel
+    }
+
+    class Relation {
+        -classPair: ClassPair
+        -info: IRelationInfo
+        +getClassPair(): ClassPair
+        +getFrom(): String
+        +getTo(): String
+        +getInfo(): IRelationInfo
+        +toString(): String
+        +getEdgeStyle(): String
+    }
+
+    interface IFieldModel {
+        ~getName(): String
+        ~getBelongTo(): IClassModel
+        ~getModifier(): Modifier
+        ~isFinal(): boolean
+        ~isStatic(): boolean
+        ~getFieldType(): ITypeModel
+    }
+
+    interface ISystemModel {
+        ~getClasses(): Collection<? extends IClassModel>
+        ~getRelations(): Map<ClassPair, List<IRelationInfo>>
+        ~getVertices(): Iterable<? extends IVertex>
+        ~getEdges(): Iterable<Relation>
+    }
+
+    abstract class ISystemModelFilter {
+        -systemModel: ISystemModel
+        +ISystemModelFilter(ISystemModel systemModel): ctor
+        #getSystemModel(): ISystemModel
+        +getClasses(): Collection<? extends IClassModel>
+        +getRelations(): Map<ClassPair, List<IRelationInfo>>
+    }
+
+    interface IAnalyzer {
+        ~analyze(ISystemModel systemModel, IAnalyzerConfiguration config): ISystemModel
+    }
+
+    interface IRelationInfo {
+        ~getEdgeStyle(): String
+    }
+
+    package analyzerRelationParser {
+        class RelationHasA {
+            -many: boolean
+            -count: int
+            ~RelationHasA(int count): ctor
+            ~isMany(): boolean
+            +getCount(): int
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class RelationHasABijective {
+            -a, b: RelationHasA
+            ~RelationHasABijective(RelationHasA aRel, RelationHasA bRel): ctor
+            ~getForward(): RelationHasA
+            ~getBackward(): RelationHasA
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class MergeRelationSystemModel {
+            ~MergeRelationSystemModel(ISystemModel systemModel): ctor
+            +getRelations(): Map<ClassPair, List<IRelationInfo>>
+            -mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap, Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
+            -mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
+            -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info): void
+            -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, List<IRelationInfo> ls): void
+            -merge(IRelationInfo aRel, IRelationInfo bRel): IRelationInfo
+        }
+
+        class ParseRelationSystemModel {
+            ~ParseRelationSystemModel(ISystemModel systemModel): ctor
+            +getRelations(): Map<ClassPair, List<IRelationInfo>>
+            -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info): void
+            -getHasRelationship(IClassModel classModel): Map<IClassModel, Integer>
+            -getDependsRelationship(IClassModel classModel): Map<? extends IClassModel, Boolean>
+            -checkType(ITypeModel type, HashMap<IClassModel, Boolean> map): void
+            -checkClass(IClassModel clazz, HashMap<IClassModel, Boolean> map): void
+        }
+
+        class RelationBijectiveDecorator {
+            -decorated: IRelationInfo
+            ~RelationBijectiveDecorator(IRelationInfo rel): ctor
+            ~getDecorated(): IRelationInfo
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class RelationDependsOn {
+            -many: boolean
+            +RelationDependsOn(boolean many): ctor
+            ~isMany(): boolean
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class RelationExtendsClass {
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class RelationImplement {
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
+        }
+
+        class AnalyzerRelationParser {
+            +analyze(ISystemModel sm, IAnalyzerConfiguration config): ISystemModel
+        }
+    }
+
+    package analyzerClassParser <<Folder>> {
+        interface IClassParserConfiguration {
+            ~getModifierFilters(): IFilter<Modifier>
+            ~getHeaderParser(): IParser<IClassModel>
+            ~getFieldParser(): IParser<IFieldModel>
+            ~getMethodParser(): IParser<IMethodModel>
+            ~getTypeParser(): IParser<ITypeModel>
+            ~getModifierParser(): IParser<Modifier>
+        }
+
+        class GraphVizClass {
+            -config: IClassParserConfiguration
+            +getLabel(): String
+            +getStereoTypes(): List<String>
+        }
+
+        interface IParser {
+            ~parse(T data, IClassParserConfiguration config): String
+            ~parse(Iterable<? extends T> dataList, IClassParserConfiguration config): String
+        }
+
+        class ParseClassSystemModel {
+            -config: IClassParserConfiguration
+            +getClasses(): Collection<? extends IClassModel>
+        }
+
+        class AnalyzerClassParser {
+            +analyze(ISystemModel systemModel, IAnalyzerConfiguration config): ISystemModel
+        }
+
+        class GraphVizFieldParser {
+            +parse(IFieldModel field, IClassParserConfiguration config): String
+        }
+
+        class GraphVizHeaderParser {
+            +parse(IClassModel classModel, IClassParserConfiguration config): String
+        }
+
+        class GraphVizMethodParser {
+            +parse(IMethodModel method, IClassParserConfiguration config): String
+        }
+
+        class GraphVizModifierParser {
+            +parse(Modifier modifier, IClassParserConfiguration config): String
+        }
+
+        class GraphVizTypeParser {
+            +parse(ITypeModel type, IClassParserConfiguration config): String
+        }
+    }
 }
 
 package app <<Folder>> {
@@ -212,7 +461,133 @@ package app <<Folder>> {
     }
 }
 
+package generator <<Folder>> {
+    interface IEdge {
+        ~getFrom(): String
+        ~getTo(): String
+        ~getEdgeStyle(): String
+    }
+
+    interface IGeneratorConfiguration {
+        ~getNodeSep(): double
+        ~getRankDir(): String
+        ~getNodeStyle(): String
+    }
+
+    interface IGraph {
+        ~getVertices(): Iterable<? extends IVertex>
+        ~getEdges(): Iterable<? extends IEdge>
+    }
+
+    interface IVertex {
+        ~getName(): String
+        ~getLabel(): String
+    }
+
+    interface IGenerator {
+        ~generate(IGeneratorConfiguration config, IGraph graph): String
+    }
+
+    class GraphVizGenerator {
+        +generate(IGeneratorConfiguration config, IGraph graph): String
+    }
+}
+
+package utility <<Folder>> {
+    class ExpandIterator {
+        -expander: IExpander<A, B>
+        -dataIterator: Iterator<? extends A>
+        -valueIterator: Iterator<B>
+        -hasNext: boolean
+        -next: B
+        +ExpandIterator(IExpander<A, B> iExpander, Iterable<? extends A> iterable): ctor
+        -advance(): boolean
+        +hasNext(): boolean
+        +next(): B
+    }
+
+    class FilteredIterator {
+        -iterator: Iterator<? extends T>
+        -filter: IFilter<T>
+        -data: T
+        -hasNext: boolean
+        ~FilteredIterator(IFilter<T> filter, Iterable<? extends T> iterable): ctor
+        -advance(): void
+        +hasNext(): boolean
+        +next(): T
+    }
+
+    class MappedIterator {
+        -itr: Iterator<? extends A>
+        -mapper: IMapper<A, B>
+        ~MappedIterator(IMapper<A, B> iMapper, Iterable<? extends A> iterable): ctor
+        +hasNext(): boolean
+        +next(): B
+    }
+
+    interface IExpander {
+        ~merge(Iterable<Iterable<A>> ls): Iterable<A>
+        ~expand(A data): Iterable<B>
+        ~expand(Iterable<? extends A> iterable): Iterable<B>
+    }
+
+    interface IFilter {
+        ~filter(T data): boolean
+        ~filter(Iterable<? extends T> iterable): Iterable<T>
+    }
+
+    interface IMapper {
+        ~map(A data): B
+        ~map(Iterable<? extends A> iterable): Iterable<B>
+    }
+    enum ClassType {
+        ABSTRACT
+        INTERFACE
+        CONCRETE
+        ENUM
+        +parse(int access): ClassType
+    }
+
+    enum MethodType {
+        CONSTRUCTOR
+        STATIC_INITIALIZER
+        METHOD
+        STATIC
+        ABSTRACT
+        +parse(String name, int access): MethodType
+    }
+
+    enum Modifier {
+        PUBLIC
+        DEFAULT
+        PROTECTED
+        PRIVATE
+        +parse(int access): Modifier
+        +parseIsFinal(int access): boolean
+        +parseIsStatic(int access): boolean
+    }
+}
+
 package model <<Folder>> {
+
+    enum PrimitiveType {
+        INT
+        DOUBLE
+        FLOAT
+        BOOLEAN
+        BYTE
+        CHAR
+        SHORT
+        LONG
+        VOID
+        -name: String
+        +parseTypeModel(char x): TypeModel
+        +getName(): String
+        +getClassModel(): ClassModel
+        +getSuperTypes(): Iterable<TypeModel>
+        +getDependentClass(): List<ClassModel>
+    }
+
     class ClassModel {
         -asmClassNode: ClassNode
         -modifier: Modifier
@@ -425,7 +800,7 @@ package model <<Folder>> {
         +getName(): String
     }
 
-    class systemModel {
+    class SystemModel {
         -classList: Collection<ClassModel>
         -SystemModel(Collection<ClassModel> importantList): ctor
         +getInstance(IModelConfiguration config): SystemModel
@@ -439,39 +814,239 @@ package model <<Folder>> {
     }
 }
 
-IAnalyzerConfiguration <|. AnalyzerConfiguration
-IConfiguration <--"1..n" ModelConfiguration
-ModelConfiguration <. ModelConfiguration 
-Configurable <|. ModelConfiguration
-ClassParserConfiguration <. ClassParserConfiguration
-Configurable <|. ClassParserConfiguration
-IConfiguration <--"1..n" ClassParserConfiguration
-Configurable <--> IConfiguration
-Configurable <. Configuration
-Configuration <. Configuration
-Configurable <|. GeneratorConfiguration
-GeneratorConfiguration <. GeneratorConfiguration
-IConfiguration <-"1..n" GeneratorConfiguration
-AnalyzerConfiguration <. AnalyzerConfiguration
-Configurable <|. AnalyzerConfiguration
-IConfiguration <-"1..n" AnalyzerConfiguration
-RunnerConfiguration <. RunnerConfiguration
-IConfiguration <-"1..n" RunnerConfiguration
+IClassModel <."0..n" ISystemModel
+IClassModel <. GraphVizClass
+Relation <."0..n" ISystemModel
+IClassParserConfiguration <- GraphVizClass
+ClassPair <. MergeRelationSystemModel
+ISystemModel <|. ISystemModelFilter
+ISystemModel <- ISystemModelFilter
+IClassParserConfiguration <..> IParser
+IGraph <. UMLEngine
+IParser <|. GraphVizHeaderParser
+ParseRelationSystemModel <. AnalyzerRelationParser
+IFilter <. ClassParserConfiguration
+TypeModel <|. ArrayTypeModel
+TypeModel <- ArrayTypeModel
+GenericTypeParam <."0..n" TypeParser
+ASMParser <..> ClassModel
+ISystemModel <. UMLEngine
+ITypeModel <. ParametizedClassModel
+IGeneratorConfiguration <. GraphVizGenerator
+MethodModel <-"0..n" MethodModel
+ASMParser <. MethodModel
+ClassType <. GraphVizClass
+IConfiguration <- ClassParserConfiguration
+IClassModel <. TypeModel
+IFieldModel <|. FieldModel
+ITypeModel <. GenericTypeArg
 Configurable <|. RunnerConfiguration
-Configuration <. ConfigurationFactory
+ClassModel <. TypeParser
+IMethodModel <. GraphVizMethodParser
+IRelationInfo <|. RelationHasABijective
+IAnalyzer <|. AnalyzerRelationParser
+Modifier <. MethodType
+IRunner <|. GraphVizRunner
+IFilter <. IClassParserConfiguration
+ClassModel <."0..n" GenericTypeParam
+IRelationInfo <|. RelationHasA
 Configuration <. CommandLineParser
-ConfigurationFactory <|. CommandLineParser
-CommandLineParser <. CommandLineParser
-ConfigurationFactory <|. ConfigFileParser
-ConfigFileParser <. ConfigFileParser
-CommandLineFileInput <. CommandLineFileInput
-GraphVizRunner <. GraphVizRunner
-IRunner <|.. GraphVizRunner
-IRunnerConfiguration <-"1..n" GraphVizRunner
-IRunnerConfiguration <|. RunnerConfiguration
-AbstractUMLEngine <|- UMLEngine
-GraphVizRunner <. UMLEngine
-IConfiguration <-"1..n" UMLEngine
+IFieldModel <. GraphVizClass
+IModelConfiguration <. SystemModel
+IFieldModel <..>"1..n" IClassModel
+ArrayTypeModel <. TypeParser
+ClassModel <-"0..n" SystemModel
+IClassModel <..> IMethodModel
+Signature <. ClassModel
+GenericTypeParam <-"0..n" MethodModel
+ISystemModelFilter <|- MergeRelationSystemModel
+IClassParserConfiguration <. GraphVizTypeParser
+MethodModel <."0..n" ClassModel
+ASMParser <..> TypeModel
+IFieldModel <. GraphVizFieldParser
+Configurable <|. ClassParserConfiguration
+Modifier <. Configuration
+IAnalyzerConfiguration <|. AnalyzerConfiguration
+ParseClassSystemModel <. AnalyzerClassParser
+ClassModel <- ParametizedClassModel
+IGraph <. AbstractUMLEngine
+IClassModel <. FieldModel
+ISystemModel <. MergeRelationSystemModel
+TypeModel <|. GenericTypeVarPlaceHolder
+ClassModel <-"2..n" ClassModel
+IEdge <|. Relation
+RelationExtendsClass <. ParseRelationSystemModel
+Signature <- MethodModel
+RelationHasABijective <. MergeRelationSystemModel
+Modifier <- FieldModel
+IAnalyzerConfiguration <. AnalyzerClassParser
+IClassModel <. GenericTypeVarPlaceHolder
+TypeModel <|. GenericTypeArg
+ISystemModel <. ParseRelationSystemModel
+TypeModel <."0..n" TypeParser
+FieldModel <. ASMParser
+IVertex <."0..n" IGraph
+UMLEngine <. Application
+ISystemModelFilter <|- ParseRelationSystemModel
+IRunnerConfiguration <- GraphVizRunner
+TypeModel <- FieldModel
+IEdge <. GraphVizGenerator
+IClassModel <. ITypeModel
+Modifier <. CommandLineParser
+ITypeModel <. ArrayTypeModel
+IModelConfiguration <|. ModelConfiguration
+IClassParserConfiguration <. GraphVizMethodParser
+RelationBijectiveDecorator <. MergeRelationSystemModel
+IRelationInfo <. ISystemModel
+Modifier <. IFieldModel
+ClassPair <- Relation
+ClassPair <. ParseRelationSystemModel
+TypeModel <|. PrimitiveType
+ISystemModel <. IAnalyzer
+IClassModel <. ParseRelationSystemModel
+IClassModel <. Relation
+IConfiguration <- AnalyzerConfiguration
+IFilter <- FilteredIterator
+IParser <|. GraphVizMethodParser
+Configuration <. ConfigurationFactory
+IClassModel <|. ClassModel
+IClassModel <. ParametizedClassModel
+IConfiguration <- GeneratorConfiguration
+IParser <|. GraphVizTypeParser
+ISystemModel <. AbstractUMLEngine
+IClassModel <."0..n" ISystemModelFilter
+IGenerator <|. GraphVizGenerator
+IClassModel <. GenericTypeParam
+ISystemModel <. ParseClassSystemModel
+MethodType <. IMethodModel
+TypeModel <|. GenericTypeParam
+TypeModel <-"0..n" GenericTypeParam
+ASMParser <. SystemModel
 IRunner <. UMLEngine
-
+IConfiguration <- RunnerConfiguration
+IParser <. ClassParserConfiguration
+GraphVizClass <. ParseClassSystemModel
+Configuration <. ConfigFileParser
+RelationDependsOn <. ParseRelationSystemModel
+TypeModel <|. ParametizedClassModel
+TypeModel <-"1..n" ParametizedClassModel
+IRunnerConfiguration <. Display
+IAnalyzer <. UMLEngine
+IVertex <."0..n" ISystemModel
+ClassModel <."0..n" TypeModel
+IRelationInfo <|. RelationBijectiveDecorator
+IRelationInfo <- RelationBijectiveDecorator
+MethodType <- MethodModel
+ClassType <- ClassModel
+TypeParser <. Signature
+MergeRelationSystemModel <. AnalyzerRelationParser
+AbstractUMLEngine <|- UMLEngine
+TypeModel <|. ClassModel
+TypeModel <-"0..n" ClassModel
+IClassModel <. PrimitiveType
+Configurable <|. GeneratorConfiguration
+ITypeModel <. IFieldModel
+RelationImplement <. ParseRelationSystemModel
+IFieldModel <."0..n" IClassModelFilter
+IClassModel <."0..n" ParseClassSystemModel
+IExpander <- ExpandIterator
+IRunnerConfiguration <|. RunnerConfiguration
+IConfiguration <..> Configurable
+IGeneratorConfiguration <. IGenerator
+IGenerator <. UMLEngine
+ITypeModel <|. TypeModel
+Modifier <. ClassParserConfiguration
+IFilter <. IConfiguration
+ClassModel <- FieldModel
+ITypeModel <. ParseRelationSystemModel
+Modifier <. GraphVizModifierParser
+Configurable <|. AnalyzerConfiguration
+Modifier <- ClassModel
+IGraph <. GraphVizGenerator
+IClassParserConfiguration <. GraphVizHeaderParser
+IMapper <- MappedIterator
+RelationHasA <- RelationHasABijective
+IClassModel <|. IClassModelFilter
+IClassModel <- IClassModelFilter
+Modifier <. IMethodModel
+ConfigurationFactory <|. ConfigFileParser
+ClassType <. IClassModelFilter
+Configuration <. Application
+IMethodModel <. GraphVizClass
+IEdge <."0..n" IGraph
+ClassModel <."0..n" ArrayTypeModel
+Configuration <. UMLEngine
+FieldModel <."0..n" ClassModel
+TypeModel <- MethodModel
+IRelationInfo <- Relation
+IMethodModel <. ParseRelationSystemModel
+IRelationInfo <. ParseRelationSystemModel
+SystemModel <. UMLEngine
+IClassModel <. GenericTypeArg
+Modifier <- MethodModel
+TypeModel <-"0..n" Signature
+IClassModel <. GraphVizHeaderParser
+IClassModel <. MethodModel
+IClassParserConfiguration <. GraphVizModifierParser
+IConfiguration <|. Configuration
+IClassParserConfiguration <- ParseClassSystemModel
+IFieldModel <. ParseRelationSystemModel
+IParser <|. GraphVizFieldParser
+IAnalyzerConfiguration <. IAnalyzer
+Modifier <. ConfigFileParser
+IClassParserConfiguration <|. ClassParserConfiguration
+IFieldModel <."0..n" IMethodModel
+ASMParser <. TypeParser
+IRelationInfo <|. RelationExtendsClass
+IRelationInfo <|. RelationImplement
+IClassModel <. ArrayTypeModel
+GenericTypeParam <-"0..n" ClassModel
+IMethodModel <."0..n" IClassModelFilter
+ISystemModel <. AnalyzerRelationParser
+ITypeModel <. GenericTypeParam
+IRelationInfo <."0..n" MergeRelationSystemModel
+IFilter <. GraphVizClass
+ITypeModel <. GenericTypeVarPlaceHolder
+ITypeModel <. MethodModel
+IAnalyzerConfiguration <. AnalyzerRelationParser
+IConfiguration <- ModelConfiguration
+Configurable <|. ModelConfiguration
+CommandLineParser <. Application
+GenericTypeVarPlaceHolder <. TypeParser
+IFilter <- Configuration
+IGraph <|. ISystemModel
+ClassModel <- MethodModel
+GenericTypeArg <. TypeParser
+FieldModel <-"0..n" MethodModel
+IClassModel <- ClassPair
+ClassType <. IClassModel
+IGraph <. IGenerator
+IParser <|. GraphVizModifierParser
+ITypeModel <. GraphVizTypeParser
+IClassModelFilter <|- GraphVizClass
+PrimitiveType <. TypeParser
+GraphVizRunner <. UMLEngine
+ISystemModel <. AnalyzerClassParser
+ASMParser <. GenericTypeParam
+IConfiguration <- UMLEngine
+IGeneratorConfiguration <|. GeneratorConfiguration
+ITypeModel <. ClassModel
+ITypeModel <. FieldModel
+IMethodModel <|. MethodModel
+IRelationInfo <|. RelationDependsOn
+RelationHasA <. ParseRelationSystemModel
+IAnalyzer <|. AnalyzerClassParser
+TypeParser <. FieldModel
+IClassParserConfiguration <. GraphVizFieldParser
+GenericTypeParam <. ParametizedClassModel
+Configurable <. Configuration
+ISystemModelFilter <|- ParseClassSystemModel
+TypeParser <. MethodModel
+ClassPair <. ISystemModel
+IVertex <|. IClassModel
+IVertex <. GraphVizGenerator
+ConfigurationFactory <|. CommandLineParser
+ISystemModel <|. SystemModel
+ITypeModel <. PrimitiveType
+ITypeModel <."0..n" IMethodModel
 @enduml

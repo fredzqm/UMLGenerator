@@ -5,7 +5,7 @@
 		"executablePath" : "dot",
 		"outputFormat" : "svg",
 		"fileName" : "PizzaService",
-		"nodeSep" : 1.0,
+		"nodeSep" : "1.0",
 		"modifierFilter" : "",
 		"isRecursive" : false,
 		"rankDir" : "BT"
