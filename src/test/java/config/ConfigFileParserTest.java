@@ -11,7 +11,7 @@ public class ConfigFileParserTest {
 
     @Test
     public void test() throws Exception {
-        String[] args = {""};
+        String args = "";
         CommandLineFileInput com = new CommandLineFileInput(args);
         ConfigFileParser parser = new ConfigFileParser(com.getJson());
 

@@ -5,7 +5,7 @@
 		"executablePath":"dot",
 		"outputFormat":"svg",
 		"fileName":"out",
-		"nodeSep":1.0,
+		"nodeSep":"1.0",
 		"modifierFilter":"public",
 		"isRecursive":false,
 		"rankDir":"BT"
