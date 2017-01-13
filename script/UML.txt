@@ -170,15 +170,19 @@ package runner <<Folder>> {
         -writeDOTFile(String dotString, String outputFilePathDot): void
     }
 
-    interface IRunnerConfiguration {
-        ~getOutputFormat(): String
-        ~getOutputDirectory(): String
-        ~getExecutablePath(): String
-        ~getFileName(): String
-    }
+    together {
 
-    interface IRunner {
-        ~execute(String dotString): void
+        interface IRunnerConfiguration {
+            ~getOutputFormat(): String
+            ~getOutputDirectory(): String
+            ~getExecutablePath(): String
+            ~getFileName(): String
+        }
+
+        interface IRunner {
+            ~execute(String dotString): void
+        }
+
     }
 }
 
@@ -303,17 +307,60 @@ package analyzer <<Folder>>{
         ~getEdgeStyle(): String
     }
 
-    package analyzerRelationParser {
-        class RelationHasA {
-            -many: boolean
-            -count: int
-            ~RelationHasA(int count): ctor
-            ~isMany(): boolean
-            +getCount(): int
-            +toString(): String
-            +getEdgeStyle(): String
-            +equals(Object obj): boolean
-            +hashCode(): int
+    package analyzerRelationParser <<Folder>>{
+
+        together {
+            class RelationHasA {
+                -many: boolean
+                -count: int
+                ~RelationHasA(int count): ctor
+                ~isMany(): boolean
+                +getCount(): int
+                +toString(): String
+                +getEdgeStyle(): String
+                +equals(Object obj): boolean
+                +hashCode(): int
+            }
+
+            class RelationDependsOn {
+                -many: boolean
+                +RelationDependsOn(boolean many): ctor
+                ~isMany(): boolean
+                +toString(): String
+                +getEdgeStyle(): String
+                +equals(Object obj): boolean
+                +hashCode(): int
+            }
+
+            class RelationExtendsClass {
+                +toString(): String
+                +getEdgeStyle(): String
+                +equals(Object obj): boolean
+                +hashCode(): int
+            }
+
+            class RelationImplement {
+                +toString(): String
+                +getEdgeStyle(): String
+                +equals(Object obj): boolean
+                +hashCode(): int
+            }
+        }
+
+        together {
+            class MergeRelationSystemModel {
+                ~MergeRelationSystemModel(ISystemModel systemModel): ctor
+                +getRelations(): Map<ClassPair, List<IRelationInfo>>
+                -mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap, Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
+                -mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
+                -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info): void
+                -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, List<IRelationInfo> ls): void
+                -merge(IRelationInfo aRel, IRelationInfo bRel): IRelationInfo
+            }
+
+            class AnalyzerRelationParser {
+                +analyze(ISystemModel sm, IAnalyzerConfiguration config): ISystemModel
+            }
         }
 
         class RelationHasABijective {
@@ -327,14 +374,14 @@ package analyzer <<Folder>>{
             +hashCode(): int
         }
 
-        class MergeRelationSystemModel {
-            ~MergeRelationSystemModel(ISystemModel systemModel): ctor
-            +getRelations(): Map<ClassPair, List<IRelationInfo>>
-            -mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap, Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
-            -mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a): void
-            -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info): void
-            -addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, List<IRelationInfo> ls): void
-            -merge(IRelationInfo aRel, IRelationInfo bRel): IRelationInfo
+        class RelationBijectiveDecorator {
+            -decorated: IRelationInfo
+            ~RelationBijectiveDecorator(IRelationInfo rel): ctor
+            ~getDecorated(): IRelationInfo
+            +toString(): String
+            +getEdgeStyle(): String
+            +equals(Object obj): boolean
+            +hashCode(): int
         }
 
         class ParseRelationSystemModel {
@@ -347,46 +394,34 @@ package analyzer <<Folder>>{
             -checkClass(IClassModel clazz, HashMap<IClassModel, Boolean> map): void
         }
 
-        class RelationBijectiveDecorator {
-            -decorated: IRelationInfo
-            ~RelationBijectiveDecorator(IRelationInfo rel): ctor
-            ~getDecorated(): IRelationInfo
-            +toString(): String
-            +getEdgeStyle(): String
-            +equals(Object obj): boolean
-            +hashCode(): int
-        }
-
-        class RelationDependsOn {
-            -many: boolean
-            +RelationDependsOn(boolean many): ctor
-            ~isMany(): boolean
-            +toString(): String
-            +getEdgeStyle(): String
-            +equals(Object obj): boolean
-            +hashCode(): int
-        }
-
-        class RelationExtendsClass {
-            +toString(): String
-            +getEdgeStyle(): String
-            +equals(Object obj): boolean
-            +hashCode(): int
-        }
-
-        class RelationImplement {
-            +toString(): String
-            +getEdgeStyle(): String
-            +equals(Object obj): boolean
-            +hashCode(): int
-        }
-
-        class AnalyzerRelationParser {
-            +analyze(ISystemModel sm, IAnalyzerConfiguration config): ISystemModel
-        }
     }
 
     package analyzerClassParser <<Folder>> {
+
+        together {
+
+            class GraphVizFieldParser {
+                +parse(IFieldModel field, IClassParserConfiguration config): String
+            }
+
+            class GraphVizHeaderParser {
+                +parse(IClassModel classModel, IClassParserConfiguration config): String
+            }
+
+            class GraphVizMethodParser {
+                +parse(IMethodModel method, IClassParserConfiguration config): String
+            }
+
+            class GraphVizModifierParser {
+                +parse(Modifier modifier, IClassParserConfiguration config): String
+            }
+
+            class GraphVizTypeParser {
+                +parse(ITypeModel type, IClassParserConfiguration config): String
+            }
+
+        }
+
         interface IClassParserConfiguration {
             ~getModifierFilters(): IFilter<Modifier>
             ~getHeaderParser(): IParser<IClassModel>
@@ -416,25 +451,6 @@ package analyzer <<Folder>>{
             +analyze(ISystemModel systemModel, IAnalyzerConfiguration config): ISystemModel
         }
 
-        class GraphVizFieldParser {
-            +parse(IFieldModel field, IClassParserConfiguration config): String
-        }
-
-        class GraphVizHeaderParser {
-            +parse(IClassModel classModel, IClassParserConfiguration config): String
-        }
-
-        class GraphVizMethodParser {
-            +parse(IMethodModel method, IClassParserConfiguration config): String
-        }
-
-        class GraphVizModifierParser {
-            +parse(Modifier modifier, IClassParserConfiguration config): String
-        }
-
-        class GraphVizTypeParser {
-            +parse(ITypeModel type, IClassParserConfiguration config): String
-        }
     }
 }
 
@@ -462,30 +478,33 @@ package app <<Folder>> {
 }
 
 package generator <<Folder>> {
-    interface IEdge {
-        ~getFrom(): String
-        ~getTo(): String
-        ~getEdgeStyle(): String
-    }
 
-    interface IGeneratorConfiguration {
-        ~getNodeSep(): double
-        ~getRankDir(): String
-        ~getNodeStyle(): String
+    together {
+        interface IEdge {
+            ~getFrom(): String
+            ~getTo(): String
+            ~getEdgeStyle(): String
+        }
+
+        interface IGeneratorConfiguration {
+            ~getNodeSep(): double
+            ~getRankDir(): String
+            ~getNodeStyle(): String
+        }
+
+        interface IVertex {
+            ~getName(): String
+            ~getLabel(): String
+        }
+
+        interface IGenerator {
+            ~generate(IGeneratorConfiguration config, IGraph graph): String
+        }
     }
 
     interface IGraph {
         ~getVertices(): Iterable<? extends IVertex>
         ~getEdges(): Iterable<? extends IEdge>
-    }
-
-    interface IVertex {
-        ~getName(): String
-        ~getLabel(): String
-    }
-
-    interface IGenerator {
-        ~generate(IGeneratorConfiguration config, IGraph graph): String
     }
 
     class GraphVizGenerator {
@@ -494,16 +513,40 @@ package generator <<Folder>> {
 }
 
 package utility <<Folder>> {
-    class ExpandIterator {
-        -expander: IExpander<A, B>
-        -dataIterator: Iterator<? extends A>
-        -valueIterator: Iterator<B>
-        -hasNext: boolean
-        -next: B
-        +ExpandIterator(IExpander<A, B> iExpander, Iterable<? extends A> iterable): ctor
-        -advance(): boolean
-        +hasNext(): boolean
-        +next(): B
+
+    together {
+        class ExpandIterator {
+            -expander: IExpander<A, B>
+            -dataIterator: Iterator<? extends A>
+            -valueIterator: Iterator<B>
+            -hasNext: boolean
+            -next: B
+            +ExpandIterator(IExpander<A, B> iExpander, Iterable<? extends A> iterable): ctor
+            -advance(): boolean
+            +hasNext(): boolean
+            +next(): B
+        }
+
+        interface IExpander {
+            ~merge(Iterable<Iterable<A>> ls): Iterable<A>
+            ~expand(A data): Iterable<B>
+            ~expand(Iterable<? extends A> iterable): Iterable<B>
+        }
+    }
+
+    together {
+        class MappedIterator {
+            -itr: Iterator<? extends A>
+            -mapper: IMapper<A, B>
+            ~MappedIterator(IMapper<A, B> iMapper, Iterable<? extends A> iterable): ctor
+            +hasNext(): boolean
+            +next(): B
+        }
+
+        interface IMapper {
+            ~map(A data): B
+            ~map(Iterable<? extends A> iterable): Iterable<B>
+        }
     }
 
     class FilteredIterator {
@@ -517,54 +560,46 @@ package utility <<Folder>> {
         +next(): T
     }
 
-    class MappedIterator {
-        -itr: Iterator<? extends A>
-        -mapper: IMapper<A, B>
-        ~MappedIterator(IMapper<A, B> iMapper, Iterable<? extends A> iterable): ctor
-        +hasNext(): boolean
-        +next(): B
-    }
-
-    interface IExpander {
-        ~merge(Iterable<Iterable<A>> ls): Iterable<A>
-        ~expand(A data): Iterable<B>
-        ~expand(Iterable<? extends A> iterable): Iterable<B>
-    }
-
     interface IFilter {
         ~filter(T data): boolean
         ~filter(Iterable<? extends T> iterable): Iterable<T>
     }
+    
+    together {
+        enum ClassType {
+            ABSTRACT
+            INTERFACE
+            CONCRETE
+            ENUM
+            +parse(int access): ClassType
+        }
 
-    interface IMapper {
-        ~map(A data): B
-        ~map(Iterable<? extends A> iterable): Iterable<B>
-    }
-    enum ClassType {
-        ABSTRACT
-        INTERFACE
-        CONCRETE
-        ENUM
-        +parse(int access): ClassType
-    }
+        enum MethodType {
+            CONSTRUCTOR
+            STATIC_INITIALIZER
+            METHOD
+            STATIC
+            ABSTRACT
+            +parse(String name, int access): MethodType
+        }
 
-    enum MethodType {
-        CONSTRUCTOR
-        STATIC_INITIALIZER
-        METHOD
-        STATIC
-        ABSTRACT
-        +parse(String name, int access): MethodType
+        enum Modifier {
+            PUBLIC
+            DEFAULT
+            PROTECTED
+            PRIVATE
+            +parse(int access): Modifier
+            +parseIsFinal(int access): boolean
+            +parseIsStatic(int access): boolean
+        }
     }
+}
 
-    enum Modifier {
-        PUBLIC
-        DEFAULT
-        PROTECTED
-        PRIVATE
-        +parse(int access): Modifier
-        +parseIsFinal(int access): boolean
-        +parseIsStatic(int access): boolean
+package display <<Folder>> {
+    class Display {
+        -SUPPORT_EXTENSIONS: Set<String>
+        -image: BufferedImage
+        +showWindow(IRunnerConfiguration config): void
     }
 }
 
@@ -588,72 +623,115 @@ package model <<Folder>> {
         +getDependentClass(): List<ClassModel>
     }
 
-    class ClassModel {
-        -asmClassNode: ClassNode
-        -modifier: Modifier
-        -isFinal: boolean
-        -isStatic: boolean
-        -classType: ClassType
-        -name: String
-        -outterClass: ClassModel
-        -superTypes: List<TypeModel>
-        -superClass: ClassModel
-        -interfaces: List<ClassModel>
-        -genericParams: List<GenericTypeParam>
-        -fields: Map<String, FieldModel>
-        -methods: Map<Signature, MethodModel>
-        +ClassModel(ClassNode asmClassNode): ctor
-        -parseIsStatic(): boolean
-        -getAccess(ClassNode asmClassNode): int
-        +getName(): String
-        +getModifier(): Modifier
-        +getClassModel(): ClassModel
-        +isFinal(): boolean
-        +getType(): ClassType
-        +isStatic(): boolean
-        ~getGenericList(): List<GenericTypeParam>
-        +getSuperTypes(): List<TypeModel>
-        ~getParamsMap(): Map<String, GenericTypeParam>
-        +getSuperClass(): ClassModel
-        +getInterfaces(): Collection<ClassModel>
-        +getMethods(): Collection<MethodModel>
-        ~getMethodBySignature(Signature signature): MethodModel
-        -getMethodsMap(): Map<Signature, MethodModel>
-        +getFields(): Collection<FieldModel>
-        -getFieldMap(): Map<String, FieldModel>
-        ~getFieldByName(String name): FieldModel
-        +toString(): String
-        +getDependentClass(): List<ClassModel>
-        +getUnderlyingClassModel(): IClassModel
-        +equals(Object obj): boolean
-    }
+    together {
+        class ClassModel {
+            -asmClassNode: ClassNode
+            -modifier: Modifier
+            -isFinal: boolean
+            -isStatic: boolean
+            -classType: ClassType
+            -name: String
+            -outterClass: ClassModel
+            -superTypes: List<TypeModel>
+            -superClass: ClassModel
+            -interfaces: List<ClassModel>
+            -genericParams: List<GenericTypeParam>
+            -fields: Map<String, FieldModel>
+            -methods: Map<Signature, MethodModel>
+            +ClassModel(ClassNode asmClassNode): ctor
+            -parseIsStatic(): boolean
+            -getAccess(ClassNode asmClassNode): int
+            +getName(): String
+            +getModifier(): Modifier
+            +getClassModel(): ClassModel
+            +isFinal(): boolean
+            +getType(): ClassType
+            +isStatic(): boolean
+            ~getGenericList(): List<GenericTypeParam>
+            +getSuperTypes(): List<TypeModel>
+            ~getParamsMap(): Map<String, GenericTypeParam>
+            +getSuperClass(): ClassModel
+            +getInterfaces(): Collection<ClassModel>
+            +getMethods(): Collection<MethodModel>
+            ~getMethodBySignature(Signature signature): MethodModel
+            -getMethodsMap(): Map<Signature, MethodModel>
+            +getFields(): Collection<FieldModel>
+            -getFieldMap(): Map<String, FieldModel>
+            ~getFieldByName(String name): FieldModel
+            +toString(): String
+            +getDependentClass(): List<ClassModel>
+            +getUnderlyingClassModel(): IClassModel
+            +equals(Object obj): boolean
+        }
 
-    class MethodModel {
-        -asmMethodNode: MethodNode
-        -belongsTo: ClassModel
-        -modifier: Modifier
-        -isFinal: boolean
-        -isStatic: boolean
-        -methodtype: MethodType
-        -returnType: TypeModel
-        -signature: Signature
-        -dependenOnMethod: Collection<MethodModel>
-        -dependenOnField: Collection<FieldModel>
-        -genericParams: List<GenericTypeParam>
-        ~MethodModel(ClassModel belongsTo, MethodNode methodNode): ctor
-        ~getParamsMap(): Map<String, GenericTypeParam>
-        +getBelongTo(): ClassModel
-        +getName(): String
-        +getMethodType(): MethodType
-        +getModifier(): Modifier
-        +isFinal(): boolean
-        +isStatic(): boolean
-        +getSignature(): Signature
-        +getArguments(): List<TypeModel>
-        +getReturnType(): TypeModel
-        +toString(): String
-        +getCalledMethods(): Collection<MethodModel>
-        +getAccessedFields(): Collection<FieldModel>
+        class MethodModel {
+            -asmMethodNode: MethodNode
+            -belongsTo: ClassModel
+            -modifier: Modifier
+            -isFinal: boolean
+            -isStatic: boolean
+            -methodtype: MethodType
+            -returnType: TypeModel
+            -signature: Signature
+            -dependenOnMethod: Collection<MethodModel>
+            -dependenOnField: Collection<FieldModel>
+            -genericParams: List<GenericTypeParam>
+            ~MethodModel(ClassModel belongsTo, MethodNode methodNode): ctor
+            ~getParamsMap(): Map<String, GenericTypeParam>
+            +getBelongTo(): ClassModel
+            +getName(): String
+            +getMethodType(): MethodType
+            +getModifier(): Modifier
+            +isFinal(): boolean
+            +isStatic(): boolean
+            +getSignature(): Signature
+            +getArguments(): List<TypeModel>
+            +getReturnType(): TypeModel
+            +toString(): String
+            +getCalledMethods(): Collection<MethodModel>
+            +getAccessedFields(): Collection<FieldModel>
+        }
+
+        class FieldModel {
+            -asmFieldNode: FieldNode
+            -belongsTo: ClassModel
+            -modifier: Modifier
+            -isFinal: boolean
+            -fieldType: TypeModel
+            -isStatic: boolean
+            ~FieldModel(ClassModel classModel, FieldNode fieldNode): ctor
+            +getName(): String
+            +getBelongTo(): ClassModel
+            +getModifier(): Modifier
+            +isFinal(): boolean
+            +isStatic(): boolean
+            +getFieldType(): TypeModel
+            +toString(): String
+        }
+
+        class ArrayTypeModel {
+            -arrayType: TypeModel
+            -dimension: int
+            ~ArrayTypeModel(TypeModel arrayType, int dimension): ctor
+            +getClassModel(): ClassModel
+            +getName(): String
+            +getDimension(): int
+            +equals(Object obj): boolean
+            +hashCode(): int
+            +getSuperTypes(): Iterable<TypeModel>
+            +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
+            +assignTo(ClassModel clazz): TypeModel
+            +getDependentClass(): Collection<ClassModel>
+            +toString(): String
+        }
+
+        class SystemModel {
+            -classList: Collection<ClassModel>
+            -SystemModel(Collection<ClassModel> importantList): ctor
+            +getInstance(IModelConfiguration config): SystemModel
+            +getClasses(): Collection<ClassModel>
+            +getRelations(): Map<ClassPair, List<IRelationInfo>>
+        }
     }
 
     class ParametizedClassModel {
@@ -675,39 +753,6 @@ package model <<Folder>> {
         +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
         +assignTo(ClassModel clazz): TypeModel
         +getDependentClass(): Collection<ClassModel>
-    }
-
-    class FieldModel {
-        -asmFieldNode: FieldNode
-        -belongsTo: ClassModel
-        -modifier: Modifier
-        -isFinal: boolean
-        -fieldType: TypeModel
-        -isStatic: boolean
-        ~FieldModel(ClassModel classModel, FieldNode fieldNode): ctor
-        +getName(): String
-        +getBelongTo(): ClassModel
-        +getModifier(): Modifier
-        +isFinal(): boolean
-        +isStatic(): boolean
-        +getFieldType(): TypeModel
-        +toString(): String
-    }
-
-    class ArrayTypeModel {
-        -arrayType: TypeModel
-        -dimension: int
-        ~ArrayTypeModel(TypeModel arrayType, int dimension): ctor
-        +getClassModel(): ClassModel
-        +getName(): String
-        +getDimension(): int
-        +equals(Object obj): boolean
-        +hashCode(): int
-        +getSuperTypes(): Iterable<TypeModel>
-        +replaceTypeVar(Map<String, ? extends TypeModel> paramMap): TypeModel
-        +assignTo(ClassModel clazz): TypeModel
-        +getDependentClass(): Collection<ClassModel>
-        +toString(): String
     }
 
     class TypeParser {
@@ -798,14 +843,6 @@ package model <<Folder>> {
         +getSuperTypes(): Iterable<TypeModel>
         +getClassModel(): ClassModel
         +getName(): String
-    }
-
-    class SystemModel {
-        -classList: Collection<ClassModel>
-        -SystemModel(Collection<ClassModel> importantList): ctor
-        +getInstance(IModelConfiguration config): SystemModel
-        +getClasses(): Collection<ClassModel>
-        +getRelations(): Map<ClassPair, List<IRelationInfo>>
     }
 
     interface IModelConfiguration {
@@ -1034,6 +1071,7 @@ ITypeModel <. ClassModel
 ITypeModel <. FieldModel
 IMethodModel <|. MethodModel
 IRelationInfo <|. RelationDependsOn
+CommandLineFileInput <. CommandLineParser
 RelationHasA <. ParseRelationSystemModel
 IAnalyzer <|. AnalyzerClassParser
 TypeParser <. FieldModel
@@ -1044,6 +1082,7 @@ ISystemModelFilter <|- ParseClassSystemModel
 TypeParser <. MethodModel
 ClassPair <. ISystemModel
 IVertex <|. IClassModel
+ConfigFileParser <. CommandLineParser
 IVertex <. GraphVizGenerator
 ConfigurationFactory <|. CommandLineParser
 ISystemModel <|. SystemModel
