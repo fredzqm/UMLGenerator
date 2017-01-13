@@ -1,30 +1,30 @@
 package model;
 
+import java.util.Arrays;
+
 import org.objectweb.asm.tree.MethodInsnNode;
 
 public class InstructionMethod extends InstructionModel {
+    int dimension;
+    TypeModel owner;
 
     public InstructionMethod(MethodModel method, MethodInsnNode methodCall) {
         super(method);
-        System.out.println(method);
-        System.out.println("\tdesc\t" + methodCall.desc);
-        System.out.println("\tname\t" + methodCall.name);
-        System.out.println("\towner\t" + methodCall.owner);
-        Signature sign = Signature.parse(methodCall.name, methodCall.desc);
-        if (sign == null) {
-            throw new RuntimeException();
+        owner = TypeParser.parseClassInternalName(methodCall.owner);
+        ClassModel destClass = owner.getClassModel();
+        if (destClass == null) {
+
+        } else {
+            Signature signature = Signature.parse(methodCall.name, methodCall.desc);
+            MethodModel method2 = destClass.getMethodBySignature(signature);
+            if (method2 == null)
+                method2 = destClass.getMethodBySignature(signature);
         }
-        System.out.println("\t\t"+sign);
-        // TypeModel type =
-        // TypeParser.parse(Type.getObjectType(methodCall.owner));
-        // ClassModel destClass = ASMParser.getClassByName(type.getName());
-        // if (destClass == null)
-        // continue;
-        // Signature signature = Signature.parse(methodCall.name,
-        // methodCall.desc);
-        // MethodModel method = destClass.getMethodBySignature(signature);
-        // if (method == null)
-        // continue;
+        // System.out.println("\tdesc\t" + methodCall.desc);
+        // System.out.println("\tname\t" + methodCall.name);
+        // System.out.println("\towner\t" + methodCall.owner);
+        // Signature sign = Signature.parse(methodCall.name, methodCall.desc);
+        // System.out.println("\t\t" + sign);
     }
 
 }

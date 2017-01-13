@@ -61,7 +61,6 @@ class MethodModel implements IMethodModel {
                 arguments.add(t.replaceTypeVar(paramMap));
             this.signature = new Signature(arguments, asmMethodNode.name);
         }
-        getInstructions();
     }
 
     Map<String, GenericTypeParam> getParamsMap() {
@@ -142,6 +141,7 @@ class MethodModel implements IMethodModel {
 
     public Collection<MethodModel> getCalledMethods() {
         if (dependenOnMethod == null) {
+            getInstructions();
             dependenOnMethod = new HashSet<>();
             InsnList instructions = asmMethodNode.instructions;
             for (int i = 0; i < instructions.size(); i++) {

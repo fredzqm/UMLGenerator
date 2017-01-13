@@ -58,7 +58,6 @@ public class MethodModelTest {
         assertEquals(expected, new HashSet<>(actual));
     }
 
-
     @Test
     public void testGetMethodBySignature1() {
         String dummyClass = GenericDummyClass.class.getName();
@@ -72,7 +71,7 @@ public class MethodModelTest {
         assertEquals(ASMParser.getClassByName("java.util.Iterator"), ret.getClassModel());
         assertEquals(genericdummy.getGenericList().get(0), ret.getGenericArg(0));
     }
-    
+
     @Test
     public void testGetMethodBySignature2() {
         String string = String.class.getName();
@@ -82,10 +81,32 @@ public class MethodModelTest {
         assertEquals("java.lang.String", constructor.getName());
         assertEquals(stringClass, constructor.getBelongTo());
         assertEquals(PrimitiveType.VOID, constructor.getReturnType());
-        
+
         MethodModel chars = stringClass.getMethodBySignature(new Signature(Arrays.asList(), "chars"));
         assertEquals("chars", chars.getName());
-        assertEquals(stringClass, chars.getBelongTo());
+        assertEquals(ASMParser.getClassByName("java.lang.CharSequence"), chars.getBelongTo());
         assertEquals(ASMParser.getClassByName("java.util.stream.IntStream"), chars.getReturnType());
+    }
+
+    @Test
+    public void testGetMethodBySignature3() {
+        ClassModel throwable = ASMParser.getClassByName("java/lang/Throwable");
+
+        MethodModel fillInStackTrace = throwable
+                .getMethodBySignature(new Signature(Arrays.asList(), "fillInStackTrace"));
+        assertEquals("fillInStackTrace", fillInStackTrace.getName());
+        assertEquals(throwable, fillInStackTrace.getBelongTo());
+        assertEquals(throwable, fillInStackTrace.getReturnType());
+    }
+
+    @Test
+    public void testGetMethodBySignature4() {
+        ClassModel clazz = ASMParser.getClassByName("java.security.AccessController");
+
+        MethodModel method = clazz
+                .getMethodBySignature(new Signature(Arrays.asList(ASMParser.getClassByName("java.security.PrivilegedAction")), "doPrivileged"));
+        assertEquals("doPrivileged", method.getName());
+        assertEquals(clazz, method.getBelongTo());
+        assertEquals(clazz, method.getReturnType());
     }
 }

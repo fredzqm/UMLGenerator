@@ -109,8 +109,12 @@ interface TypeModel extends ITypeModel {
         return null;
     }
 
-    default ITypeModel assignTo(String className) {
+    default TypeModel assignTo(String className) {
         return assignTo(ASMParser.getClassByName(className));
+    }
+
+    default TypeModel eraseGenericType(){
+        return this;
     }
 
 }

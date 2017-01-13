@@ -1,11 +1,11 @@
 package model;
 
-import org.objectweb.asm.Type;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+
+import org.objectweb.asm.Type;
 
 /**
  * A factory method utility for type model. It basically parses the signature
@@ -51,9 +51,19 @@ class TypeParser {
                 return PrimitiveType.SHORT;
             case Type.FLOAT:
                 return PrimitiveType.FLOAT;
+            case Type.METHOD:
+                System.err.println("bad " + type.getInternalName());
+                return ASMParser.getClassByName(type.getInternalName());
             default:
-                throw new RuntimeException("does not suport type sort " + type.getClassName());
+                throw new RuntimeException("does not suport type sort " + type.getSort());
         }
+    }
+
+    static TypeModel parseClassInternalName(String name) {
+        if (name.startsWith("[")) {
+            return parseTypeSignature(name);
+        }
+        return ASMParser.getClassByName(name);
     }
 
     /**
@@ -147,6 +157,7 @@ class TypeParser {
         List<TypeModel> ret = new ArrayList<>(1);
         for (String s : splitOn(argLs.substring(1, argLs.length() - 1), new Predicate<Character>() {
             private boolean start = true;
+
             @Override
             public boolean test(Character c) {
                 if (start) {

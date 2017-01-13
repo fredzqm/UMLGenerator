@@ -184,8 +184,11 @@ class ClassModel implements IClassModel, TypeModel {
     MethodModel getMethodBySignature(Signature signature) {
         if (getMethodsMap().containsKey(signature))
             return getMethodsMap().get(signature);
-        if (getSuperClass() != null)
-            getSuperClass().getMethodBySignature(signature);
+        if (getSuperClass() != null) {
+            MethodModel m = getSuperClass().getMethodBySignature(signature);
+            if (m != null)
+                return m;
+        }
         for (ClassModel c : getInterfaces()) {
             MethodModel m = c.getMethodBySignature(signature);
             if (m != null)

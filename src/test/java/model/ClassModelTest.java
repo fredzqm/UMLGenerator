@@ -203,4 +203,6 @@ public class ClassModelTest {
         Collection<String> stereoTypes = model.getStereoTypes();
         assertTrue(stereoTypes.isEmpty());
     }
+    
+    
 }
