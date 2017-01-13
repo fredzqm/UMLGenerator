@@ -50,9 +50,9 @@ public class RelationHasA implements IRelationInfo {
     public String getEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
         if (isMany()) {
-            edgeBuilder.append(String.format("taillabel=\"%d..*\" ", getCount()));
+            edgeBuilder.append(String.format("headlabel=\"%d..*\" ", getCount()));
         } else {
-            edgeBuilder.append(String.format("taillabel=\"%d\" ", getCount()));
+            edgeBuilder.append(String.format("headlabel=\"%d\" ", getCount()));
         }
         return edgeBuilder.toString();
     }
