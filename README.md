@@ -48,63 +48,63 @@ This project takes a set of classes and draws the UML diagram for those set of c
       - **Description:** use this flag if you want the UML to be outputed Top down, otherwise it will be outputed Bottom up
 
 ## Member Contributions:
-    ### Milestone 01:
-        - **Fred:**
-             - Performed Debugging
-             - Discuss Design Decisions
-             - Implemented Models.
-             - Implemented Displayer.
-             - Implemented IFilter.
-             - Assisted in Generator Design
-             - Refactored Code.
-             - Code Review.
-             - Wrote test code.
-        - **Adam:**
-             - Managed the creation and updates to the UML
-             - Discuss Design Decisions
-             - Coded the CommandLineParser and Configuration
-             - Performed Debugging
-             - Created the README.
-             - Wrote test code.
-        - **David:**
-             - Performed Debugging
-             - Discuss Design Decisions
-             - Added Continuous Integration.
-             - Implemented Generator.
-             - Implemented Runner.
-             - Integrated GraphViz.
-             - Setup Project structure.
-             - Created Generator Interfaces.
-             - Formatted README with MarkDown syntax.
-             - Refactored Code.
-             - Code Review.
-             - Wrote test code.
-    ### Milestone 02:
-        **Fred:**
-             - Assisted in Generator refactor.
-             - Refactored code out of Generator into Relationship.
-             - Implemented basic class parsing analyzer from previous generator code.
-             - Figured out generics parsing with ASM.
-             - Refactored Model to return cardinality information.
-             - Resolved bugs discovered in Model.
-             - Wrote test.
-             - Code reviewed.
-        **Adam:**
-             - Updated UML
-             - Discovered bugs in output inconsistency with Milestone requirements.
-             - Added JSON file support.
-             - Wrote Python to get qualified class names.
-        **David:**
-             - Added bijective arrow Relationship support in GraphViz.
-             - Added GraphViz cardinality support in Relationship.
-             - Assisted in Relation and Generator refactor.
-             - Refactored Configuration to be more extensible.
-             - Wrote test.
-             - Code reviewed.
-             - Cleaned code to for readability.
-             - Fixed and improved Python script from Adam.
-             - Debug GraphViz generator and Model integrations.
-             - Wrote ExplorerRunner to display generated output.
-             - Added missing JavaDocs in all packages when possible.
-             - Resolved bugs discovered in Generator.
-        
+### Milestone 01:
+- **Fred:**
+     - Performed Debugging
+     - Discuss Design Decisions
+     - Implemented Models.
+     - Implemented Displayer.
+     - Implemented IFilter.
+     - Assisted in Generator Design
+     - Refactored Code.
+     - Code Review.
+     - Wrote test code.
+- **Adam:**
+     - Managed the creation and updates to the UML
+     - Discuss Design Decisions
+     - Coded the CommandLineParser and Configuration
+     - Performed Debugging
+     - Created the README.
+     - Wrote test code.
+- **David:**
+     - Performed Debugging
+     - Discuss Design Decisions
+     - Added Continuous Integration.
+     - Implemented Generator.
+     - Implemented Runner.
+     - Integrated GraphViz.
+     - Setup Project structure.
+     - Created Generator Interfaces.
+     - Formatted README with MarkDown syntax.
+     - Refactored Code.
+     - Code Review.
+     - Wrote test code.
+  
+### Milestone 02:  
+- **Fred:**  
+     - Assisted in Generator refactor.
+     - Refactored code out of Generator into Relationship.
+     - Implemented basic class parsing analyzer from previous generator code.
+     - Figured out generics parsing with ASM.
+     - Refactored Model to return cardinality information.
+     - Resolved bugs discovered in Model.
+     - Wrote test.
+     - Code reviewed.
+- **Adam:**  
+     - Updated UML
+     - Discovered bugs in output inconsistency with Milestone requirements.
+     - Added JSON file support.
+     - Wrote Python to get qualified class names.
+- **David:**  
+     - Added bijective arrow Relationship support in GraphViz.
+     - Added GraphViz cardinality support in Relationship.
+     - Assisted in Relation and Generator refactor.
+     - Refactored Configuration to be more extensible.
+     - Wrote test.
+     - Code reviewed.
+     - Cleaned code to for readability.
+     - Fixed and improved Python script from Adam.
+     - Debug GraphViz generator and Model integrations.
+     - Wrote ExplorerRunner to display generated output.
+     - Added missing JavaDocs in all packages when possible.
+     - Resolved bugs discovered in Generator.
