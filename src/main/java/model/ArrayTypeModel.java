@@ -86,6 +86,11 @@ class ArrayTypeModel implements TypeModel {
     }
 
     @Override
+    public TypeModel eraseGenericType() {
+        return new ArrayTypeModel(this.eraseGenericType(), dimension);
+    }
+    
+    @Override
     public String toString() {
         return getName();
     }

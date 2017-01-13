@@ -127,6 +127,11 @@ class ParametizedClassModel implements TypeModel {
     }
     
     @Override
+    public TypeModel eraseGenericType() {
+        return classModel;
+    }
+    
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         getSuperTypes();
