@@ -6,11 +6,13 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-public abstract class InstructionModel {
+import analyzer.IInstructionModel;
+
+public abstract class InstructionModel implements IInstructionModel{
     private final MethodModel belongTo;
 
-    public InstructionModel(MethodModel method) {
-        this.belongTo = method;
+    public InstructionModel(MethodModel belongTo) {
+        this.belongTo = belongTo;
     }
 
     public MethodModel getBelongTo() {

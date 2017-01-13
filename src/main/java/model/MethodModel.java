@@ -1,13 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodNode;
+
 import analyzer.IMethodModel;
 import model.TypeParser.MethodSignatureParseResult;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
 import utility.MethodType;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * Representing method in java program
@@ -26,8 +33,8 @@ class MethodModel implements IMethodModel {
     private final TypeModel returnType;
     private final Signature signature;
 
-    private Collection<MethodModel> dependenOnMethod;
-    private Collection<FieldModel> dependenOnField;
+    // private Collection<MethodModel> dependenOnMethod;
+    // private Collection<FieldModel> dependenOnField;
     private List<GenericTypeParam> genericParams;
     private List<InstructionModel> instructions;
 
@@ -136,57 +143,14 @@ class MethodModel implements IMethodModel {
             InsnList insnList = asmMethodNode.instructions;
             ListIterator<AbstractInsnNode> itr = insnList.iterator();
             while (itr.hasNext()) {
-                InstructionModel i = InstructionModel.parseInstruction(this, itr.next());
-                instructions.add(i);
+                AbstractInsnNode insn = itr.next();
+                InstructionModel i = InstructionModel.parseInstruction(this, insn);
+                if (i != null) {
+                    instructions.add(i);
+                }
             }
         }
         return instructions;
-    }
-
-    public Collection<MethodModel> getCalledMethods() {
-        if (dependenOnMethod == null) {
-            getInstructions();
-            dependenOnMethod = new HashSet<>();
-            InsnList instructions = asmMethodNode.instructions;
-            for (int i = 0; i < instructions.size(); i++) {
-                AbstractInsnNode insn = instructions.get(i);
-                if (insn instanceof MethodInsnNode) {
-                    MethodInsnNode methodCall = (MethodInsnNode) insn;
-                    TypeModel type = TypeParser.parse(Type.getObjectType(methodCall.owner));
-                    ClassModel destClass = ASMParser.getClassByName(type.getName());
-                    if (destClass == null)
-                        continue;
-                    Signature signature = Signature.parse(methodCall.name, methodCall.desc);
-                    MethodModel method = destClass.getMethodBySignature(signature);
-                    if (method == null)
-                        continue;
-                    dependenOnMethod.add(method);
-                }
-            }
-        }
-        return dependenOnMethod;
-    }
-
-    public Collection<FieldModel> getAccessedFields() {
-        if (dependenOnField == null) {
-            dependenOnField = new HashSet<>();
-            InsnList instructions = asmMethodNode.instructions;
-            for (int i = 0; i < instructions.size(); i++) {
-                AbstractInsnNode insn = instructions.get(i);
-                if (insn instanceof FieldInsnNode) {
-                    FieldInsnNode fiedlCall = (FieldInsnNode) insn;
-                    TypeModel type = TypeParser.parse(Type.getObjectType(fiedlCall.owner));
-                    ClassModel destClass = ASMParser.getClassByName(type.getName());
-                    if (destClass == null)
-                        continue;
-                    FieldModel field = destClass.getFieldByName(fiedlCall.name);
-                    if (field == null)
-                        continue;
-                    dependenOnField.add(field);
-                }
-            }
-        }
-        return dependenOnField;
     }
 
 }

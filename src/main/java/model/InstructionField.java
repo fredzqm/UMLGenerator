@@ -1,25 +1,32 @@
 package model;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.objectweb.asm.tree.FieldInsnNode;
 
 public class InstructionField extends InstructionModel {
+    private final TypeModel calledOn;
+    private final FieldModel field;
 
     public InstructionField(MethodModel method, FieldInsnNode fiedlCall) {
         super(method);
-//        TypeModel type = TypeParser.parse(Type.getObjectType(fiedlCall.owner));
-//        ClassModel destClass = ASMParser.getClassByName(type.getName());
-//        if (destClass == null)
-//            continue;
-//        FieldModel field = destClass.getFieldByName(fiedlCall.name);
-//        if (field == null)
-//            continue;
+        calledOn = TypeParser.parseClassInternalName(fiedlCall.owner);
+        ClassModel destClass = calledOn.getClassModel();
+        if (destClass == null)
+            throw new RuntimeException();
+        field = destClass.getFieldByName(fiedlCall.name);
+        if (field == null) {
+            System.err.println(getClass().getName() + "::field is null: " + fiedlCall.desc + "\tname\t" + fiedlCall.name
+                    + "\towner\t" + fiedlCall.owner);
+        }
     }
 
     @Override
     public Collection<TypeModel> getDependentClass() {
-        return null;
+        if (field == null)
+            return Arrays.asList(calledOn);
+        return Arrays.asList(calledOn, field.getFieldType());
     }
 
 }

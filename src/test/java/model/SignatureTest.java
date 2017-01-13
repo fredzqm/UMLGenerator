@@ -22,8 +22,6 @@ public class SignatureTest {
 
     @Test
     public void testTypeErasedHashCode2() {
-        ClassModel x = ASMParser.getClassByName("java.util.List");
-        ClassModel i = ASMParser.getClassByName("java.util.List");
         Signature a = new Signature(Arrays.asList(new GenericTypeParam("E", Arrays.asList(ASMParser.getObject()))),
                 "set");
         Signature b = new Signature(Arrays.asList(ASMParser.getObject()), "set");

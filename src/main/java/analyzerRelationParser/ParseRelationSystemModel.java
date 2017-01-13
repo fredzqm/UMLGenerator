@@ -1,10 +1,26 @@
 package analyzerRelationParser;
 
-import analyzer.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import analyzer.ClassPair;
+import analyzer.IClassModel;
+import analyzer.IFieldModel;
+import analyzer.IInstructionModel;
+import analyzer.IMethodModel;
+import analyzer.IRelationInfo;
+import analyzer.ISystemModel;
+import analyzer.ISystemModelFilter;
+import analyzer.ITypeModel;
 import utility.IFilter;
 import utility.IMapper;
-
-import java.util.*;
 
 /**
  * It decorates ISystem model and supplies extends, implements, has-a and
@@ -125,16 +141,19 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
             for (ITypeModel t : args)
                 checkType(t, map);
             checkType(method.getReturnType(), map);
-            for (IFieldModel t : method.getAccessedFields()) {
-                checkClass(t.getBelongTo(), map);
-            }
-            for (IMethodModel m : method.getCalledMethods()) {
-                args = m.getArguments();
-                for (ITypeModel t : args)
+            for (IInstructionModel inst : method.getInstructions())
+                for (ITypeModel t : inst.getDependentClass())
                     checkType(t, map);
-                checkType(m.getReturnType(), map);
-                checkClass(m.getBelongTo(), map);
-            }
+//            for (IFieldModel t : method.getAccessedFields()) {
+//                checkClass(t.getBelongTo(), map);
+//            }
+//            for (IMethodModel m : method.getCalledMethods()) {
+//                args = m.getArguments();
+//                for (ITypeModel t : args)
+//                    checkType(t, map);
+//                checkType(m.getReturnType(), map);
+//                checkClass(m.getBelongTo(), map);
+//            }
         }
         return map;
     }

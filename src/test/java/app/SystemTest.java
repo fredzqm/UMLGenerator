@@ -277,22 +277,22 @@ public class SystemTest {
         // Get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
         for (ClassPair p : relations.keySet()) {
-                System.out.println(p + "\t\t" + relations.get(p));
+            System.out.println(p + "\t\t" + relations.get(p));
         }
         List<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel));
         assertEquals(1, dummyStringRelation.size());
-        assertEquals(new RelationDependsOn(true), dummyStringRelation.get(0));
+        assertEquals(new RelationDependsOn(false), dummyStringRelation.get(0));
 
         List<IRelationInfo> dummyIntStreamRelation = relations.get(new ClassPair(dummyModel, intStreamModel));
         assertEquals(1, dummyIntStreamRelation.size());
         assertEquals(new RelationDependsOn(false), dummyIntStreamRelation.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedStringDependency = String.format("\"%s\" -> \"%s %s\"", dummy, string,
-                "\" [arrowhead=\"vee\" style=\"dashed\" ];");
-        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s %s\"", dummy, intStream,
-                "\" [arrowhead=\"vee\" style=\"dashed\" ];");
-
+        String expectedStringDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, string,
+                "arrowhead=\"vee\" style=\"dashed\" ");
+        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, intStream,
+                "arrowhead=\"vee\" style=\"dashed\" ");
+        System.out.println(actual);
         assertTrue("Missing GraphViz dependency", actual.contains(expectedStringDependency));
         assertTrue("Missing GraphViz dependency", actual.contains(expectedIntStreamDependency));
     }

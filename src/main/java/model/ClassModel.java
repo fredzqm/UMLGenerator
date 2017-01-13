@@ -199,6 +199,8 @@ class ClassModel extends TypeModel implements IClassModel {
 
     private Map<Signature, MethodModel> getMethodsMap() {
         if (methods == null) {
+            if (getName().equals("java.util.regex.Pattern$1MatcherIterator"))
+                methods = new HashMap<>();
             methods = new HashMap<>();
             @SuppressWarnings("unchecked")
             List<MethodNode> ls = asmClassNode.methods;

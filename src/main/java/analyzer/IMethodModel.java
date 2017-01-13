@@ -6,6 +6,8 @@ import utility.Modifier;
 import java.util.Collection;
 import java.util.List;
 
+import model.InstructionModel;
+
 /**
  * An Interface of the Method Models.
  * <p>
@@ -65,14 +67,16 @@ public interface IMethodModel {
      */
     List<? extends ITypeModel> getArguments();
 
-    /**
-     * @return the list of method it called
-     */
-    Collection<? extends IMethodModel> getCalledMethods();
+    List<? extends IInstructionModel> getInstructions();
 
-    /**
-     * @return the list of fields it accessed
-     */
-    Collection<? extends IFieldModel> getAccessedFields();
+//    /**
+//     * @return the list of method it called
+//     */
+//    Collection<? extends IMethodModel> getCalledMethods();
+//
+//    /**
+//     * @return the list of fields it accessed
+//     */
+//    Collection<? extends IFieldModel> getAccessedFields();
 
 }

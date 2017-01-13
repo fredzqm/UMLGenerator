@@ -88,11 +88,20 @@ class ASMParser {
                         List<TypeModel> args = method.getArguments();
                         for (TypeModel t : args)
                             addToBothList(classesList, unextended, t.getDependentClass());
-                        for (FieldModel t : method.getAccessedFields())
-                            addToBothList(classesList, unextended, t.getBelongTo());
-                        for (MethodModel m : method.getCalledMethods()) {
-                            addToBothList(classesList, unextended, m.getBelongTo());
+                        for (InstructionModel inst : method.getInstructions()) {
+                            if (inst == null) {
+                                System.out.println();
+                            }
+                            for (TypeModel t : inst.getDependentClass())
+                                addToBothList(classesList, unextended, t.getDependentClass());
                         }
+                        // for (FieldModel t : method.getAccessedFields())
+                        // addToBothList(classesList, unextended,
+                        // t.getBelongTo());
+                        // for (MethodModel m : method.getCalledMethods()) {
+                        // addToBothList(classesList, unextended,
+                        // m.getBelongTo());
+                        // }
                     }
                 }
             }
@@ -103,7 +112,7 @@ class ASMParser {
     public static ClassModel getObject() {
         return ASMParser.getClassByName("java.lang.Object");
     }
-    
+
     public static ClassModel getEnum() {
         return ASMParser.getClassByName("java.lang.Enum");
     }
