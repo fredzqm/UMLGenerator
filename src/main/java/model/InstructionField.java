@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collection;
+
 import org.objectweb.asm.tree.FieldInsnNode;
 
 public class InstructionField extends InstructionModel {
@@ -13,6 +15,11 @@ public class InstructionField extends InstructionModel {
 //        FieldModel field = destClass.getFieldByName(fiedlCall.name);
 //        if (field == null)
 //            continue;
+    }
+
+    @Override
+    public Collection<TypeModel> getDependentClass() {
+        return null;
     }
 
 }

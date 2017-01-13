@@ -276,7 +276,6 @@ public class SystemTest {
 
         // Get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-//        System.out.println(relations);
         for (ClassPair p : relations.keySet()) {
                 System.out.println(p + "\t\t" + relations.get(p));
         }

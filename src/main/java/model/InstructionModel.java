@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collection;
+
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -15,6 +17,8 @@ public abstract class InstructionModel {
         return belongTo;
     }
 
+    public abstract Collection<TypeModel> getDependentClass();
+    
     public static InstructionModel parseInstruction(MethodModel method, AbstractInsnNode insn) {
         switch (insn.getType()) {
             case AbstractInsnNode.METHOD_INSN:

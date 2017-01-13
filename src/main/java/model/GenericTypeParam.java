@@ -69,16 +69,12 @@ class GenericTypeParam extends TypeModel {
         }
     }
 
-    int c = 0;
-
     @Override
     public Collection<ClassModel> getDependentClass() {
         Collection<ClassModel> set = new HashSet<>();
         for (TypeModel t : boundSuperTypes) {
             if (checkRecursive(t))
                 continue;
-            if (c == 30)
-                System.out.println();
             set.addAll(t.getDependentClass());
         }
         return set;
@@ -93,6 +89,11 @@ class GenericTypeParam extends TypeModel {
             }
         }
         return false;
+    }
+
+    @Override
+    public TypeModel eraseGenericType() {
+        return getClassModel();
     }
 
     @Override
