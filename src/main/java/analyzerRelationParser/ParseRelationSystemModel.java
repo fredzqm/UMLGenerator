@@ -129,6 +129,8 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
                 checkClass(t.getBelongTo(), map);
             }
             for (IMethodModel m : method.getCalledMethods()) {
+                args = m.getArguments();
+                checkType(m.getReturnType(), map);
                 checkClass(m.getBelongTo(), map);
             }
         }

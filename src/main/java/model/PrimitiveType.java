@@ -63,4 +63,8 @@ enum PrimitiveType implements TypeModel {
         return Collections.emptyList();
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
