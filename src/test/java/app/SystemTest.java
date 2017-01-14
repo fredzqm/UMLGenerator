@@ -13,6 +13,7 @@ import config.ModelConfiguration;
 import config.RunnerConfiguration;
 import dummy.generic.GenDummyClass;
 import dummy.hasDependsRel.RelDummyClass;
+import dummy.hasDependsRel.RelDummyDependencyInMethodBody;
 import dummy.hasDependsRel.RelDummyManyClass;
 import dummy.hasDependsRel.RelOtherDummyClass;
 import dummy.inheritanceRel.DummyInterface;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
@@ -76,10 +78,10 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
-        String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
-                "- privateString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
-                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double"};
+        String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
+                "- privateString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "- printPrivateString() : void", "getPublicInt() : int",
+                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double" };
 
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
@@ -128,8 +130,8 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
-        String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};
+        String[] expectedFields = { "+ publicString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "getPublicInt() : int", "+ getPublicString() : java.lang.String" };
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
@@ -238,6 +240,57 @@ public class SystemTest {
         String actual = engine.generate(systemModel);
         String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy, "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
+    }
+
+    @Test
+    public void graphVizInMethodBodyTest() {
+        String dummy = RelDummyDependencyInMethodBody.class.getName();
+        String intStream = IntStream.class.getName();
+        String string = String.class.getName();
+
+        // Set up config.
+        Configuration config = Configuration.getInstance();
+        config.add(ModelConfiguration.CLASSES_KEY, dummy);
+        config.add(ModelConfiguration.CLASSES_KEY, intStream);
+        config.add(ModelConfiguration.CLASSES_KEY, string);
+        config.set(ModelConfiguration.IS_RECURSIVE_KEY, "false");
+        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+
+        // Set up SystemModel and Generator.
+        AbstractUMLEngine engine = UMLEngine.getInstance(config);
+        ISystemModel systemModel = engine.createSystemModel();
+        systemModel = engine.analyze(systemModel);
+
+        // Get classes.
+        Collection<? extends IClassModel> classes = systemModel.getClasses();
+        IClassModel dummyModel = getClassFromCollection(dummy, classes);
+        // Not stored as variable.
+        IClassModel intStreamModel = getClassFromCollection(intStream, classes);
+        // Stored as variable.
+        IClassModel stringModel = getClassFromCollection(string, classes);
+
+        assertNotNull(dummyModel);
+        assertNotNull(intStreamModel);
+        assertNotNull(stringModel);
+
+        // Get relations.
+        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
+        
+        List<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel));
+        assertEquals(1, dummyStringRelation.size());
+        assertEquals(new RelationDependsOn(false), dummyStringRelation.get(0));
+
+        List<IRelationInfo> dummyIntStreamRelation = relations.get(new ClassPair(dummyModel, intStreamModel));
+        assertEquals(1, dummyIntStreamRelation.size());
+        assertEquals(new RelationDependsOn(false), dummyIntStreamRelation.get(0));
+
+        String actual = engine.generate(systemModel);
+        String expectedStringDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, string,
+                "arrowhead=\"vee\" style=\"dashed\" ");
+        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, intStream,
+                "arrowhead=\"vee\" style=\"dashed\" ");
+        assertTrue("Missing GraphViz dependency", actual.contains(expectedStringDependency));
+        assertTrue("Missing GraphViz dependency", actual.contains(expectedIntStreamDependency));
     }
 
     private IClassModel getClassFromCollection(String name, Collection<? extends IClassModel> classes) {

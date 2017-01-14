@@ -14,7 +14,7 @@ public final class ClassPair {
         this.from = from;
     }
 
-    IClassModel getFrom() {
+    public IClassModel getFrom() {
         return this.from;
     }
 

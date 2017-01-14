@@ -8,8 +8,6 @@ import static org.junit.Assert.*;
 
 public class ASMParserTest {
 
-    // 
-
     @Test
     public void testGetObject() {
         ClassModel a = ASMParser.getObject();

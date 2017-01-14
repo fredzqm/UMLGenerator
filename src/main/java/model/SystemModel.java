@@ -34,7 +34,7 @@ public class SystemModel implements ISystemModel {
 
         int recursiveFlag;
         if (config.isRecursive()) {
-            recursiveFlag = ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS | ASMParser.RECURSE_HAS_A;
+            recursiveFlag = ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS | ASMParser.RECURSE_HAS_A | ASMParser.RECURSE_DEPENDS_ON;
         } else {
             recursiveFlag = 0;
         }

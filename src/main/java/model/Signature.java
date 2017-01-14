@@ -3,6 +3,7 @@ package model;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +49,15 @@ class Signature {
     public boolean equals(Object obj) {
         if (obj instanceof Signature) {
             Signature o = (Signature) obj;
-            return Objects.equals(name, o.name) && args.equals(o.args);
+            if (Objects.equals(name, o.name)) {
+                Iterator<TypeModel> a = args.iterator();
+                Iterator<TypeModel> b = args.iterator();
+                while (a.hasNext() && b.hasNext()) {
+                    if (!Objects.equals(a.next().eraseGenericType(), b.next().eraseGenericType()))
+                        return false;
+                }
+                return !a.hasNext() && !b.hasNext();
+            }
         }
         return false;
     }
@@ -56,7 +65,9 @@ class Signature {
     @Override
     public int hashCode() {
         if (hashCode == 0) {
-            hashCode = name.hashCode() * 31 + args.hashCode();
+            hashCode = name.hashCode() * 31;
+            for (TypeModel t : args)
+                hashCode = hashCode*31 + t.eraseGenericType().hashCode();
         }
         return hashCode;
     }

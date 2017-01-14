@@ -1,9 +1,8 @@
 package analyzer;
 
-import utility.ClassType;
-
 import java.util.Collection;
-import java.util.Collections;
+
+import utility.ClassType;
 
 /**
  * a filter for IClassModel

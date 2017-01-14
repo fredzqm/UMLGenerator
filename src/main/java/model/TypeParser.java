@@ -1,11 +1,11 @@
 package model;
 
-import org.objectweb.asm.Type;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+
+import org.objectweb.asm.Type;
 
 /**
  * A factory method utility for type model. It basically parses the signature
@@ -51,13 +51,24 @@ class TypeParser {
                 return PrimitiveType.SHORT;
             case Type.FLOAT:
                 return PrimitiveType.FLOAT;
+            case Type.METHOD:
+                System.err.println("bad " + type.getInternalName());
+                return ASMParser.getClassByName(type.getInternalName());
             default:
-                throw new RuntimeException("does not suport type sort " + type.getClassName());
+                throw new RuntimeException("does not suport type sort " + type.getSort());
         }
     }
 
+    static TypeModel parseClassInternalName(String name) {
+        if (name.startsWith("[")) {
+            return parseTypeSignature(name);
+        }
+        return ASMParser.getClassByName(name);
+    }
+
     /**
-     * @param typeSig the internal name representing a type of a class
+     * @param typeSig
+     *            the internal name representing a type of a class
      * @return the corresponding class type model
      */
     static TypeModel parseTypeSignature(String typeSig) {
@@ -123,7 +134,8 @@ class TypeParser {
     }
 
     /**
-     * @param typeArg the internal name representing a type of a class
+     * @param typeArg
+     *            the internal name representing a type of a class
      * @return the corresponding class type model
      */
     static TypeModel parseTypeArg(String typeArg) {
@@ -143,7 +155,29 @@ class TypeParser {
         if (argLs.charAt(0) != '<' || argLs.charAt(argLs.length() - 1) != '>')
             throw new RuntimeException(argLs + " is not a valid argument list");
         List<TypeModel> ret = new ArrayList<>(1);
-        for (String s : splitOn(argLs.substring(1, argLs.length() - 1), (c) -> c == ';' || c == '*')) {
+        for (String s : splitOn(argLs.substring(1, argLs.length() - 1), new Predicate<Character>() {
+            private boolean start = true;
+
+            @Override
+            public boolean test(Character c) {
+                if (start) {
+                    if (c == '*' || c == 'Z' || c == 'C' || c == 'B' || c == 'S' || c == 'I' || c == 'F' || c == 'J'
+                            || c == 'D') {
+                        return true;
+                    }
+                    if (c != '[')
+                        start = false;
+                    return false;
+                } else {
+                    if (c == ';') {
+                        start = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        })) {
             ret.add(parseTypeArg(s));
         }
         return ret;
@@ -175,7 +209,8 @@ class TypeParser {
     }
 
     /**
-     * @param classSig of a class or a method
+     * @param classSig
+     *            of a class or a method
      * @return the list of generic parameter this class or method needs
      */
     static ClassSignatureParseResult parseClassSignature(String classSig) {
@@ -308,7 +343,7 @@ class TypeParser {
         private List<TypeModel> exceptionList;
 
         MethodSignatureParseResult(List<GenericTypeParam> typeParameters, TypeModel returnType,
-                                   List<TypeModel> argumentList, List<TypeModel> exceptionList) {
+                List<TypeModel> argumentList, List<TypeModel> exceptionList) {
             this.typeParameters = typeParameters;
             this.returnType = returnType;
             this.argumentsList = argumentList;

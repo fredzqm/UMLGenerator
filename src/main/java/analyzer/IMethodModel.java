@@ -1,10 +1,9 @@
 package analyzer;
 
+import java.util.List;
+
 import utility.MethodType;
 import utility.Modifier;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * An Interface of the Method Models.
@@ -12,6 +11,7 @@ import java.util.List;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
+    
     /**
      * Returns the name of the Method.
      *
@@ -32,7 +32,7 @@ public interface IMethodModel {
     Modifier getModifier();
 
     /**
-     * Returns the Method Type (Abstract, Contructor, Static, Static
+     * Returns the Method Type (Abstract, Constructor, Static, Static
      * Initializer, Method).
      *
      * @return Method Type.
@@ -66,13 +66,9 @@ public interface IMethodModel {
     List<? extends ITypeModel> getArguments();
 
     /**
-     * @return the list of method it called
+     * 
+     * @return list of instruction in this method for processing
      */
-    Collection<? extends IMethodModel> getCalledMethods();
-
-    /**
-     * @return the list of fields it accessed
-     */
-    Collection<? extends IFieldModel> getAccessedFields();
+    List<? extends IInstructionModel> getInstructions();
 
 }
