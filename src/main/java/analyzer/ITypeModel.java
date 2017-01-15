@@ -1,5 +1,7 @@
 package analyzer;
 
+import java.util.Collection;
+
 public interface ITypeModel {
 
     /**
@@ -45,6 +47,11 @@ public interface ITypeModel {
      * @return
      */
     boolean isWildCharacter();
+    
+    /**
+     * @return all the classes that this type depends on
+     */
+    Collection<? extends IClassModel> getDependentClass();
     
     /**
      * @param className

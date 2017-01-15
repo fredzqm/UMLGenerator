@@ -1,20 +1,15 @@
 package app;
 
-import config.Configuration;
-import config.GeneratorConfiguration;
-import config.ModelConfiguration;
-import config.RunnerConfiguration;
-import dummy.hasDependsRel.Dummy;
-import dummy.hasDependsRel.RelDummyClass;
-import dummy.hasDependsRel.RelDummyManyClass;
-import dummy.hasDependsRel.RelOtherDummyClass;
-import runner.ExplorerRunner;
-import runner.IRunner;
-
 import java.io.IOException;
 import java.util.Arrays;
 
 import analyzer.ISystemModel;
+import config.Configuration;
+import config.GeneratorConfiguration;
+import config.ModelConfiguration;
+import config.RunnerConfiguration;
+import runner.ExplorerRunner;
+import runner.IRunner;
 
 /**
  * A Test Class that will generate files for local inspection.

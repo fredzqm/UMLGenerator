@@ -1,17 +1,23 @@
 package model;
 
-import analyzer.IClassModel;
-import model.TypeParser.ClassSignatureParseResult;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.IClassModel;
+import model.TypeParser.ClassSignatureParseResult;
 import utility.ClassType;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * Representing classes in java program
@@ -25,7 +31,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ClassModel implements IClassModel, TypeModel {
+class ClassModel extends TypeModel implements IClassModel {
     private final ClassNode asmClassNode;
 
     private final Modifier modifier;
@@ -178,13 +184,23 @@ class ClassModel implements IClassModel, TypeModel {
     MethodModel getMethodBySignature(Signature signature) {
         if (getMethodsMap().containsKey(signature))
             return getMethodsMap().get(signature);
-        if (getSuperClass() != null)
-            getSuperClass().getMethodBySignature(signature);
+        if (getSuperClass() != null) {
+            MethodModel m = getSuperClass().getMethodBySignature(signature);
+            if (m != null)
+                return m;
+        }
+        for (ClassModel c : getInterfaces()) {
+            MethodModel m = c.getMethodBySignature(signature);
+            if (m != null)
+                return m;
+        }
         return null;
     }
 
     private Map<Signature, MethodModel> getMethodsMap() {
         if (methods == null) {
+            if (getName().equals("java.util.regex.Pattern$1MatcherIterator"))
+                methods = new HashMap<>();
             methods = new HashMap<>();
             @SuppressWarnings("unchecked")
             List<MethodNode> ls = asmClassNode.methods;
@@ -228,7 +244,7 @@ class ClassModel implements IClassModel, TypeModel {
     }
 
     @Override
-    public List<ClassModel> getDependentClass() {
+    public Collection<ClassModel> getDependentClass() {
         return Collections.singletonList(this);
     }
 

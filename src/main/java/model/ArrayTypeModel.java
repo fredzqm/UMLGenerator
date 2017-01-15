@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author zhang
  */
-class ArrayTypeModel implements TypeModel {
+class ArrayTypeModel extends TypeModel {
     private final TypeModel arrayType;
     private final int dimension;
 
@@ -85,6 +85,11 @@ class ArrayTypeModel implements TypeModel {
         return arrayType.getDependentClass();
     }
 
+    @Override
+    public TypeModel eraseGenericType() {
+        return new ArrayTypeModel(arrayType.eraseGenericType(), dimension);
+    }
+    
     @Override
     public String toString() {
         return getName();

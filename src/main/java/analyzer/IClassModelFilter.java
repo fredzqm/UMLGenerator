@@ -1,9 +1,8 @@
 package analyzer;
 
-import utility.ClassType;
-
 import java.util.Collection;
-import java.util.Collections;
+
+import utility.ClassType;
 
 /**
  * a filter for IClassModel
@@ -67,6 +66,10 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getLabel();
     }
 
+    public String getVertexStyle() {
+        return classModel.getVertexStyle();
+    }
+    
     @Override
     public IClassModel getUnderlyingClassModel() {
         return classModel.getUnderlyingClassModel();

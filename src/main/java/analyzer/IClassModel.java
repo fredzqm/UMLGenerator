@@ -87,4 +87,11 @@ public interface IClassModel extends IVertex {
         return "";
     }
 
+    /**
+     * @return the vertex style of this class
+     */
+    default String getVertexStyle() {
+        return "";
+    }
+
 }

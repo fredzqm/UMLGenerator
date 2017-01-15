@@ -7,7 +7,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class ParametizedClassModel implements TypeModel {
+class ParametizedClassModel extends TypeModel {
     private final TypeModel outterClassType;
     private final ClassModel classModel;
     private final List<TypeModel> genericArgs;
@@ -62,19 +62,6 @@ class ParametizedClassModel implements TypeModel {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        getSuperTypes();
-        if (!superTypes.isEmpty()) {
-            sb.append(superTypes.get(0));
-            for (int i = 1; i < superTypes.size(); i++) {
-                sb.append(",").append(superTypes.get(i));
-            }
-        }
-        return getName() + "<" + sb.toString() + ">";
-    }
-
-    @Override
     public Iterable<TypeModel> getSuperTypes() {
         if (superTypes == null) {
             List<GenericTypeParam> genels = classModel.getGenericList();
@@ -113,7 +100,7 @@ class ParametizedClassModel implements TypeModel {
     public TypeModel assignTo(ClassModel clazz) {
         if (getClassModel() == clazz)
             return this;
-        return TypeModel.super.assignTo(clazz);
+        return super.assignTo(clazz);
     }
 
     @Override
@@ -121,8 +108,39 @@ class ParametizedClassModel implements TypeModel {
         Collection<ClassModel> set = new HashSet<>();
         set.add(classModel);
         for (TypeModel t : genericArgs) {
+            if (checkRecursive(t))
+                continue;
             set.addAll(t.getDependentClass());
         }
         return set;
+    }
+
+    private boolean checkRecursive(TypeModel t) {
+        if (t.getGenericArgNumber() > 0) {
+            for (int i = 0; i < t.getGenericArgNumber(); i++) {
+                TypeModel x = t.getGenericArg(i);
+                if (x == this)
+                    return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public TypeModel eraseGenericType() {
+        return classModel;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        getSuperTypes();
+        if (!genericArgs.isEmpty()) {
+            sb.append(genericArgs.get(0));
+            for (int i = 1; i < genericArgs.size(); i++) {
+                sb.append(",").append(genericArgs.get(i));
+            }
+        }
+        return getName() + "<" + sb.toString() + ">";
     }
 }

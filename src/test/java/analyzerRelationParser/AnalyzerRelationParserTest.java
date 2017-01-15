@@ -8,26 +8,28 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class AnalyzerRelationParserTest {
 
     @Test
-    public void test() {
+    public void test1() {
         // mock creation
         String _a_name = "ClassA", _b_name = "ClassB";
 
         IClassModel _a = mock(IClassModel.class, _a_name);
         when(_a.getName()).thenReturn(_a_name);
+        when(_a.getUnderlyingClassModel()).thenReturn(_a);
         IClassModel _b = mock(IClassModel.class, _b_name);
         when(_b.getName()).thenReturn(_b_name);
+        when(_b.getUnderlyingClassModel()).thenReturn(_b);
 
-        // create systeModel
-        Collection<? extends IClassModel> _classList = Arrays.asList(_a, _b);
+        when(_a.getSuperClass()).thenReturn(_b);
+
+        // create systemModel
         ISystemModel _sysModel = mock(ISystemModel.class);
-        doReturn(_classList).when(_sysModel).getClasses();
+        doReturn(Arrays.asList(_a, _b)).when(_sysModel).getClasses();
 
         // start
         ISystemModel sysModel = runRelationAnalyzer(_sysModel);
@@ -39,11 +41,14 @@ public class AnalyzerRelationParserTest {
         IClassModel b = getClassFromIterableByName(_b_name, classList);
 
         // get relations
-        Map<ClassPair, List<IRelationInfo>> relationList = sysModel.getRelations();
-        assertEquals(0, relationList.size());
+        Map<ClassPair, List<IRelationInfo>> relations = sysModel.getRelations();
+        List<IRelationInfo> fromAtoB = relations.get(new ClassPair(a, b));
 
+        assertEquals(1, fromAtoB.size());
+        assertTrue(fromAtoB.contains(new RelationExtendsClass()));
+        
         // verify
-//        verify(_sysModel).getClasses();
+        verify(_a).getSuperClass();
     }
 
     private ISystemModel runRelationAnalyzer(ISystemModel _sysModel) {

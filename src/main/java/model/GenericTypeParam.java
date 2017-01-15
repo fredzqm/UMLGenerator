@@ -1,6 +1,11 @@
 package model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a
@@ -8,7 +13,7 @@ import java.util.*;
  *
  * @author zhang
  */
-class GenericTypeParam implements TypeModel {
+class GenericTypeParam extends TypeModel {
     private final List<TypeModel> boundSuperTypes;
     private final String key;
     private boolean processed = false;
@@ -68,14 +73,39 @@ class GenericTypeParam implements TypeModel {
     public Collection<ClassModel> getDependentClass() {
         Collection<ClassModel> set = new HashSet<>();
         for (TypeModel t : boundSuperTypes) {
+            if (checkRecursive(t))
+                continue;
             set.addAll(t.getDependentClass());
         }
         return set;
     }
 
+    private boolean checkRecursive(TypeModel t) {
+        if (t.getGenericArgNumber() > 0) {
+            for (int i = 0; i < t.getGenericArgNumber(); i++) {
+                TypeModel x = t.getGenericArg(i);
+                if (x == this)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public TypeModel eraseGenericType() {
+        return getClassModel();
+    }
+
     @Override
     public String toString() {
-        return "[Param: " + key + "]";
+        StringBuilder sb = new StringBuilder();
+        for (TypeModel t : boundSuperTypes) {
+            if (checkRecursive(t))
+                sb.append(" : ? extends " + getName());
+            else
+                sb.append(" :" + t.toString());
+        }
+        return "[" + key + sb.toString() + "]";
     }
 
 }
