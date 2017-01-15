@@ -1,7 +1,7 @@
 package analyzer;
 
 import generator.IGraph;
-import generator.IVertex;
+import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
 
@@ -34,7 +34,7 @@ public interface ISystemModel extends IGraph {
      *
      * @return Returns the classes of the System Model.
      */
-    default Iterable<? extends IVertex> getVertices() {
+    default Iterable<? extends INode> getVertices() {
         return getClasses();
     }
 

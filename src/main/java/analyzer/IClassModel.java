@@ -1,6 +1,6 @@
 package analyzer;
 
-import generator.IVertex;
+import generator.INode;
 import utility.ClassType;
 
 import java.util.Collection;
@@ -11,7 +11,7 @@ import java.util.Collections;
  * <p>
  * Created by lamd on 12/9/2016.
  */
-public interface IClassModel extends IVertex {
+public interface IClassModel extends INode {
     /**
      * Returns the String of the Model's Class Name.
      *
@@ -90,7 +90,7 @@ public interface IClassModel extends IVertex {
     /**
      * @return the vertex style of this class
      */
-    default String getVertexStyle() {
+    default String getNodeStyle() {
         return "";
     }
 

@@ -1,6 +1,6 @@
 package generator;
 
-public interface IVertex {
+public interface INode {
 
     /**
      * @return the name for this vertex
@@ -16,5 +16,5 @@ public interface IVertex {
      * 
      * @return the style of this vertex
      */
-    String getVertexStyle();
+    String getNodeStyle();
 }

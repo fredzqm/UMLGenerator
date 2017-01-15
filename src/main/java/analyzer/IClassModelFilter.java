@@ -66,8 +66,8 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getLabel();
     }
 
-    public String getVertexStyle() {
-        return classModel.getVertexStyle();
+    public String getNodeStyle() {
+        return classModel.getNodeStyle();
     }
     
     @Override
