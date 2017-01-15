@@ -9,7 +9,7 @@ public interface IGraph {
      *
      * @return Iterable of Class Models.
      */
-    Iterable<? extends INode> getVertices();
+    Iterable<? extends INode> getNodes();
 
     /**
      * Returns an Iterable of Relations contained within the SystemModel.

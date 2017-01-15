@@ -34,7 +34,7 @@ public interface ISystemModel extends IGraph {
      *
      * @return Returns the classes of the System Model.
      */
-    default Iterable<? extends INode> getVertices() {
+    default Iterable<? extends INode> getNodes() {
         return getClasses();
     }
 
@@ -51,5 +51,4 @@ public interface ISystemModel extends IGraph {
         };
         return expander.expand(relations.keySet());
     }
-
 }

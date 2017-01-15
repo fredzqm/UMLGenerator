@@ -23,8 +23,9 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
         Map<ClassPair, List<IRelationInfo>> newMap = new HashMap<>();
 
         // go through the map merge or remove relation according to rules
+        ClassPair next;
         while (!oldMap.isEmpty()) {
-            ClassPair next = oldMap.keySet().iterator().next();
+            next = oldMap.keySet().iterator().next();
             List<IRelationInfo> a = oldMap.get(next);
             if (next.isLoop()) {
                 mergeLoopRelation(newMap, next, a);
@@ -40,15 +41,18 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
     private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
                                         Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         ClassPair reverse = next.reverse();
+        List<IRelationInfo> b;
+        ListIterator<IRelationInfo> aitr, bitr;
+        IRelationInfo aRel, bRel, rel;
         if (oldMap.containsKey(reverse)) {
-            List<IRelationInfo> b = oldMap.get(reverse);
-            ListIterator<IRelationInfo> aitr = a.listIterator();
+            b = oldMap.get(reverse);
+            aitr = a.listIterator();
             while (aitr.hasNext()) {
-                IRelationInfo aRel = aitr.next();
-                ListIterator<IRelationInfo> bitr = b.listIterator();
+                aRel = aitr.next();
+                bitr = b.listIterator();
                 while (bitr.hasNext()) {
-                    IRelationInfo bRel = bitr.next();
-                    IRelationInfo rel = merge(aRel, bRel);
+                    bRel = bitr.next();
+                    rel = merge(aRel, bRel);
                     if (rel != null) {
                         aitr.remove();
                         bitr.remove();
@@ -62,9 +66,10 @@ public class MergeRelationSystemModel extends ISystemModelFilter {
     }
 
     private void mergeLoopRelation(Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+        IRelationInfo rel;
         for (int i = 0; i < a.size(); i++) {
             for (int j = i + 1; j < a.size(); j++) {
-                IRelationInfo rel = merge(a.get(i), a.get(j));
+                rel = merge(a.get(i), a.get(j));
                 if (rel != null) {
                     a.remove(j);
                     a.remove(i);
