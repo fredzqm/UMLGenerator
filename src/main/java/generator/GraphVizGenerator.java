@@ -20,7 +20,7 @@ public class GraphVizGenerator implements IGenerator {
         Iterable<? extends IVertex> vertices = graph.getVertices();
         vertices.forEach((vertex) -> {
             dotString.append(
-                    String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", vertex.getName(), vertex.getLabel()));
+                    String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n%s\n\t];\n", vertex.getName(), vertex.getLabel(), vertex.getNodeStyle()));
         });
 
         // Parse each relationship.
