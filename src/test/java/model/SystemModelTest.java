@@ -1,8 +1,8 @@
 package model;
 
-import analyzer.ClassPair;
-import analyzer.IClassModel;
-import analyzer.IRelationInfo;
+import analyzer.utility.ClassPair;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IRelationInfo;
 import org.junit.Test;
 
 import java.util.*;

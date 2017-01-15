@@ -6,7 +6,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-import analyzer.IInstructionModel;
+import analyzer.utility.IInstructionModel;
 
 /**
  * Represent a java byte code instruction

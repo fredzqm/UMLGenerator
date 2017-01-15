@@ -1,8 +1,8 @@
 package model;
 
-import analyzer.ClassPair;
-import analyzer.IRelationInfo;
-import analyzer.ISystemModel;
+import analyzer.utility.ClassPair;
+import analyzer.utility.IRelationInfo;
+import analyzer.utility.ISystemModel;
 
 import java.util.Collection;
 import java.util.Collections;

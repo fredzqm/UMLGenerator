@@ -1,6 +1,6 @@
 package config;
 
-import analyzer.IAnalyzer;
+import analyzer.utility.IAnalyzer;
 import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;

@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InnerClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import analyzer.IClassModel;
+import analyzer.utility.IClassModel;
 import model.TypeParser.ClassSignatureParseResult;
 import utility.ClassType;
 import utility.Modifier;

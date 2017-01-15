@@ -3,7 +3,7 @@ package app;
 import config.CommandLineParser;
 import config.Configuration;
 import config.RunnerConfiguration;
-import display.Viewer;
+import viewer.Viewer;
 
 public class Application {
     public static void main(String[] args) throws Exception {

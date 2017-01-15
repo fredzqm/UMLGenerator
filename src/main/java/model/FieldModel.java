@@ -3,7 +3,7 @@ package model;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
 
-import analyzer.IFieldModel;
+import analyzer.utility.IFieldModel;
 import utility.Modifier;
 
 /**

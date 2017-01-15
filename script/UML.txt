@@ -307,7 +307,7 @@ package analyzer <<Folder>>{
         ~getEdgeStyle(): String
     }
 
-    package analyzerRelationParser <<Folder>>{
+    package analyzer.analyzerRelationParser <<Folder>>{
 
         together {
             class RelationHasA {
@@ -396,7 +396,7 @@ package analyzer <<Folder>>{
 
     }
 
-    package analyzerClassParser <<Folder>> {
+    package analyzer.analyzerClassParser <<Folder>> {
 
         together {
 
