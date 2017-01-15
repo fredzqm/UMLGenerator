@@ -1,10 +1,10 @@
 package config;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import org.json.JSONObject;
 
 /**
  * TODO: Adam documentation.
@@ -15,15 +15,16 @@ class CommandLineFileInput {
     /**
      * TODO: Adam document.
      *
-     * @param args
+     * @param arg
      */
     CommandLineFileInput(String arg) {
         Scanner scanner = null;
         try {
-        	if(arg.length() <= 0)
-        		scanner = new Scanner(new File("configs/ConfigModel.json"));
-        	else
-        		scanner = new Scanner(new File(arg));
+            if (arg.length() <= 0) {
+                this.setJson(createDefaultJSON());
+                return;
+            }
+            scanner = new Scanner(new File(arg));
 
             StringBuilder json = new StringBuilder();
             while (scanner.hasNextLine()) {
@@ -34,9 +35,16 @@ class CommandLineFileInput {
         } catch (FileNotFoundException e) {
             this.setJson(new JSONObject());
         } finally {
-            if (scanner != null)
+            if (scanner != null) {
                 scanner.close();
+            }
         }
+    }
+
+    private JSONObject createDefaultJSON() {
+        return new JSONObject("{\"config\":{\"outputDir\":\"output\",\"classes\":[\"java.lang.String\"]," +
+                "\"executablePath\":\"dot\",\"outputFormat\":\"svg\",\"fileName\":\"out\",\"nodeSep\":\"1.0\"," +
+                "\"modifierFilter\":\"public\",\"isRecursive\":false,\"rankDir\":\"BT\"}}");
     }
 
     /**
@@ -51,8 +59,7 @@ class CommandLineFileInput {
     /**
      * Set the JSON object.
      *
-     * @param json
-     *            JSONObjecn to be set.
+     * @param json JSONObjecn to be set.
      */
     public void setJson(JSONObject json) {
         this.json = json;

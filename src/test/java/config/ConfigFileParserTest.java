@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class ConfigFileParserTest {
 
     @Test
-    public void test() throws Exception {
+    public void parseTest() throws Exception {
         String args = "";
         CommandLineFileInput com = new CommandLineFileInput(args);
         ConfigFileParser parser = new ConfigFileParser(com.getJson());
