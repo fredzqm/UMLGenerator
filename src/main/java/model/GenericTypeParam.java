@@ -1,11 +1,6 @@
 package model;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * serve as a place holder for generic type, we can should replace it with a

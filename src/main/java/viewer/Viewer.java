@@ -15,10 +15,18 @@ import java.nio.file.Paths;
 public class Viewer implements Runnable {
     private IRunnerConfiguration config;
 
+    /**
+     * Constructs a Viewer.
+     *
+     * @param config IRunnerConfiguration config.
+     */
     public Viewer(IRunnerConfiguration config) {
         this.config = config;
     }
 
+    /**
+     * Run the default OS specific browser.
+     */
     public void run() {
         Path currentPath = Paths.get(System.getProperty("user.dir"));
         currentPath = currentPath.resolve(this.config.getOutputDirectory());
@@ -29,8 +37,7 @@ public class Viewer implements Runnable {
             try {
                 Desktop.getDesktop().browse(currentPath.toFile().toURI());
             } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Failed to execute Viewer");
+                throw new RuntimeException("Failed to execute Viewer", e);
             }
         } else {
             System.err.println("java.awt.Desktop is not supported on OS");

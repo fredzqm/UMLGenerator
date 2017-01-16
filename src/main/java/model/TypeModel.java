@@ -16,7 +16,7 @@ abstract class TypeModel implements ITypeModel {
      * For generic type, this would return a lower bound of this type
      *
      * @return the class model behind this type model. null if it is a primitive
-     *         type
+     * type
      */
     public abstract ClassModel getClassModel();
 
@@ -53,7 +53,6 @@ abstract class TypeModel implements ITypeModel {
     }
 
     /**
-     * 
      * @return if the bound of a wild character type
      */
     public ITypeModel getLowerBound() {
@@ -61,7 +60,6 @@ abstract class TypeModel implements ITypeModel {
     }
 
     /**
-     * 
      * @return
      */
     public ITypeModel getUpperBound() {
@@ -69,7 +67,6 @@ abstract class TypeModel implements ITypeModel {
     }
 
     /**
-     * 
      * @return
      */
     public boolean isWildCharacter() {
@@ -78,7 +75,7 @@ abstract class TypeModel implements ITypeModel {
 
     /**
      * @return the collection of types that this type can be directly assigned
-     *         to
+     * to
      */
     public abstract Iterable<TypeModel> getSuperTypes();
 
@@ -86,8 +83,7 @@ abstract class TypeModel implements ITypeModel {
      * replace {@link GenericTypeVarPlaceHolder} with real type in the parameter
      * This method should be called once after generic types are first parsed
      *
-     * @param paramMap
-     *            the parameter type map containing information about each type
+     * @param paramMap the parameter type map containing information about each type
      */
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         return this;
@@ -118,7 +114,7 @@ abstract class TypeModel implements ITypeModel {
      * {@link Signature} used by signature to erase the generic type so that we
      * do not have to specify the generic type when getting a getting a method
      * with signature {@link ClassModel#getMethodBySignature(Signature)}
-     * 
+     *
      * @return
      */
     public TypeModel eraseGenericType() {

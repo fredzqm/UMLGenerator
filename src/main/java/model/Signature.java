@@ -67,7 +67,7 @@ class Signature {
         if (hashCode == 0) {
             hashCode = name.hashCode() * 31;
             for (TypeModel t : args)
-                hashCode = hashCode*31 + t.eraseGenericType().hashCode();
+                hashCode = hashCode * 31 + t.eraseGenericType().hashCode();
         }
         return hashCode;
     }

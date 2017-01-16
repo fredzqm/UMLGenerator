@@ -31,31 +31,27 @@ public interface ITypeModel {
     int getGenericArgNumber();
 
     /**
-     * 
      * @return if the bound of a wild character type
      */
     ITypeModel getLowerBound();
 
     /**
-     * 
      * @return
      */
     ITypeModel getUpperBound();
-    
+
     /**
-     * 
      * @return
      */
     boolean isWildCharacter();
-    
+
     /**
      * @return all the classes that this type depends on
      */
     Collection<? extends IClassModel> getDependentClass();
-    
+
     /**
-     * @param className
-     *            the name of the class
+     * @param className the name of the class
      * @return the strictest type of className that this type can be assigned to
      */
     ITypeModel assignTo(String className);

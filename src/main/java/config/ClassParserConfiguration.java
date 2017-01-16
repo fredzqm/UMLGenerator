@@ -1,10 +1,10 @@
 package config;
 
+import analyzer.classParser.*;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ITypeModel;
-import analyzer.classParser.*;
 import utility.IFilter;
 import utility.Modifier;
 

@@ -1,12 +1,12 @@
 package app;
 
+import analyzer.relationParser.RelationDependsOn;
+import analyzer.relationParser.RelationExtendsClass;
+import analyzer.relationParser.RelationImplement;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
-import analyzer.relationParser.RelationDependsOn;
-import analyzer.relationParser.RelationExtendsClass;
-import analyzer.relationParser.RelationImplement;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;
@@ -78,10 +78,10 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
-        String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
-                "- privateString : java.lang.String", "+ publicInt : int" };
-        String[] expectedMethods = { "- printPrivateString() : void", "getPublicInt() : int",
-                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double" };
+        String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
+                "- privateString : java.lang.String", "+ publicInt : int"};
+        String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
+                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double"};
 
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
@@ -130,8 +130,8 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
-        String[] expectedFields = { "+ publicString : java.lang.String", "+ publicInt : int" };
-        String[] expectedMethods = { "getPublicInt() : int", "+ getPublicString() : java.lang.String" };
+        String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
+        String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
@@ -275,7 +275,7 @@ public class SystemTest {
 
         // Get relations.
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-        
+
         List<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel));
         assertEquals(1, dummyStringRelation.size());
         assertEquals(new RelationDependsOn(false), dummyStringRelation.get(0));

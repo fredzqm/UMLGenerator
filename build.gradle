@@ -15,11 +15,11 @@ apply plugin: 'idea'
 apply plugin: 'application'
 
 // TODO: Change this to the class that has the main method of your application
-mainClassName = "Main"
+mainClassName = "app.Application"
 
 // TODO: Update the args value to choose what classes to run. Here is just an example. 
 run {
-    args 	"Main", 
+    args 	"app.Application",
     		"java.lang.String"
 }
 

@@ -89,7 +89,7 @@ class ArrayTypeModel extends TypeModel {
     public TypeModel eraseGenericType() {
         return new ArrayTypeModel(arrayType.eraseGenericType(), dimension);
     }
-    
+
     @Override
     public String toString() {
         return getName();

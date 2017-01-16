@@ -1,16 +1,10 @@
 package model;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
+
+import java.io.IOException;
+import java.util.*;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -55,11 +49,9 @@ class ASMParser {
     }
 
     /**
-     * @param importClassesList
-     *            the important list of classes that are required explicitly
-     * @param recursiveFlag
-     *            the flag indicating how much related classes should get
-     *            recursively parsed
+     * @param importClassesList the important list of classes that are required explicitly
+     * @param recursiveFlag     the flag indicating how much related classes should get
+     *                          recursively parsed
      * @return the collection of classes acquired based on the requirement
      */
     public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, int recursiveFlag) {
@@ -117,7 +109,7 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-            ClassModel x) {
+                                      ClassModel x) {
         if (x != null) {
             if (!classesList.contains(x)) {
                 classesList.add(x);
@@ -127,7 +119,7 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-            Iterable<? extends ClassModel> ls) {
+                                      Iterable<? extends ClassModel> ls) {
         for (ClassModel x : ls) {
             if (!classesList.contains(x)) {
                 classesList.add(x);

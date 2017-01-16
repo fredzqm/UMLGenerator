@@ -1,9 +1,9 @@
 package analyzer.utility;
 
-import java.util.List;
-
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.List;
 
 /**
  * An Interface of the Method Models.
@@ -11,7 +11,7 @@ import utility.Modifier;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel {
-    
+
     /**
      * Returns the name of the Method.
      *
@@ -66,7 +66,6 @@ public interface IMethodModel {
     List<? extends ITypeModel> getArguments();
 
     /**
-     * 
      * @return list of instruction in this method for processing
      */
     List<? extends IInstructionModel> getInstructions();
