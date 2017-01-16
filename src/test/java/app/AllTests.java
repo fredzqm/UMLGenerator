@@ -3,8 +3,8 @@ package app;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import analyzerClassParser.AnalyzerClassParserTest;
-import analyzerRelationParser.AnalyzerRelationParserTest;
+import analyzer.classParser.AnalyzerClassParserTest;
+import analyzer.relationParser.AnalyzerRelationParserTest;
 import config.CommandLineParserTest;
 import model.ASMParserTest;
 import model.ClassModelTest;

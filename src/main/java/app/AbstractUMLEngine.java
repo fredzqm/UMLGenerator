@@ -1,6 +1,6 @@
 package app;
 
-import analyzer.ISystemModel;
+import analyzer.utility.ISystemModel;
 import generator.IGraph;
 
 /**

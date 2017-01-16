@@ -1276,7 +1276,7 @@ map(iterable:Iterable):Iterable</panel_attributes>
 +run(): void
 +createRunner(): runner.IRunner
 +createGenerator(): generator.IGenerator
-+createAnalyzer(): analyzer.IAnalyzer
++createAnalyzer(): analyzer.utility.IAnalyzer
 +createSystemModel(): generator.ISystemModel
 </panel_attributes>
     <additional_attributes/>

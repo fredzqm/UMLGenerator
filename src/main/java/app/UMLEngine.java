@@ -1,7 +1,7 @@
 package app;
 
-import analyzer.IAnalyzer;
-import analyzer.ISystemModel;
+import analyzer.utility.IAnalyzer;
+import analyzer.utility.ISystemModel;
 import config.*;
 import generator.IGenerator;
 import generator.IGraph;

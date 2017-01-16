@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
-import analyzer.IMethodModel;
+import analyzer.utility.IMethodModel;
 import model.TypeParser.MethodSignatureParseResult;
 import utility.MethodType;
 import utility.Modifier;

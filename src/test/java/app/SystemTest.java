@@ -1,12 +1,12 @@
 package app;
 
-import analyzer.ClassPair;
-import analyzer.IClassModel;
-import analyzer.IRelationInfo;
-import analyzer.ISystemModel;
-import analyzerRelationParser.RelationDependsOn;
-import analyzerRelationParser.RelationExtendsClass;
-import analyzerRelationParser.RelationImplement;
+import analyzer.utility.ClassPair;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IRelationInfo;
+import analyzer.utility.ISystemModel;
+import analyzer.relationParser.RelationDependsOn;
+import analyzer.relationParser.RelationExtendsClass;
+import analyzer.relationParser.RelationImplement;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;

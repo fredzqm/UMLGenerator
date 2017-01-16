@@ -1,15 +1,16 @@
 package app;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import analyzer.ISystemModel;
+import analyzer.favorComposition.FavorCompositionAnalyzer;
+import analyzer.utility.ISystemModel;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;
 import config.RunnerConfiguration;
-import runner.ExplorerRunner;
-import runner.IRunner;
+import dummy.favorDummy.FavorDummyA;
+import dummy.favorDummy.FavorDummyB;
+import viewer.Viewer;
+
+import java.util.Arrays;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -33,29 +34,23 @@ public class LocalTester {
         config.set(RunnerConfiguration.FILE_NAME, "asmClass");
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
+        config.addAnalyzer(FavorCompositionAnalyzer.class);
 
-        //String[] toAnalyze = new String[]{"analyzer.ClassPair", "analyzer.IAnalyzer", "analyzer.IAnalyzerConfiguration", "analyzer.IClassModel", "analyzer.IClassModelFilter", "analyzer.IFieldModel", "analyzer.IMethodModel", "analyzer.IRelationInfo", "analyzer.ISystemModel", "analyzer.ISystemModelFilter", "analyzer.ITypeModel", "analyzer.Relation", "analyzerClassParser.AnalyzerClassParser", "analyzerClassParser.GraphVizClass", "analyzerClassParser.GraphVizFieldParser", "analyzerClassParser.GraphVizHeaderParser", "analyzerClassParser.GraphVizMethodParser", "analyzerClassParser.GraphVizModifierParser", "analyzerClassParser.GraphVizTypeParser", "analyzerClassParser.IClassParserConfiguration", "analyzerClassParser.IParser", "analyzerClassParser.ParseClassSystemModel", "analyzerRelationParser.AnalyzerRelationParser", "analyzerRelationParser.MergeRelationSystemModel", "analyzerRelationParser.ParseRelationSystemModel", "analyzerRelationParser.RelationBijectiveDecorator", "analyzerRelationParser.RelationDependsOn", "analyzerRelationParser.RelationExtendsClass", "analyzerRelationParser.RelationHasA", "analyzerRelationParser.RelationHasABijective", "analyzerRelationParser.RelationImplement", "app.AbstractUMLEngine", "app.Application", "app.UMLEngine", "config.AnalyzerConfiguration", "config.ClassParserConfiguration", "config.CommandLineFileInput", "config.CommandLineParser", "config.ConfigFileParser", "config.Configurable", "config.Configuration", "config.ConfigurationFactory", "config.GeneratorConfiguration", "config.IConfiguration", "config.ModelConfiguration", "config.RunnerConfiguration", "display.Display", "generator.GraphVizGenerator", "generator.IEdge", "generator.IGenerator", "generator.IGeneratorConfiguration", "generator.IGraph", "generator.IVertex", "model.ArrayTypeModel", "model.ASMParser", "model.ClassModel", "model.FieldModel", "model.GenericTypeArg", "model.GenericTypeParam", "model.GenericTypeVarPlaceHolder", "model.IModelConfiguration", "model.MethodModel", "model.ParametizedClassModel", "model.PrimitiveType", "model.Signature", "model.SystemModel", "model.TypeModel", "model.TypeParser", "runner.GraphVizRunner", "runner.IRunner", "runner.IRunnerConfiguration", "utility.ClassType", "utility.ExpandIterator", "utility.FilteredIterator", "utility.IExpander", "utility.IFilter", "utility.IMapper", "utility.MappedIterator", "utility.MethodType", "utility.Modifier"};
-        String[] toAnalyze = {"model.ASMParser","model.ClassModel"};
+        //String[] toAnalyze = new String[]{"analyzer.utility.ClassPair", "analyzer.utility.IAnalyzer", "analyzer.utility.IAnalyzerConfiguration", "analyzer.utility.IClassModel", "analyzer.utility.IClassModelFilter", "analyzer.utility.IFieldModel", "analyzer.utility.IMethodModel", "analyzer.utility.IRelationInfo", "analyzer.utility.ISystemModel", "analyzer.utility.ISystemModelFilter", "analyzer.utility.ITypeModel", "analyzer.utility.Relation", "analyzer.analyzerClassParser.AnalyzerClassParser", "analyzer.analyzerClassParser.GraphVizClass", "analyzer.analyzerClassParser.GraphVizFieldParser", "analyzer.analyzerClassParser.GraphVizHeaderParser", "analyzer.analyzerClassParser.GraphVizMethodParser", "analyzer.analyzerClassParser.GraphVizModifierParser", "analyzer.analyzerClassParser.GraphVizTypeParser", "analyzer.analyzerClassParser.IClassParserConfiguration", "analyzer.analyzerClassParser.IParser", "analyzer.analyzerClassParser.ParseClassSystemModel", "analyzer.analyzerRelationParser.AnalyzerRelationParser", "analyzer.analyzerRelationParser.MergeRelationSystemModel", "analyzer.analyzerRelationParser.ParseRelationSystemModel", "analyzer.analyzerRelationParser.RelationBijectiveDecorator", "analyzer.analyzerRelationParser.RelationDependsOn", "analyzer.analyzerRelationParser.RelationExtendsClass", "analyzer.analyzerRelationParser.RelationHasA", "analyzer.analyzerRelationParser.RelationHasABijective", "analyzer.analyzerRelationParser.RelationImplement", "app.AbstractUMLEngine", "app.Application", "app.UMLEngine", "config.AnalyzerConfiguration", "config.ClassParserConfiguration", "config.CommandLineFileInput", "config.CommandLineParser", "config.ConfigFileParser", "config.Configurable", "config.Configuration", "config.ConfigurationFactory", "config.GeneratorConfiguration", "config.IConfiguration", "config.ModelConfiguration", "config.RunnerConfiguration", "display.Display", "generator.GraphVizGenerator", "generator.IEdge", "generator.IGenerator", "generator.IGeneratorConfiguration", "generator.IGraph", "generator.INode", "model.ArrayTypeModel", "model.ASMParser", "model.ClassModel", "model.FieldModel", "model.GenericTypeArg", "model.GenericTypeParam", "model.GenericTypeVarPlaceHolder", "model.IModelConfiguration", "model.MethodModel", "model.ParametizedClassModel", "model.PrimitiveType", "model.Signature", "model.SystemModel", "model.TypeModel", "model.TypeParser", "runner.GraphVizRunner", "runner.IRunner", "runner.IRunnerConfiguration", "utility.ClassType", "utility.ExpandIterator", "utility.FilteredIterator", "utility.IExpander", "utility.IFilter", "utility.IMapper", "utility.MappedIterator", "utility.MethodType", "utility.Modifier"};
+        String[] toAnalyze = {FavorDummyA.class.getName(), FavorDummyB.class.getName()};
         Arrays.stream(toAnalyze).forEach(s -> config.add(ModelConfiguration.CLASSES_KEY, s));
-
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
         systemModel = engine.analyze(systemModel);
-        
+
         System.out.println(systemModel.getRelations());
-        
+
         String actual = engine.generate(systemModel);
         engine.executeRunner(actual);
 //        engine.run();
 
-        config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
-        IRunner explorerRunner = new ExplorerRunner(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
-        try {
-            explorerRunner.execute(null);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.err.println("Failed to execute ExplorerRunner");
-        }
+        Runnable explorerRunner = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        explorerRunner.run();
 
         System.out.println("Done");
     }

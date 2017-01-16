@@ -17,10 +17,10 @@ public class GraphVizGenerator implements IGenerator {
                 config.getNodeStyle(), config.getRankDir()));
 
         // Render the classes
-        Iterable<? extends IVertex> vertices = graph.getVertices();
-        vertices.forEach((vertex) -> {
+        Iterable<? extends INode> nodes = graph.getNodes();
+        nodes.forEach((node) -> {
             dotString.append(
-                    String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t];\n", vertex.getName(), vertex.getLabel()));
+                    String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle()));
         });
 
         // Parse each relationship.

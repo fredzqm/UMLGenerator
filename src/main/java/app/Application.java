@@ -3,7 +3,7 @@ package app;
 import config.CommandLineParser;
 import config.Configuration;
 import config.RunnerConfiguration;
-import runner.ExplorerRunner;
+import viewer.Viewer;
 
 public class Application {
     public static void main(String[] args) throws Exception {
@@ -14,7 +14,7 @@ public class Application {
         engine.run();
 
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
-        ExplorerRunner explorerRunner = new ExplorerRunner(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
-        explorerRunner.execute(null);
+        Runnable explorerRunner = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        explorerRunner.run();
     }
 }

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import analyzer.IAnalyzer;
-import analyzerClassParser.AnalyzerClassParser;
-import analyzerRelationParser.AnalyzerRelationParser;
+import analyzer.utility.IAnalyzer;
+import analyzer.classParser.AnalyzerClassParser;
+import analyzer.relationParser.AnalyzerRelationParser;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;

@@ -1,6 +1,6 @@
 package model;
 
-import analyzer.ITypeModel;
+import analyzer.utility.ITypeModel;
 
 import java.util.Collection;
 import java.util.Map;
