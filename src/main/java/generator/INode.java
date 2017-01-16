@@ -11,9 +11,8 @@ public interface INode {
      * @return the label for this vertex
      */
     String getLabel();
-    
+
     /**
-     * 
      * @return the style of this vertex
      */
     String getNodeStyle();

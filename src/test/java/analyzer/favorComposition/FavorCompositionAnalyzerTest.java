@@ -59,7 +59,7 @@ public class FavorCompositionAnalyzerTest {
 
         assertEquals("This should not have a node style as it does not break the principle: Favor Composition over Inheritance.", "", favor.getNodeStyle());
         assertEquals("This should have a node style as it does break the principle: Favor Composition over Inheritance.", "color=\"orange\" ", noFavor.getNodeStyle());
-        
+
 
         // verify
         verify(noCompositionClassModel).getSuperClass();

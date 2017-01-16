@@ -39,7 +39,7 @@ public class ConfigFileParser implements ConfigurationFactory {
     @Override
     public Configuration create() throws Exception {
         Configuration conf = Configuration.getInstance();
-        if(json.keySet().size() <= 0) {
+        if (json.keySet().size() <= 0) {
             return conf;
         }
         JSONObject jsonConf = json.getJSONObject("config");
@@ -86,7 +86,7 @@ public class ConfigFileParser implements ConfigurationFactory {
                 case ("private"):
                     break;
                 case (""):
-                	break;
+                    break;
                 default:
                     System.err.println("Modifier not found");
             }

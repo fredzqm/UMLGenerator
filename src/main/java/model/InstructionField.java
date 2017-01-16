@@ -1,15 +1,14 @@
 package model;
 
+import org.objectweb.asm.tree.FieldInsnNode;
+
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.objectweb.asm.tree.FieldInsnNode;
-
 /**
  * represent a java byte code that accesses a field
- * 
- * @author zhang
  *
+ * @author zhang
  */
 public class InstructionField extends InstructionModel {
     private final TypeModel calledOn;
@@ -36,7 +35,6 @@ public class InstructionField extends InstructionModel {
     }
 
     /**
-     * 
      * @return the field it accesses
      */
     public FieldModel getField() {

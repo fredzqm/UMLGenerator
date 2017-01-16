@@ -1,26 +1,10 @@
 package analyzer.relationParser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import analyzer.utility.ClassPair;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IInstructionModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ISystemModelFilter;
-import analyzer.utility.ITypeModel;
+import analyzer.utility.*;
 import utility.IFilter;
 import utility.IMapper;
+
+import java.util.*;
 
 /**
  * It decorates ISystem model and supplies extends, implements, has-a and
@@ -71,13 +55,10 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
 
     /**
      * add the info to the relations map
-     * 
-     * @param map
-     *            relations map
-     * @param pair
-     *            the class pair this relation is on
-     * @param info
-     *            the relationtype
+     *
+     * @param map  relations map
+     * @param pair the class pair this relation is on
+     * @param info the relationtype
      */
     private void addToMap(Map<ClassPair, List<IRelationInfo>> map, ClassPair pair, IRelationInfo info) {
         if (map.containsKey(pair)) {

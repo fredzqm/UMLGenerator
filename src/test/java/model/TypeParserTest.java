@@ -25,7 +25,7 @@ public class TypeParserTest {
         TypeModel x = TypeParser.parseTypeSignature(name);
         assertEquals(ParametizedClassModel.class, x.getClass());
         assertEquals(ASMParser.getClassByName("java.util.List"), x.getClassModel());
-        assertEquals(Arrays.asList(new TypeModel[] { new GenericTypeVarPlaceHolder("E") }),
+        assertEquals(Arrays.asList(new TypeModel[]{new GenericTypeVarPlaceHolder("E")}),
                 ((ParametizedClassModel) x).getGenericArgs());
     }
 
@@ -187,7 +187,7 @@ public class TypeParserTest {
 
         // super type list
         List<TypeModel> spls = rs.getSuperTypes();
-        assertEquals(spls, Arrays.asList(new TypeModel[] { ASMParser.getObject() }));
+        assertEquals(spls, Arrays.asList(new TypeModel[]{ASMParser.getObject()}));
     }
 
     @Test

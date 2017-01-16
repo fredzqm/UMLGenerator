@@ -125,12 +125,12 @@ class ParametizedClassModel extends TypeModel {
         }
         return false;
     }
-    
+
     @Override
     public TypeModel eraseGenericType() {
         return classModel;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

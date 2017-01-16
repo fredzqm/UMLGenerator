@@ -99,18 +99,19 @@ public class CommandLineParser implements ConfigurationFactory {
         Switch opt9 = new Switch("rankdir").setShortFlag('k').setLongFlag("direction");
         opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
         addOption(opt9);
-        
+
         FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j')
-        		.setDefault("none").setStringParser(JSAP.STRING_PARSER);
+                .setDefault("none").setStringParser(JSAP.STRING_PARSER);
         opt10.setHelp("include this to specify a configuration file to use instead of command"
-				+ "line arguments.");
+                + "line arguments.");
         addOption(opt10);
     }
 
     /**
      * This method creates a new configuration based on the arguments passed
      * into the constructor
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Override
     public Configuration create() throws Exception {
@@ -138,11 +139,11 @@ public class CommandLineParser implements ConfigurationFactory {
         }
 
         Configuration conf = Configuration.getInstance();
-        
+
         String configJ = config.getString("JSONfile");
-        if(!configJ.equals("none"))
-        	return (new ConfigFileParser((new CommandLineFileInput(configJ)).getJson())).create(); 
-        
+        if (!configJ.equals("none"))
+            return (new ConfigFileParser((new CommandLineFileInput(configJ)).getJson())).create();
+
         String[] classes = config.getStringArray("class");
         for (String c : classes) {
             conf.add(ModelConfiguration.CLASSES_KEY, c);

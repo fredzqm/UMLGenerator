@@ -58,9 +58,9 @@ public interface IClassModel extends INode {
     /**
      * This method is used to ensure that even if a classModel is decorated, it
      * still equals to the original classModel
-     * 
+     *
      * @return get the reference to the innest {@link ClassModel} that is
-     *         decorated
+     * decorated
      */
     IClassModel getUnderlyingClassModel();
 

@@ -46,7 +46,7 @@ public class AnalyzerRelationParserTest {
 
         assertEquals(1, fromAtoB.size());
         assertTrue(fromAtoB.contains(new RelationExtendsClass()));
-        
+
         // verify
         verify(_a).getSuperClass();
     }

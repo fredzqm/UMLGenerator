@@ -1,8 +1,8 @@
 package analyzer.utility;
 
-import java.util.Collection;
-
 import utility.ClassType;
+
+import java.util.Collection;
 
 /**
  * a filter for IClassModel
@@ -15,8 +15,7 @@ public class IClassModelFilter implements IClassModel {
     /**
      * Constructs a Class Model Filter
      *
-     * @param classModel
-     *            classModel decorated.
+     * @param classModel classModel decorated.
      */
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
@@ -69,13 +68,13 @@ public class IClassModelFilter implements IClassModel {
     public String getNodeStyle() {
         return classModel.getNodeStyle();
     }
-    
+
     @Override
     public IClassModel getUnderlyingClassModel() {
         return classModel.getUnderlyingClassModel();
     }
-    
-    
+
+
     @Override
     public String toString() {
         return classModel.toString();

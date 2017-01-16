@@ -1,18 +1,16 @@
 package model;
 
-import java.util.Collection;
-
+import analyzer.utility.IInstructionModel;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-import analyzer.utility.IInstructionModel;
+import java.util.Collection;
 
 /**
  * Represent a java byte code instruction
- * 
- * @author zhang
  *
+ * @author zhang
  */
 public abstract class InstructionModel implements IInstructionModel {
     private final MethodModel belongTo;
@@ -20,12 +18,6 @@ public abstract class InstructionModel implements IInstructionModel {
     public InstructionModel(MethodModel belongTo) {
         this.belongTo = belongTo;
     }
-
-    public MethodModel getBelongTo() {
-        return belongTo;
-    }
-
-    public abstract Collection<TypeModel> getDependentClass();
 
     public static InstructionModel parseInstruction(MethodModel method, AbstractInsnNode insn) {
         switch (insn.getType()) {
@@ -39,5 +31,11 @@ public abstract class InstructionModel implements IInstructionModel {
                 return null;
         }
     }
+
+    public MethodModel getBelongTo() {
+        return belongTo;
+    }
+
+    public abstract Collection<TypeModel> getDependentClass();
 
 }

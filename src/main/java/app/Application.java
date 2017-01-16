@@ -13,8 +13,7 @@ public class Application {
         Runnable engine = UMLEngine.getInstance(config);
         engine.run();
 
-        config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
-        Runnable explorerRunner = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
-        explorerRunner.run();
+        Runnable viewer = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        viewer.run();
     }
 }

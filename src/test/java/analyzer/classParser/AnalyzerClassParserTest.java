@@ -6,6 +6,7 @@ public class AnalyzerClassParserTest {
 
     @Test
     public void test() {
+        // TODO Fred
     }
 
 }

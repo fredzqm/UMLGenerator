@@ -1,8 +1,8 @@
 package config;
 
+import analyzer.classParser.AnalyzerClassParser;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IAnalyzerConfiguration;
-import analyzer.classParser.AnalyzerClassParser;
 
 /**
  * An AnalyzerConfiguration.

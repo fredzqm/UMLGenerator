@@ -1,18 +1,13 @@
 package app;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
 import analyzer.classParser.AnalyzerClassParserTest;
+import analyzer.favorComposition.FavorCompositionAnalyzerTest;
 import analyzer.relationParser.AnalyzerRelationParserTest;
 import config.CommandLineParserTest;
-import model.ASMParserTest;
-import model.ClassModelTest;
-import model.MethodModelTest;
-import model.SignatureTest;
-import model.SystemModelTest;
-import model.TypeModelTest;
-import model.TypeParserTest;
+import config.TestNoArgs;
+import model.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 import utility.IExpanderTest;
 import utility.IFilterTest;
 import utility.IMapperTest;
@@ -23,10 +18,10 @@ import utility.IMapperTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ SystemTest.class, ASMParserTest.class, CommandLineParserTest.class, SystemModelTest.class,
-        ClassModelTest.class, IFilterTest.class, IMapperTest.class, IExpanderTest.class, MethodModelTest.class,
-        TypeParserTest.class, TypeModelTest.class, AnalyzerRelationParserTest.class, AnalyzerClassParserTest.class,
-        SignatureTest.class })
+@Suite.SuiteClasses({AnalyzerClassParserTest.class, FavorCompositionAnalyzerTest.class, AnalyzerRelationParserTest.class,
+        SystemTest.class, CommandLineParserTest.class, CommandLineParserTest.class, TestNoArgs.class, ASMParserTest.class,
+        ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class, SystemModel.class, TypeModelTest.class,
+        TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class})
 public class AllTests {
 
 }

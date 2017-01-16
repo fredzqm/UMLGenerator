@@ -1,18 +1,14 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import analyzer.utility.IAnalyzer;
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
+import analyzer.utility.IAnalyzer;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import utility.IFilter;
 import utility.Modifier;
+
+import java.util.*;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of configuration objects.
