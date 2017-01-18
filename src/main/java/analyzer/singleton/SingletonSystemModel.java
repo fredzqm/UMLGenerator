@@ -17,7 +17,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
 
-        for (IClassModel clazz : classes) {
+        for (IClassModel clazz : super.getClasses()) {
             clazz = checkSingleton(clazz);
             classes.add(clazz);
         }
@@ -36,16 +36,33 @@ public class SingletonSystemModel extends ISystemModelFilter {
         Collection<? extends IFieldModel> fields = clazz.getFields();
         IFieldModel staticSingletonField = null;
         for (IFieldModel field : fields) {
-            if (field.getFieldType().getClassModel().equals(clazz)) {
+            if (clazz.equals(field.getFieldType().getClassModel())) {
                 if (field.isStatic() && field.getModifier() == Modifier.PRIVATE && staticSingletonField == null) {
                     staticSingletonField = field;
                 } else {
+                    // more than two staticSingletonField
                     return clazz;
                 }
             }
         }
+        if (staticSingletonField == null)
+            return clazz;
 
-        return null;
+        IMethodModel staticGetInstanceMethod = null;
+        for (IMethodModel method : methods) {
+            if (method.getAccessedFields().contains(staticSingletonField)) {
+                if (method.getModifier() != Modifier.PRIVATE) {
+                    if (method.isStatic() && staticGetInstanceMethod == null) {
+                        staticGetInstanceMethod = method;
+                    } else {
+                        // more than two staticGetInstanceMethod
+                        return clazz;
+                    }
+                }
+            }
+        }
+        
+        return new SingletonClassModel(clazz);
     }
 
 }
