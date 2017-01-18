@@ -1,15 +1,22 @@
 package model;
 
-import analyzer.utility.IMethodModel;
-import model.TypeParser.MethodSignatureParseResult;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
+
+import analyzer.utility.IMethodModel;
+import model.TypeParser.MethodSignatureParseResult;
 import utility.MethodType;
 import utility.Modifier;
-
-import java.util.*;
 
 /**
  * Representing method in java program
@@ -144,6 +151,30 @@ class MethodModel implements IMethodModel {
             }
         }
         return instructions;
+    }
+
+    @Override
+    public Collection<FieldModel> getAccessedFields() {
+        Collection<FieldModel> accessedFields = new HashSet<>();
+        for (InstructionModel instr : getInstructions()) {
+            if (instr instanceof InstructionField) {
+                InstructionField instructionField = (InstructionField) instr;
+                accessedFields.add(instructionField.getField());
+            }
+        }
+        return accessedFields;
+    }
+
+    @Override
+    public Collection<MethodModel> getCalledMethods() {
+        Collection<MethodModel> calledMethods = new HashSet<>();
+        for (InstructionModel instr : getInstructions()) {
+            if (instr instanceof InstructionMethod) {
+                InstructionMethod instructionMethod = (InstructionMethod) instr;
+                calledMethods.add(instructionMethod.getMethod());
+            }
+        }
+        return calledMethods;
     }
 
 }

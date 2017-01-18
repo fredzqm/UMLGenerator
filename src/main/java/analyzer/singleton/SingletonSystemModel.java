@@ -3,10 +3,7 @@ package analyzer.singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ISystemModelFilter;
+import analyzer.utility.*;
 import utility.MethodType;
 import utility.Modifier;
 
@@ -28,14 +25,26 @@ public class SingletonSystemModel extends ISystemModelFilter {
     }
 
     private IClassModel checkSingleton(IClassModel clazz) {
+        // check all methods to make sure there is only private constructor
         Collection<? extends IMethodModel> methods = clazz.getMethods();
         for (IMethodModel method : methods) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR){
-                if (method.getModifier() != Modifier.PRIVATE)
+            if (method.getMethodType() == MethodType.CONSTRUCTOR && method.getModifier() != Modifier.PRIVATE)
+                return clazz;
+        }
+
+        // look for the static instance of singleton
+        Collection<? extends IFieldModel> fields = clazz.getFields();
+        IFieldModel staticSingletonField = null;
+        for (IFieldModel field : fields) {
+            if (field.getFieldType().getClassModel().equals(clazz)) {
+                if (field.isStatic() && field.getModifier() == Modifier.PRIVATE && staticSingletonField == null) {
+                    staticSingletonField = field;
+                } else {
                     return clazz;
+                }
             }
         }
-        
+
         return null;
     }
 
