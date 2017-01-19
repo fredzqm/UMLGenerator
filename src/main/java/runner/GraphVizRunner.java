@@ -1,11 +1,11 @@
 package runner;
 
+import config.IConfiguration;
+import config.RunnerConfiguration;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import config.IConfiguration;
-import config.RunnerConfiguration;
 
 /**
  * A GraphViz Process Runner.

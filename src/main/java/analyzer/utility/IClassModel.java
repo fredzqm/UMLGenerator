@@ -1,11 +1,11 @@
 package analyzer.utility;
 
+import generator.INode;
+import utility.ClassType;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import generator.INode;
-import utility.ClassType;
 
 /**
  * An interface for Class Models.

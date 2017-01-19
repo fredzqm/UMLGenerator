@@ -7,7 +7,7 @@ import config.Configurable;
  * <p>
  * Created by lamd on 12/12/2016. Edited by fineral on 12/13/2016.
  */
-public interface IGeneratorConfiguration extends Configurable{
+public interface IGeneratorConfiguration extends Configurable {
     /**
      * Returns the Node Seperation.
      *

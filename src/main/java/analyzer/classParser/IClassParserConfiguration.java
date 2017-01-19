@@ -1,6 +1,5 @@
 package analyzer.classParser;
 
-import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ITypeModel;
@@ -23,7 +22,7 @@ public interface IClassParserConfiguration extends Configurable {
     /**
      * @return class as parser for the header
      */
-    IParser<IClassModel> getHeaderParser();
+    IParser getHeaderParser();
 
     /**
      * @return class as the field parser

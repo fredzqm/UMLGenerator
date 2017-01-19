@@ -1,7 +1,5 @@
 package app;
 
-import java.util.List;
-
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.EngineConfiguration;
@@ -12,6 +10,8 @@ import generator.IGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
+
+import java.util.List;
 
 /**
  * TODO: Fred documentation.

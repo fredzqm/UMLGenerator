@@ -1,14 +1,8 @@
 package config;
 
-import java.util.Iterator;
+import com.martiansoftware.jsap.*;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.Switch;
-import com.martiansoftware.jsap.UnflaggedOption;
+import java.util.Iterator;
 
 /**
  * Created by fineral on 12/11/2016 Edited by fineral on 12/13/2016
@@ -177,8 +171,8 @@ public class CommandLineParser implements ConfigurationFactory {
         try {
             jsap.registerParameter(opt);
         } catch (JSAPException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new RuntimeException("Unable to register parameter: " + opt.toString(), e);
         }
     }
 }

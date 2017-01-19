@@ -1,15 +1,15 @@
 package model;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import config.ModelConfiguration;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class representing the entire model of a java program

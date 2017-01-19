@@ -1,8 +1,8 @@
 package config;
 
-import java.util.List;
-
 import model.IModelConfiguration;
+
+import java.util.List;
 
 /**
  * A ModelConfiguration.
