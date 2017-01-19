@@ -1,10 +1,11 @@
 package analyzer.utility;
 
-import generator.INode;
-import utility.ClassType;
-
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
+import generator.INode;
+import utility.ClassType;
 
 /**
  * An interface for Class Models.
@@ -76,7 +77,7 @@ public interface IClassModel extends INode {
      *
      * @return the list of stereotypes name for this class
      */
-    default Collection<String> getStereoTypes() {
+    default List<String> getStereoTypes() {
         return Collections.emptyList();
     }
 

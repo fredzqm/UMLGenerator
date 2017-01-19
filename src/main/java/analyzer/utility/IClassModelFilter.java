@@ -1,8 +1,9 @@
 package analyzer.utility;
 
-import utility.ClassType;
-
 import java.util.Collection;
+import java.util.List;
+
+import utility.ClassType;
 
 /**
  * a filter for IClassModel
@@ -57,7 +58,7 @@ public class IClassModelFilter implements IClassModel {
         return classModel.getMethods();
     }
 
-    public Collection<String> getStereoTypes() {
+    public List<String> getStereoTypes() {
         return classModel.getStereoTypes();
     }
 

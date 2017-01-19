@@ -1,7 +1,7 @@
 package analyzer.singleton;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import analyzer.utility.IClassModel;
 import analyzer.utility.IClassModelFilter;
@@ -14,8 +14,8 @@ public class SingletonClassModel extends IClassModelFilter {
     
     
     @Override
-    public Collection<String> getStereoTypes() {
-        Collection<String> ls = new ArrayList<>(super.getStereoTypes());
+    public List<String> getStereoTypes() {
+        List<String> ls = new ArrayList<>(super.getStereoTypes());
         ls.add("Singleton");
         return ls;
     }
