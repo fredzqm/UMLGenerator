@@ -20,6 +20,7 @@ import dummy.hasDependsRel.RelOtherDummyClass;
 import dummy.inheritanceRel.DummyInterface;
 import dummy.inheritanceRel.DummySubClass;
 import dummy.inheritanceRel.DummySuperClas;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;

@@ -14,7 +14,8 @@ import runner.IRunner;
 import java.util.List;
 
 /**
- * TODO: Fred documentation.
+ * This is a concrete implementation of algorithm for analyzing a UML. It
+ * depends on the Configuration setup and SystemModel in our program
  */
 public class UMLEngine extends AbstractUMLEngine {
     private IEngineConfiguration config;
@@ -24,15 +25,12 @@ public class UMLEngine extends AbstractUMLEngine {
     }
 
     /**
-     * TODO: Fred Documentation.
-     *
+     * 
      * @param config
-     * @return
+     *            the configuration object read from command line arguments, or parsed from
+     *            file. See {@link ConfigurationFactor}
+     * @return the UML engine
      */
-    static UMLEngine getInstance(IEngineConfiguration config) {
-        return new UMLEngine(config);
-    }
-
     static UMLEngine getInstance(IConfiguration config) {
         return new UMLEngine(config.createConfiguration(EngineConfiguration.class));
     }

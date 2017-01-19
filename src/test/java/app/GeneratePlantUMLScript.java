@@ -84,7 +84,7 @@ public class GeneratePlantUMLScript {
 //        engine.run();
 
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
-        Runnable viewer = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        Runnable viewer = new Viewer(config.createConfiguration(RunnerConfiguration.class));
         viewer.run();
 
         System.out.println("Done");
