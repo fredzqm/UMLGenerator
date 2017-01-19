@@ -19,4 +19,9 @@ public class SingletonClassModel extends IClassModelFilter {
         ls.add("Singleton");
         return ls;
     }
+    
+    @Override
+    public String getNodeStyle() {
+        return super.getNodeStyle() + " color=\"blue\"";
+    }
 }

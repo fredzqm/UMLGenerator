@@ -41,6 +41,7 @@ public class SingletonAnalyzerTest {
         when(_singletonTypeModel.getClassModel()).thenReturn(_singletonClassModel);
         // specify class model behavior
         when(_singletonClassModel.getName()).thenReturn(singletonName);
+        when(_singletonClassModel.getNodeStyle()).thenReturn("");
         doReturn(Arrays.asList(_staticSingletonField)).when(_singletonClassModel).getFields();
         doReturn(Arrays.asList(_getInstanceMethod)).when(_singletonClassModel).getMethods();
         // specify class field model behavior
@@ -70,6 +71,7 @@ public class SingletonAnalyzerTest {
                 singletonClassModel.getClass() == SingletonClassModel.class);
         Collection<String> stereoTypes = singletonClassModel.getStereoTypes();
         assertTrue("The stereotypes is not added", stereoTypes.contains("Singleton"));
+        assertEquals(" color=\"blue\"", singletonClassModel.getNodeStyle());
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
