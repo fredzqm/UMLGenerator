@@ -86,11 +86,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
     }
 
     private IParser getParser(String className) {
-        Class<IParser> classParser = IConfiguration.getClassFromName(className, IParser.class);
-        try {
-            return classParser.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Parser " + className + " missing empty contructor", e);
-        }
+        IParser classParser = IConfiguration.instantiateWithName(className, IParser.class);
+        return classParser;
     }
 }

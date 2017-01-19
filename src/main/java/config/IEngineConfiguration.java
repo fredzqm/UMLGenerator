@@ -4,39 +4,25 @@ import java.util.List;
 
 import analyzer.utility.IAnalyzer;
 import generator.IGenerator;
-import generator.IGeneratorConfiguration;
-import model.IModelConfiguration;
-import runner.IRunnerConfiguration;
 
 /**
  * An interface for Configuration object that stores values to be used in
  * generation processes.
  */
-public interface IEngineConfiguration extends Configurable {
+public interface IEngineConfiguration extends Configurable, IConfiguration {
 
     /**
-     * 
-     * @return the ModelConfiguration to get an instance of the model
-     */
-    IModelConfiguration getModelConfiguration();
-
-    /**
-     * Returns the IGenerator stored.
+     * Returns the IGenerator
      *
      * @return IGenerator object.
      */
-    Class<? extends IGenerator> getGenerator();
-
-    IGeneratorConfiguration getGeneratorConfiguration();
-
-    IRunnerConfiguration getRunnerConfiguration();
+    IGenerator getGenerator();
 
     /**
      * Returns an Iterable of IAnalyzers.
      *
      * @return Iterable of IAnalyzers.
      */
-    List<Class<? extends IAnalyzer>> getAnalyzers();
-    
-    IConfiguration getIConfiguration();
+    List<IAnalyzer> getAnalyzers();
+
 }

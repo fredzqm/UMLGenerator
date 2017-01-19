@@ -1,16 +1,17 @@
 package app;
 
+import java.util.List;
+
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
-import config.*;
+import config.EngineConfiguration;
+import config.IConfiguration;
+import config.IEngineConfiguration;
 import generator.IGenerator;
-import generator.IGeneratorConfiguration;
 import generator.IGraph;
-import model.IModelConfiguration;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
-import runner.IRunnerConfiguration;
 
 /**
  * TODO: Fred documentation.
@@ -32,49 +33,33 @@ public class UMLEngine extends AbstractUMLEngine {
         return new UMLEngine(config);
     }
 
-    public static UMLEngine getInstance(IConfiguration config) {
-        EngineConfiguration engineConfig = config.createConfiguration(EngineConfiguration.class);
-        return getInstance(engineConfig);
+    static UMLEngine getInstance(IConfiguration config) {
+        return new UMLEngine(config.createConfiguration(EngineConfiguration.class));
     }
 
     @Override
     public ISystemModel createSystemModel() {
-        IModelConfiguration modelConf = config.getModelConfiguration();
-        return SystemModel.getInstance(modelConf);
+        return SystemModel.getInstance(config);
     }
 
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
-        Iterable<Class<? extends IAnalyzer>> anClassLs = this.config.getAnalyzers();
-        IConfiguration iconfig = config.getIConfiguration();
-        for (Class<? extends IAnalyzer> anClass : anClassLs) {
-            try {
-                IAnalyzer analyzer = anClass.newInstance();
-                systemModel = analyzer.analyze(systemModel, iconfig);
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);
-            }
+        List<IAnalyzer> anClassLs = this.config.getAnalyzers();
+        for (IAnalyzer analyzer : anClassLs) {
+            systemModel = analyzer.analyze(systemModel, config);
         }
         return systemModel;
     }
 
     @Override
     String generate(IGraph graph) {
-        IGeneratorConfiguration generatorConf = config.getGeneratorConfiguration();
-        Class<? extends IGenerator> genClass = config.getGenerator();
-        IGenerator gen;
-        try {
-            gen = genClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Generator " + genClass + " does not have an empty constructor", e);
-        }
-        return gen.generate(generatorConf, graph);
+        IGenerator gen = config.getGenerator();
+        return gen.generate(graph, config);
     }
 
     @Override
     void executeRunner(String graphVisStr) {
-        IRunnerConfiguration runnerConf = config.getRunnerConfiguration();
-        IRunner runner = new GraphVizRunner(runnerConf);
+        IRunner runner = GraphVizRunner.getInstance(config);
         try {
             runner.execute(graphVisStr);
         } catch (Exception e) {

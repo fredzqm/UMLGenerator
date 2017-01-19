@@ -68,7 +68,7 @@ public interface IConfiguration {
      *            String value corresponding to the key.
      */
     void addIfMissing(String key, String... value);
-    
+
     /**
      * Constructs the given configurable object.
      *
@@ -95,14 +95,16 @@ public interface IConfiguration {
         }
     }
 
-    static <T> Class<T> getClassFromName(String className, Class<T> returType) {
+    static <T> T instantiateWithName(String className, Class<T> returType) {
         try {
             Class<?> forName = Class.forName(className);
-            if (returType.isAssignableFrom(forName))
-                return (Class<T>) forName;
-            throw new RuntimeException(forName + " cannot be casted to " + returType);
+            if (!returType.isAssignableFrom(forName))
+                throw new RuntimeException(forName + " cannot be casted to " + returType);
+            return (T) forName.newInstance();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(className + " is not a valid class", e);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(className + " does not have an empty constructor", e);
         }
     }
 

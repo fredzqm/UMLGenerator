@@ -8,9 +8,6 @@ import analyzer.relationParser.AnalyzerRelationParser;
 import analyzer.utility.IAnalyzer;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
-import generator.IGeneratorConfiguration;
-import model.IModelConfiguration;
-import runner.IRunnerConfiguration;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -31,38 +28,52 @@ public class EngineConfiguration implements IEngineConfiguration {
     }
 
     @Override
-    public Class<? extends IGenerator> getGenerator() {
+    public IGenerator getGenerator() {
         String generatorClass = config.getValue(GENERATYR_KEY);
-        return IConfiguration.getClassFromName(generatorClass, IGenerator.class);
+        IGenerator generator = IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
+        return generator;
     }
 
     @Override
-    public IModelConfiguration getModelConfiguration() {
-        return config.createConfiguration(ModelConfiguration.class, ModelConfiguration.class);
-    }
-
-    @Override
-    public IGeneratorConfiguration getGeneratorConfiguration() {
-        return this.config.createConfiguration(GeneratorConfiguration.class);
-    }
-
-    @Override
-    public IRunnerConfiguration getRunnerConfiguration() {
-        return this.config.createConfiguration(RunnerConfiguration.class);
-    }
-
-    @Override
-    public List<Class<? extends IAnalyzer>> getAnalyzers() {
+    public List<IAnalyzer> getAnalyzers() {
         List<String> analyzerNames = config.getList(ANALYZER_KEY);
-        List<Class<? extends IAnalyzer>> analyzers = new ArrayList<>();
-        for (String className : analyzerNames)
-            analyzers.add(IConfiguration.getClassFromName(className, IAnalyzer.class));
+        List<IAnalyzer> analyzers = new ArrayList<>();
+        for (String className : analyzerNames) {
+            IAnalyzer analyzer = IConfiguration.instantiateWithName(className, IAnalyzer.class);
+            analyzers.add(analyzer);
+        }
         return analyzers;
     }
 
+
     @Override
-    public IConfiguration getIConfiguration() {
-        return config;
+    public void set(String key, String value) {
+        config.set(key, value);
+    }
+
+    @Override
+    public void add(String key, String... value) {
+        config.add(key, value);
+    }
+
+    @Override
+    public List<String> getList(String key) {
+        return config.getList(key);
+    }
+
+    @Override
+    public String getValue(String key) {
+        return config.getValue(key);
+    }
+
+    @Override
+    public void setIfMissing(String key, String value) {
+        config.setIfMissing(key, value);
+    }
+
+    @Override
+    public void addIfMissing(String key, String... value) {
+        config.addIfMissing(key, value);
     }
 
 }

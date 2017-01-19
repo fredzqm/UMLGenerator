@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import config.IConfiguration;
+import config.RunnerConfiguration;
+
 /**
  * A GraphViz Process Runner.
  * <p>
@@ -13,8 +16,12 @@ public class GraphVizRunner implements IRunner {
     private static final String OUTPUT_FILE_EXTENSION = "dot";
     private IRunnerConfiguration config;
 
-    public GraphVizRunner(IRunnerConfiguration config) {
+    private GraphVizRunner(IRunnerConfiguration config) {
         this.config = config;
+    }
+
+    public static IRunner getInstance(IConfiguration iConfig) {
+        return new GraphVizRunner(iConfig.createConfiguration(RunnerConfiguration.class));
     }
 
     public void execute(String dotString) throws IOException, InterruptedException {

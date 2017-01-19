@@ -1,5 +1,7 @@
 package generator;
 
+import config.IConfiguration;
+
 /**
  * An Interface for Generators.
  * <p>
@@ -9,10 +11,12 @@ public interface IGenerator {
     /**
      * * Creates a file formatted to display classes.
      *
-     * @param config Generator Configuration.
-     * @param graph  SystemModel containing all class information to diagram and
-     *               analyze result
+     * @param graph
+     *            SystemModel containing all class information to diagram and
+     *            analyze result
+     * @param config
+     *            the configuration object
      * @return the UML String.
      */
-    String generate(IGeneratorConfiguration config, IGraph graph);
+    String generate(IGraph graph, IConfiguration config);
 }
