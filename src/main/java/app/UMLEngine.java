@@ -32,8 +32,8 @@ public class UMLEngine extends AbstractUMLEngine {
         return new UMLEngine(config);
     }
 
-    public static UMLEngine getInstance(IConfiguration config2) {
-        EngineConfiguration engineConfig = config2.createConfiguration(EngineConfiguration.class);
+    public static UMLEngine getInstance(IConfiguration config) {
+        EngineConfiguration engineConfig = config.createConfiguration(EngineConfiguration.class);
         return getInstance(engineConfig);
     }
 
@@ -46,10 +46,11 @@ public class UMLEngine extends AbstractUMLEngine {
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
         Iterable<Class<? extends IAnalyzer>> anClassLs = this.config.getAnalyzers();
+        IConfiguration iconfig = config.getIConfiguration();
         for (Class<? extends IAnalyzer> anClass : anClassLs) {
             try {
                 IAnalyzer analyzer = anClass.newInstance();
-                systemModel = analyzer.analyze(systemModel, config.getConfigurationFor(anClass));
+                systemModel = analyzer.analyze(systemModel, iconfig);
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);
             }

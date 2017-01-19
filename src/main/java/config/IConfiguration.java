@@ -36,7 +36,7 @@ public interface IConfiguration {
      *            String key for desired Iterable of Strings.
      * @return Iterable of String corresponding to that key.
      */
-    List<String> getValues(String key);
+    List<String> getList(String key);
 
     /**
      * Return the String value associated with the given key.

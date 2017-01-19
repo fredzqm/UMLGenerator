@@ -29,7 +29,7 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
 
     @Override
     public Iterable<String> getClasses() {
-        return this.config.getValues(ModelConfiguration.CLASSES_KEY);
+        return this.config.getList(ModelConfiguration.CLASSES_KEY);
     }
 
     @Override

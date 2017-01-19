@@ -20,7 +20,7 @@ public class CommandLineParserTest {
 
         assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
         assertTrue(Boolean.parseBoolean(conf.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             assertEquals("me", cla);
         assertEquals("exepath", conf.getValue(RunnerConfiguration.EXECUTABLE_PATH));
         assertEquals("outfile", conf.getValue(RunnerConfiguration.FILE_NAME));
@@ -41,7 +41,7 @@ public class CommandLineParserTest {
 
         assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
         assertTrue(Boolean.parseBoolean(conf.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             assertEquals("me", cla);
         assertEquals("exepath", conf.getValue(RunnerConfiguration.EXECUTABLE_PATH));
         assertEquals("outfile", conf.getValue(RunnerConfiguration.FILE_NAME));
@@ -71,7 +71,7 @@ public class CommandLineParserTest {
         Configuration conf = com.create();
 
         ArrayList<String> classes = new ArrayList<String>();
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             classes.add(cla);
 
         assertEquals(3, classes.size());
@@ -90,7 +90,7 @@ public class CommandLineParserTest {
         Configuration conf = com.create();
 
         ArrayList<String> classes = new ArrayList<>();
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             classes.add(cla);
 
         assertEquals(1, classes.size());

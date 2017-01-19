@@ -51,7 +51,7 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public List<String> getValues(String key) {
+    public List<String> getList(String key) {
         if (this.valueMap.containsKey(key)) {
             String values = this.valueMap.get(key);
             return Arrays.asList(values.split(Configuration.DELIMITER));
