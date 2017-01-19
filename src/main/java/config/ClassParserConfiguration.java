@@ -81,8 +81,8 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
         return (IParser<Modifier>) getParser(config.getValue(MODIFIER));
     }
 
-    private IParser getParser(String className) {
-        IParser classParser = IConfiguration.instantiateWithName(className, IParser.class);
+    private IParser<?> getParser(String className) {
+        IParser<?> classParser = IConfiguration.instantiateWithName(className, IParser.class);
         return classParser;
     }
 }
