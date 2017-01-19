@@ -80,6 +80,19 @@ public interface IConfiguration {
         return createConfiguration(configClass, configClass);
     }
 
+    /**
+     * This method acts as the factory for all configuration As long as it
+     * implements the {@link Configurable} interface, we can instantiate it, and
+     * fill the default configuration if not otherwise specified already
+     * 
+     * @param configClass
+     *            the class we want to create
+     * @param returnType
+     *            the planned return type, if returnType and configClass are the
+     *            same, consider use convenient method
+     *            {@link IConfiguration#createConfiguration(Class)}
+     * @return the configuration instance
+     */
     default <T extends Configurable> T createConfiguration(Class<? extends Configurable> configClass,
             Class<T> returnType) {
         if (!returnType.isAssignableFrom(configClass))
@@ -95,6 +108,21 @@ public interface IConfiguration {
         }
     }
 
+    /**
+     * This acts as a factory method for any java object, it gets the Class with
+     * {@link Class#forName(String)} and then calls {@link Class#newInstance()}
+     * to instantiate it. It handles all sorts of exception that can happen
+     * while creating these objects, and throw proper RuntimeException
+     * 
+     * This method is helpful when we want to create an instance based on the
+     * configuration string.
+     * 
+     * @param className
+     *            the name of class we want to instantiate
+     * @param returType
+     *            the planned return type
+     * @return the created object
+     */
     static <T> T instantiateWithName(String className, Class<T> returType) {
         try {
             Class<?> forName = Class.forName(className);
