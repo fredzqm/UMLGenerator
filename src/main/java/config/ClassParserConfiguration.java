@@ -40,6 +40,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+        this.config.setIfMissing(MODIFIER_FILTER, MODIFIER_FILTER_PRIVATE);
         this.config.setIfMissing(HEADER, GraphVizHeaderParser.class.getName());
         this.config.setIfMissing(FIELD, GraphVizFieldParser.class.getName());
         this.config.setIfMissing(METHOD, GraphVizMethodParser.class.getName());

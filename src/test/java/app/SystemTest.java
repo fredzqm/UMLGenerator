@@ -104,8 +104,6 @@ public class SystemTest {
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
         config.set(GeneratorConfiguration.NODE_SEP, "1.0");
         config.set(GeneratorConfiguration.RANK_DIR, "BT");
-        config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
-//        IFilter<Modifier> filter = data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC;
 
         // Set up the system model and generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);

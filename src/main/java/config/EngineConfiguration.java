@@ -9,6 +9,7 @@ import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IAnalyzerConfiguration;
+import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.IGeneratorConfiguration;
 import model.IModelConfiguration;
@@ -29,6 +30,7 @@ public class EngineConfiguration implements IEngineConfiguration, IAnalyzerConfi
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+        config.set(GENERATYR_KEY, GraphVizGenerator.class.getName());
         addAnalyzerWithConfig(AnalyzerClassParser.class, config.createConfiguration(ClassParserConfiguration.class));
         addAnalyzer(AnalyzerClassParser.class);
         addAnalyzer(AnalyzerRelationParser.class);
