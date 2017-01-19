@@ -7,6 +7,7 @@ import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import config.ClassParserConfiguration;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;
@@ -103,9 +104,8 @@ public class SystemTest {
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
         config.set(GeneratorConfiguration.NODE_SEP, "1.0");
         config.set(GeneratorConfiguration.RANK_DIR, "BT");
-        IFilter<Modifier> filter = data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC;
-
-        config.setFilter(filter);
+        config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
+//        IFilter<Modifier> filter = data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC;
 
         // Set up the system model and generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
@@ -213,7 +213,8 @@ public class SystemTest {
         config.add(ModelConfiguration.CLASSES_KEY, relOtherDummy);
         config.add(ModelConfiguration.CLASSES_KEY, relDummy);
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
-        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
+//        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
 
         // Set up SystemModel and Generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
@@ -254,7 +255,8 @@ public class SystemTest {
         config.add(ModelConfiguration.CLASSES_KEY, intStream);
         config.add(ModelConfiguration.CLASSES_KEY, string);
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "false");
-        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
+//        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
 
         // Set up SystemModel and Generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);

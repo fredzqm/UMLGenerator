@@ -1,6 +1,12 @@
 package config;
 
-import analyzer.classParser.*;
+import analyzer.classParser.GraphVizFieldParser;
+import analyzer.classParser.GraphVizHeaderParser;
+import analyzer.classParser.GraphVizMethodParser;
+import analyzer.classParser.GraphVizModifierParser;
+import analyzer.classParser.GraphVizTypeParser;
+import analyzer.classParser.IClassParserConfiguration;
+import analyzer.classParser.IParser;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
@@ -17,6 +23,10 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
     public static final String METHOD = "class_method";
     public static final String TYPE = "class_type";
     public static final String MODIFIER = "class_modifier";
+    public static final String MODIFIER_FILTER = "MODIFIER_FILTER";
+    public static final String MODIFIER_FILTER_PUBLIC = "public";
+    public static final String MODIFIER_FILTER_PROTECTED = "protected";
+    public static final String MODIFIER_FILTER_PRIVATE = "private";
 
     private IConfiguration config;
 
@@ -30,63 +40,56 @@ public class ClassParserConfiguration implements IClassParserConfiguration, Conf
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-
-        IFilter<Modifier> filter = data -> false;
-        this.config.setFilterIfMissing(filter);
-        this.config.setIfMissing(ClassParserConfiguration.HEADER, GraphVizHeaderParser.class);
-        this.config.setIfMissing(ClassParserConfiguration.FIELD, GraphVizFieldParser.class);
-        this.config.setIfMissing(ClassParserConfiguration.METHOD, GraphVizMethodParser.class);
-        this.config.setIfMissing(ClassParserConfiguration.TYPE, GraphVizTypeParser.class);
-        this.config.setIfMissing(ClassParserConfiguration.MODIFIER, GraphVizModifierParser.class);
+        this.config.setIfMissing(HEADER, GraphVizHeaderParser.class.getName());
+        this.config.setIfMissing(FIELD, GraphVizFieldParser.class.getName());
+        this.config.setIfMissing(METHOD, GraphVizMethodParser.class.getName());
+        this.config.setIfMissing(TYPE, GraphVizTypeParser.class.getName());
+        this.config.setIfMissing(MODIFIER, GraphVizModifierParser.class.getName());
     }
 
     @Override
     public IFilter<Modifier> getModifierFilters() {
-        return this.config.getModifierFilter();
+        switch (config.getValue(MODIFIER_FILTER)) {
+            case MODIFIER_FILTER_PUBLIC:
+                return (m) -> m == Modifier.PUBLIC;
+            case MODIFIER_FILTER_PROTECTED:
+                return (m) -> m == Modifier.PUBLIC || m == Modifier.PROTECTED;
+            default:
+                return (m) -> true;
+        }
     }
 
     @Override
     public IParser<IClassModel> getHeaderParser() {
-        try {
-            return (IParser<IClassModel>) this.config.getClass(ClassParserConfiguration.HEADER).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Header Parser missing empty contructor", e);
-        }
+        return getParser(config.getValue(HEADER));
     }
 
     @Override
     public IParser<IFieldModel> getFieldParser() {
-        try {
-            return (IParser<IFieldModel>) this.config.getClass(ClassParserConfiguration.FIELD).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Field Parser missing empty contructor", e);
-        }
+        return getParser(config.getValue(FIELD));
     }
 
     @Override
     public IParser<IMethodModel> getMethodParser() {
-        try {
-            return (IParser<IMethodModel>) this.config.getClass(ClassParserConfiguration.METHOD).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Method Parser missing empty contructor", e);
-        }
+        return getParser(config.getValue(METHOD));
     }
 
     @Override
     public IParser<ITypeModel> getTypeParser() {
-        try {
-            return (IParser<ITypeModel>) this.config.getClass(ClassParserConfiguration.TYPE).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Type Parser missing empty contructor", e);
-        }
+        return getParser(config.getValue(TYPE));
     }
 
     @Override
     public IParser<Modifier> getModifierParser() {
+        return getParser(config.getValue(MODIFIER));
+    }
+
+    private IParser getParser(String className) {
+        Class<IParser> classParser = IConfiguration.getClassFromName(className, IParser.class);
         try {
-            return (IParser<Modifier>) this.config.getClass(ClassParserConfiguration.MODIFIER).newInstance();
+            return classParser.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Modifier Parser missing empty contructor", e);
+            throw new RuntimeException("Parser " + className + " missing empty contructor", e);
         }
     }
 }

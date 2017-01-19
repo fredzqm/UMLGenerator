@@ -1,12 +1,14 @@
 package config;
 
-import com.martiansoftware.jsap.*;
-import utility.IFilter;
-import utility.Modifier;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.Switch;
+import com.martiansoftware.jsap.UnflaggedOption;
 
 /**
  * Created by fineral on 12/11/2016 Edited by fineral on 12/13/2016
@@ -152,27 +154,8 @@ public class CommandLineParser implements ConfigurationFactory {
         conf.set(RunnerConfiguration.OUTPUT_FORMAT, config.getString("extension"));
         conf.set(RunnerConfiguration.OUTPUT_DIRECTORY, config.getString("outputDirectory"));
         conf.set(RunnerConfiguration.FILE_NAME, config.getString("outputfile"));
-
         conf.set(GeneratorConfiguration.NODE_SEP, Double.toString(config.getDouble("nodeseparationvalue")));
-
-        List<Modifier> filters = new ArrayList<Modifier>();
-        switch (config.getString("filters")) {
-            case "public":
-                filters.add(Modifier.PRIVATE);
-                filters.add(Modifier.PROTECTED);
-                break;
-            case "protected":
-                filters.add(Modifier.PRIVATE);
-                break;
-            case "private":
-                break;
-            default:
-                System.err.println("modifier not found");
-        }
-
-        IFilter<Modifier> filter = data -> !filters.contains(data);
-
-        conf.setFilter(filter);
+        conf.set(ClassParserConfiguration.MODIFIER_FILTER, config.getString("filters"));
 
         conf.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(config.getBoolean("recursive")));
 

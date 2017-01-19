@@ -7,7 +7,7 @@ import generator.IGeneratorConfiguration;
  * <p>
  * Created by lamd on 1/11/2017.
  */
-public class GeneratorConfiguration implements IGeneratorConfiguration, Configurable {
+public class GeneratorConfiguration implements IGeneratorConfiguration {
     public static final String NODE_SEP = "generator_node_sep";
     public static final String RANK_DIR = "generator_rank_dir";
     public static final String NODE_STYLE = "generator_node_style";
@@ -17,6 +17,7 @@ public class GeneratorConfiguration implements IGeneratorConfiguration, Configur
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+//        setFilter((x) -> true);
         this.config.setIfMissing(GeneratorConfiguration.NODE_SEP, "1.0");
         this.config.setIfMissing(GeneratorConfiguration.RANK_DIR, "BT");
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
@@ -37,4 +38,5 @@ public class GeneratorConfiguration implements IGeneratorConfiguration, Configur
     public String getNodeStyle() {
         return this.config.getValue(GeneratorConfiguration.NODE_STYLE);
     }
+
 }

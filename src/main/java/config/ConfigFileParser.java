@@ -2,11 +2,6 @@ package config;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utility.IFilter;
-import utility.Modifier;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO Adam Document.
@@ -17,7 +12,8 @@ public class ConfigFileParser implements ConfigurationFactory {
     /**
      * Constructs a ConfigFileParser.
      *
-     * @param json JSONObject to parse from.
+     * @param json
+     *            JSONObject to parse from.
      */
     ConfigFileParser(JSONObject json) {
         this.setJson(json);
@@ -72,36 +68,7 @@ public class ConfigFileParser implements ConfigurationFactory {
         }
 
         if (jsonConf.has("modifierFilter")) {
-            String filter = jsonConf.getString("modifierFilter");
-
-            List<Modifier> filters = new ArrayList<>();
-            switch (filter) {
-                case ("public"):
-                    filters.add(Modifier.PRIVATE);
-                    filters.add(Modifier.PROTECTED);
-                    break;
-                case ("protected"):
-                    filters.add(Modifier.PRIVATE);
-                    break;
-                case ("private"):
-                    break;
-                case (""):
-                    break;
-                default:
-                    System.err.println("Modifier not found");
-            }
-            IFilter<Modifier> modifierFilter = new IFilter<Modifier>() {
-                @Override
-                public boolean filter(Modifier data) {
-                    return !filters.contains(data);
-                }
-
-                public String toString() {
-                    return filters.toString();
-                }
-            };
-
-            conf.setFilter(modifierFilter);
+            conf.set(ClassParserConfiguration.MODIFIER_FILTER, jsonConf.getString("modifierFilter"));
         }
 
         if (jsonConf.has("isRecursive")) {
