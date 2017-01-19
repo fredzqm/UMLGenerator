@@ -2,6 +2,8 @@ package config;
 
 import java.util.Iterator;
 
+import org.json.JSONObject;
+
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
@@ -102,10 +104,9 @@ public class CommandLineParser implements ConfigurationFactory {
         opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
         addOption(opt9);
 
-        FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j')
-                .setDefault("none").setStringParser(JSAP.STRING_PARSER);
-        opt10.setHelp("include this to specify a configuration file to use instead of command"
-                + "line arguments.");
+        FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j').setDefault("none")
+                .setStringParser(JSAP.STRING_PARSER);
+        opt10.setHelp("include this to specify a configuration file to use instead of command" + "line arguments.");
         addOption(opt10);
     }
 
@@ -128,7 +129,7 @@ public class CommandLineParser implements ConfigurationFactory {
             // with the command line, THEN print usage, THEN print full
             // help. This is called "beating the user with a clue stick."
             for (@SuppressWarnings("rawtypes")
-                 Iterator errs = config.getErrorMessageIterator(); errs.hasNext(); ) {
+            Iterator errs = config.getErrorMessageIterator(); errs.hasNext();) {
                 System.err.println("Error: " + errs.next());
             }
 
@@ -143,13 +144,13 @@ public class CommandLineParser implements ConfigurationFactory {
         Configuration conf = Configuration.getInstance();
 
         String configJ = config.getString("JSONfile");
-        if (!configJ.equals("none"))
-            return (new ConfigFileParser((new CommandLineFileInput(configJ)).getJson())).create();
-
-        String[] classes = config.getStringArray("class");
-        for (String c : classes) {
-            conf.add(ModelConfiguration.CLASSES_KEY, c);
+        if (!configJ.equals("none")) {
+            JSONObject json = (new CommandLineFileInput(configJ)).getJson();
+            ConfigFileParser jsonFileParser = new ConfigFileParser(json);
+            conf = jsonFileParser.create();
         }
+
+        conf.add(ModelConfiguration.CLASSES_KEY, config.getStringArray("class"));
         conf.set(RunnerConfiguration.EXECUTABLE_PATH, config.getString("path"));
         conf.set(RunnerConfiguration.OUTPUT_FORMAT, config.getString("extension"));
         conf.set(RunnerConfiguration.OUTPUT_DIRECTORY, config.getString("outputDirectory"));
@@ -171,7 +172,8 @@ public class CommandLineParser implements ConfigurationFactory {
     /**
      * Adds the specified option to the commanLineParser
      *
-     * @param opt- option to add to the commandLineParser
+     * @param opt-
+     *            option to add to the commandLineParser
      */
     public void addOption(Parameter opt) {
         try {

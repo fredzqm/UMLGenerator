@@ -37,7 +37,7 @@ public class Configuration implements IConfiguration {
 
     @Override
     public void setIfMissing(String key, String value) {
-        if (!this.valueMap.containsKey(key)) {
+        if (key != null && !this.valueMap.containsKey(key)) {
             this.valueMap.put(key, value);
         }
     }
@@ -54,7 +54,7 @@ public class Configuration implements IConfiguration {
 
     @Override
     public void addIfMissing(String key, String... value) {
-        if (!this.valueMap.containsKey(key)) {
+        if (value != null && value.length > 0 && !this.valueMap.containsKey(key)) {
             add(key, value);
         }
     }
