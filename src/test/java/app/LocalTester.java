@@ -48,9 +48,8 @@ public class LocalTester {
 
         String actual = engine.generate(systemModel);
         engine.executeRunner(actual);
-//        engine.run();
 
-        Runnable explorerRunner = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        Runnable explorerRunner = new Viewer(config.createConfiguration(RunnerConfiguration.class));
         explorerRunner.run();
 
         System.out.println("Done");
