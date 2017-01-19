@@ -52,9 +52,8 @@ public class AnalyzerRelationParserTest {
     }
 
     private ISystemModel runRelationAnalyzer(ISystemModel _sysModel) {
-        IAnalyzerConfiguration config = mock(IAnalyzerConfiguration.class);
         AnalyzerRelationParser analyzerRelation = new AnalyzerRelationParser();
-        ISystemModel sysModel = analyzerRelation.analyze(_sysModel, config);
+        ISystemModel sysModel = analyzerRelation.analyze(_sysModel, null);
         return sysModel;
     }
 

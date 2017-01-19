@@ -1,7 +1,6 @@
 package analyzer.classParser;
 
 import analyzer.utility.IAnalyzer;
-import analyzer.utility.IAnalyzerConfiguration;
 import analyzer.utility.ISystemModel;
 
 /**
@@ -12,11 +11,10 @@ import analyzer.utility.ISystemModel;
  */
 public class AnalyzerClassParser implements IAnalyzer {
     @Override
-    public ISystemModel analyze(ISystemModel systemModel, IAnalyzerConfiguration config) {
-        Object c = config.getConfigurationFor(AnalyzerClassParser.class);
-        if (!(c instanceof IClassParserConfiguration)) {
-            throw new RuntimeException(c + " is not a IClassParserConfiguration");
+    public ISystemModel analyze(ISystemModel systemModel, Object config) {
+        if (!(config instanceof IClassParserConfiguration)) {
+            throw new RuntimeException(config + " is not a IClassParserConfiguration");
         }
-        return new ParseClassSystemModel(systemModel, (IClassParserConfiguration) c);
+        return new ParseClassSystemModel(systemModel, (IClassParserConfiguration) config);
     }
 }

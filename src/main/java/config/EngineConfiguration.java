@@ -8,7 +8,6 @@ import java.util.Map;
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
 import analyzer.utility.IAnalyzer;
-import analyzer.utility.IAnalyzerConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 import generator.IGeneratorConfiguration;
@@ -21,7 +20,7 @@ import runner.IRunnerConfiguration;
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class EngineConfiguration implements IEngineConfiguration, IAnalyzerConfiguration {
+public class EngineConfiguration implements IEngineConfiguration {
     public static final String GENERATYR_KEY = "GENERATOR_KEY";
     public static final String ANALYZER_KEY = "ANALYZER_KEY";
     private IConfiguration config;
@@ -109,11 +108,6 @@ public class EngineConfiguration implements IEngineConfiguration, IAnalyzerConfi
     @Override
     public String getValue(String key) {
         return config.getValue(key);
-    }
-
-    @Override
-    public IAnalyzerConfiguration getAnalyzerConfiguration() {
-        return this;
     }
 
     @Override

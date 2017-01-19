@@ -1,7 +1,6 @@
 package app;
 
 import analyzer.utility.IAnalyzer;
-import analyzer.utility.IAnalyzerConfiguration;
 import analyzer.utility.ISystemModel;
 import config.*;
 import generator.IGenerator;
@@ -46,12 +45,11 @@ public class UMLEngine extends AbstractUMLEngine {
 
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
-        IAnalyzerConfiguration analyzerConf = config.getAnalyzerConfiguration();
         Iterable<Class<? extends IAnalyzer>> anClassLs = this.config.getAnalyzers();
         for (Class<? extends IAnalyzer> anClass : anClassLs) {
             try {
                 IAnalyzer analyzer = anClass.newInstance();
-                systemModel = analyzer.analyze(systemModel, analyzerConf);
+                systemModel = analyzer.analyze(systemModel, config.getConfigurationFor(anClass));
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);
             }
