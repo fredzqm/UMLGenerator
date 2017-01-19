@@ -179,8 +179,8 @@ public class CommandLineParser implements ConfigurationFactory {
         try {
             jsap.registerParameter(opt);
         } catch (JSAPException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new RuntimeException("Unable to register parameter: " + opt.toString(), e);
         }
     }
 }

@@ -1,9 +1,9 @@
 package config;
 
-import java.util.List;
-
 import analyzer.utility.IAnalyzer;
 import generator.IGenerator;
+
+import java.util.List;
 
 /**
  * An interface for Configuration object that stores values to be used in

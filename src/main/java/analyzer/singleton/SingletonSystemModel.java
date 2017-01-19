@@ -1,11 +1,11 @@
 package analyzer.singleton;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.utility.*;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class SingletonSystemModel extends ISystemModelFilter {
 
@@ -61,7 +61,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
                 }
             }
         }
-        
+
         return new SingletonClassModel(clazz);
     }
 

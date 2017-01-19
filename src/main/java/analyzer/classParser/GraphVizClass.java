@@ -1,14 +1,14 @@
 package analyzer.classParser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import analyzer.utility.IClassModel;
 import analyzer.utility.IClassModelFilter;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import utility.IFilter;
 import utility.Modifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphVizClass extends IClassModelFilter {
     private IClassParserConfiguration config;

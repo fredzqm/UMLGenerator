@@ -1,22 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
+import analyzer.utility.IMethodModel;
+import model.TypeParser.MethodSignatureParseResult;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
-
-import analyzer.utility.IMethodModel;
-import model.TypeParser.MethodSignatureParseResult;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.*;
 
 /**
  * Representing method in java program
@@ -131,8 +124,7 @@ class MethodModel implements IMethodModel {
         List<TypeModel> args = getArguments();
         if (args.size() > 0) {
             sb.append(args.get(0));
-            for (int i = 0; i < args.size(); i++)
-                sb.append("," + args.get(i));
+            for (TypeModel arg : args) sb.append(",").append(arg);
         }
         return String.format("%s %s(%s)", returnType.toString(), getName(), sb.toString());
     }

@@ -1,12 +1,6 @@
 package config;
 
-import analyzer.classParser.GraphVizFieldParser;
-import analyzer.classParser.GraphVizHeaderParser;
-import analyzer.classParser.GraphVizMethodParser;
-import analyzer.classParser.GraphVizModifierParser;
-import analyzer.classParser.GraphVizTypeParser;
-import analyzer.classParser.IClassParserConfiguration;
-import analyzer.classParser.IParser;
+import analyzer.classParser.*;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
@@ -15,6 +9,8 @@ import utility.IFilter;
 import utility.Modifier;
 
 /**
+ * Concrete Configuration object of IClassParserConfiguration.
+ * <p>
  * Created by lamd on 1/11/2017.
  */
 public class ClassParserConfiguration implements IClassParserConfiguration {
@@ -62,27 +58,27 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
 
     @Override
     public IParser<IClassModel> getHeaderParser() {
-        return getParser(config.getValue(HEADER));
+        return (IParser<IClassModel>) getParser(config.getValue(HEADER));
     }
 
     @Override
     public IParser<IFieldModel> getFieldParser() {
-        return getParser(config.getValue(FIELD));
+        return (IParser<IFieldModel>) getParser(config.getValue(FIELD));
     }
 
     @Override
     public IParser<IMethodModel> getMethodParser() {
-        return getParser(config.getValue(METHOD));
+        return (IParser<IMethodModel>) getParser(config.getValue(METHOD));
     }
 
     @Override
     public IParser<ITypeModel> getTypeParser() {
-        return getParser(config.getValue(TYPE));
+        return (IParser<ITypeModel>) getParser(config.getValue(TYPE));
     }
 
     @Override
     public IParser<Modifier> getModifierParser() {
-        return getParser(config.getValue(MODIFIER));
+        return (IParser<Modifier>) getParser(config.getValue(MODIFIER));
     }
 
     private IParser getParser(String className) {

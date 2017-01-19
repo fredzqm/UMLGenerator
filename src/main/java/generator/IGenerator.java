@@ -11,11 +11,9 @@ public interface IGenerator {
     /**
      * * Creates a file formatted to display classes.
      *
-     * @param graph
-     *            SystemModel containing all class information to diagram and
-     *            analyze result
-     * @param config
-     *            the configuration object
+     * @param graph  SystemModel containing all class information to diagram and
+     *               analyze result
+     * @param config the configuration object
      * @return the UML String.
      */
     String generate(IGraph graph, IConfiguration config);

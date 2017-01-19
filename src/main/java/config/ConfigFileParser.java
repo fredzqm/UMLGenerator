@@ -12,8 +12,7 @@ public class ConfigFileParser implements ConfigurationFactory {
     /**
      * Constructs a ConfigFileParser.
      *
-     * @param json
-     *            JSONObject to parse from.
+     * @param json JSONObject to parse from.
      */
     ConfigFileParser(JSONObject json) {
         this.setJson(json);

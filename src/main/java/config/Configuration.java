@@ -1,10 +1,6 @@
 package config;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -26,8 +22,7 @@ public class Configuration implements IConfiguration {
      * @return Configuration instance.
      */
     public static Configuration getInstance() {
-        Configuration config = new Configuration();
-        return config;
+        return new Configuration();
     }
 
     @Override

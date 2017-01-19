@@ -1,13 +1,13 @@
 package config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
 import analyzer.utility.IAnalyzer;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -30,8 +30,7 @@ public class EngineConfiguration implements IEngineConfiguration {
     @Override
     public IGenerator getGenerator() {
         String generatorClass = config.getValue(GENERATYR_KEY);
-        IGenerator generator = IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
-        return generator;
+        return IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
     }
 
     @Override
