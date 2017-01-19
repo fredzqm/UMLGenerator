@@ -24,6 +24,7 @@ import utility.Modifier;
  * Created by lamd on 1/15/2017.
  */
 public class SingletonAnalyzerTest {
+    
     @Test
     public void analyze() throws Exception {
         // mock creation
@@ -35,7 +36,7 @@ public class SingletonAnalyzerTest {
         IFieldModel _staticSingletonField = mock(IFieldModel.class, singletonStaticFieldName);
         IMethodModel _getInstanceMethod = mock(IMethodModel.class, staticGetInstanceMethod);
         ITypeModel _singletonTypeModel = mock(ITypeModel.class, singletonName);
-        
+
         // specify type model behavior
         when(_singletonTypeModel.getClassModel()).thenReturn(_singletonClassModel);
         // specify class model behavior
