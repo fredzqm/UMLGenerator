@@ -17,7 +17,7 @@ import utility.Modifier;
 /**
  * Created by lamd on 1/11/2017.
  */
-public class ClassParserConfiguration implements IClassParserConfiguration, Configurable {
+public class ClassParserConfiguration implements IClassParserConfiguration {
     public static final String HEADER = "class_header";
     public static final String FIELD = "class_field";
     public static final String METHOD = "class_method";

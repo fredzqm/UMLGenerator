@@ -26,9 +26,8 @@ public class EngineConfiguration implements IEngineConfiguration {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        config.set(GENERATYR_KEY, GraphVizGenerator.class.getName());
-        config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName());
-        config.add(ANALYZER_KEY, AnalyzerRelationParser.class.getName());
+        config.setIfMissing(GENERATYR_KEY, GraphVizGenerator.class.getName());
+        config.addIfMissing(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
     @Override

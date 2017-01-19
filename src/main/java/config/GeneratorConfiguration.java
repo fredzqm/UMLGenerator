@@ -17,11 +17,9 @@ public class GeneratorConfiguration implements IGeneratorConfiguration {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-//        setFilter((x) -> true);
         this.config.setIfMissing(GeneratorConfiguration.NODE_SEP, "1.0");
         this.config.setIfMissing(GeneratorConfiguration.RANK_DIR, "BT");
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
-
     }
 
     @Override

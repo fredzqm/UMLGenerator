@@ -26,7 +26,7 @@ public interface IConfiguration {
      * @param value
      *            String value to be appened.
      */
-    void add(String key, String value);
+    void add(String key, String... value);
 
     /**
      * Returns an Iterable of String corresponding to the given key. It should
@@ -58,6 +58,17 @@ public interface IConfiguration {
      */
     void setIfMissing(String key, String value);
 
+    /**
+     * Sets the given key and value if the key does not exist or has not been
+     * set.
+     *
+     * @param key
+     *            String key value.
+     * @param value
+     *            String value corresponding to the key.
+     */
+    void addIfMissing(String key, String... value);
+    
     /**
      * Constructs the given configurable object.
      *

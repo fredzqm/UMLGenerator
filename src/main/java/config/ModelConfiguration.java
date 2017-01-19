@@ -1,5 +1,7 @@
 package config;
 
+import java.util.List;
+
 import model.IModelConfiguration;
 
 /**
@@ -23,12 +25,11 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(ModelConfiguration.CLASSES_KEY, "");
         this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
     }
 
     @Override
-    public Iterable<String> getClasses() {
+    public List<String> getClasses() {
         return this.config.getList(ModelConfiguration.CLASSES_KEY);
     }
 

@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An IConfiguration concrete class. It uses Maps to store a variety of configuration objects.
+ * An IConfiguration concrete class. It uses Maps to store a variety of
+ * configuration objects.
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
@@ -42,11 +43,19 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void add(String key, String value) {
+    public void add(String key, String... value) {
+        String x = String.join(DELIMITER, value);
         if (this.valueMap.containsKey(key)) {
-            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), Configuration.DELIMITER, value));
+            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), Configuration.DELIMITER, x));
         } else {
-            this.valueMap.put(key, value);
+            this.valueMap.put(key, x);
+        }
+    }
+
+    @Override
+    public void addIfMissing(String key, String... value) {
+        if (!this.valueMap.containsKey(key)) {
+            add(key, value);
         }
     }
 
