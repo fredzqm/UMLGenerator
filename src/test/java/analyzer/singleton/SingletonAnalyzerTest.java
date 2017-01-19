@@ -67,6 +67,8 @@ public class SingletonAnalyzerTest {
 
         assertTrue("the analyer did not recognize ths singleton",
                 singletonClassModel.getClass() == SingletonClassModel.class);
+        Collection<String> stereoTypes = singletonClassModel.getStereoTypes();
+        assertTrue("The stereotypes is not added", stereoTypes.contains("Singleton"));
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
