@@ -13,9 +13,9 @@ import runner.IRunner;
  * TODO: Fred documentation.
  */
 public class UMLEngine extends AbstractUMLEngine {
-    private IConfiguration config;
+    private IEngineConfiguration config;
 
-    private UMLEngine(IConfiguration configuration) {
+    private UMLEngine(IEngineConfiguration configuration) {
         config = configuration;
     }
 
@@ -25,7 +25,7 @@ public class UMLEngine extends AbstractUMLEngine {
      * @param config
      * @return
      */
-    static UMLEngine getInstance(Configuration config) {
+    static UMLEngine getInstance(IEngineConfiguration config) {
         return new UMLEngine(config);
     }
 

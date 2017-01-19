@@ -15,26 +15,13 @@ import java.util.*;
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class Configuration implements IConfiguration {
+public class Configuration implements IEngineConfiguration {
     private static final String DELIMITER = " ";
-
-    private Map<String, Class<?>> classMap;
-    private Map<String, List<Class<?>>> classesMap;
+    private static final String ANALYZER_LIST = "ANALYZER_LIST";
     private Map<String, String> valueMap;
-    private Map<Class<? extends IAnalyzer>, Object> analyzerToConfigurationMap;
-    private List<Class<? extends IAnalyzer>> analyzers;
-    private Class<? extends IGenerator> generator;
-    private IFilter<Modifier> modifierFilter;
 
     private Configuration() {
-        this.classMap = new HashMap<>();
-        this.classesMap = new HashMap<>();
         this.valueMap = new HashMap<>();
-        this.analyzerToConfigurationMap = new HashMap<>();
-        this.modifierFilter = null;
-
-        this.generator = GraphVizGenerator.class;
-        this.analyzers = new ArrayList<>();
     }
 
     /**
@@ -44,8 +31,8 @@ public class Configuration implements IConfiguration {
      */
     public static Configuration getInstance() {
         Configuration config = new Configuration();
-        config.addAnalyzer(AnalyzerClassParser.class);
-        config.addAnalyzer(AnalyzerRelationParser.class);
+        config.add(ANALYZER_LIST , AnalyzerClassParser.class.getName());
+        config.add(ANALYZER_LIST, AnalyzerRelationParser.class.getName());
         config.setFilter((x) -> true);
         return config;
     }
@@ -56,41 +43,8 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void addAnalyzer(Class<? extends IAnalyzer> analyzer) {
-        this.analyzers.add(analyzer);
-    }
-
-    @Override
-    public void removeAnalyzer(Class<? extends IAnalyzer> analyzer) {
-        this.analyzers.remove(analyzer);
-    }
-
-    @Override
-    public void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config) {
-        if (analyzerClass == null) {
-            throw new NullPointerException("Analyzer Class cannot be null");
-        }
-
-        this.analyzerToConfigurationMap.put(analyzerClass, config);
-    }
-
-    @Override
-    public Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass) {
-        return this.analyzerToConfigurationMap.get(analyzerClass);
-    }
-
-    @Override
     public Class<? extends IGenerator> getGenerator() {
         return this.generator;
-    }
-
-    /**
-     * Sets the Configuration generator.
-     *
-     * @param generator IGenerator class to be set.
-     */
-    public void setGenerator(Class<? extends IGenerator> generator) {
-        this.generator = generator;
     }
 
     @Override
@@ -124,11 +78,6 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void set(String key, Class<?> value) {
-        this.classMap.put(key, value);
-    }
-
-    @Override
     public void set(String key, String value) {
         this.valueMap.put(key, value);
     }
@@ -137,13 +86,6 @@ public class Configuration implements IConfiguration {
     public void setIfMissing(String key, String value) {
         if (!this.valueMap.containsKey(key)) {
             this.valueMap.put(key, value);
-        }
-    }
-
-    @Override
-    public void setIfMissing(String key, Class<?> value) {
-        if (!this.classMap.containsKey(key)) {
-            this.classMap.put(key, value);
         }
     }
 
@@ -157,19 +99,7 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void add(String key, Class<?> value) {
-        List<Class<?>> classesList;
-        if (this.classesMap.containsKey(key)) {
-            classesList = this.classesMap.get(key);
-            classesList.add(value);
-        } else {
-            classesList = new ArrayList<>();
-        }
-        this.classesMap.put(key, classesList);
-    }
-
-    @Override
-    public Iterable<String> getValues(String key) {
+    public List<String> getValues(String key) {
         if (this.valueMap.containsKey(key)) {
             String values = this.valueMap.get(key);
             return Arrays.asList(values.split(Configuration.DELIMITER));
@@ -178,17 +108,12 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public Iterable<Class<?>> getClasses(String key) {
-        return this.classesMap.get(key);
-    }
-
-    @Override
     public String getValue(String key) {
         return this.valueMap.get(key);
     }
 
-    @Override
-    public Class<?> getClass(String key) {
-        return this.classMap.get(key);
+    public IEngineConfiguration getModelConfiguration() {
+        return ;
     }
+
 }
