@@ -1,6 +1,9 @@
 package config;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import org.json.JSONObject;
 
@@ -145,7 +148,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
         String configJ = config.getString("JSONfile");
         if (!configJ.equals("none")) {
-            JSONObject json = (new CommandLineFileInput(configJ)).getJson();
+            JSONObject json = readJsonObject(configJ);
             ConfigFileParser jsonFileParser = new ConfigFileParser(json);
             conf = jsonFileParser.create();
         }
@@ -181,6 +184,29 @@ public class CommandLineParser implements ConfigurationFactory {
         } catch (JSAPException e) {
             e.printStackTrace();
             throw new RuntimeException("Unable to register parameter: " + opt.toString(), e);
+        }
+    }
+
+    static JSONObject readJsonObject(String arg) {
+        Scanner scanner = null;
+        try {
+            if (arg.length() <= 0) {
+                return new JSONObject();
+            }
+            scanner = new Scanner(new File(arg));
+
+            StringBuilder json = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                json.append(scanner.nextLine());
+            }
+
+            return new JSONObject(json.toString());
+        } catch (FileNotFoundException e) {
+            return new JSONObject();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
     }
 }
