@@ -29,6 +29,11 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     }
 
     @Override
+    public String getConfigDir() {
+        return "config";
+    }
+    
+    @Override
     public List<String> getClasses() {
         return this.config.getList(ModelConfiguration.CLASSES_KEY);
     }

@@ -45,6 +45,11 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
     }
 
     @Override
+    public String getConfigDir() {
+        return "config";
+    }
+    
+    @Override
     public IFilter<Modifier> getModifierFilters() {
         switch (config.getValue(MODIFIER_FILTER)) {
             case MODIFIER_FILTER_PUBLIC:

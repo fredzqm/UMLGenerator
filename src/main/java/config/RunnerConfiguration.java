@@ -26,6 +26,11 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
     }
+    
+    @Override
+    public String getConfigDir() {
+        return "config";
+    }
 
     @Override
     public String getOutputFormat() {

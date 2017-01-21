@@ -21,6 +21,11 @@ public class GeneratorConfiguration implements IGeneratorConfiguration {
         this.config.setIfMissing(GeneratorConfiguration.RANK_DIR, "BT");
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
     }
+    
+    @Override
+    public String getConfigDir() {
+        return "config";
+    }
 
     @Override
     public double getNodeSep() {

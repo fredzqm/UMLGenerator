@@ -28,6 +28,11 @@ public class EngineConfiguration implements IEngineConfiguration {
     }
 
     @Override
+    public String getConfigDir() {
+        return "config";
+    }
+
+    @Override
     public IGenerator getGenerator() {
         String generatorClass = config.getValue(GENERATYR_KEY);
         return IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
@@ -43,7 +48,6 @@ public class EngineConfiguration implements IEngineConfiguration {
         }
         return analyzers;
     }
-
 
     @Override
     public void set(String key, String value) {
@@ -73,6 +77,11 @@ public class EngineConfiguration implements IEngineConfiguration {
     @Override
     public void addIfMissing(String key, String... value) {
         config.addIfMissing(key, value);
+    }
+
+    @Override
+    public void setUpDir(String directory) {
+        config.setUpDir(directory);
     }
 
 }
