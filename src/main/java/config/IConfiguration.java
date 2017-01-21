@@ -1,6 +1,7 @@
 package config;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An interface for Configuration object that stores values to be used in
@@ -27,6 +28,15 @@ public interface IConfiguration {
      *            String value to be appened.
      */
     void add(String key, String... value);
+
+    /**
+     * 
+     * @param directory
+     *            the directory to add this map
+     * @param map
+     *            the map to be added
+     */
+    void populateMap(String directory, Map<String, Object> map);
 
     /**
      * Returns an Iterable of String corresponding to the given key. It should
@@ -70,14 +80,6 @@ public interface IConfiguration {
     void addIfMissing(String key, String... value);
 
     /**
-     * 
-     * @param directory
-     *            the directory the configuration of this {@link Configurable}
-     *            should be put in
-     */
-    void setUpDir(String directory);
-
-    /**
      * Constructs the given configurable object.
      *
      * @param configClass
@@ -107,7 +109,6 @@ public interface IConfiguration {
             throw new RuntimeException(configClass + " cannot be casted to " + returnType);
         try {
             Configurable configurable = configClass.cast(configClass.newInstance());
-            setUpDir(configurable.getConfigDir());
             configurable.setup(this);
             return returnType.cast(configurable);
         } catch (InstantiationException | IllegalAccessException e) {

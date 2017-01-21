@@ -1,5 +1,24 @@
 package app;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
 import analyzer.relationParser.RelationDependsOn;
 import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationImplement;
@@ -20,23 +39,6 @@ import dummy.hasDependsRel.RelOtherDummyClass;
 import dummy.inheritanceRel.DummyInterface;
 import dummy.inheritanceRel.DummySubClass;
 import dummy.inheritanceRel.DummySuperClas;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import utility.IFilter;
-import utility.Modifier;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.
@@ -80,10 +82,10 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
-        String[] expectedFields = {"- privateInt : int", "+ publicString : java.lang.String",
-                "- privateString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"- printPrivateString() : void", "getPublicInt() : int",
-                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double"};
+        String[] expectedFields = { "- privateInt : int", "+ publicString : java.lang.String",
+                "- privateString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "- printPrivateString() : void", "getPublicInt() : int",
+                "+ getPublicString() : java.lang.String", "# someProtectedMethod() : double" };
 
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
@@ -129,8 +131,8 @@ public class SystemTest {
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
-        String[] expectedFields = {"+ publicString : java.lang.String", "+ publicInt : int"};
-        String[] expectedMethods = {"getPublicInt() : int", "+ getPublicString() : java.lang.String"};
+        String[] expectedFields = { "+ publicString : java.lang.String", "+ publicInt : int" };
+        String[] expectedMethods = { "getPublicInt() : int", "+ getPublicString() : java.lang.String" };
         Stream<String> expectedFieldStream = Arrays.stream(expectedFields);
         Stream<String> expectedMethodStream = Arrays.stream(expectedMethods);
 
@@ -213,7 +215,8 @@ public class SystemTest {
         config.add(ModelConfiguration.CLASSES_KEY, relDummy);
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "true");
         config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
-//        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        // config.setFilter(data -> data == Modifier.DEFAULT || data ==
+        // Modifier.PUBLIC);
 
         // Set up SystemModel and Generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);
@@ -238,7 +241,8 @@ public class SystemTest {
         assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
 
         String actual = engine.generate(systemModel);
-        String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy, "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");
+        String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy,
+                "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 
@@ -255,7 +259,8 @@ public class SystemTest {
         config.add(ModelConfiguration.CLASSES_KEY, string);
         config.set(ModelConfiguration.IS_RECURSIVE_KEY, "false");
         config.set(ClassParserConfiguration.MODIFIER_FILTER, ClassParserConfiguration.MODIFIER_FILTER_PROTECTED);
-//        config.setFilter(data -> data == Modifier.DEFAULT || data == Modifier.PUBLIC);
+        // config.setFilter(data -> data == Modifier.DEFAULT || data ==
+        // Modifier.PUBLIC);
 
         // Set up SystemModel and Generator.
         AbstractUMLEngine engine = UMLEngine.getInstance(config);

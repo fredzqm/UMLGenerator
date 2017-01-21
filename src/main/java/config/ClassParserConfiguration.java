@@ -19,7 +19,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
     public static final String METHOD = "class_method";
     public static final String TYPE = "class_type";
     public static final String MODIFIER = "class_modifier";
-    public static final String MODIFIER_FILTER = "MODIFIER_FILTER";
+    public static final String MODIFIER_FILTER = "modifierFilter";
     public static final String MODIFIER_FILTER_PUBLIC = "public";
     public static final String MODIFIER_FILTER_PROTECTED = "protected";
     public static final String MODIFIER_FILTER_PRIVATE = "private";
@@ -44,11 +44,6 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
         this.config.setIfMissing(MODIFIER, GraphVizModifierParser.class.getName());
     }
 
-    @Override
-    public String getConfigDir() {
-        return "";
-    }
-    
     @Override
     public IFilter<Modifier> getModifierFilters() {
         switch (config.getValue(MODIFIER_FILTER)) {

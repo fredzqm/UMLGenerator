@@ -120,7 +120,7 @@ public class CommandLineParser implements ConfigurationFactory {
      * @throws Exception
      */
     @Override
-    public Configuration create() throws Exception {
+    public IConfiguration create() throws Exception {
 
         JSAPResult config = jsap.parse(this.args);
 
@@ -144,13 +144,13 @@ public class CommandLineParser implements ConfigurationFactory {
             System.exit(1);
         }
 
-        Configuration conf = Configuration.getInstance();
+        IConfiguration conf = Configuration.getInstance();
 
         String configJ = config.getString("JSONfile");
         if (!configJ.equals("none")) {
             JSONObject json = readJsonObject(configJ);
-            ConfigFileParser jsonFileParser = new ConfigFileParser(json);
-            conf = jsonFileParser.create();
+            conf = Configuration.getInstance();
+            conf.populateMap("", json.toMap());
         }
 
         conf.add(ModelConfiguration.CLASSES_KEY, config.getStringArray("class"));

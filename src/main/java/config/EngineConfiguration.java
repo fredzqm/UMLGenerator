@@ -8,6 +8,7 @@ import generator.IGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -25,11 +26,6 @@ public class EngineConfiguration implements IEngineConfiguration {
         this.config = config;
         config.setIfMissing(GENERATYR_KEY, GraphVizGenerator.class.getName());
         config.addIfMissing(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
-    }
-
-    @Override
-    public String getConfigDir() {
-        return "";
     }
 
     @Override
@@ -80,8 +76,8 @@ public class EngineConfiguration implements IEngineConfiguration {
     }
 
     @Override
-    public void setUpDir(String directory) {
-        config.setUpDir(directory);
+    public void populateMap(String directory, Map<String, Object> map) {
+        config.populateMap(directory, map);
     }
 
 }

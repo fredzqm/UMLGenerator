@@ -1,5 +1,9 @@
 package app;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
@@ -8,10 +12,6 @@ import config.GeneratorConfiguration;
 import config.ModelConfiguration;
 import config.RunnerConfiguration;
 import viewer.Viewer;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A Test Class that will generate files for local inspection.

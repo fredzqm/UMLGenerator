@@ -8,10 +8,10 @@ import runner.IRunnerConfiguration;
  * Created by lamd on 1/11/2017.
  */
 public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
-    public static final String OUTPUT_FORMAT = "runner_output_format";
-    public static final String OUTPUT_DIRECTORY = "runner_output_directory";
-    public static final String EXECUTABLE_PATH = "runner_executable_path";
-    public static final String FILE_NAME = "runner_file_name";
+    public static final String OUTPUT_FORMAT = "outputFormat";
+    public static final String OUTPUT_DIRECTORY = "outputDir";
+    public static final String EXECUTABLE_PATH = "executablePath";
+    public static final String FILE_NAME = "fileName";
 
     private IConfiguration config;
 
@@ -27,11 +27,6 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
         this.config = config;
     }
     
-    @Override
-    public String getConfigDir() {
-        return "";
-    }
-
     @Override
     public String getOutputFormat() {
         String value = this.config.getValue(OUTPUT_FORMAT);

@@ -15,8 +15,4 @@ public interface Configurable {
      */
     void setup(IConfiguration config);
 
-    /**
-     * @return the string directory to put this configuration
-     */
-    String getConfigDir();
 }

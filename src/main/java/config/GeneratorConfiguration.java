@@ -8,8 +8,8 @@ import generator.IGeneratorConfiguration;
  * Created by lamd on 1/11/2017.
  */
 public class GeneratorConfiguration implements IGeneratorConfiguration {
-    public static final String NODE_SEP = "generator_node_sep";
-    public static final String RANK_DIR = "generator_rank_dir";
+    public static final String NODE_SEP = "nodeSep";
+    public static final String RANK_DIR = "rankDir";
     public static final String NODE_STYLE = "generator_node_style";
 
     private IConfiguration config;
@@ -22,11 +22,6 @@ public class GeneratorConfiguration implements IGeneratorConfiguration {
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
     }
     
-    @Override
-    public String getConfigDir() {
-        return "";
-    }
-
     @Override
     public double getNodeSep() {
         return Double.parseDouble(this.config.getValue(GeneratorConfiguration.NODE_SEP));
