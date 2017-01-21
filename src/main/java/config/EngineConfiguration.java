@@ -29,7 +29,7 @@ public class EngineConfiguration implements IEngineConfiguration {
 
     @Override
     public String getConfigDir() {
-        return "config";
+        return "";
     }
 
     @Override

@@ -29,7 +29,7 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
     
     @Override
     public String getConfigDir() {
-        return "config";
+        return "";
     }
 
     @Override

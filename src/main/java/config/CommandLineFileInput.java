@@ -21,7 +21,7 @@ class CommandLineFileInput {
         Scanner scanner = null;
         try {
             if (arg.length() <= 0) {
-                this.setJson(createDefaultJSON());
+                this.setJson(new JSONObject());
                 return;
             }
             scanner = new Scanner(new File(arg));
@@ -41,11 +41,11 @@ class CommandLineFileInput {
         }
     }
 
-    private JSONObject createDefaultJSON() {
-        return new JSONObject("{\"config\":{\"outputDir\":\"output\",\"classes\":[\"java.lang.String\"]," +
-                "\"executablePath\":\"dot\",\"outputFormat\":\"svg\",\"fileName\":\"out\",\"nodeSep\":\"1.0\"," +
-                "\"modifierFilter\":\"public\",\"isRecursive\":false,\"rankDir\":\"BT\"}}");
-    }
+//    private JSONObject createDefaultJSON() {
+//        return new JSONObject("{\"config\":{\"outputDir\":\"output\",\"classes\":[\"java.lang.String\"]," +
+//                "\"executablePath\":\"dot\",\"outputFormat\":\"svg\",\"fileName\":\"out\",\"nodeSep\":\"1.0\"," +
+//                "\"modifierFilter\":\"public\",\"isRecursive\":false,\"rankDir\":\"BT\"}}");
+//    }
 
     /**
      * Returns the JSON object.

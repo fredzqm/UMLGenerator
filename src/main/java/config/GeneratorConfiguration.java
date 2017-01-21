@@ -24,7 +24,7 @@ public class GeneratorConfiguration implements IGeneratorConfiguration {
     
     @Override
     public String getConfigDir() {
-        return "config";
+        return "";
     }
 
     @Override

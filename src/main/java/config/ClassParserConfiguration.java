@@ -46,7 +46,7 @@ public class ClassParserConfiguration implements IClassParserConfiguration {
 
     @Override
     public String getConfigDir() {
-        return "config";
+        return "";
     }
     
     @Override
