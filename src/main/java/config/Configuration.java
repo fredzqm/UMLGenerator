@@ -34,32 +34,29 @@ public class Configuration implements IConfiguration {
     public void populateMap(String directory, Map<String, Object> map) {
         for (Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
-            String configKey = key + DIRECTORY_DELIMITER + directory;
+            String configKey = directory.length() == 0 ? key : directory + DIRECTORY_DELIMITER + key;
             Object value = entry.getValue();
             if (value == null) {
                 putToMap(configKey, null);
             } else if (value instanceof Map) {
+                Map<String, Object> innerMap = null;
                 try {
-                    Map<String, Object> innerMap = (Map<String, Object>) value;
-                    populateMap(configKey, innerMap);
+                    innerMap = (Map<String, Object>) value;
                 } catch (ClassCastException e) {
-                    throw new RuntimeException("inner map has to be Map<String,Object>", e);
+                    throw new RuntimeException("inner map has to be Map<String,Object>, but was " + innerMap, e);
                 }
+                populateMap(configKey, innerMap);
             } else if (value instanceof List) {
+                List<String> innerList = null;
                 try {
-                    List<String> innerList = (List<String>) value;
-                    String v = String.join(LIST_DELIMITER, innerList);
-                    putToMap(configKey, v);
+                    innerList = (List<String>) value;
                 } catch (ClassCastException e) {
-                    throw new RuntimeException("inner list has to be Map<String,Object>", e);
+                    throw new RuntimeException("inner list has to be Map<String,Object>, but was " + innerList, e);
                 }
+                String v = String.join(LIST_DELIMITER, innerList);
+                putToMap(configKey, v);
             } else {
-                try {
-                    String v = (String) value;
-                    putToMap(configKey, v);
-                } catch (ClassCastException e) {
-                    throw new RuntimeException("inner value has to be Map<String,Object>", e);
-                }
+                putToMap(configKey, value.toString());
             }
         }
     }
@@ -120,4 +117,8 @@ public class Configuration implements IConfiguration {
         return getFromMap(key);
     }
 
+    @Override
+    public String toString() {
+        return valueMap.toString();
+    }
 }

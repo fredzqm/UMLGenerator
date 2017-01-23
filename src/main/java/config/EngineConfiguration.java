@@ -80,4 +80,8 @@ public class EngineConfiguration implements IEngineConfiguration {
         config.populateMap(directory, map);
     }
 
+    @Override
+    public String toString() {
+        return "Engine configuration with \n" + config.toString();
+    }
 }

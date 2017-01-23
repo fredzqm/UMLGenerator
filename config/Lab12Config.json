@@ -1,13 +1,11 @@
 {
-	"config" : {
-		"outputDir" : "output",
-		"classes" : ["problem.AppLauncher","problem.ApplicationLauncher","problem.DataFileRunner","problem.DirectoryChangeLogger","problem.DirectoryEvent","problem.DirectoryMonitorService","problem.ExecutableFileRunner","problem.IApplicationLauncher","problem.IDirectoryListener","problem.IDirectoryMonitorService","problem.ProcessRunner"],
-		"executablePath" : "dot",
-		"outputFormat" : "svg",
-		"fileName" : "Lab12",
-		"nodeSep" : "1.0",
-		"modifierFilter" : "",
-		"isRecursive" : false,
-		"rankDir" : "BT"
-	}
+	"outputDir" : "output",
+	"classes" : ["problem.AppLauncher","problem.ApplicationLauncher","problem.DataFileRunner","problem.DirectoryChangeLogger","problem.DirectoryEvent","problem.DirectoryMonitorService","problem.ExecutableFileRunner","problem.IApplicationLauncher","problem.IDirectoryListener","problem.IDirectoryMonitorService","problem.ProcessRunner"],
+	"executablePath" : "dot",
+	"outputFormat" : "svg",
+	"fileName" : "Lab12",
+	"nodeSep" : "1.0",
+	"modifierFilter" : "",
+	"isRecursive" : false,
+	"rankDir" : "BT"
 }
