@@ -33,7 +33,7 @@ public class Configuration implements IConfiguration {
         return new Configuration();
     }
 
-    public void populateMap( String directory, Map<String, Object> map) {
+    public void populateMap(String directory, Map<String, Object> map) {
         for (Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
             String configKey = key + DIRECTORY_DELIMITER + directory;
