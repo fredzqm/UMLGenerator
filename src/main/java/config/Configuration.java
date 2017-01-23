@@ -24,9 +24,7 @@ public class Configuration implements IConfiguration {
 
     /**
      * Returns an instance of the Configuration.
-     * 
-     * @param map
-     *
+     **
      * @return Configuration instance.
      */
     public static Configuration getInstance() {

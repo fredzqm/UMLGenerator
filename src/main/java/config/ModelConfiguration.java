@@ -29,10 +29,8 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
-        this.config.addIfMissing(CLASSES_KEY, "");
-        this.config.addIfMissing(BLACK_LIST, "");
-        this.config.addIfMissing(VERBOSE, "false");
-        this.config.addIfMissing(SYNTHETIC, "false");
+        this.config.setIfMissing(ModelConfiguration.VERBOSE, "false");
+        this.config.setIfMissing(ModelConfiguration.SYNTHETIC, "false");
     }
 
     @Override
@@ -43,5 +41,20 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     @Override
     public boolean isRecursive() {
         return Boolean.parseBoolean(this.config.getValue(ModelConfiguration.IS_RECURSIVE_KEY));
+    }
+
+    @Override
+    public Iterable<String> getBlackList() {
+        return this.config.getList(ModelConfiguration.BLACK_LIST);
+    }
+
+    @Override
+    public boolean isVerbose() {
+        return Boolean.parseBoolean(this.config.getValue(ModelConfiguration.VERBOSE));
+    }
+
+    @Override
+    public boolean filterSynthetic() {
+        return Boolean.parseBoolean(this.config.getValue(ModelConfiguration.SYNTHETIC));
     }
 }
