@@ -97,13 +97,6 @@ public class Configuration implements IConfiguration {
     }
 
     @Override
-    public void addIfMissing(String key, String... value) {
-        if (value != null && value.length > 0 && !containsKey(key)) {
-            add(key, value);
-        }
-    }
-
-    @Override
     public List<String> getList(String key) {
         if (containsKey(key)) {
             String values = getFromMap(key);

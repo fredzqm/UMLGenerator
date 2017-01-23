@@ -17,20 +17,20 @@ import java.util.Map;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class EngineConfiguration implements IEngineConfiguration {
-    public static final String GENERATYR_KEY = "GENERATOR_KEY";
+    public static final String GENERATOR_KEY = "GENERATOR_KEY";
     public static final String ANALYZER_KEY = "ANALYZER_KEY";
     private IConfiguration config;
 
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        config.setIfMissing(GENERATYR_KEY, GraphVizGenerator.class.getName());
-        config.addIfMissing(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
+        config.setIfMissing(GENERATOR_KEY, GraphVizGenerator.class.getName());
+        config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
     @Override
     public IGenerator getGenerator() {
-        String generatorClass = config.getValue(GENERATYR_KEY);
+        String generatorClass = config.getValue(GENERATOR_KEY);
         return IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
     }
 
@@ -68,11 +68,6 @@ public class EngineConfiguration implements IEngineConfiguration {
     @Override
     public void setIfMissing(String key, String value) {
         config.setIfMissing(key, value);
-    }
-
-    @Override
-    public void addIfMissing(String key, String... value) {
-        config.addIfMissing(key, value);
     }
 
     @Override
