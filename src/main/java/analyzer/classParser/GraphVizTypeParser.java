@@ -5,7 +5,7 @@ import analyzer.utility.ITypeModel;
 public class GraphVizTypeParser implements IParser<ITypeModel> {
 
     @Override
-    public String parse(ITypeModel type, IClassParserConfiguration config) {
+    public String parse(ITypeModel type, ClassParserConfiguration config) {
         if (type.isWildCharacter()) {
             return " ? ";
         } else if (type.getLowerBound() != null) {

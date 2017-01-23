@@ -19,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import analyzer.classParser.ClassParserConfiguration;
 import analyzer.relationParser.RelationDependsOn;
 import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationImplement;
@@ -26,7 +27,6 @@ import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
-import config.ClassParserConfiguration;
 import config.Configuration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;

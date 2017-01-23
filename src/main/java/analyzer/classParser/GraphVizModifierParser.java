@@ -5,7 +5,7 @@ import utility.Modifier;
 public class GraphVizModifierParser implements IParser<Modifier> {
 
     @Override
-    public String parse(Modifier modifier, IClassParserConfiguration config) {
+    public String parse(Modifier modifier, ClassParserConfiguration config) {
         switch (modifier) {
             case DEFAULT:
                 return "\\ \\ ";

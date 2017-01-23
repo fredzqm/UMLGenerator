@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GraphVizMethodParser implements IParser<IMethodModel> {
     @Override
-    public String parse(IMethodModel method, IClassParserConfiguration config) {
+    public String parse(IMethodModel method, ClassParserConfiguration config) {
         IParser<Modifier> modifierParser = config.getModifierParser();
         IParser<ITypeModel> typeParser = config.getTypeParser();
 

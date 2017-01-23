@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphVizClass extends IClassModelFilter {
-    private IClassParserConfiguration config;
+    private ClassParserConfiguration config;
 
-    public GraphVizClass(IClassModel classModel, IClassParserConfiguration config) {
+    public GraphVizClass(IClassModel classModel, ClassParserConfiguration config) {
         super(classModel);
         this.config = config;
     }

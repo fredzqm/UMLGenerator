@@ -29,7 +29,7 @@ public class SystemModel implements ISystemModel {
      * @param config
      * @return
      */
-    public static SystemModel getInstance(IModelConfiguration config) {
+    public static SystemModel getInstance(ModelConfiguration config) {
         Iterable<String> importClassesList = config.getClasses();
         if (importClassesList == null)
             throw new RuntimeException("important classes list cannot be null!");
@@ -47,7 +47,7 @@ public class SystemModel implements ISystemModel {
     }
 
     public static SystemModel getInstance(IConfiguration iConfig) {
-        IModelConfiguration config = iConfig.createConfiguration(ModelConfiguration.class);
+        ModelConfiguration config = iConfig.createConfiguration(ModelConfiguration.class);
         return getInstance(config);
     }
 

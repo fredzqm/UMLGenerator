@@ -12,7 +12,7 @@ import config.IConfiguration;
 public class GraphVizGenerator implements IGenerator {
     @Override
     public String generate(IGraph graph, IConfiguration iConfig) {
-        IGeneratorConfiguration config = iConfig.createConfiguration(GeneratorConfiguration.class);
+        GeneratorConfiguration config = iConfig.createConfiguration(GeneratorConfiguration.class);
 
         // DOT parent.
         StringBuilder dotString = new StringBuilder();

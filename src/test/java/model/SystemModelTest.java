@@ -3,6 +3,8 @@ package model;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
+import config.ModelConfiguration;
+
 import org.junit.Test;
 
 import java.util.*;
@@ -15,7 +17,7 @@ import static org.mockito.Mockito.when;
 public class SystemModelTest {
     @Test
     public void testLabelAndPrototype() {
-        IModelConfiguration config = mock(IModelConfiguration.class);
+        ModelConfiguration config = mock(ModelConfiguration.class);
         when(config.isRecursive()).thenReturn(false);
         when(config.getBlackList()).thenReturn(null);
         when(config.isVerbose()).thenReturn(false);
@@ -35,7 +37,7 @@ public class SystemModelTest {
 
     @Test
     public void recursiveParsing() {
-        IModelConfiguration config = mock(IModelConfiguration.class);
+        ModelConfiguration config = mock(ModelConfiguration.class);
         when(config.isRecursive()).thenReturn(true);
         when(config.getBlackList()).thenReturn(null);
         when(config.isVerbose()).thenReturn(false);

@@ -1,13 +1,11 @@
 package config;
 
-import generator.IGeneratorConfiguration;
-
 /**
  * A GeneratorConfiguration.
  * <p>
  * Created by lamd on 1/11/2017.
  */
-public class GeneratorConfiguration implements IGeneratorConfiguration {
+public class GeneratorConfiguration implements Configurable {
     public static final String NODE_SEP = "nodeSep";
     public static final String RANK_DIR = "rankDir";
     public static final String NODE_STYLE = "generator_node_style";
@@ -22,17 +20,29 @@ public class GeneratorConfiguration implements IGeneratorConfiguration {
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
     }
     
-    @Override
+    /**
+     * Returns the Node Seperation.
+     *
+     * @return Node Separation value.
+     */
     public double getNodeSep() {
         return Double.parseDouble(this.config.getValue(GeneratorConfiguration.NODE_SEP));
     }
 
-    @Override
+    /**
+     * Returns either BT or TB depending on how you want the UML to show.
+     *
+     * @return BT or TB
+     */
     public String getRankDir() {
         return this.config.getValue(GeneratorConfiguration.RANK_DIR);
     }
 
-    @Override
+    /**
+     * Returns the Graph styling for every Node.
+     *
+     * @return Node styling for entire graph.
+     */
     public String getNodeStyle() {
         return this.config.getValue(GeneratorConfiguration.NODE_STYLE);
     }

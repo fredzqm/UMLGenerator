@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ParseClassSystemModel extends ISystemModelFilter {
-    private IClassParserConfiguration config;
+    private ClassParserConfiguration config;
 
     /**
      * Construct a ParseClassSystemModel.
@@ -16,7 +16,7 @@ public class ParseClassSystemModel extends ISystemModelFilter {
      * @param systemModel
      * @param classParser
      */
-    public ParseClassSystemModel(ISystemModel systemModel, IClassParserConfiguration config) {
+    public ParseClassSystemModel(ISystemModel systemModel, ClassParserConfiguration config) {
         super(systemModel);
         this.config = config;
     }

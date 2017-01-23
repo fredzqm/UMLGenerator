@@ -2,7 +2,6 @@ package analyzer.classParser;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
-import config.ClassParserConfiguration;
 import config.IConfiguration;
 
 /**
@@ -14,7 +13,7 @@ import config.IConfiguration;
 public class AnalyzerClassParser implements IAnalyzer {
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        IClassParserConfiguration classParserConfig = config.createConfiguration(ClassParserConfiguration.class);
+        ClassParserConfiguration classParserConfig = config.createConfiguration(ClassParserConfiguration.class);
         return new ParseClassSystemModel(systemModel, classParserConfig);
     }
 }

@@ -1,26 +1,25 @@
 package app;
 
+import java.util.List;
+
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.EngineConfiguration;
 import config.IConfiguration;
-import config.IEngineConfiguration;
 import generator.IGenerator;
 import generator.IGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
 
-import java.util.List;
-
 /**
  * This is a concrete implementation of algorithm for analyzing a UML. It
  * depends on the Configuration setup and SystemModel in our program
  */
 public class UMLEngine extends AbstractUMLEngine {
-    private IEngineConfiguration config;
+    private EngineConfiguration config;
 
-    private UMLEngine(IEngineConfiguration configuration) {
+    private UMLEngine(EngineConfiguration configuration) {
         config = configuration;
     }
 
