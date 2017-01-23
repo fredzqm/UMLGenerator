@@ -53,7 +53,7 @@ public class ASMParserTest {
         Set<String> expected = new HashSet<>(Arrays.asList("java.lang.String", "java.io.Serializable"));
         
         Collection<ClassModel> ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"),
-                Arrays.asList("java.lang"), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
+                Collections.singletonList("java.lang"), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
         Set<String> actual = new HashSet<>();
         for (ClassModel c : ls)
             actual.add(c.getName());
