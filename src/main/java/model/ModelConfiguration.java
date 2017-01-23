@@ -54,7 +54,7 @@ public class ModelConfiguration implements Configurable {
      *
      * @return Iterable of black list class names.
      */
-    public Iterable<String> getBlackList() {
+    public List<String> getBlackList() {
         return this.config.getList(ModelConfiguration.BLACK_LIST);
     }
 

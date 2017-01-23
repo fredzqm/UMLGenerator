@@ -49,12 +49,17 @@ class ASMParser {
     }
 
     /**
-     * @param importClassesList the important list of classes that are required explicitly
-     * @param recursiveFlag     the flag indicating how much related classes should get
-     *                          recursively parsed
+     * @param importClassesList
+     *            the important list of classes that are required explicitly
+     * @param blackList
+     *            the list of packages that we do not want to include
+     * @param flag
+     *            the flag indicating how much related classes should get
+     *            recursively parsed
      * @return the collection of classes acquired based on the requirement
      */
-    public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, int recursiveFlag) {
+    public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, Collection<String> blackList,
+            int flag) {
         Collection<ClassModel> classesList = new HashSet<>();
         Queue<ClassModel> unextended = new LinkedList<>();
         for (String impClass : importClassesList) {
@@ -64,24 +69,24 @@ class ASMParser {
         }
         while (!unextended.isEmpty()) {
             ClassModel model = unextended.poll();
-            if ((recursiveFlag & RECURSE_SUPERCLASS) != 0)
-                addToBothList(classesList, unextended, model.getSuperClass());
-            if ((recursiveFlag & RECURSE_INTERFACE) != 0)
-                addToBothList(classesList, unextended, model.getInterfaces());
-            if ((recursiveFlag & RECURSE_DEPENDS_ON) != 0 || (recursiveFlag & RECURSE_HAS_A) != 0) {
+            if ((flag & RECURSE_SUPERCLASS) != 0)
+                addToBothList(classesList, unextended, blackList, model.getSuperClass());
+            if ((flag & RECURSE_INTERFACE) != 0)
+                addToBothList(classesList, unextended, blackList, model.getInterfaces());
+            if ((flag & RECURSE_DEPENDS_ON) != 0 || (flag & RECURSE_HAS_A) != 0) {
                 for (FieldModel field : model.getFields()) {
                     TypeModel type = field.getFieldType();
-                    addToBothList(classesList, unextended, type.getDependentClass());
+                    addToBothList(classesList, unextended, blackList, type.getDependentClass());
                 }
-                if ((recursiveFlag & RECURSE_DEPENDS_ON) != 0) {
+                if ((flag & RECURSE_DEPENDS_ON) != 0) {
                     for (MethodModel method : model.getMethods()) {
-                        addToBothList(classesList, unextended, method.getReturnType().getDependentClass());
+                        addToBothList(classesList, unextended, blackList, method.getReturnType().getDependentClass());
                         List<TypeModel> args = method.getArguments();
                         for (TypeModel t : args)
-                            addToBothList(classesList, unextended, t.getDependentClass());
+                            addToBothList(classesList, unextended, blackList, t.getDependentClass());
                         for (InstructionModel inst : method.getInstructions()) {
                             for (TypeModel t : inst.getDependentClass())
-                                addToBothList(classesList, unextended, t.getDependentClass());
+                                addToBothList(classesList, unextended, blackList, t.getDependentClass());
                         }
                     }
                 }
@@ -99,9 +104,9 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-                                      ClassModel x) {
+            Collection<String> blackList, ClassModel x) {
         if (x != null) {
-            if (!classesList.contains(x)) {
+            if (canBeAdded(classesList, blackList, x)) {
                 classesList.add(x);
                 unextended.add(x);
             }
@@ -109,13 +114,22 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-                                      Iterable<? extends ClassModel> ls) {
+            Collection<String> blackList, Iterable<? extends ClassModel> ls) {
         for (ClassModel x : ls) {
-            if (!classesList.contains(x)) {
+            if (canBeAdded(classesList, blackList, x)) {
                 classesList.add(x);
                 unextended.add(x);
             }
         }
     }
 
+    private static boolean canBeAdded(Collection<ClassModel> classesList, Collection<String> blackList, ClassModel x) {
+        if (classesList.contains(x))
+            return false;
+        for (String black : blackList) {
+            if (x.getName().startsWith(black))
+                return false;
+        }
+        return true;
+    }
 }

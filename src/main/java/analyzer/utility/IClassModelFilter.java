@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author zhang
  */
-public class IClassModelFilter implements IClassModel {
+public abstract class IClassModelFilter implements IClassModel {
     private IClassModel classModel;
 
     /**
