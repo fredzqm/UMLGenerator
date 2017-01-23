@@ -10,9 +10,12 @@ import java.util.List;
  * Created by lamd on 1/10/2017.
  */
 public class ModelConfiguration implements IModelConfiguration, Configurable {
-    public static final String CLASSES_KEY = "classes";
     public static final String IS_RECURSIVE_KEY = "isRecursive";
-
+    public static final String CLASSES_KEY = "classes";
+    public static final String BLACK_LIST = "blackList";
+    public static final String VERBOSE = "verbose";
+    public static final String SYNTHETIC = "synthetic";
+    
     private IConfiguration config;
 
     /**
@@ -26,6 +29,10 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
+        this.config.addIfMissing(CLASSES_KEY, "");
+        this.config.addIfMissing(BLACK_LIST, "");
+        this.config.addIfMissing(VERBOSE, "false");
+        this.config.addIfMissing(SYNTHETIC, "false");
     }
 
     @Override

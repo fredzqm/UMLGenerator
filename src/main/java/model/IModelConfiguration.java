@@ -15,4 +15,6 @@ public interface IModelConfiguration {
      * @return true if the Model should recursively explore related classes
      */
     boolean isRecursive();
+    
+    
 }
