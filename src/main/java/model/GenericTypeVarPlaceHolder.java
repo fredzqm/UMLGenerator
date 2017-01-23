@@ -45,7 +45,7 @@ class GenericTypeVarPlaceHolder extends TypeModel {
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         if (paramMap.containsKey(key))
             return paramMap.get(key);
-        System.err.println(getClass().getName() + " GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: "
+        Logger.logError(getClass().getName() + " GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: "
                 + paramMap);
         return this;
     }

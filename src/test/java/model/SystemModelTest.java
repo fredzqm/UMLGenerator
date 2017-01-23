@@ -42,7 +42,8 @@ public class SystemModelTest {
         when(config.isVerbose()).thenReturn(false);
         when(config.filterSynthetic()).thenReturn(false);
         when(config.getClasses()).thenReturn(Collections.singletonList("javax.swing.JComponent"));
-
+        when(config.getBlackList()).thenReturn(Collections.emptyList());
+        
         SystemModel sys = SystemModel.getInstance(config);
 
         Set<String> actual = new HashSet<>();

@@ -40,9 +40,12 @@ public class SystemModel implements ISystemModel {
         } else {
             recursiveFlag = 0;
         }
-        
+
         Collection<String> blackList = config.getBlackList();
         Collection<ClassModel> ls = ASMParser.getClasses(importClassesList, blackList, recursiveFlag);
+
+        Logger.setVerbose(config.isVerbose());
+
         return new SystemModel(ls);
     }
 
