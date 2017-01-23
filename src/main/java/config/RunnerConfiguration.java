@@ -25,41 +25,29 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+        this.config.setIfMissing(OUTPUT_FORMAT, "svg");
+        this.config.setIfMissing(OUTPUT_DIRECTORY, "./output");
+        this.config.setIfMissing(EXECUTABLE_PATH, "dot");
+        this.config.setIfMissing(FILE_NAME, "output");
     }
-    
+
     @Override
     public String getOutputFormat() {
-        String value = this.config.getValue(OUTPUT_FORMAT);
-        if (value == null) {
-            throw new RuntimeException("output format is not configured, configure with key " + OUTPUT_FORMAT);
-        }
-        return value;
+        return this.config.getValue(OUTPUT_FORMAT);
     }
 
     @Override
     public String getOutputDirectory() {
-        String value = this.config.getValue(OUTPUT_DIRECTORY);
-        if (value == null) {
-            throw new RuntimeException("output directory is not configured, configure with key " + OUTPUT_DIRECTORY);
-        }
-        return value;
+        return this.config.getValue(OUTPUT_DIRECTORY);
     }
 
     @Override
     public String getExecutablePath() {
-        String value = this.config.getValue(EXECUTABLE_PATH);
-        if (value == null) {
-            throw new RuntimeException("executable path is not configured, configure with key " + EXECUTABLE_PATH);
-        }
-        return value;
+        return this.config.getValue(EXECUTABLE_PATH);
     }
 
     @Override
     public String getFileName() {
-        String value = this.config.getValue(FILE_NAME);
-        if (value == null) {
-            throw new RuntimeException("file name is not configured, configure with key " + FILE_NAME);
-        }
-        return value;
+        return this.config.getValue(FILE_NAME);
     }
 }
