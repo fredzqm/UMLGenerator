@@ -23,8 +23,8 @@ public class GraphVizGenerator implements IGenerator {
 
         // Render the classes
         Iterable<? extends INode> nodes = graph.getNodes();
-        nodes.forEach((node) -> dotString.append(
-                String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle())));
+        nodes.forEach(node -> dotString.append(
+                String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t\t%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle().trim())));
 
         // Parse each relationship.
         Iterable<? extends IEdge> edges = graph.getEdges();
