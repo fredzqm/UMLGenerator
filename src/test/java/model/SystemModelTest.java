@@ -20,6 +20,21 @@ public class SystemModelTest {
             }
 
             @Override
+            public Iterable<String> getBlackList() {
+                return null;
+            }
+
+            @Override
+            public boolean isVerbose() {
+                return false;
+            }
+
+            @Override
+            public boolean filterSynthetic() {
+                return false;
+            }
+
+            @Override
             public Iterable<String> getClasses() {
                 return Collections.singletonList("javax.swing.JComponent");
             }
@@ -40,6 +55,21 @@ public class SystemModelTest {
         IModelConfiguration config = new IModelConfiguration() {
             @Override
             public boolean isRecursive() {
+                return true;
+            }
+
+            @Override
+            public Iterable<String> getBlackList() {
+                return null;
+            }
+
+            @Override
+            public boolean isVerbose() {
+                return false;
+            }
+
+            @Override
+            public boolean filterSynthetic() {
                 return true;
             }
 
