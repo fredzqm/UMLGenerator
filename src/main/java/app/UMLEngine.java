@@ -2,67 +2,62 @@ package app;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
-import config.*;
+import config.EngineConfiguration;
+import config.IConfiguration;
+import config.IEngineConfiguration;
 import generator.IGenerator;
 import generator.IGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
 
+import java.util.List;
+
 /**
- * TODO: Fred documentation.
+ * This is a concrete implementation of algorithm for analyzing a UML. It
+ * depends on the Configuration setup and SystemModel in our program
  */
 public class UMLEngine extends AbstractUMLEngine {
-    private IConfiguration config;
+    private IEngineConfiguration config;
 
-    private UMLEngine(IConfiguration configuration) {
+    private UMLEngine(IEngineConfiguration configuration) {
         config = configuration;
     }
 
     /**
-     * TODO: Fred Documentation.
-     *
+     * 
      * @param config
-     * @return
+     *            the configuration object read from command line arguments, or parsed from
+     *            file. See {@link ConfigurationFactor}
+     * @return the UML engine
      */
-    static UMLEngine getInstance(Configuration config) {
-        return new UMLEngine(config);
+    static UMLEngine getInstance(IConfiguration config) {
+        return new UMLEngine(config.createConfiguration(EngineConfiguration.class));
     }
 
     @Override
     public ISystemModel createSystemModel() {
-        return SystemModel.getInstance(ModelConfiguration.class.cast(config.createConfiguration(ModelConfiguration.class)));
+        return SystemModel.getInstance(config);
     }
 
     @Override
     ISystemModel analyze(ISystemModel systemModel) {
-        Iterable<Class<? extends IAnalyzer>> anClassLs = this.config.getAnalyzers();
-        for (Class<? extends IAnalyzer> anClass : anClassLs) {
-            try {
-                IAnalyzer analyzer = anClass.newInstance();
-                systemModel = analyzer.analyze(systemModel, AnalyzerConfiguration.class.cast(config.createConfiguration(AnalyzerConfiguration.class)));
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Analyzer " + anClass + " does not have an empty constructor", e);
-            }
+        List<IAnalyzer> anClassLs = this.config.getAnalyzers();
+        for (IAnalyzer analyzer : anClassLs) {
+            systemModel = analyzer.analyze(systemModel, config);
         }
         return systemModel;
     }
 
     @Override
     String generate(IGraph graph) {
-        Class<? extends IGenerator> genClass = config.getGenerator();
-        IGenerator gen;
-        try {
-            gen = genClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("Generator " + genClass + " does not have an empty constructor", e);
-        }
-        return gen.generate(GeneratorConfiguration.class.cast(this.config.createConfiguration(GeneratorConfiguration.class)), graph);
+        IGenerator gen = config.getGenerator();
+        return gen.generate(graph, config);
     }
 
     @Override
     void executeRunner(String graphVisStr) {
-        IRunner runner = new GraphVizRunner(RunnerConfiguration.class.cast(this.config.createConfiguration(RunnerConfiguration.class)));
+        IRunner runner = GraphVizRunner.getInstance(config);
         try {
             runner.execute(graphVisStr);
         } catch (Exception e) {
@@ -70,4 +65,5 @@ public class UMLEngine extends AbstractUMLEngine {
                     e);
         }
     }
+
 }

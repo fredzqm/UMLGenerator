@@ -1,17 +1,21 @@
 package analyzer.favorComposition;
 
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.ISystemModel;
-import org.junit.Test;
-import utility.ClassType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import org.junit.Test;
+
+import analyzer.utility.IAnalyzer;
+import analyzer.utility.IClassModel;
+import analyzer.utility.ISystemModel;
+import utility.ClassType;
 
 /**
  * Created by lamd on 1/15/2017.
@@ -53,12 +57,11 @@ public class FavorCompositionAnalyzerTest {
         Collection<? extends IClassModel> classList = systemModel.getClasses();
         assertEquals(2, classList.size());
 
-        Iterator<? extends IClassModel> classIterator = classList.iterator();
-        IClassModel favor = classIterator.next();
-        IClassModel noFavor = classIterator.next();
+        IClassModel favor = getClassFromIterableByName(composition, classList);
+        IClassModel noFavor = getClassFromIterableByName(noComposition, classList);
 
         assertEquals("This should not have a node style as it does not break the principle: Favor Composition over Inheritance.", "", favor.getNodeStyle());
-        assertEquals("This should have a node style as it does break the principle: Favor Composition over Inheritance.", "color=\"orange\" ", noFavor.getNodeStyle());
+        assertEquals("This should have a node style as it does break the principle: Favor Composition over Inheritance.", " color=\"orange\"", noFavor.getNodeStyle());
 
 
         // verify
@@ -68,6 +71,15 @@ public class FavorCompositionAnalyzerTest {
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
         IAnalyzer analyzer = new FavorCompositionAnalyzer();
         return analyzer.analyze(systemModelMock, null);
+    }
+    
+    private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {
+        for (IClassModel x : classList) {
+            if (x.getName().equals(_a_name))
+                return x;
+        }
+        fail("did not find class " + _a_name);
+        return null;
     }
 
 }

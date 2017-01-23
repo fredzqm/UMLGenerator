@@ -1,5 +1,7 @@
 package analyzer.utility;
 
+import config.IConfiguration;
+
 /**
  * An Interface for an Analyzer.
  * <p>
@@ -10,8 +12,9 @@ public interface IAnalyzer {
      * Returns an Analyzed System Model.
      *
      * @param systemModel System Model to be analyzed.
-     * @param config      Analzyer Configuration.
+     * @param config      IConfiguration object that the analyzer can retrieves
+     *                    configurations from
      * @return Analyzed System Model.
      */
-    ISystemModel analyze(ISystemModel systemModel, IAnalyzerConfiguration config);
+    ISystemModel analyze(ISystemModel systemModel, IConfiguration config);
 }

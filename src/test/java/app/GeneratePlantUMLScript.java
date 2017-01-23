@@ -1,5 +1,9 @@
 package app;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
@@ -8,10 +12,6 @@ import config.GeneratorConfiguration;
 import config.ModelConfiguration;
 import config.RunnerConfiguration;
 import viewer.Viewer;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -84,7 +84,7 @@ public class GeneratePlantUMLScript {
 //        engine.run();
 
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "explorer");
-        Runnable viewer = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        Runnable viewer = new Viewer(config.createConfiguration(RunnerConfiguration.class));
         viewer.run();
 
         System.out.println("Done");

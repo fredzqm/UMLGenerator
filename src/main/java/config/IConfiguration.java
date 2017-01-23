@@ -1,166 +1,149 @@
 package config;
 
-import analyzer.utility.IAnalyzer;
-import generator.IGenerator;
-import utility.IFilter;
-import utility.Modifier;
+import java.util.List;
+import java.util.Map;
 
 /**
- * An interface for Configuration object that stores values to be used in generation processes.
+ * An interface for Configuration object that stores values to be used in
+ * generation processes.
  */
 public interface IConfiguration {
-    /**
-     * Constructs the given configurable object.
-     *
-     * @param configClass class of the Configurable object.
-     * @return Configurable object.
-     */
-    Configurable createConfiguration(Class<? extends Configurable> configClass);
-
-    /**
-     * Sets the key value to the given class value.
-     *
-     * @param key   String key to set within the map.
-     * @param value Class to map the key to.
-     */
-    void set(String key, Class<?> value);
 
     /**
      * Sets the String key to the String value.
      *
-     * @param key   String key to set value for.
-     * @param value String value of the key.
+     * @param key
+     *            String key to set value for.
+     * @param value
+     *            String value of the key.
      */
     void set(String key, String value);
 
     /**
      * Adds to the String key to a list of String values.
      *
-     * @param key   String key to append value String to.
-     * @param value String value to be appened.
+     * @param key
+     *            String key to append value String to.
+     * @param value
+     *            String value to be appened.
      */
-    void add(String key, String value);
+    void add(String key, String... value);
 
     /**
-     * Adds the String key to a list of Classes.
-     *
-     * @param key   String key to append value to.
-     * @param value String value to be appened.
+     * 
+     * @param directory
+     *            the directory to add this map
+     * @param map
+     *            the map to be added
      */
-    void add(String key, Class<?> value);
+    void populateMap(String directory, Map<String, Object> map);
 
     /**
-     * Returns an Iterable of String corresponding to the given key.
-     * It should be used with declared static constants of a concrete class.
+     * Returns an Iterable of String corresponding to the given key. It should
+     * be used with declared static constants of a concrete class.
      *
-     * @param key String key for desired Iterable of Strings.
+     * @param key
+     *            String key for desired Iterable of Strings.
      * @return Iterable of String corresponding to that key.
      */
-    Iterable<String> getValues(String key);
-
-    /**
-     * Returns an Iterable of Class corresponding to the given key.
-     * It should be used with declared static constances of a concrete class.
-     *
-     * @param key String key for desired Iterable of Classes.
-     * @return Iterable of Classes corresponding to that key.
-     */
-    Iterable<Class<?>> getClasses(String key);
+    List<String> getList(String key);
 
     /**
      * Return the String value associated with the given key.
      *
-     * @param key String key for desired String value.
+     * @param key
+     *            String key for desired String value.
      * @return String value corresponding to that key.
      */
     String getValue(String key);
 
     /**
-     * Returns the Class value associated with the given key.
+     * Sets the given key and value if the key does not exist or has not been
+     * set.
      *
-     * @param key String key for desired Class.
-     * @return Class corresponding to that key.
-     */
-    Class<?> getClass(String key);
-
-    /**
-     * Returns an Iterable of IAnalyzers.
-     *
-     * @return Iterable of IAnalyzers.
-     */
-    Iterable<Class<? extends IAnalyzer>> getAnalyzers();
-
-    /**
-     * Add Analyzers to be stored within object.
-     *
-     * @param analyzer IAnalyzer to be stored.
-     */
-    void addAnalyzer(Class<? extends IAnalyzer> analyzer);
-
-    /**
-     * Removes the first instance, if any, of the given analyzer.
-     *
-     * @param analyzer
-     */
-    void removeAnalyzer(Class<? extends IAnalyzer> analyzer);
-
-    /**
-     * Returns the IGenerator stored.
-     *
-     * @return IGenerator object.
-     */
-    Class<? extends IGenerator> getGenerator();
-
-    /**
-     * Maps an AnalyzerConfiguration object to the given AnalyzerClass.
-     *
-     * @param analyzerClass IAnalyzer being mapped.
-     * @param config        Object to be mapped.
-     */
-    void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config);
-
-    /**
-     * Returns the Config object mapped to the given analyzer class.
-     *
-     * @param analyzerClass IAnalyzer class to get the value for.
-     * @return Config object if mapping exist, null if not.
-     */
-    Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass);
-
-    /**
-     * Sets the given key and value if the key does not exist or has not been set.
-     *
-     * @param key   String key value.
-     * @param value String value corresponding to the key.
+     * @param key
+     *            String key value.
+     * @param value
+     *            String value corresponding to the key.
      */
     void setIfMissing(String key, String value);
 
     /**
-     * Sets the given key and class if the key does not exist or has not been set.
+     * Sets the given key and value if the key does not exist or has not been
+     * set.
      *
-     * @param key   String key value.
-     * @param value Class value corresponding to the key.
+     * @param key
+     *            String key value.
+     * @param value
+     *            String value corresponding to the key.
      */
-    void setIfMissing(String key, Class<?> value);
+    void addIfMissing(String key, String... value);
 
     /**
-     * Set the modifier filter.
+     * Constructs the given configurable object.
      *
-     * @param modifierIFilter IFilter to be set.
+     * @param configClass
+     *            class of the Configurable object.
+     * @return Configurable object.
      */
-    void setFilter(IFilter<Modifier> modifierIFilter);
+    default <T extends Configurable> T createConfiguration(Class<T> configClass) {
+        return createConfiguration(configClass, configClass);
+    }
 
     /**
-     * Set the modifier filter if it has not been set.
+     * This method acts as the factory for all configuration As long as it
+     * implements the {@link Configurable} interface, we can instantiate it, and
+     * fill the default configuration if not otherwise specified already
      *
-     * @param modifierIFilter IFilter to be set.
+     * @param configClass
+     *            the class we want to create
+     * @param returnType
+     *            the planned return type, if returnType and configClass are the
+     *            same, consider use convenient method
+     *            {@link IConfiguration#createConfiguration(Class)}
+     * @return the configuration instance
      */
-    void setFilterIfMissing(IFilter<Modifier> modifierIFilter);
+    default <T extends Configurable> T createConfiguration(Class<? extends Configurable> configClass,
+            Class<T> returnType) {
+        if (!returnType.isAssignableFrom(configClass))
+            throw new RuntimeException(configClass + " cannot be casted to " + returnType);
+        try {
+            Configurable configurable = configClass.cast(configClass.newInstance());
+            configurable.setup(this);
+            return returnType.cast(configurable);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(
+                    "Configurable unable to be instantiated. Ensure that the Configurable has an empty constructor.",
+                    e);
+        }
+    }
 
     /**
-     * Returns the ModifierFilter.
+     * This acts as a factory method for any java object, it gets the Class with
+     * {@link Class#forName(String)} and then calls {@link Class#newInstance()}
+     * to instantiate it. It handles all sorts of exception that can happen
+     * while creating these objects, and throw proper RuntimeException
+     * <p>
+     * This method is helpful when we want to create an instance based on the
+     * configuration string.
      *
-     * @return IFilter<Modifier> stored.
+     * @param className
+     *            the name of class we want to instantiate
+     * @param returType
+     *            the planned return type
+     * @return the created object
      */
-    IFilter<Modifier> getModifierFilter();
+    static <T> T instantiateWithName(String className, Class<T> returType) {
+        try {
+            Class<?> forName = Class.forName(className);
+            if (!returType.isAssignableFrom(forName))
+                throw new RuntimeException(forName + " cannot be casted to " + returType);
+            return (T) forName.newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(className + " is not a valid class", e);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(className + " does not have an empty constructor", e);
+        }
+    }
+
 }

@@ -1,194 +1,125 @@
 package config;
 
-import analyzer.classParser.AnalyzerClassParser;
-import analyzer.relationParser.AnalyzerRelationParser;
-import analyzer.utility.IAnalyzer;
-import generator.GraphVizGenerator;
-import generator.IGenerator;
-import utility.IFilter;
-import utility.Modifier;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
- * An IConfiguration concrete class. It uses Maps to store a variety of configuration objects.
+ * An IConfiguration concrete class. It uses Maps to store a variety of
+ * configuration objects.
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class Configuration implements IConfiguration {
-    private static final String DELIMITER = " ";
-
-    private Map<String, Class<?>> classMap;
-    private Map<String, List<Class<?>>> classesMap;
+    private static final String LIST_DELIMITER = " ";
+    private static final String DIRECTORY_DELIMITER = "/";
     private Map<String, String> valueMap;
-    private Map<Class<? extends IAnalyzer>, Object> analyzerToConfigurationMap;
-    private List<Class<? extends IAnalyzer>> analyzers;
-    private Class<? extends IGenerator> generator;
-    private IFilter<Modifier> modifierFilter;
 
     private Configuration() {
-        this.classMap = new HashMap<>();
-        this.classesMap = new HashMap<>();
         this.valueMap = new HashMap<>();
-        this.analyzerToConfigurationMap = new HashMap<>();
-        this.modifierFilter = null;
-
-        this.generator = GraphVizGenerator.class;
-        this.analyzers = new ArrayList<>();
     }
 
     /**
      * Returns an instance of the Configuration.
+     * 
+     * @param map
      *
      * @return Configuration instance.
      */
     public static Configuration getInstance() {
-        Configuration config = new Configuration();
-        config.addAnalyzer(AnalyzerClassParser.class);
-        config.addAnalyzer(AnalyzerRelationParser.class);
-        config.setFilter((x) -> true);
-        return config;
+        return new Configuration();
     }
 
-    @Override
-    public Iterable<Class<? extends IAnalyzer>> getAnalyzers() {
-        return this.analyzers;
-    }
-
-    @Override
-    public void addAnalyzer(Class<? extends IAnalyzer> analyzer) {
-        this.analyzers.add(analyzer);
-    }
-
-    @Override
-    public void removeAnalyzer(Class<? extends IAnalyzer> analyzer) {
-        this.analyzers.remove(analyzer);
-    }
-
-    @Override
-    public void mapAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass, Object config) {
-        if (analyzerClass == null) {
-            throw new NullPointerException("Analyzer Class cannot be null");
-        }
-
-        this.analyzerToConfigurationMap.put(analyzerClass, config);
-    }
-
-    @Override
-    public Object getAnalyzerConfig(Class<? extends IAnalyzer> analyzerClass) {
-        return this.analyzerToConfigurationMap.get(analyzerClass);
-    }
-
-    @Override
-    public Class<? extends IGenerator> getGenerator() {
-        return this.generator;
-    }
-
-    /**
-     * Sets the Configuration generator.
-     *
-     * @param generator IGenerator class to be set.
-     */
-    public void setGenerator(Class<? extends IGenerator> generator) {
-        this.generator = generator;
-    }
-
-    @Override
-    public Configurable createConfiguration(Class<? extends Configurable> configClass) {
-        try {
-            Configurable configurable = configClass.cast(configClass.newInstance());
-            configurable.setup(this);
-            return configurable;
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(
-                    "Configurable unable to be instantiated. Ensure that the Configurable has an empty constructor.",
-                    e);
+    public void populateMap( String directory, Map<String, Object> map) {
+        for (Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String configKey = key + DIRECTORY_DELIMITER + directory;
+            Object value = entry.getValue();
+            if (value == null) {
+                putToMap(configKey, null);
+            } else if (value instanceof Map) {
+                try {
+                    Map<String, Object> innerMap = (Map<String, Object>) value;
+                    populateMap(configKey, innerMap);
+                } catch (ClassCastException e) {
+                    throw new RuntimeException("inner map has to be Map<String,Object>", e);
+                }
+            } else if (value instanceof List) {
+                try {
+                    List<String> innerList = (List<String>) value;
+                    String v = String.join(LIST_DELIMITER, innerList);
+                    putToMap(configKey, v);
+                } catch (ClassCastException e) {
+                    throw new RuntimeException("inner list has to be Map<String,Object>", e);
+                }
+            } else {
+                try {
+                    String v = (String) value;
+                    putToMap(configKey, v);
+                } catch (ClassCastException e) {
+                    throw new RuntimeException("inner value has to be Map<String,Object>", e);
+                }
+            }
         }
     }
 
-    @Override
-    public IFilter<Modifier> getModifierFilter() {
-        return this.modifierFilter;
-    }
-
-    @Override
-    public void setFilter(IFilter<Modifier> modifierIFilter) {
-        this.modifierFilter = modifierIFilter;
-    }
-
-    @Override
-    public void setFilterIfMissing(IFilter<Modifier> modifierIFilter) {
-        if (this.modifierFilter == null) {
-            this.modifierFilter = modifierIFilter;
-        }
-    }
-
-    @Override
-    public void set(String key, Class<?> value) {
-        this.classMap.put(key, value);
-    }
-
-    @Override
-    public void set(String key, String value) {
+    private void putToMap(String key, String value) {
         this.valueMap.put(key, value);
     }
 
-    @Override
-    public void setIfMissing(String key, String value) {
-        if (!this.valueMap.containsKey(key)) {
-            this.valueMap.put(key, value);
-        }
+    private boolean containsKey(String key) {
+        return this.valueMap.containsKey(key);
     }
 
-    @Override
-    public void setIfMissing(String key, Class<?> value) {
-        if (!this.classMap.containsKey(key)) {
-            this.classMap.put(key, value);
-        }
-    }
-
-    @Override
-    public void add(String key, String value) {
-        if (this.valueMap.containsKey(key)) {
-            this.valueMap.put(key, String.format("%s%s%s", this.valueMap.get(key), Configuration.DELIMITER, value));
-        } else {
-            this.valueMap.put(key, value);
-        }
-    }
-
-    @Override
-    public void add(String key, Class<?> value) {
-        List<Class<?>> classesList;
-        if (this.classesMap.containsKey(key)) {
-            classesList = this.classesMap.get(key);
-            classesList.add(value);
-        } else {
-            classesList = new ArrayList<>();
-        }
-        this.classesMap.put(key, classesList);
-    }
-
-    @Override
-    public Iterable<String> getValues(String key) {
-        if (this.valueMap.containsKey(key)) {
-            String values = this.valueMap.get(key);
-            return Arrays.asList(values.split(Configuration.DELIMITER));
-        }
-        return null;
-    }
-
-    @Override
-    public Iterable<Class<?>> getClasses(String key) {
-        return this.classesMap.get(key);
-    }
-
-    @Override
-    public String getValue(String key) {
+    private String getFromMap(String key) {
         return this.valueMap.get(key);
     }
 
     @Override
-    public Class<?> getClass(String key) {
-        return this.classMap.get(key);
+    public void set(String key, String value) {
+        putToMap(key, value);
     }
+
+    @Override
+    public void setIfMissing(String key, String value) {
+        if (key != null && !containsKey(key)) {
+            putToMap(key, value);
+        }
+    }
+
+    @Override
+    public void add(String key, String... values) {
+        String x = String.join(LIST_DELIMITER, values);
+        if (containsKey(key)) {
+            String value = String.format("%s%s%s", getFromMap(key), Configuration.LIST_DELIMITER, x);
+            putToMap(key, value);
+        } else {
+            putToMap(key, x);
+        }
+    }
+
+    @Override
+    public void addIfMissing(String key, String... value) {
+        if (value != null && value.length > 0 && !containsKey(key)) {
+            add(key, value);
+        }
+    }
+
+    @Override
+    public List<String> getList(String key) {
+        if (containsKey(key)) {
+            String values = getFromMap(key);
+            return Arrays.asList(values.split(Configuration.LIST_DELIMITER));
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getValue(String key) {
+        return getFromMap(key);
+    }
+
 }

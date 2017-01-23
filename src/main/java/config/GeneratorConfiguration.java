@@ -7,9 +7,9 @@ import generator.IGeneratorConfiguration;
  * <p>
  * Created by lamd on 1/11/2017.
  */
-public class GeneratorConfiguration implements IGeneratorConfiguration, Configurable {
-    public static final String NODE_SEP = "generator_node_sep";
-    public static final String RANK_DIR = "generator_rank_dir";
+public class GeneratorConfiguration implements IGeneratorConfiguration {
+    public static final String NODE_SEP = "nodeSep";
+    public static final String RANK_DIR = "rankDir";
     public static final String NODE_STYLE = "generator_node_style";
 
     private IConfiguration config;
@@ -20,9 +20,8 @@ public class GeneratorConfiguration implements IGeneratorConfiguration, Configur
         this.config.setIfMissing(GeneratorConfiguration.NODE_SEP, "1.0");
         this.config.setIfMissing(GeneratorConfiguration.RANK_DIR, "BT");
         this.config.setIfMissing(GeneratorConfiguration.NODE_STYLE, "node [shape=record]");
-
     }
-
+    
     @Override
     public double getNodeSep() {
         return Double.parseDouble(this.config.getValue(GeneratorConfiguration.NODE_SEP));
@@ -37,4 +36,5 @@ public class GeneratorConfiguration implements IGeneratorConfiguration, Configur
     public String getNodeStyle() {
         return this.config.getValue(GeneratorConfiguration.NODE_STYLE);
     }
+
 }

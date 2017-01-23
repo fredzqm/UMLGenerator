@@ -124,8 +124,7 @@ class MethodModel implements IMethodModel {
         List<TypeModel> args = getArguments();
         if (args.size() > 0) {
             sb.append(args.get(0));
-            for (int i = 0; i < args.size(); i++)
-                sb.append("," + args.get(i));
+            for (TypeModel arg : args) sb.append(",").append(arg);
         }
         return String.format("%s %s(%s)", returnType.toString(), getName(), sb.toString());
     }
@@ -144,6 +143,30 @@ class MethodModel implements IMethodModel {
             }
         }
         return instructions;
+    }
+
+    @Override
+    public Collection<FieldModel> getAccessedFields() {
+        Collection<FieldModel> accessedFields = new HashSet<>();
+        for (InstructionModel instr : getInstructions()) {
+            if (instr instanceof InstructionField) {
+                InstructionField instructionField = (InstructionField) instr;
+                accessedFields.add(instructionField.getField());
+            }
+        }
+        return accessedFields;
+    }
+
+    @Override
+    public Collection<MethodModel> getCalledMethods() {
+        Collection<MethodModel> calledMethods = new HashSet<>();
+        for (InstructionModel instr : getInstructions()) {
+            if (instr instanceof InstructionMethod) {
+                InstructionMethod instructionMethod = (InstructionMethod) instr;
+                calledMethods.add(instructionMethod.getMethod());
+            }
+        }
+        return calledMethods;
     }
 
 }

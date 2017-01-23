@@ -1,9 +1,9 @@
 package analyzer.favorComposition;
 
 import analyzer.utility.IAnalyzer;
-import analyzer.utility.IAnalyzerConfiguration;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
+import config.IConfiguration;
 import utility.ClassType;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class FavorCompositionAnalyzer implements IAnalyzer {
     @Override
-    public ISystemModel analyze(ISystemModel systemModel, IAnalyzerConfiguration config) {
+    public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
         Collection<? extends IClassModel> classes = systemModel.getClasses();
         Collection<IClassModel> analyzedClass = new ArrayList<>();
 

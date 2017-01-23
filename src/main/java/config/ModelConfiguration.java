@@ -2,14 +2,16 @@ package config;
 
 import model.IModelConfiguration;
 
+import java.util.List;
+
 /**
  * A ModelConfiguration.
  * <p>
  * Created by lamd on 1/10/2017.
  */
 public class ModelConfiguration implements IModelConfiguration, Configurable {
-    public static final String CLASSES_KEY = "model_classes";
-    public static final String IS_RECURSIVE_KEY = "model_is_recursive";
+    public static final String CLASSES_KEY = "classes";
+    public static final String IS_RECURSIVE_KEY = "isRecursive";
 
     private IConfiguration config;
 
@@ -23,13 +25,12 @@ public class ModelConfiguration implements IModelConfiguration, Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(ModelConfiguration.CLASSES_KEY, "");
         this.config.setIfMissing(ModelConfiguration.IS_RECURSIVE_KEY, "false");
     }
 
     @Override
-    public Iterable<String> getClasses() {
-        return this.config.getValues(ModelConfiguration.CLASSES_KEY);
+    public List<String> getClasses() {
+        return this.config.getList(ModelConfiguration.CLASSES_KEY);
     }
 
     @Override

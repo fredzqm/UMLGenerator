@@ -8,10 +8,10 @@ import runner.IRunnerConfiguration;
  * Created by lamd on 1/11/2017.
  */
 public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
-    public static final String OUTPUT_FORMAT = "runner_output_format";
-    public static final String OUTPUT_DIRECTORY = "runner_output_directory";
-    public static final String EXECUTABLE_PATH = "runner_executable_path";
-    public static final String FILE_NAME = "runner_file_name";
+    public static final String OUTPUT_FORMAT = "outputFormat";
+    public static final String OUTPUT_DIRECTORY = "outputDir";
+    public static final String EXECUTABLE_PATH = "executablePath";
+    public static final String FILE_NAME = "fileName";
 
     private IConfiguration config;
 
@@ -26,24 +26,40 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
     }
-
+    
     @Override
     public String getOutputFormat() {
-        return this.config.getValue(RunnerConfiguration.OUTPUT_FORMAT);
+        String value = this.config.getValue(OUTPUT_FORMAT);
+        if (value == null) {
+            throw new RuntimeException("output format is not configured, configure with key " + OUTPUT_FORMAT);
+        }
+        return value;
     }
 
     @Override
     public String getOutputDirectory() {
-        return this.config.getValue(RunnerConfiguration.OUTPUT_DIRECTORY);
+        String value = this.config.getValue(OUTPUT_DIRECTORY);
+        if (value == null) {
+            throw new RuntimeException("output directory is not configured, configure with key " + OUTPUT_DIRECTORY);
+        }
+        return value;
     }
 
     @Override
     public String getExecutablePath() {
-        return this.config.getValue(RunnerConfiguration.EXECUTABLE_PATH);
+        String value = this.config.getValue(EXECUTABLE_PATH);
+        if (value == null) {
+            throw new RuntimeException("executable path is not configured, configure with key " + EXECUTABLE_PATH);
+        }
+        return value;
     }
 
     @Override
     public String getFileName() {
-        return this.config.getValue(RunnerConfiguration.FILE_NAME);
+        String value = this.config.getValue(FILE_NAME);
+        if (value == null) {
+            throw new RuntimeException("file name is not configured, configure with key " + FILE_NAME);
+        }
+        return value;
     }
 }

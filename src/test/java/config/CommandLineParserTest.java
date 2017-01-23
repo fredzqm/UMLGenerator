@@ -1,12 +1,11 @@
 package config;
 
-import org.junit.Test;
-import utility.IFilter;
-import utility.Modifier;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class CommandLineParserTest {
 
@@ -16,14 +15,11 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
-        IFilter<Modifier> f = conf.getModifierFilter();
-        assertFalse(f.filter(Modifier.PRIVATE));
-        assertFalse(f.filter(Modifier.PROTECTED));
-        assertTrue(f.filter(Modifier.PUBLIC));
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
         assertTrue(Boolean.parseBoolean(conf.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             assertEquals("me", cla);
         assertEquals("exepath", conf.getValue(RunnerConfiguration.EXECUTABLE_PATH));
         assertEquals("outfile", conf.getValue(RunnerConfiguration.FILE_NAME));
@@ -40,14 +36,11 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
-        IFilter<Modifier> f = conf.getModifierFilter();
-        assertFalse(f.filter(Modifier.PRIVATE));
-        assertFalse(f.filter(Modifier.PROTECTED));
-        assertTrue(f.filter(Modifier.PUBLIC));
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
         assertTrue(Boolean.parseBoolean(conf.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             assertEquals("me", cla);
         assertEquals("exepath", conf.getValue(RunnerConfiguration.EXECUTABLE_PATH));
         assertEquals("outfile", conf.getValue(RunnerConfiguration.FILE_NAME));
@@ -63,9 +56,8 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
-        IFilter<Modifier> filter = conf.getModifierFilter();
-        assertFalse((filter.filter(Modifier.PRIVATE)));
+        IConfiguration conf = com.create();
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
         assertEquals(101, Math.round(10 * Double.parseDouble(conf.getValue(GeneratorConfiguration.NODE_SEP))));
     }
 
@@ -75,10 +67,10 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
         ArrayList<String> classes = new ArrayList<String>();
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             classes.add(cla);
 
         assertEquals(3, classes.size());
@@ -94,10 +86,10 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
         ArrayList<String> classes = new ArrayList<>();
-        for (String cla : conf.getValues(ModelConfiguration.CLASSES_KEY))
+        for (String cla : conf.getList(ModelConfiguration.CLASSES_KEY))
             classes.add(cla);
 
         assertEquals(1, classes.size());
@@ -110,7 +102,7 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
         assertTrue(Boolean.parseBoolean(conf.getValue(ModelConfiguration.IS_RECURSIVE_KEY)));
 
@@ -129,12 +121,9 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
-        IFilter<Modifier> filter = conf.getModifierFilter();
-        assertTrue(filter.filter(Modifier.PRIVATE));
-        assertTrue(filter.filter(Modifier.PROTECTED));
-        assertTrue(filter.filter(Modifier.PUBLIC));
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PRIVATE, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
     }
 
     @Test
@@ -143,12 +132,10 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
-        IFilter<Modifier> filter = conf.getModifierFilter();
-        assertFalse(filter.filter(Modifier.PRIVATE));
-        assertTrue(filter.filter(Modifier.PROTECTED));
-        assertTrue(filter.filter(Modifier.PUBLIC));
+
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PROTECTED, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
     }
 
     @Test
@@ -157,12 +144,9 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
-        IFilter<Modifier> filter = conf.getModifierFilter();
-        assertTrue(filter.filter(Modifier.PRIVATE));
-        assertTrue(filter.filter(Modifier.PROTECTED));
-        assertTrue(filter.filter(Modifier.PUBLIC));
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PRIVATE, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
     }
 
     @Test
@@ -171,7 +155,7 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
+        IConfiguration conf = com.create();
 
         assertEquals("BT", conf.getValue(GeneratorConfiguration.RANK_DIR));
     }
@@ -183,11 +167,7 @@ public class CommandLineParserTest {
 
         CommandLineParser com = new CommandLineParser(args);
 
-        Configuration conf = com.create();
-        IFilter<Modifier> filter = conf.getModifierFilter();
-        assertTrue(filter.filter(Modifier.PUBLIC));
-        assertTrue(filter.filter(Modifier.DEFAULT));
-        assertFalse(filter.filter(Modifier.PRIVATE));
-        assertFalse(filter.filter(Modifier.PROTECTED));
+        IConfiguration conf = com.create();
+        assertEquals(ClassParserConfiguration.MODIFIER_FILTER_PUBLIC, conf.getValue(ClassParserConfiguration.MODIFIER_FILTER));
     }
 }

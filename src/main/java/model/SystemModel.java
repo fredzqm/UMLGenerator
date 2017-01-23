@@ -3,6 +3,8 @@ package model;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import config.IConfiguration;
+import config.ModelConfiguration;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -34,13 +36,19 @@ public class SystemModel implements ISystemModel {
 
         int recursiveFlag;
         if (config.isRecursive()) {
-            recursiveFlag = ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS | ASMParser.RECURSE_HAS_A | ASMParser.RECURSE_DEPENDS_ON;
+            recursiveFlag = ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS | ASMParser.RECURSE_HAS_A
+                    | ASMParser.RECURSE_DEPENDS_ON;
         } else {
             recursiveFlag = 0;
         }
 
         Collection<ClassModel> ls = ASMParser.getClasses(importClassesList, recursiveFlag);
         return new SystemModel(ls);
+    }
+
+    public static SystemModel getInstance(IConfiguration iConfig) {
+        IModelConfiguration config = iConfig.createConfiguration(ModelConfiguration.class);
+        return getInstance(config);
     }
 
     @Override

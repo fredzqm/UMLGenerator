@@ -1,16 +1,17 @@
 package app;
 
+import java.util.Arrays;
+
 import analyzer.favorComposition.FavorCompositionAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
+import config.EngineConfiguration;
 import config.GeneratorConfiguration;
 import config.ModelConfiguration;
 import config.RunnerConfiguration;
 import dummy.favorDummy.FavorDummyA;
 import dummy.favorDummy.FavorDummyB;
 import viewer.Viewer;
-
-import java.util.Arrays;
 
 /**
  * A Test Class that will generate files for local inspection.
@@ -34,7 +35,7 @@ public class LocalTester {
         config.set(RunnerConfiguration.FILE_NAME, "asmClass");
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
-        config.addAnalyzer(FavorCompositionAnalyzer.class);
+        config.add(EngineConfiguration.ANALYZER_KEY, FavorCompositionAnalyzer.class.getName());
 
         //String[] toAnalyze = new String[]{"analyzer.utility.ClassPair", "analyzer.utility.IAnalyzer", "analyzer.utility.IAnalyzerConfiguration", "analyzer.utility.IClassModel", "analyzer.utility.IClassModelFilter", "analyzer.utility.IFieldModel", "analyzer.utility.IMethodModel", "analyzer.utility.IRelationInfo", "analyzer.utility.ISystemModel", "analyzer.utility.ISystemModelFilter", "analyzer.utility.ITypeModel", "analyzer.utility.Relation", "analyzer.analyzerClassParser.AnalyzerClassParser", "analyzer.analyzerClassParser.GraphVizClass", "analyzer.analyzerClassParser.GraphVizFieldParser", "analyzer.analyzerClassParser.GraphVizHeaderParser", "analyzer.analyzerClassParser.GraphVizMethodParser", "analyzer.analyzerClassParser.GraphVizModifierParser", "analyzer.analyzerClassParser.GraphVizTypeParser", "analyzer.analyzerClassParser.IClassParserConfiguration", "analyzer.analyzerClassParser.IParser", "analyzer.analyzerClassParser.ParseClassSystemModel", "analyzer.analyzerRelationParser.AnalyzerRelationParser", "analyzer.analyzerRelationParser.MergeRelationSystemModel", "analyzer.analyzerRelationParser.ParseRelationSystemModel", "analyzer.analyzerRelationParser.RelationBijectiveDecorator", "analyzer.analyzerRelationParser.RelationDependsOn", "analyzer.analyzerRelationParser.RelationExtendsClass", "analyzer.analyzerRelationParser.RelationHasA", "analyzer.analyzerRelationParser.RelationHasABijective", "analyzer.analyzerRelationParser.RelationImplement", "app.AbstractUMLEngine", "app.Application", "app.UMLEngine", "config.AnalyzerConfiguration", "config.ClassParserConfiguration", "config.CommandLineFileInput", "config.CommandLineParser", "config.ConfigFileParser", "config.Configurable", "config.Configuration", "config.ConfigurationFactory", "config.GeneratorConfiguration", "config.IConfiguration", "config.ModelConfiguration", "config.RunnerConfiguration", "display.Display", "generator.GraphVizGenerator", "generator.IEdge", "generator.IGenerator", "generator.IGeneratorConfiguration", "generator.IGraph", "generator.INode", "model.ArrayTypeModel", "model.ASMParser", "model.ClassModel", "model.FieldModel", "model.GenericTypeArg", "model.GenericTypeParam", "model.GenericTypeVarPlaceHolder", "model.IModelConfiguration", "model.MethodModel", "model.ParametizedClassModel", "model.PrimitiveType", "model.Signature", "model.SystemModel", "model.TypeModel", "model.TypeParser", "runner.GraphVizRunner", "runner.IRunner", "runner.IRunnerConfiguration", "utility.ClassType", "utility.ExpandIterator", "utility.FilteredIterator", "utility.IExpander", "utility.IFilter", "utility.IMapper", "utility.MappedIterator", "utility.MethodType", "utility.Modifier"};
         String[] toAnalyze = {FavorDummyA.class.getName(), FavorDummyB.class.getName()};
@@ -47,9 +48,8 @@ public class LocalTester {
 
         String actual = engine.generate(systemModel);
         engine.executeRunner(actual);
-//        engine.run();
 
-        Runnable explorerRunner = new Viewer(RunnerConfiguration.class.cast(config.createConfiguration(RunnerConfiguration.class)));
+        Runnable explorerRunner = new Viewer(config.createConfiguration(RunnerConfiguration.class));
         explorerRunner.run();
 
         System.out.println("Done");

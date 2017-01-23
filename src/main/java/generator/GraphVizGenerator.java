@@ -1,5 +1,8 @@
 package generator;
 
+import config.GeneratorConfiguration;
+import config.IConfiguration;
+
 /**
  * A GraphVizGenerator that outputs DOT files for GraphViz. It converts a graph
  * into a dot file
@@ -8,7 +11,9 @@ package generator;
  */
 public class GraphVizGenerator implements IGenerator {
     @Override
-    public String generate(IGeneratorConfiguration config, IGraph graph) {
+    public String generate(IGraph graph, IConfiguration iConfig) {
+        IGeneratorConfiguration config = iConfig.createConfiguration(GeneratorConfiguration.class);
+
         // DOT parent.
         StringBuilder dotString = new StringBuilder();
 
@@ -18,17 +23,13 @@ public class GraphVizGenerator implements IGenerator {
 
         // Render the classes
         Iterable<? extends INode> nodes = graph.getNodes();
-        nodes.forEach((node) -> {
-            dotString.append(
-                    String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle()));
-        });
+        nodes.forEach((node) -> dotString.append(
+                String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle())));
 
         // Parse each relationship.
         Iterable<? extends IEdge> edges = graph.getEdges();
-        edges.forEach(edge -> {
-            dotString.append(
-                    String.format("\t\"%s\" -> \"%s\" [%s];\n", edge.getFrom(), edge.getTo(), edge.getEdgeStyle()));
-        });
+        edges.forEach(edge -> dotString.append(
+                String.format("\t\"%s\" -> \"%s\" [%s];\n", edge.getFrom(), edge.getTo(), edge.getEdgeStyle())));
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
     }

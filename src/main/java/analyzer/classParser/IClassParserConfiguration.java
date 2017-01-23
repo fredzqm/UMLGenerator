@@ -4,13 +4,14 @@ import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ITypeModel;
+import config.Configurable;
 import utility.IFilter;
 import utility.Modifier;
 
 /**
  * @author zhang
  */
-public interface IClassParserConfiguration {
+public interface IClassParserConfiguration extends Configurable {
 
     /**
      * Return the set of Method Access Filters.

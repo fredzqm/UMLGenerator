@@ -80,19 +80,9 @@ class ASMParser {
                         for (TypeModel t : args)
                             addToBothList(classesList, unextended, t.getDependentClass());
                         for (InstructionModel inst : method.getInstructions()) {
-                            if (inst == null) {
-                                System.out.println();
-                            }
                             for (TypeModel t : inst.getDependentClass())
                                 addToBothList(classesList, unextended, t.getDependentClass());
                         }
-                        // for (FieldModel t : method.getAccessedFields())
-                        // addToBothList(classesList, unextended,
-                        // t.getBelongTo());
-                        // for (MethodModel m : method.getCalledMethods()) {
-                        // addToBothList(classesList, unextended,
-                        // m.getBelongTo());
-                        // }
                     }
                 }
             }

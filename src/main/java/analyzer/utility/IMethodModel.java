@@ -3,6 +3,7 @@ package analyzer.utility;
 import utility.MethodType;
 import utility.Modifier;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -69,5 +70,16 @@ public interface IMethodModel {
      * @return list of instruction in this method for processing
      */
     List<? extends IInstructionModel> getInstructions();
+
+    /**
+     * @return the list of fields this method accessed
+     */
+    Collection<? extends IFieldModel> getAccessedFields();
+
+
+    /**
+     * @return the list of methods this method called
+     */
+    Collection<? extends IMethodModel> getCalledMethods();
 
 }

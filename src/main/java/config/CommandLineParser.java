@@ -1,12 +1,19 @@
 package config;
 
-import com.martiansoftware.jsap.*;
-import utility.IFilter;
-import utility.Modifier;
-
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Scanner;
+
+import org.json.JSONObject;
+
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.Switch;
+import com.martiansoftware.jsap.UnflaggedOption;
 
 /**
  * Created by fineral on 12/11/2016 Edited by fineral on 12/13/2016
@@ -100,10 +107,9 @@ public class CommandLineParser implements ConfigurationFactory {
         opt9.setHelp("desc: use this flag if you want the UML to be outputed Top down");
         addOption(opt9);
 
-        FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j')
-                .setDefault("none").setStringParser(JSAP.STRING_PARSER);
-        opt10.setHelp("include this to specify a configuration file to use instead of command"
-                + "line arguments.");
+        FlaggedOption opt10 = new FlaggedOption("JSONfile").setLongFlag("config").setShortFlag('j').setDefault("none")
+                .setStringParser(JSAP.STRING_PARSER);
+        opt10.setHelp("include this to specify a configuration file to use instead of command" + "line arguments.");
         addOption(opt10);
     }
 
@@ -114,7 +120,7 @@ public class CommandLineParser implements ConfigurationFactory {
      * @throws Exception
      */
     @Override
-    public Configuration create() throws Exception {
+    public IConfiguration create() throws Exception {
 
         JSAPResult config = jsap.parse(this.args);
 
@@ -126,7 +132,7 @@ public class CommandLineParser implements ConfigurationFactory {
             // with the command line, THEN print usage, THEN print full
             // help. This is called "beating the user with a clue stick."
             for (@SuppressWarnings("rawtypes")
-                 Iterator errs = config.getErrorMessageIterator(); errs.hasNext(); ) {
+            Iterator errs = config.getErrorMessageIterator(); errs.hasNext();) {
                 System.err.println("Error: " + errs.next());
             }
 
@@ -138,41 +144,22 @@ public class CommandLineParser implements ConfigurationFactory {
             System.exit(1);
         }
 
-        Configuration conf = Configuration.getInstance();
+        IConfiguration conf = Configuration.getInstance();
 
         String configJ = config.getString("JSONfile");
-        if (!configJ.equals("none"))
-            return (new ConfigFileParser((new CommandLineFileInput(configJ)).getJson())).create();
-
-        String[] classes = config.getStringArray("class");
-        for (String c : classes) {
-            conf.add(ModelConfiguration.CLASSES_KEY, c);
+        if (!configJ.equals("none")) {
+            JSONObject json = readJsonObject(configJ);
+            conf = Configuration.getInstance();
+            conf.populateMap("", json.toMap());
         }
+
+        conf.add(ModelConfiguration.CLASSES_KEY, config.getStringArray("class"));
         conf.set(RunnerConfiguration.EXECUTABLE_PATH, config.getString("path"));
         conf.set(RunnerConfiguration.OUTPUT_FORMAT, config.getString("extension"));
         conf.set(RunnerConfiguration.OUTPUT_DIRECTORY, config.getString("outputDirectory"));
         conf.set(RunnerConfiguration.FILE_NAME, config.getString("outputfile"));
-
         conf.set(GeneratorConfiguration.NODE_SEP, Double.toString(config.getDouble("nodeseparationvalue")));
-
-        List<Modifier> filters = new ArrayList<Modifier>();
-        switch (config.getString("filters")) {
-            case "public":
-                filters.add(Modifier.PRIVATE);
-                filters.add(Modifier.PROTECTED);
-                break;
-            case "protected":
-                filters.add(Modifier.PRIVATE);
-                break;
-            case "private":
-                break;
-            default:
-                System.err.println("modifier not found");
-        }
-
-        IFilter<Modifier> filter = data -> !filters.contains(data);
-
-        conf.setFilter(filter);
+        conf.set(ClassParserConfiguration.MODIFIER_FILTER, config.getString("filters"));
 
         conf.set(ModelConfiguration.IS_RECURSIVE_KEY, Boolean.toString(config.getBoolean("recursive")));
 
@@ -188,14 +175,38 @@ public class CommandLineParser implements ConfigurationFactory {
     /**
      * Adds the specified option to the commanLineParser
      *
-     * @param opt- option to add to the commandLineParser
+     * @param opt-
+     *            option to add to the commandLineParser
      */
     public void addOption(Parameter opt) {
         try {
             jsap.registerParameter(opt);
         } catch (JSAPException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new RuntimeException("Unable to register parameter: " + opt.toString(), e);
+        }
+    }
+
+    static JSONObject readJsonObject(String arg) {
+        Scanner scanner = null;
+        try {
+            if (arg.length() <= 0) {
+                return new JSONObject();
+            }
+            scanner = new Scanner(new File(arg));
+
+            StringBuilder json = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                json.append(scanner.nextLine());
+            }
+
+            return new JSONObject(json.toString());
+        } catch (FileNotFoundException e) {
+            return new JSONObject();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
     }
 }

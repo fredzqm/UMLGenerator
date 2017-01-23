@@ -52,7 +52,7 @@ public class GraphVizClass extends IClassModelFilter {
 
     @Override
     public List<String> getStereoTypes() {
-        List<String> ls = new ArrayList<>(1);
+        List<String> ls = new ArrayList<>(super.getStereoTypes());
         switch (super.getType()) {
             case INTERFACE:
                 ls.add("Interface");
