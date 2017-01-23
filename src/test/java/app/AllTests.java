@@ -26,7 +26,7 @@ import utility.IMapperTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({AnalyzerClassParserTest.class, FavorCompositionAnalyzerTest.class, AnalyzerRelationParserTest.class,SingletonAnalyzerTest.class,
-        SystemTest.class, CommandLineParserTest.class, CommandLineParserTest.class, ASMParserTest.class,
+        SystemTest.class, CommandLineParserTest.class, ASMParserTest.class,
         ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class, SystemModelTest.class, TypeModelTest.class,
         TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class})
 

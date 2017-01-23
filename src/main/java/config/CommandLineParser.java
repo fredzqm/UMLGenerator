@@ -59,7 +59,7 @@ public class CommandLineParser implements ConfigurationFactory {
      * @throws Exception
      */
     @Override
-    public IConfiguration create() throws Exception {
+    public IConfiguration create() throws FileNotFoundException {
         IConfiguration config = Configuration.getInstance();
         boolean parsingJson = true;
         Map<String, String> commandParams = new HashMap<>();
@@ -82,13 +82,13 @@ public class CommandLineParser implements ConfigurationFactory {
                 commandParams.put(sp[0], sp[1]);
             }
         }
-        for (String key : commandParams.keySet()){
+        for (String key : commandParams.keySet()) {
             config.set(key, commandParams.get(key));
         }
         return config;
     }
 
-    static JSONObject readJsonObject(String arg) {
+    static JSONObject readJsonObject(String arg) throws FileNotFoundException {
         Scanner scanner = null;
         try {
             if (arg.length() <= 0) {
@@ -100,10 +100,7 @@ public class CommandLineParser implements ConfigurationFactory {
             while (scanner.hasNextLine()) {
                 json.append(scanner.nextLine());
             }
-
             return new JSONObject(json.toString());
-        } catch (FileNotFoundException e) {
-            return new JSONObject();
         } finally {
             if (scanner != null) {
                 scanner.close();
