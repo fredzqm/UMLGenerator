@@ -63,17 +63,16 @@ public class CommandLineParser implements ConfigurationFactory {
         IConfiguration config = Configuration.getInstance();
         boolean parsingJson = true;
         Map<String, String> commandParams = new HashMap<>();
-        for (int i = 0; i < args.length; i++) {
-            String s = args[i];
-            if (s.equals("-c")) {
+        for (String s : args) {
+            if (s.equals("--config") || s.equals("-c")) {
                 parsingJson = true;
                 continue;
-            } else if (s.equals("--param")) {
+            } else if (s.equals("--param") || s.equals("-p")) {
                 parsingJson = false;
                 continue;
             }
             if (parsingJson) {
-                JSONObject json = readJsonObject(args[i]);
+                JSONObject json = readJsonObject(s);
                 config.populateMap("", json.toMap());
             } else {
                 String[] sp = s.split("=");
