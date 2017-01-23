@@ -8,10 +8,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -192,14 +189,14 @@ public class SystemTest {
         // get relations
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
         List<IRelationInfo> relFromStubToSuperClass = relations.get(new ClassPair(dummyStub, dummySuperClass));
-        assertEquals(Arrays.asList(new RelationExtendsClass()), relFromStubToSuperClass);
+        assertEquals(Collections.singletonList(new RelationExtendsClass()), relFromStubToSuperClass);
 
         List<IRelationInfo> relFromStubToInterface = relations.get(new ClassPair(dummyStub, dummyInterface));
         assertNull(relFromStubToInterface);
 
         List<IRelationInfo> relFromSuperToInterfaceClass = relations
                 .get(new ClassPair(dummySuperClass, dummyInterface));
-        assertEquals(Arrays.asList(new RelationImplement()), relFromSuperToInterfaceClass);
+        assertEquals(Collections.singletonList(new RelationImplement()), relFromSuperToInterfaceClass);
     }
 
     @Test

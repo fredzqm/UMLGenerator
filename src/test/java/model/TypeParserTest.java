@@ -5,6 +5,7 @@ import model.TypeParser.MethodSignatureParseResult;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -167,7 +168,7 @@ public class TypeParserTest {
                 ASMParser.getClassByName("sun/reflect/generics/tree/Tree"), "T");
     }
 
-    public void assertParseGenericType(String arg, ClassModel lower, String name) {
+    private void assertParseGenericType(String arg, ClassModel lower, String name) {
         GenericTypeParam x = TypeParser.parseTypeParam(arg);
         assertEquals(lower, x.getClassModel());
         assertEquals(name, x.getName());
@@ -187,7 +188,7 @@ public class TypeParserTest {
 
         // super type list
         List<TypeModel> spls = rs.getSuperTypes();
-        assertEquals(spls, Arrays.asList(new TypeModel[]{ASMParser.getObject()}));
+        assertEquals(spls, Collections.singletonList(ASMParser.getObject()));
     }
 
     @Test

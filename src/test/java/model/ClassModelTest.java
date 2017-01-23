@@ -178,7 +178,7 @@ public class ClassModelTest {
         assertEquals(ParametizedClassModel.class, superType2.getClass());
         assertEquals(ASMParser.getClassByName("java.lang.Iterable"), superType2.getClassModel());
         List<TypeModel> superType2Argss = ((ParametizedClassModel) superType2).getGenericArgs();
-        assertEquals(Arrays.asList(gene2E), superType2Argss);
+        assertEquals(Collections.singletonList(gene2E), superType2Argss);
 
         // fields
         TypeModel aType = model.getFieldByName("a").getFieldType();
@@ -186,7 +186,7 @@ public class ClassModelTest {
         TypeModel arrayEType = model.getFieldByName("arrayE").getFieldType();
         assertEquals(new ArrayTypeModel(gene2E, 1), arrayEType);
         TypeModel listAType = model.getFieldByName("listA").getFieldType();
-        assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Arrays.asList(gene1A)),
+        assertEquals(new ParametizedClassModel(ASMParser.getClassByName("java.util.List"), Collections.singletonList(gene1A)),
                 listAType);
         TypeModel mapAtoEType = model.getFieldByName("mapAtoE").getFieldType();
         assertEquals(
