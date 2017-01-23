@@ -1,6 +1,5 @@
 package generator;
 
-import config.GeneratorConfiguration;
 import config.IConfiguration;
 
 /**

@@ -8,9 +8,9 @@ import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
-import config.GeneratorConfiguration;
-import config.ModelConfiguration;
-import config.RunnerConfiguration;
+import generator.GeneratorConfiguration;
+import model.ModelConfiguration;
+import runner.RunnerConfiguration;
 import viewer.Viewer;
 
 /**

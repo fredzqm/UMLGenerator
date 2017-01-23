@@ -11,6 +11,9 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import analyzer.classParser.ClassParserConfiguration;
+import generator.GeneratorConfiguration;
+import model.ModelConfiguration;
+import runner.RunnerConfiguration;
 import utility.IFilter;
 import utility.Modifier;
 

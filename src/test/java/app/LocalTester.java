@@ -3,12 +3,11 @@ package app;
 import analyzer.favorComposition.FavorCompositionAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
-import config.EngineConfiguration;
-import config.GeneratorConfiguration;
-import config.ModelConfiguration;
-import config.RunnerConfiguration;
 import dummy.favorDummy.FavorDummyA;
 import dummy.favorDummy.FavorDummyB;
+import generator.GeneratorConfiguration;
+import model.ModelConfiguration;
+import runner.RunnerConfiguration;
 import viewer.Viewer;
 
 /**

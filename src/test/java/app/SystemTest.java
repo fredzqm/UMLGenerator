@@ -28,9 +28,6 @@ import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
-import config.GeneratorConfiguration;
-import config.ModelConfiguration;
-import config.RunnerConfiguration;
 import dummy.generic.GenDummyClass;
 import dummy.hasDependsRel.RelDummyClass;
 import dummy.hasDependsRel.RelDummyDependencyInMethodBody;
@@ -39,6 +36,9 @@ import dummy.hasDependsRel.RelOtherDummyClass;
 import dummy.inheritanceRel.DummyInterface;
 import dummy.inheritanceRel.DummySubClass;
 import dummy.inheritanceRel.DummySuperClas;
+import generator.GeneratorConfiguration;
+import model.ModelConfiguration;
+import runner.RunnerConfiguration;
 
 /**
  * The GraphVizGenerator and GraphVizRunner Test.

@@ -1,6 +1,5 @@
 package analyzer.classParser;
 
-import analyzer.classParser.*;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;

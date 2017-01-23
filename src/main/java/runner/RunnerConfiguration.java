@@ -1,4 +1,7 @@
-package config;
+package runner;
+
+import config.Configurable;
+import config.IConfiguration;
 
 /**
  * A RunnerConfiguration.

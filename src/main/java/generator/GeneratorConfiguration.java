@@ -1,4 +1,7 @@
-package config;
+package generator;
+
+import config.Configurable;
+import config.IConfiguration;
 
 /**
  * A GeneratorConfiguration.
