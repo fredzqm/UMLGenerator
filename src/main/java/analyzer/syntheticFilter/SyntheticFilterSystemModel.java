@@ -28,11 +28,7 @@ public class SyntheticFilterSystemModel extends ISystemModelFilter {
         if (last$ < 0)
             return false;
         char firstNameChar = className.charAt(last$ + 1);
-        if (firstNameChar >= '0' && firstNameChar <= '9') {
-//            System.out.println(className);
-            return true;
-        }
-        return false;
+        return firstNameChar >= '0' && firstNameChar <= '9';
     }
 
 }

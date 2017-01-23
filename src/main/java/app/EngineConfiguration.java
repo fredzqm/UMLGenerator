@@ -29,7 +29,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public void setup(IConfiguration config) {
         this.config = config;
         config.setIfMissing(GENERATOR_KEY, GraphVizGenerator.class.getName());
-        if ("true".equals(config.getValue(SYNTHETIC))) {
+        if (Boolean.parseBoolean(config.getValue(SYNTHETIC))) {
             config.add(ANALYZER_KEY, AnalyzerSyntheticFilter.class.getName());
         }
         config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
