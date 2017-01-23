@@ -16,7 +16,6 @@ public class SingletonSystemModel extends ISystemModelFilter {
     @Override
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
-
         for (IClassModel clazz : super.getClasses()) {
             clazz = checkSingleton(clazz);
             classes.add(clazz);
