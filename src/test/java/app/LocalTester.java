@@ -30,8 +30,6 @@ public class LocalTester {
         config.add(EngineConfiguration.ANALYZER_KEY, FavorCompositionAnalyzer.class.getName());
         config.add(ModelConfiguration.CLASSES_KEY, FavorDummyA.class.getName(), FavorDummyB.class.getName());
 
-        System.out.println(config);
-            
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
         systemModel = engine.analyze(systemModel);

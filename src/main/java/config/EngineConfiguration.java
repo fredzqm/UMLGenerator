@@ -16,7 +16,7 @@ import java.util.Map;
  * <p>
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
-public class EngineConfiguration implements IEngineConfiguration {
+public class EngineConfiguration implements Configurable, IConfiguration {
     public static final String GENERATOR_KEY = "GENERATOR_KEY";
     public static final String ANALYZER_KEY = "ANALYZER_KEY";
     private IConfiguration config;
@@ -28,13 +28,21 @@ public class EngineConfiguration implements IEngineConfiguration {
         config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
-    @Override
+    /**
+     * Returns the IGenerator
+     *
+     * @return IGenerator object.
+     */
     public IGenerator getGenerator() {
         String generatorClass = config.getValue(GENERATOR_KEY);
         return IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
     }
 
-    @Override
+    /**
+     * Returns an Iterable of IAnalyzers.
+     *
+     * @return Iterable of IAnalyzers.
+     */
     public List<IAnalyzer> getAnalyzers() {
         List<String> analyzerNames = config.getList(ANALYZER_KEY);
         List<IAnalyzer> analyzers = new ArrayList<>();

@@ -1,13 +1,11 @@
 package config;
 
-import runner.IRunnerConfiguration;
-
 /**
  * A RunnerConfiguration.
  * <p>
  * Created by lamd on 1/11/2017.
  */
-public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
+public class RunnerConfiguration implements Configurable {
     public static final String OUTPUT_FORMAT = "outputFormat";
     public static final String OUTPUT_DIRECTORY = "outputDir";
     public static final String EXECUTABLE_PATH = "executablePath";
@@ -31,22 +29,38 @@ public class RunnerConfiguration implements IRunnerConfiguration, Configurable {
         this.config.setIfMissing(FILE_NAME, "output");
     }
 
-    @Override
+    /**
+     * Returns the Output File's Format.
+     * <p>
+     * Example: ".png" --> "png"
+     *
+     * @return Output File's Format
+     */
     public String getOutputFormat() {
         return this.config.getValue(OUTPUT_FORMAT);
     }
 
-    @Override
+    /**
+     * Returns the Output Directory.
+     *
+     * @return Output Directory.
+     */
     public String getOutputDirectory() {
         return this.config.getValue(OUTPUT_DIRECTORY);
     }
 
-    @Override
+    /**
+     * Returns the String of the executable path.
+     *
+     * @return Executable Path String.
+     */
     public String getExecutablePath() {
         return this.config.getValue(EXECUTABLE_PATH);
     }
 
-    @Override
+    /**
+     * @return the file name without the extension
+     */
     public String getFileName() {
         return this.config.getValue(FILE_NAME);
     }

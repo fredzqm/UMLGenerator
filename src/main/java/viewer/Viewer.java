@@ -1,11 +1,11 @@
 package viewer;
 
-import runner.IRunnerConfiguration;
-
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import config.RunnerConfiguration;
 
 /**
  * Views the outputted file.
@@ -13,14 +13,14 @@ import java.nio.file.Paths;
  * Created by lamd on 1/11/2017.
  */
 public class Viewer implements Runnable {
-    private IRunnerConfiguration config;
+    private RunnerConfiguration config;
 
     /**
      * Constructs a Viewer.
      *
      * @param config IRunnerConfiguration config.
      */
-    public Viewer(IRunnerConfiguration config) {
+    public Viewer(RunnerConfiguration config) {
         this.config = config;
     }
 

@@ -14,9 +14,9 @@ import java.io.IOException;
  */
 public class GraphVizRunner implements IRunner {
     private static final String OUTPUT_FILE_EXTENSION = "dot";
-    private IRunnerConfiguration config;
+    private RunnerConfiguration config;
 
-    private GraphVizRunner(IRunnerConfiguration config) {
+    private GraphVizRunner(RunnerConfiguration config) {
         this.config = config;
     }
 

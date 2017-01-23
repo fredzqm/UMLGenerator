@@ -11,7 +11,7 @@ import utility.Modifier;
  */
 public class GraphVizFieldParser implements IParser<IFieldModel> {
     @Override
-    public String parse(IFieldModel field, IClassParserConfiguration config) {
+    public String parse(IFieldModel field, ClassParserConfiguration config) {
         IParser<ITypeModel> typeParser = config.getTypeParser();
         IParser<Modifier> modifierParser = config.getModifierParser();
         return String.format("%s %s : %s \\l", modifierParser.parse(field.getModifier(), config), field.getName(),
