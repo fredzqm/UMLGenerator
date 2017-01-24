@@ -20,8 +20,8 @@ import generator.IGenerator;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class EngineConfiguration implements Configurable, IConfiguration {
-    public static final String GENERATOR_KEY = "GENERATOR_KEY";
-    public static final String ANALYZER_KEY = "ANALYZER_KEY";
+    public static final String GENERATOR_KEY = "generator_key";
+    public static final String ANALYZER_KEY = "analyzer_key";
     public static final String SYNTHETIC = "synthetic";
     private IConfiguration config;
 
