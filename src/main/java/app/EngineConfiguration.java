@@ -20,9 +20,11 @@ import generator.IGenerator;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class EngineConfiguration implements Configurable, IConfiguration {
-    public static final String GENERATOR_KEY = "generator_key";
-    public static final String ANALYZER_KEY = "analyzer_key";
-    public static final String SYNTHETIC = "synthetic";
+	public static final String CONFIG_PATH = "engine.";
+	
+	public static final String GENERATOR_KEY = CONFIG_PATH + "generator_key";
+    public static final String ANALYZER_KEY = CONFIG_PATH + "analyzer_key";
+    public static final String SYNTHETIC = CONFIG_PATH + "synthetic";
     private IConfiguration config;
 
     @Override

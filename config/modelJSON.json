@@ -28,7 +28,9 @@
 	},
 	"engine": {
 		"generator_key":"generator.GraphVizGenerator",
-		"analyzer_key":"analyzer.classParser.AnalyzerClassParser",
+		"analyzer_key":[
+			"analyzer.classParser.AnalyzerClassParser"
+		],
 		"synthetic":false
 	},
 	"favorComposition.": {
