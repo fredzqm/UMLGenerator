@@ -1,0 +1,31 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "out",
+		"outputDir": "output"
+	},
+	"model": {
+		"classes": [
+			"demos.LazyChocolateBoiler",
+			"demos.EagerChocolateBoiler",
+			"java.util.Calendar",
+			"java.awt.Desktop",
+			"java.lang.Runtime"
+		],
+		"isRecursive": false
+	},
+	"graphviz": {
+		"nodeSep": "1.0",
+		"rankDir": "BT"
+	},
+	"classParser": {
+		"modifierFilter": "public"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.singleton.SingletonAnalyzer"
+		],
+		"synthetic":true
+	}
+}

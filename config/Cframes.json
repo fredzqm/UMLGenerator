@@ -1,0 +1,32 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "out",
+		"outputDir": "output"
+	},
+	"model": {
+		"classes": [
+			"javax.swing.JFrame",
+			"java.awt.Frame"
+		],
+		"blackList":[
+			"java",
+			"sun"
+		],
+		"isRecursive": true
+	},
+	"graphviz": {
+		"nodeSep": "1.0",
+		"rankDir": "BT"
+	},
+	"classParser": {
+		"modifierFilter": "public"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.favorComposition.FavorCompositionAnalyzer"
+		],
+		"synthetic":true
+	}
+}

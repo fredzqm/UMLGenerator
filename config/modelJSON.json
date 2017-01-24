@@ -1,0 +1,42 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "out",
+		"outputDir": "output"
+	},
+	"model": {
+		"classes": [
+			"java.lang.String"
+		],
+		"isRecursive": false,
+		"blackList":[],
+		"verbose":"false"
+	},
+	"graphviz": {
+		"nodeSep": "1.0",
+		"rankDir": "BT",
+		"generator_node_style": "node [shape=record]"
+	},
+	"classParser": {
+		"modifierFilter": "public",
+		"class_header":"analyzer.classParser.GraphVizHeaderParser",
+		"class_field":"analyzer.classParser.GraphVizFieldParser",
+		"class_method":"analyzer.classParser.GraphVizMethodParser",
+		"class_type":"analyzer.classParser.GraphVizTypeParser",
+		"class_modifier":"analyzer.classParser.GraphVizModifierParser"
+	},
+	"engine": {
+		"generator_key":"generator.GraphVizGenerator",
+		"analyzer_key":[
+			"analyzer.classParser.AnalyzerClassParser"
+		],
+		"synthetic":false
+	},
+	"favorComposition.": {
+		"color":"orange"
+	},
+	"singleton.": {
+		"color":"blue"
+	}
+}
