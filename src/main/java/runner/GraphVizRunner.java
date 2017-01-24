@@ -1,7 +1,6 @@
 package runner;
 
 import config.IConfiguration;
-import config.RunnerConfiguration;
 
 import java.io.File;
 import java.io.FileWriter;

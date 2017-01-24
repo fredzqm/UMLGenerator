@@ -4,7 +4,6 @@ import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
-import config.ModelConfiguration;
 
 import java.util.Collection;
 import java.util.Collections;

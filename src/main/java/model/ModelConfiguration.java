@@ -1,7 +1,10 @@
-package config;
+package model;
 
 
 import java.util.List;
+
+import config.Configurable;
+import config.IConfiguration;
 
 /**
  * A ModelConfiguration.

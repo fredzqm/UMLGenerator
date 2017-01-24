@@ -1,4 +1,7 @@
-package config;
+package runner;
+
+import config.Configurable;
+import config.IConfiguration;
 
 /**
  * A RunnerConfiguration.
@@ -24,7 +27,7 @@ public class RunnerConfiguration implements Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(OUTPUT_FORMAT, "svg");
-        this.config.setIfMissing(OUTPUT_DIRECTORY, "./output");
+        this.config.setIfMissing(OUTPUT_DIRECTORY, "output");
         this.config.setIfMissing(EXECUTABLE_PATH, "dot");
         this.config.setIfMissing(FILE_NAME, "output");
     }

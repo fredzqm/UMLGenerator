@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 import config.CommandLineParser;
 import config.IConfiguration;
-import config.RunnerConfiguration;
+import runner.RunnerConfiguration;
 import viewer.Viewer;
 
 public class Application {

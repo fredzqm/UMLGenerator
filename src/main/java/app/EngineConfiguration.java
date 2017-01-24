@@ -1,8 +1,10 @@
-package config;
+package app;
 
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
 import analyzer.utility.IAnalyzer;
+import config.Configurable;
+import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
 

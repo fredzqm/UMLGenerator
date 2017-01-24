@@ -3,7 +3,6 @@ package model;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
-import config.ModelConfiguration;
 
 import org.junit.Test;
 

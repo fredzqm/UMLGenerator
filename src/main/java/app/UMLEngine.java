@@ -4,7 +4,6 @@ import java.util.List;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
-import config.EngineConfiguration;
 import config.IConfiguration;
 import generator.IGenerator;
 import generator.IGraph;
