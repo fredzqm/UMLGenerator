@@ -7,10 +7,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import config.Configuration;
+import config.IConfiguration;
 import org.junit.Test;
 
 import analyzer.utility.IAnalyzer;
@@ -76,8 +77,9 @@ public class SingletonAnalyzerTest {
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
-        IAnalyzer analyzer = new AnalyzerSingleton();
-        return analyzer.analyze(systemModelMock, null);
+        IAnalyzer analyzer = new SingletonAnalyzer();
+        IConfiguration config = Configuration.getInstance();
+        return analyzer.analyze(systemModelMock, config);
     }
 
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {

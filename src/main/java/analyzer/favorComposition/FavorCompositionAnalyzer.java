@@ -15,13 +15,14 @@ import java.util.Collection;
 public class FavorCompositionAnalyzer implements IAnalyzer {
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
+        FavorCompositionConfiguration favorComConfig = config.createConfiguration(FavorCompositionConfiguration.class);
         Collection<? extends IClassModel> classes = systemModel.getClasses();
         Collection<IClassModel> analyzedClass = new ArrayList<>();
 
         classes.forEach((c) -> {
             IClassModel superClass = c.getSuperClass();
             if (!superClass.getName().equals("java.lang.Object") && superClass.getType() == ClassType.CONCRETE) {
-                analyzedClass.add(new FavorCompositionClassModel(c));
+                analyzedClass.add(new FavorCompositionClassModel(c, favorComConfig));
             } else {
                 analyzedClass.add(c);
             }

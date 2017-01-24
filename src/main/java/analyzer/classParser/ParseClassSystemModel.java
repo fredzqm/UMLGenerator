@@ -14,9 +14,8 @@ public class ParseClassSystemModel extends ISystemModelFilter {
      * Construct a ParseClassSystemModel.
      *
      * @param systemModel
-     * @param classParser
      */
-    public ParseClassSystemModel(ISystemModel systemModel, ClassParserConfiguration config) {
+    ParseClassSystemModel(ISystemModel systemModel, ClassParserConfiguration config) {
         super(systemModel);
         this.config = config;
     }

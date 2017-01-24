@@ -9,7 +9,7 @@ import analyzer.utility.ISystemModelFilter;
 
 public class SyntheticFilterSystemModel extends ISystemModelFilter {
 
-    public SyntheticFilterSystemModel(ISystemModel systemModel) {
+    SyntheticFilterSystemModel(ISystemModel systemModel) {
         super(systemModel);
     }
 

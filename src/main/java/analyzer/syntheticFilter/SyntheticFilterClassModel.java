@@ -9,7 +9,7 @@ import analyzer.utility.IMethodModel;
 
 public class SyntheticFilterClassModel extends IClassModelFilter {
 
-    public SyntheticFilterClassModel(IClassModel classModel) {
+    SyntheticFilterClassModel(IClassModel classModel) {
         super(classModel);
     }
 
