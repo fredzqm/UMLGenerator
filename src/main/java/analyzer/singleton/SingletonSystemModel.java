@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SingletonSystemModel extends ISystemModelFilter {
+    private final SingletonConfiguration config;
 
-    public SingletonSystemModel(ISystemModel systemModel) {
+    SingletonSystemModel(ISystemModel systemModel, SingletonConfiguration config) {
         super(systemModel);
+        this.config = config;
     }
 
     @Override
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
-
         for (IClassModel clazz : super.getClasses()) {
-            clazz = checkSingleton(clazz);
-            classes.add(clazz);
+            classes.add(checkSingleton(clazz));
         }
         return classes;
     }
@@ -28,8 +28,9 @@ public class SingletonSystemModel extends ISystemModelFilter {
         // check all methods to make sure there is only private constructor
         Collection<? extends IMethodModel> methods = clazz.getMethods();
         for (IMethodModel method : methods) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR && method.getModifier() != Modifier.PRIVATE)
+            if (method.getMethodType() == MethodType.CONSTRUCTOR && method.getModifier() != Modifier.PRIVATE) {
                 return clazz;
+            }
         }
 
         // look for the static instance of singleton
@@ -62,7 +63,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
             }
         }
 
-        return new SingletonClassModel(clazz);
+        return new SingletonClassModel(clazz, this.config);
     }
 
 }

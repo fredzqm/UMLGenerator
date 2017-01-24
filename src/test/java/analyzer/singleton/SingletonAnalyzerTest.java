@@ -7,9 +7,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
+import config.Configuration;
+import config.IConfiguration;
 import org.junit.Test;
 
 import analyzer.utility.IAnalyzer;
@@ -42,21 +44,21 @@ public class SingletonAnalyzerTest {
         // specify class model behavior
         when(_singletonClassModel.getName()).thenReturn(singletonName);
         when(_singletonClassModel.getNodeStyle()).thenReturn("");
-        doReturn(Arrays.asList(_staticSingletonField)).when(_singletonClassModel).getFields();
-        doReturn(Arrays.asList(_getInstanceMethod)).when(_singletonClassModel).getMethods();
+        doReturn(Collections.singletonList(_staticSingletonField)).when(_singletonClassModel).getFields();
+        doReturn(Collections.singletonList(_getInstanceMethod)).when(_singletonClassModel).getMethods();
         // specify class field model behavior
         when(_staticSingletonField.isStatic()).thenReturn(true);
         when(_staticSingletonField.getModifier()).thenReturn(Modifier.PRIVATE);
         when(_staticSingletonField.getFieldType()).thenReturn(_singletonTypeModel);
         // specify class method model behavior
-        doReturn(Arrays.asList(_staticSingletonField)).when(_getInstanceMethod).getAccessedFields();
+        doReturn(Collections.singletonList(_staticSingletonField)).when(_getInstanceMethod).getAccessedFields();
         when(_getInstanceMethod.getModifier()).thenReturn(Modifier.PUBLIC);
         when(_getInstanceMethod.getReturnType()).thenReturn(_singletonTypeModel);
         when(_getInstanceMethod.isStatic()).thenReturn(true);
 
         // create systemModel
         ISystemModel _systemModelMock = mock(ISystemModel.class);
-        doReturn(Arrays.asList(_singletonClassModel)).when(_systemModelMock).getClasses();
+        doReturn(Collections.singletonList(_singletonClassModel)).when(_systemModelMock).getClasses();
 
         // start
         ISystemModel systemModel = runAnalyzer(_systemModelMock);
@@ -75,8 +77,9 @@ public class SingletonAnalyzerTest {
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
-        IAnalyzer analyzer = new AnalyzerSingleton();
-        return analyzer.analyze(systemModelMock, null);
+        IAnalyzer analyzer = new SingletonAnalyzer();
+        IConfiguration config = Configuration.getInstance();
+        return analyzer.analyze(systemModelMock, config);
     }
 
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {

@@ -20,7 +20,6 @@ public class SystemModelTest {
         when(config.isRecursive()).thenReturn(false);
         when(config.getBlackList()).thenReturn(null);
         when(config.isVerbose()).thenReturn(false);
-        when(config.filterSynthetic()).thenReturn(false);
         when(config.getClasses()).thenReturn(Collections.singletonList("javax.swing.JComponent"));
 
         SystemModel sys = SystemModel.getInstance(config);
@@ -40,9 +39,9 @@ public class SystemModelTest {
         when(config.isRecursive()).thenReturn(true);
         when(config.getBlackList()).thenReturn(null);
         when(config.isVerbose()).thenReturn(false);
-        when(config.filterSynthetic()).thenReturn(false);
         when(config.getClasses()).thenReturn(Collections.singletonList("javax.swing.JComponent"));
-
+        when(config.getBlackList()).thenReturn(Collections.emptyList());
+        
         SystemModel sys = SystemModel.getInstance(config);
 
         Set<String> actual = new HashSet<>();

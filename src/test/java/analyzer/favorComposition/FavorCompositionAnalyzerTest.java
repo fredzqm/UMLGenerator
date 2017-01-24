@@ -1,23 +1,23 @@
 package analyzer.favorComposition;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import analyzer.utility.IAnalyzer;
+import analyzer.utility.IClassModel;
+import analyzer.utility.ISystemModel;
+import config.Configuration;
+import config.IConfiguration;
+import org.junit.Test;
+import utility.ClassType;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Test;
-
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.ISystemModel;
-import utility.ClassType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 /**
+ * Test the FavorCompositionAnalyzer.
+ * <p>
  * Created by lamd on 1/15/2017.
  */
 public class FavorCompositionAnalyzerTest {
@@ -70,9 +70,10 @@ public class FavorCompositionAnalyzerTest {
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
         IAnalyzer analyzer = new FavorCompositionAnalyzer();
-        return analyzer.analyze(systemModelMock, null);
+        IConfiguration config = Configuration.getInstance();
+        return analyzer.analyze(systemModelMock, config);
     }
-    
+
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {
         for (IClassModel x : classList) {
             if (x.getName().equals(_a_name))

@@ -53,8 +53,7 @@ public class AnalyzerRelationParserTest {
 
     private ISystemModel runRelationAnalyzer(ISystemModel _sysModel) {
         AnalyzerRelationParser analyzerRelation = new AnalyzerRelationParser();
-        ISystemModel sysModel = analyzerRelation.analyze(_sysModel, null);
-        return sysModel;
+        return analyzerRelation.analyze(_sysModel, null);
     }
 
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {

@@ -16,7 +16,7 @@ public class FavorCompositionSystemModel implements ISystemModel {
     private ISystemModel systemModel;
     private Collection<? extends IClassModel> classes;
 
-    public FavorCompositionSystemModel(ISystemModel systemModel, Collection<? extends IClassModel> classes) {
+    FavorCompositionSystemModel(ISystemModel systemModel, Collection<? extends IClassModel> classes) {
         this.systemModel = systemModel;
         this.classes = classes;
     }

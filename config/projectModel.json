@@ -1,0 +1,9 @@
+{
+  "outputDir" : "output",
+  "classes" : ["model.ArrayTypeModel", "model.ASMParser", "model.ClassModel", "model.FieldModel", "model.GenericTypeArg", "model.GenericTypeParam", "model.GenericTypeVarPlaceHolder", "model.InstructionField", "model.InstructionMethod", "model.InstructionModel", "model.MethodModel", "model.ParametizedClassModel", "model.PrimitiveType", "model.Signature", "model.SystemModel", "model.TypeModel", "model.TypeParser"],
+  "fileName" : "1",
+  "nodeSep" : "1.0",
+  "modifierFilter" : "",
+  "isRecursive" : false,
+  "rankDir" : "BT"
+}
