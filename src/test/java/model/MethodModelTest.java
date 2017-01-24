@@ -75,8 +75,7 @@ public class MethodModelTest {
         instructions.forEach((m) -> {
             if (m instanceof InstructionMethod) {
                 InstructionMethod minsn = InstructionMethod.class.cast(m);
-                if (minsn != null)
-                    actual.add(minsn.getMethod().getName());
+                actual.add(minsn.getMethod().getName());
             }
         });
 
@@ -110,7 +109,7 @@ public class MethodModelTest {
         String dummyClass = GenericDummyClass.class.getName();
         ClassModel genericdummy = ASMParser.getClassByName(dummyClass);
 
-        MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Arrays.asList(), "iterator"));
+        MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Collections.emptyList(), "iterator"));
 
         assertEquals("iterator", iteratorMethod.getName());
         assertEquals(genericdummy, iteratorMethod.getBelongTo());
@@ -124,12 +123,12 @@ public class MethodModelTest {
         String string = String.class.getName();
         ClassModel stringClass = ASMParser.getClassByName(string);
 
-        MethodModel constructor = stringClass.getMethodBySignature(new Signature(Arrays.asList(), "<init>"));
+        MethodModel constructor = stringClass.getMethodBySignature(new Signature(Collections.emptyList(), "<init>"));
         assertEquals("java.lang.String", constructor.getName());
         assertEquals(stringClass, constructor.getBelongTo());
         assertEquals(PrimitiveType.VOID, constructor.getReturnType());
 
-        MethodModel chars = stringClass.getMethodBySignature(new Signature(Arrays.asList(), "chars"));
+        MethodModel chars = stringClass.getMethodBySignature(new Signature(Collections.emptyList(), "chars"));
         assertEquals("chars", chars.getName());
         assertEquals(ASMParser.getClassByName("java.lang.CharSequence"), chars.getBelongTo());
         assertEquals(ASMParser.getClassByName("java.util.stream.IntStream"), chars.getReturnType());
@@ -140,7 +139,7 @@ public class MethodModelTest {
         ClassModel throwable = ASMParser.getClassByName("java/lang/Throwable");
 
         MethodModel fillInStackTrace = throwable
-                .getMethodBySignature(new Signature(Arrays.asList(), "fillInStackTrace"));
+                .getMethodBySignature(new Signature(Collections.emptyList(), "fillInStackTrace"));
         assertEquals("fillInStackTrace", fillInStackTrace.getName());
         assertEquals(throwable, fillInStackTrace.getBelongTo());
         assertEquals(throwable, fillInStackTrace.getReturnType());
@@ -150,7 +149,7 @@ public class MethodModelTest {
     public void testGetMethodBySignature4() {
         ClassModel clazz = ASMParser.getClassByName("java.security.AccessController");
 
-        List<TypeModel> argsLs = Arrays.asList(ASMParser.getClassByName("java.security.PrivilegedAction"));
+        List<TypeModel> argsLs = Collections.singletonList(ASMParser.getClassByName("java.security.PrivilegedAction"));
         MethodModel method = clazz.getMethodBySignature(new Signature(argsLs, "doPrivileged"));
         assertEquals("doPrivileged", method.getName());
         assertEquals(clazz, method.getBelongTo());

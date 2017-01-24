@@ -22,7 +22,7 @@ public class InstructionField extends InstructionModel {
             throw new RuntimeException();
         field = destClass.getFieldByName(fiedlCall.name);
         if (field == null) {
-            System.err.println(getClass().getName() + "::field is null: " + fiedlCall.desc + "\tname\t" + fiedlCall.name
+            Logger.logError(getClass().getName() + "::field is null: " + fiedlCall.desc + "\tname\t" + fiedlCall.name
                     + "\towner\t" + fiedlCall.owner);
         }
     }

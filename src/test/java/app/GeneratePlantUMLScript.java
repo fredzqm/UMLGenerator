@@ -43,7 +43,7 @@ public class GeneratePlantUMLScript {
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
         systemModel = engine.analyze(systemModel);
-        Set<String> strings = new HashSet<String>();
+        Set<String> strings = new HashSet<>();
         System.out.println(systemModel.getRelations());
         for (ClassPair c : systemModel.getRelations().keySet()) {
             String[] mclasses = c.toString().split(" -> ");
@@ -51,7 +51,6 @@ public class GeneratePlantUMLScript {
 //        	System.out.println(mclasses[1].split("\\.")[1]);
             for (IRelationInfo r : systemModel.getRelations().get(c)) {
                 String arrow = r.toString();
-                String style = r.getEdgeStyle();
                 if (arrow.equals("Implements"))
                     System.out.println(mclasses[1].split("\\.")[1] + " <|. " + mclasses[0].split("\\.")[1]);
                 else if (arrow.equals("has many 0..n"))

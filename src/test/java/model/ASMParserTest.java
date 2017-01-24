@@ -32,24 +32,35 @@ public class ASMParserTest {
         Set<String> expected = new HashSet<>(Arrays.asList("java.lang.String", "java.lang.Object",
                 "java.lang.CharSequence", "java.lang.Comparable", "java.io.Serializable"));
 
-        Iterable<ClassModel> ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"),
-                ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
+        Collection<ClassModel> ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"),
+                Collections.emptyList(), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
         Set<String> actual = new HashSet<>();
         for (ClassModel c : ls)
             actual.add(c.getName());
-
-        assertTrue("Not all interfaces get parsed", actual.containsAll(expected));
-
+        
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testGetClassesNonRecursive() {
-        Iterator<ClassModel> itr = ASMParser.getClasses(Collections.singletonList("java/lang/String"), 0).iterator();
-        assertTrue(itr.hasNext());
-        itr.next();
-        assertFalse(itr.hasNext());
+        Collection<ClassModel> classes = ASMParser.getClasses(Collections.singletonList("java/lang/String"),
+                Collections.emptyList(), 0);
+        assertEquals(1, classes.size());
     }
 
+    @Test
+    public void testGetClassesBlackList() {
+        Set<String> expected = new HashSet<>(Arrays.asList("java.lang.String", "java.io.Serializable"));
+        
+        Collection<ClassModel> ls = ASMParser.getClasses(Collections.singletonList("java.lang.String"),
+                Collections.singletonList("java.lang"), ASMParser.RECURSE_INTERFACE | ASMParser.RECURSE_SUPERCLASS);
+        Set<String> actual = new HashSet<>();
+        for (ClassModel c : ls)
+            actual.add(c.getName());
+
+        assertEquals(expected, actual);
+    }
+    
     @Test
     public void testGetFieldsByNameSequence() {
         ClassModel x = ASMParser.getClassByName("java.awt.Dialog");

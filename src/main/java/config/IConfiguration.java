@@ -53,7 +53,8 @@ public interface IConfiguration {
      *
      * @param key
      *            String key for desired String value.
-     * @return String value corresponding to that key.
+     * @return String value corresponding to that key. null if the configuration
+     *         does not exist
      */
     String getValue(String key);
 

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class CommandLineParserTest {
         
         ModelConfiguration modelConfig = parser.createConfiguration(ModelConfiguration.class);
         assertFalse(modelConfig.isRecursive());
-        assertEquals(Arrays.asList("java.lang.String"), modelConfig.getClasses());
+        assertEquals(Collections.singletonList("java.lang.String"), modelConfig.getClasses());
         
         RunnerConfiguration runnerConfig = parser.createConfiguration(RunnerConfiguration.class);
         assertEquals("dot", runnerConfig.getExecutablePath());

@@ -1,17 +1,21 @@
 package analyzer.singleton;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.IClassModelFilter;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import analyzer.utility.IClassModel;
+import analyzer.utility.IClassModelFilter;
+
+/**
+ * TODO: Fred
+ */
 public class SingletonClassModel extends IClassModelFilter {
+    private SingletonConfiguration config;
 
-    public SingletonClassModel(IClassModel classModel) {
+    SingletonClassModel(IClassModel classModel, SingletonConfiguration config) {
         super(classModel);
+        this.config = config;
     }
-
 
     @Override
     public List<String> getStereoTypes() {
@@ -22,6 +26,6 @@ public class SingletonClassModel extends IClassModelFilter {
 
     @Override
     public String getNodeStyle() {
-        return super.getNodeStyle() + " color=\"blue\"";
+        return String.format("%s color=\"%s\"", super.getNodeStyle(), this.config.getSingletonColor());
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map.Entry;
  */
 public class Configuration implements IConfiguration {
     private static final String LIST_DELIMITER = " ";
-    private static final String DIRECTORY_DELIMITER = "/";
+    private static final String DIRECTORY_DELIMITER = ".";
     private Map<String, String> valueMap;
 
     private Configuration() {

@@ -7,14 +7,16 @@ import analyzer.utility.IClassModelFilter;
  * Created by lamd on 1/15/2017.
  */
 public class FavorCompositionClassModel extends IClassModelFilter {
+    private FavorCompositionConfiguration config;
 
-    public FavorCompositionClassModel(IClassModel classModel) {
+    FavorCompositionClassModel(IClassModel classModel, FavorCompositionConfiguration config) {
         super(classModel);
+        this.config = config;
     }
 
     @Override
     public String getNodeStyle() {
-        return super.getNodeStyle() + " color=\"orange\"";
+        return String.format("%s color=\"%s\"", super.getNodeStyle(), this.config.getFavorComColor());
     }
 
 }

@@ -1,16 +1,17 @@
 package app;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
+import analyzer.syntheticFilter.AnalyzerSyntheticFilter;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -21,12 +22,16 @@ import java.util.Map;
 public class EngineConfiguration implements Configurable, IConfiguration {
     public static final String GENERATOR_KEY = "GENERATOR_KEY";
     public static final String ANALYZER_KEY = "ANALYZER_KEY";
+    public static final String SYNTHETIC = "synthetic";
     private IConfiguration config;
 
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
         config.setIfMissing(GENERATOR_KEY, GraphVizGenerator.class.getName());
+        if (Boolean.parseBoolean(config.getValue(SYNTHETIC))) {
+            config.add(ANALYZER_KEY, AnalyzerSyntheticFilter.class.getName());
+        }
         config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
