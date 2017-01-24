@@ -24,6 +24,6 @@ public class SyntheticFilterClassModel extends IClassModelFilter {
     }
 
     private static boolean isSynthetic(String methodName) {
-        return methodName.contains("lamgda$");
+        return methodName.contains("lambda$");
     }
 }
