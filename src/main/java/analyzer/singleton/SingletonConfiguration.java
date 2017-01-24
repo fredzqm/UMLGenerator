@@ -7,7 +7,8 @@ import config.IConfiguration;
  * Created by lamd on 1/23/2017.
  */
 public class SingletonConfiguration implements Configurable {
-    public static final String SINGLETON_COLOR = "singletonColor";
+    public static final String CONFIG_PATH = "singleton.";
+    public static final String SINGLETON_COLOR = CONFIG_PATH + "color";
 
     private IConfiguration config;
 

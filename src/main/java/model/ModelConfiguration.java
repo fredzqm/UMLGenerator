@@ -1,6 +1,5 @@
 package model;
 
-
 import java.util.List;
 
 import config.Configurable;
@@ -12,11 +11,12 @@ import config.IConfiguration;
  * Created by lamd on 1/10/2017.
  */
 public class ModelConfiguration implements Configurable {
-    public static final String IS_RECURSIVE_KEY = "isRecursive";
-    public static final String CLASSES_KEY = "classes";
-    public static final String BLACK_LIST = "blackList";
-    public static final String VERBOSE = "verbose";
-    
+    public static final String CONFIG_PATH = "model.";
+    public static final String IS_RECURSIVE_KEY = CONFIG_PATH + "isRecursive";
+    public static final String CLASSES_KEY = CONFIG_PATH + "classes";
+    public static final String BLACK_LIST = CONFIG_PATH + "blackList";
+    public static final String VERBOSE = CONFIG_PATH + "verbose";
+
     private IConfiguration config;
 
     /**
