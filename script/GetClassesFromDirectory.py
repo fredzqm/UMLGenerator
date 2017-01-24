@@ -8,20 +8,23 @@ def getJavaFiles(direct):
     """
     mylist = listdir(direct)
     ret = ''
-    for dir in mylist:
-        if os.path.isdir(direct + '/' + dir):
-            ret = ret + getJavaFiles(direct + '/' + dir)
+    for mdir in mylist:
+        if os.path.isdir(direct + '/' + mdir):
+            ret = ret + getJavaFiles(direct + '/' + mdir)
         else:
-            nameSplit = os.path.splitext(dir)
+            nameSplit = os.path.splitext(direct + '/' + mdir)
+            #print(nameSplit)
+            #print(nameSplit)
             if nameSplit[1] == '.java':
-                folders = os.path.split(direct)
+                path = os.path.split(nameSplit[0])
+                folders = path[0].split("/")
                 qualifiedName = ''
                 for k in range(1, len(folders)):
                     qualifiedName += folders[k] + '.'
 
-                ret = ret + "\"{0}{1}\", ".format(qualifiedName, nameSplit[0])
+                ret = ret + "\"{0}{1}\", ".format(qualifiedName, path[1])
             else:
-                print(dir)
+                print(mdir)
     return ret[:-1]
 
 def main():

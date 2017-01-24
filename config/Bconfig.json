@@ -7,14 +7,13 @@
 	},
 	"model": {
 		"classes": [
-			"javax.swing.JFrame",
-			"java.awt.Frame"
+			"demos.LazyChocolateBoiler",
+			"demos.EagerChocolateBoiler",
+			"java.util.Calendar",
+			"java.awt.Desktop",
+			"java.lang.Runtime"
 		],
-		"blackList":[
-			"java",
-			"sun"
-		],
-		"isRecursive": true
+		"isRecursive": false
 	},
 	"graphviz": {
 		"nodeSep": "1.0",
@@ -25,7 +24,7 @@
 	},
 	"engine": {
 		"analyzer_key":[
-			"analyzer.favorComposition.FavorCompositionAnalyzer"
+			"analyzer.singleton.SingletonAnalyzer"
 		],
 		"synthetic":true
 	}
