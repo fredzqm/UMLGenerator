@@ -9,10 +9,11 @@ import config.IConfiguration;
  * Created by lamd on 1/11/2017.
  */
 public class RunnerConfiguration implements Configurable {
-    public static final String OUTPUT_FORMAT = "outputFormat";
-    public static final String OUTPUT_DIRECTORY = "outputDir";
-    public static final String EXECUTABLE_PATH = "executablePath";
-    public static final String FILE_NAME = "fileName";
+    public static final String CONFIG_PATH = "runner.";
+    public static final String OUTPUT_FORMAT = CONFIG_PATH + "outputFormat";
+    public static final String OUTPUT_DIRECTORY = CONFIG_PATH + "outputDir";
+    public static final String EXECUTABLE_PATH = CONFIG_PATH + "executablePath";
+    public static final String FILE_NAME = CONFIG_PATH + "fileName";
 
     private IConfiguration config;
 

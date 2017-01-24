@@ -1,11 +1,21 @@
 {
-	"outputDir":"output",
-	"classes":["java.lang.String"],
-	"executablePath":"dot",
-	"outputFormat":"svg",
-	"fileName":"out",
-	"nodeSep":"1.0",
-	"modifierFilter":"public",
-	"isRecursive":false,
-	"rankDir":"BT"
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "out",
+		"outputDir": "output"
+	},
+	"model": {
+		"classes": [
+			"java.lang.String"
+		],
+		"isRecursive": false
+	},
+	"graphviz": {
+		"nodeSep": "1.0",
+		"rankDir": "BT"
+	},
+	"classParser": {
+		"modifierFilter": "public"
+	}
 }

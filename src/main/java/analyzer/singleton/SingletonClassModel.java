@@ -1,11 +1,10 @@
 package analyzer.singleton;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.IClassModelFilter;
-import config.IConfiguration;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import analyzer.utility.IClassModel;
+import analyzer.utility.IClassModelFilter;
 
 /**
  * TODO: Fred
