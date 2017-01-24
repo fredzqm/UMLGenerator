@@ -1,11 +1,15 @@
 package analyzer.singleton;
 
-import analyzer.utility.*;
-import utility.MethodType;
-import utility.Modifier;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
+import analyzer.utility.IMethodModel;
+import analyzer.utility.ISystemModel;
+import analyzer.utility.ISystemModelFilter;
+import utility.MethodType;
+import utility.Modifier;
 
 public class SingletonSystemModel extends ISystemModelFilter {
     private final SingletonConfiguration config;
@@ -20,16 +24,34 @@ public class SingletonSystemModel extends ISystemModelFilter {
         Collection<IClassModel> classes = new ArrayList<>();
         for (IClassModel clazz : super.getClasses()) {
             classes.add(checkSingleton(clazz));
+            if (clazz.getName().equals("demos.EagerChocolateBoiler"))
+                classes.add(checkSingleton(clazz));
         }
         return classes;
     }
 
-    private IClassModel checkSingleton(IClassModel clazz) {
+    /**
+     * We use the following rules to determine if a class is a singleton:
+     * 
+     * 1. It has one private constructor 2. It has one static field of itself 3.
+     * There is a nonprivate getter for this singleton 4. Either the nonprivate
+     * getter or static initializer
+     * 
+     * @param clazz
+     * @return
+     */
+    private IClassModel checkSingleton(IClassModel clazz) {        
         // check all methods to make sure there is only private constructor
         Collection<? extends IMethodModel> methods = clazz.getMethods();
+        IMethodModel privateConstructor = null;
         for (IMethodModel method : methods) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR && method.getModifier() != Modifier.PRIVATE) {
-                return clazz;
+            if (method.getMethodType() == MethodType.CONSTRUCTOR) {
+                if (method.getModifier() == Modifier.PRIVATE && privateConstructor == null) {
+                    privateConstructor = method;
+                } else {
+                    // non private constructor or multiple constructor
+                    return clazz;
+                }
             }
         }
 
@@ -46,12 +68,13 @@ public class SingletonSystemModel extends ISystemModelFilter {
                 }
             }
         }
+        // no static field
         if (staticSingletonField == null)
             return clazz;
 
         IMethodModel staticGetInstanceMethod = null;
         for (IMethodModel method : methods) {
-            if (method.getAccessedFields().contains(staticSingletonField)) {
+            if (clazz.equals(method.getReturnType())) {
                 if (method.getModifier() != Modifier.PRIVATE) {
                     if (method.isStatic() && staticGetInstanceMethod == null) {
                         staticGetInstanceMethod = method;
