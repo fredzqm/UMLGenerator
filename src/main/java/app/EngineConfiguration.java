@@ -31,6 +31,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public void setup(IConfiguration config) {
         this.config = config;
         config.setIfMissing(GENERATOR_KEY, GraphVizGenerator.class.getName());
+        config.setIfMissing(SYNTHETIC, "true");
         if (Boolean.parseBoolean(config.getValue(SYNTHETIC))) {
             config.add(ANALYZER_KEY, AnalyzerSyntheticFilter.class.getName());
         }

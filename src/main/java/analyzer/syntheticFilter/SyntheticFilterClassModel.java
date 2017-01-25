@@ -23,8 +23,7 @@ public class SyntheticFilterClassModel extends IClassModelFilter {
         }
         return methods;
     }
-    
-    
+
     @Override
     public Collection<? extends IFieldModel> getFields() {
         Collection<IFieldModel> fields = new ArrayList<>();
@@ -35,7 +34,4 @@ public class SyntheticFilterClassModel extends IClassModelFilter {
         return fields;
     }
 
-//    private static boolean isSynthetic(String methodName) {
-//        return methodName.contains("lambda$");
-//    }
 }

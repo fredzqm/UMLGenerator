@@ -19,18 +19,8 @@ public class SyntheticFilterSystemModel extends ISystemModelFilter {
         for (IClassModel clazz : super.getClasses()) {
             if (!clazz.isSynthetic())
                 classes.add(new SyntheticFilterClassModel(clazz));
-            else
-                System.out.println(clazz);
         }
         return classes;
     }
-
-//    private static boolean isSynthetic(String className) {
-//        int last$ = className.lastIndexOf('$');
-//        if (last$ < 0)
-//            return false;
-//        char firstNameChar = className.charAt(last$ + 1);
-//        return firstNameChar >= '0' && firstNameChar <= '9';
-//    }
 
 }
