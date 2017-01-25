@@ -24,6 +24,8 @@
 	},
 	"engine": {
 		"analyzer_key":[
+			"analyzer.classParser.AnalyzerClassParser",
+			"analyzer.relationParser.AnalyzerRelationParser",
 			"analyzer.singleton.SingletonAnalyzer"
 		],
 		"synthetic":true
