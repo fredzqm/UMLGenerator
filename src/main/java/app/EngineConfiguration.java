@@ -32,10 +32,10 @@ public class EngineConfiguration implements Configurable, IConfiguration {
         this.config = config;
         this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
         this.config.setIfMissing(EngineConfiguration.SYNTHETIC, "true");
+        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
         if (Boolean.parseBoolean(this.config.getValue(SYNTHETIC))) {
             this.config.add(EngineConfiguration.ANALYZER_KEY, SyntheticFilterAnalyzer.class.getName());
         }
-        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
     /**
