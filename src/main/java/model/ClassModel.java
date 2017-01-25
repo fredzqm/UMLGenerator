@@ -31,6 +31,7 @@ class ClassModel extends TypeModel implements IClassModel {
     private final Modifier modifier;
     private final boolean isFinal;
     private final boolean isStatic;
+    private final boolean isSynthetic;
     private final ClassType classType;
     private final String name;
     private final ClassModel outterClass;
@@ -52,9 +53,10 @@ class ClassModel extends TypeModel implements IClassModel {
     public ClassModel(ClassNode asmClassNode) {
         this.asmClassNode = asmClassNode;
         int access = getAccess(asmClassNode);
+        this.classType = ClassType.parse(access);
         this.modifier = Modifier.parse(access);
         this.isFinal = Modifier.parseIsFinal(access);
-        this.classType = ClassType.parse(access);
+        this.isSynthetic = Modifier.parseIsSynthetic(access);
         this.isStatic = parseIsStatic();
         this.name = Type.getObjectType(asmClassNode.name).getClassName();
         int index = name.lastIndexOf('$');
@@ -74,7 +76,7 @@ class ClassModel extends TypeModel implements IClassModel {
         for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses)
             if (asmClassNode.name.equals(inner.name))
                 return inner.access;
-        return asmClassNode.access | Opcodes.ACC_STATIC;
+        return asmClassNode.access;
     }
 
     public String getName() {
@@ -100,6 +102,11 @@ class ClassModel extends TypeModel implements IClassModel {
 
     public boolean isStatic() {
         return isStatic;
+    }
+    
+    @Override
+    public boolean isSynthetic() {
+        return isSynthetic;
     }
 
     // ===================================================================

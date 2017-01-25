@@ -28,4 +28,8 @@ public enum Modifier {
         return (access & Opcodes.ACC_STATIC) != 0;
     }
 
+    public static boolean parseIsSynthetic(int access) {
+        return (access & Opcodes.ACC_SYNTHETIC) != 0;
+    }
+
 }

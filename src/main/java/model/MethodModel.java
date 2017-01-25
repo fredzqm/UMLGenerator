@@ -11,6 +11,8 @@ import utility.Modifier;
 
 import java.util.*;
 
+import javax.management.MalformedObjectNameException;
+
 /**
  * Representing method in java program
  *
@@ -23,6 +25,7 @@ class MethodModel implements IMethodModel {
     private final Modifier modifier;
     private final boolean isFinal;
     private final boolean isStatic;
+    private final boolean isSynthetic;
     private final MethodType methodtype;
 
     private final TypeModel returnType;
@@ -42,10 +45,11 @@ class MethodModel implements IMethodModel {
         this.belongsTo = belongsTo;
         this.asmMethodNode = methodNode;
         int access = methodNode.access;
+        this.methodtype = MethodType.parse(asmMethodNode.name, access);
         this.modifier = Modifier.parse(access);
         this.isFinal = Modifier.parseIsFinal(access);
         this.isStatic = Modifier.parseIsStatic(access);
-        this.methodtype = MethodType.parse(asmMethodNode.name, access);
+        this.isSynthetic = Modifier.parseIsSynthetic(access);
         if (asmMethodNode.signature == null) {
             this.genericParams = Collections.emptyList();
             this.returnType = TypeParser.parse(Type.getReturnType(methodNode.desc));
@@ -104,6 +108,11 @@ class MethodModel implements IMethodModel {
 
     public boolean isStatic() {
         return isStatic;
+    }
+    
+    @Override
+    public boolean isSynthetic() {
+        return isSynthetic;
     }
 
     public Signature getSignature() {

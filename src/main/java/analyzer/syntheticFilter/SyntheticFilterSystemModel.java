@@ -17,18 +17,20 @@ public class SyntheticFilterSystemModel extends ISystemModelFilter {
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
         for (IClassModel clazz : super.getClasses()) {
-            if (!isSynthetic(clazz.getName()))
+            if (!clazz.isSynthetic())
                 classes.add(new SyntheticFilterClassModel(clazz));
+            else
+                System.out.println(clazz);
         }
         return classes;
     }
 
-    private static boolean isSynthetic(String className) {
-        int last$ = className.lastIndexOf('$');
-        if (last$ < 0)
-            return false;
-        char firstNameChar = className.charAt(last$ + 1);
-        return firstNameChar >= '0' && firstNameChar <= '9';
-    }
+//    private static boolean isSynthetic(String className) {
+//        int last$ = className.lastIndexOf('$');
+//        if (last$ < 0)
+//            return false;
+//        char firstNameChar = className.charAt(last$ + 1);
+//        return firstNameChar >= '0' && firstNameChar <= '9';
+//    }
 
 }

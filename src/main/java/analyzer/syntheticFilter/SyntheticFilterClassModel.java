@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import analyzer.utility.IClassModel;
 import analyzer.utility.IClassModelFilter;
+import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 
 public class SyntheticFilterClassModel extends IClassModelFilter {
@@ -17,13 +18,24 @@ public class SyntheticFilterClassModel extends IClassModelFilter {
     public Collection<? extends IMethodModel> getMethods() {
         Collection<IMethodModel> methods = new ArrayList<>();
         for (IMethodModel method : super.getMethods()) {
-            if (!isSynthetic(method.getName()))
+            if (!method.isSynthetic())
                 methods.add(method);
         }
         return methods;
     }
-
-    private static boolean isSynthetic(String methodName) {
-        return methodName.contains("lambda$");
+    
+    
+    @Override
+    public Collection<? extends IFieldModel> getFields() {
+        Collection<IFieldModel> fields = new ArrayList<>();
+        for (IFieldModel field : super.getFields()) {
+            if (!field.isSynthetic())
+                fields.add(field);
+        }
+        return fields;
     }
+
+//    private static boolean isSynthetic(String methodName) {
+//        return methodName.contains("lambda$");
+//    }
 }
