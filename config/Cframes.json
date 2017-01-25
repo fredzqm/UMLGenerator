@@ -25,6 +25,8 @@
 	},
 	"engine": {
 		"analyzer_key":[
+			"analyzer.classParser.AnalyzerClassParser",
+			"analyzer.relationParser.AnalyzerRelationParser",
 			"analyzer.favorComposition.FavorCompositionAnalyzer"
 		],
 		"synthetic":true

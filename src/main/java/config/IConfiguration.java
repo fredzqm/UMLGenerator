@@ -82,7 +82,7 @@ public interface IConfiguration {
      * @param key   String key value.
      * @param value String value corresponding to the key.
      */
-    void setIfMissing(String key, String value);
+    void setIfMissing(String key, String... value);
 
     /**
      * Constructs the given configurable object.
