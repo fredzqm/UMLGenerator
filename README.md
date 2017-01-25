@@ -82,11 +82,14 @@ This project takes a set of classes and draws the UML diagram for those set of c
   
 ### Milestone 02:  
 - **Fred:**  
-     - Assisted in Generator refactor.
+     - Designed the overall decorator pattern, break down generator into classParserAnalyzer,
+     	and RelationParserAnalyzer, so that all fields are open to extension
      - Refactored code out of Generator into Relationship.
      - Implemented basic class parsing analyzer from previous generator code.
-     - Figured out generics parsing with ASM.
+     - Figured out generics parsing with ASM, parse all the generic signature in JVM.
+     - Refactor TypeModel to use decorator pattern, so all generic parameters and types can be represented.
      - Refactored Model to return cardinality information.
+     - Add the InstructionModel, so that analyzers can analyzer the details of each java bytecode.
      - Resolved bugs discovered in Model.
      - Wrote test.
      - Code reviewed.
@@ -108,3 +111,11 @@ This project takes a set of classes and draws the UML diagram for those set of c
      - Wrote ExplorerRunner to display generated output.
      - Added missing JavaDocs in all packages when possible.
      - Resolved bugs discovered in Generator.
+### Milestone 02:  
+- **Fred:**  
+     - Refactor the configuration, so that all configurations are stored as a Map from string to string.
+     - Make Configuration a factory of any Configurable, which defines its default configuration
+     - Rewrote the commandline parser so it takes config jsons and can override specific configuration
+     - Implement the SingletonAnalyzer
+- **Adam:**  
+- **David:**  
