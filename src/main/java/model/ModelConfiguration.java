@@ -1,9 +1,9 @@
 package model;
 
-import java.util.List;
-
 import config.Configurable;
 import config.IConfiguration;
+
+import java.util.List;
 
 /**
  * A ModelConfiguration.

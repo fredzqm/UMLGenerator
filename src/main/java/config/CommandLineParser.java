@@ -1,12 +1,12 @@
 package config;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import org.json.JSONObject;
 
 /**
  * Created by fineral on 12/11/2016 Edited by fineral on 12/13/2016
@@ -52,6 +52,26 @@ public class CommandLineParser implements ConfigurationFactory {
         this.args = args;
     }
 
+    static JSONObject readJsonObject(String arg) throws FileNotFoundException {
+        Scanner scanner = null;
+        try {
+            if (arg.length() <= 0) {
+                return new JSONObject();
+            }
+            scanner = new Scanner(new File(arg));
+
+            StringBuilder json = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                json.append(scanner.nextLine());
+            }
+            return new JSONObject(json.toString());
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+    }
+
     /**
      * This method creates a new configuration based on the arguments passed
      * into the constructor
@@ -85,25 +105,5 @@ public class CommandLineParser implements ConfigurationFactory {
             config.set(key, commandParams.get(key));
         }
         return config;
-    }
-
-    static JSONObject readJsonObject(String arg) throws FileNotFoundException {
-        Scanner scanner = null;
-        try {
-            if (arg.length() <= 0) {
-                return new JSONObject();
-            }
-            scanner = new Scanner(new File(arg));
-
-            StringBuilder json = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                json.append(scanner.nextLine());
-            }
-            return new JSONObject(json.toString());
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
-        }
     }
 }

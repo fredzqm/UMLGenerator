@@ -1,7 +1,5 @@
 package app;
 
-import java.util.List;
-
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
@@ -10,6 +8,8 @@ import generator.IGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;
+
+import java.util.List;
 
 /**
  * This is a concrete implementation of algorithm for analyzing a UML. It
@@ -23,10 +23,8 @@ public class UMLEngine extends AbstractUMLEngine {
     }
 
     /**
-     * 
-     * @param config
-     *            the configuration object read from command line arguments, or parsed from
-     *            file. See {@link ConfigurationFactor}
+     * @param config the configuration object read from command line arguments, or parsed from
+     *               file. See {@link ConfigurationFactor}
      * @return the UML engine
      */
     static UMLEngine getInstance(IConfiguration config) {
@@ -59,8 +57,8 @@ public class UMLEngine extends AbstractUMLEngine {
         try {
             runner.execute(graphVisStr);
         } catch (Exception e) {
-            throw new RuntimeException("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.",
-                    e);
+            throw new RuntimeException(
+                    "[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.", e);
         }
     }
 

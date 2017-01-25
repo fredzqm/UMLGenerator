@@ -42,6 +42,10 @@ public abstract class IClassModelFilter implements IClassModel {
         return classModel.isStatic();
     }
 
+    public boolean isSynthetic() {
+        return classModel.isSynthetic();
+    }
+
     public IClassModel getSuperClass() {
         return classModel.getSuperClass();
     }
@@ -74,7 +78,6 @@ public abstract class IClassModelFilter implements IClassModel {
     public IClassModel getUnderlyingClassModel() {
         return classModel.getUnderlyingClassModel();
     }
-
 
     @Override
     public String toString() {

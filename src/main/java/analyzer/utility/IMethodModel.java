@@ -53,6 +53,11 @@ public interface IMethodModel {
     boolean isFinal();
 
     /**
+     * @return true if this method is synthetic
+     */
+    boolean isSynthetic();
+
+    /**
      * Returns the return type Type Model of the Method.
      *
      * @return Type Model of the Return Type.
@@ -75,7 +80,6 @@ public interface IMethodModel {
      * @return the list of fields this method accessed
      */
     Collection<? extends IFieldModel> getAccessedFields();
-
 
     /**
      * @return the list of methods this method called
