@@ -1,11 +1,11 @@
 package viewer;
 
-import java.awt.Desktop;
+import runner.RunnerConfiguration;
+
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import runner.RunnerConfiguration;
 
 /**
  * Views the outputted file.

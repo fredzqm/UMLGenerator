@@ -1,17 +1,17 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import analyzer.classParser.AnalyzerClassParser;
 import analyzer.relationParser.AnalyzerRelationParser;
-import analyzer.syntheticFilter.AnalyzerSyntheticFilter;
+import analyzer.syntheticFilter.SyntheticFilterAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -20,22 +20,22 @@ import generator.IGenerator;
  * Created by lamd on 12/7/2016. Edited by fineral on 12/13/2016
  */
 public class EngineConfiguration implements Configurable, IConfiguration {
-	public static final String CONFIG_PATH = "engine.";
-	
-	public static final String GENERATOR_KEY = CONFIG_PATH + "generator_key";
+    public static final String CONFIG_PATH = "engine.";
+    public static final String GENERATOR_KEY = CONFIG_PATH + "generator_key";
     public static final String ANALYZER_KEY = CONFIG_PATH + "analyzer_key";
     public static final String SYNTHETIC = CONFIG_PATH + "synthetic";
+
     private IConfiguration config;
 
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        config.setIfMissing(GENERATOR_KEY, GraphVizGenerator.class.getName());
-        config.setIfMissing(SYNTHETIC, "true");
-        if (Boolean.parseBoolean(config.getValue(SYNTHETIC))) {
-            config.add(ANALYZER_KEY, AnalyzerSyntheticFilter.class.getName());
+        this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
+        this.config.setIfMissing(EngineConfiguration.SYNTHETIC, "true");
+        if (Boolean.parseBoolean(this.config.getValue(SYNTHETIC))) {
+            this.config.add(EngineConfiguration.ANALYZER_KEY, SyntheticFilterAnalyzer.class.getName());
         }
-        config.add(ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
+        this.config.add(EngineConfiguration.ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
     }
 
     /**
@@ -44,7 +44,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
      * @return IGenerator object.
      */
     public IGenerator getGenerator() {
-        String generatorClass = config.getValue(GENERATOR_KEY);
+        String generatorClass = this.config.getValue(GENERATOR_KEY);
         return IConfiguration.instantiateWithName(generatorClass, IGenerator.class);
     }
 
@@ -56,26 +56,26 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public List<IAnalyzer> getAnalyzers() {
         List<String> analyzerNames = config.getList(ANALYZER_KEY);
         List<IAnalyzer> analyzers = new ArrayList<>();
-        for (String className : analyzerNames) {
-            IAnalyzer analyzer = IConfiguration.instantiateWithName(className, IAnalyzer.class);
+        analyzerNames.forEach((analyzerName) -> {
+            IAnalyzer analyzer = IConfiguration.instantiateWithName(analyzerName, IAnalyzer.class);
             analyzers.add(analyzer);
-        }
+        });
         return analyzers;
     }
 
     @Override
     public void set(String key, String value) {
-        config.set(key, value);
+        this.config.set(key, value);
     }
 
     @Override
     public void add(String key, String... value) {
-        config.add(key, value);
+        this.config.add(key, value);
     }
 
     @Override
     public List<String> getList(String key) {
-        return config.getList(key);
+        return this.config.getList(key);
     }
 
     @Override
@@ -85,16 +85,16 @@ public class EngineConfiguration implements Configurable, IConfiguration {
 
     @Override
     public void setIfMissing(String key, String value) {
-        config.setIfMissing(key, value);
+        this.config.setIfMissing(key, value);
     }
 
     @Override
     public void populateMap(String directory, Map<String, Object> map) {
-        config.populateMap(directory, map);
+        this.config.populateMap(directory, map);
     }
 
     @Override
     public String toString() {
-        return "Engine configuration with \n" + config.toString();
+        return "Engine configuration with \n" + this.config.toString();
     }
 }

@@ -11,8 +11,6 @@ import utility.Modifier;
 
 import java.util.*;
 
-import javax.management.MalformedObjectNameException;
-
 /**
  * Representing method in java program
  *
@@ -109,7 +107,7 @@ class MethodModel implements IMethodModel {
     public boolean isStatic() {
         return isStatic;
     }
-    
+
     @Override
     public boolean isSynthetic() {
         return isSynthetic;

@@ -10,8 +10,7 @@ public interface Configurable {
     /**
      * Sets up the given IConfiguration Objects. Sets default values missing.
      *
-     * @param config
-     *            IConfiguration object to setup.
+     * @param config IConfiguration object to setup.
      */
     void setup(IConfiguration config);
 

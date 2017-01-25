@@ -1,15 +1,11 @@
 package analyzer.singleton;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ISystemModelFilter;
+import analyzer.utility.*;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class SingletonSystemModel extends ISystemModelFilter {
     private final SingletonConfiguration config;
@@ -32,15 +28,15 @@ public class SingletonSystemModel extends ISystemModelFilter {
 
     /**
      * We use the following rules to determine if a class is a singleton:
-     * 
+     * <p>
      * 1. It has one private constructor 2. It has one static field of itself 3.
      * There is a nonprivate getter for this singleton 4. Either the nonprivate
      * getter or static initializer
-     * 
+     *
      * @param clazz
      * @return
      */
-    private IClassModel checkSingleton(IClassModel clazz) {        
+    private IClassModel checkSingleton(IClassModel clazz) {
         // check all methods to make sure there is only private constructor
         Collection<? extends IMethodModel> methods = clazz.getMethods();
         IMethodModel privateConstructor = null;

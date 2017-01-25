@@ -1,11 +1,11 @@
 package app;
 
-import java.io.FileNotFoundException;
-
 import config.CommandLineParser;
 import config.IConfiguration;
 import runner.RunnerConfiguration;
 import viewer.Viewer;
+
+import java.io.FileNotFoundException;
 
 public class Application {
     public static void main(String[] args) throws FileNotFoundException {

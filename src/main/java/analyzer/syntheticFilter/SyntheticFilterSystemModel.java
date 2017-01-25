@@ -1,14 +1,13 @@
 package analyzer.syntheticFilter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ISystemModelFilter;
 
-public class SyntheticFilterSystemModel extends ISystemModelFilter {
+import java.util.ArrayList;
+import java.util.Collection;
 
+public class SyntheticFilterSystemModel extends ISystemModelFilter {
     SyntheticFilterSystemModel(ISystemModel systemModel) {
         super(systemModel);
     }
@@ -16,11 +15,11 @@ public class SyntheticFilterSystemModel extends ISystemModelFilter {
     @Override
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
-        for (IClassModel clazz : super.getClasses()) {
-            if (!clazz.isSynthetic())
+        super.getClasses().forEach((clazz) -> {
+            if (!clazz.isSynthetic()) {
                 classes.add(new SyntheticFilterClassModel(clazz));
-        }
+            }
+        });
         return classes;
     }
-
 }

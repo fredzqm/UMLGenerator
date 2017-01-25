@@ -103,7 +103,7 @@ class ClassModel extends TypeModel implements IClassModel {
     public boolean isStatic() {
         return isStatic;
     }
-    
+
     @Override
     public boolean isSynthetic() {
         return isSynthetic;

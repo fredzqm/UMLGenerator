@@ -1,12 +1,12 @@
 package analyzer.favorComposition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ISystemModelFilter;
 import utility.ClassType;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by lamd on 1/15/2017.

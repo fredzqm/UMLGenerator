@@ -39,7 +39,7 @@ public interface IClassModel extends INode {
      * @return true if this class is synthetic
      */
     boolean isSynthetic();
-    
+
     /**
      * Returns the super class's model of the Class Model.
      *
