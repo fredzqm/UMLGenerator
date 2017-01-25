@@ -49,17 +49,14 @@ class ASMParser {
     }
 
     /**
-     * @param importClassesList
-     *            the important list of classes that are required explicitly
-     * @param blackList
-     *            the list of packages that we do not want to include
-     * @param flag
-     *            the flag indicating how much related classes should get
-     *            recursively parsed
+     * @param importClassesList the important list of classes that are required explicitly
+     * @param blackList         the list of packages that we do not want to include
+     * @param flag              the flag indicating how much related classes should get
+     *                          recursively parsed
      * @return the collection of classes acquired based on the requirement
      */
     public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, Collection<String> blackList,
-            int flag) {
+                                                    int flag) {
         Collection<ClassModel> classesList = new HashSet<>();
         Queue<ClassModel> unextended = new LinkedList<>();
         for (String impClass : importClassesList) {
@@ -104,7 +101,7 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-            Collection<String> blackList, ClassModel x) {
+                                      Collection<String> blackList, ClassModel x) {
         if (x != null) {
             if (canBeAdded(classesList, blackList, x)) {
                 classesList.add(x);
@@ -114,7 +111,7 @@ class ASMParser {
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
-            Collection<String> blackList, Iterable<? extends ClassModel> ls) {
+                                      Collection<String> blackList, Iterable<? extends ClassModel> ls) {
         for (ClassModel x : ls) {
             if (canBeAdded(classesList, blackList, x)) {
                 classesList.add(x);

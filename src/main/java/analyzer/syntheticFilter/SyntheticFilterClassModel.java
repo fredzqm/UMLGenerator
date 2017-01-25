@@ -1,11 +1,12 @@
 package analyzer.syntheticFilter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.utility.IClassModel;
 import analyzer.utility.IClassModelFilter;
+import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class SyntheticFilterClassModel extends IClassModelFilter {
 
@@ -16,14 +17,23 @@ public class SyntheticFilterClassModel extends IClassModelFilter {
     @Override
     public Collection<? extends IMethodModel> getMethods() {
         Collection<IMethodModel> methods = new ArrayList<>();
-        for (IMethodModel method : super.getMethods()) {
-            if (!isSynthetic(method.getName()))
+        super.getMethods().forEach((method) -> {
+            if (!method.isSynthetic()) {
                 methods.add(method);
-        }
+            }
+        });
         return methods;
     }
 
-    private static boolean isSynthetic(String methodName) {
-        return methodName.contains("lambda$");
+    @Override
+    public Collection<? extends IFieldModel> getFields() {
+        Collection<IFieldModel> fields = new ArrayList<>();
+        super.getFields().forEach((field) -> {
+            if (!field.isSynthetic()) {
+                fields.add(field);
+            }
+        });
+        return fields;
     }
+
 }

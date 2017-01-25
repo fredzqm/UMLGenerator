@@ -38,6 +38,11 @@ public interface IFieldModel {
     boolean isStatic();
 
     /**
+     * @return true if this field is synthetic
+     */
+    boolean isSynthetic();
+
+    /**
      * @return the type of this field
      */
     ITypeModel getFieldType();

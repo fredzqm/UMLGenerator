@@ -18,6 +18,7 @@ class FieldModel implements IFieldModel {
     private final boolean isFinal;
     private final TypeModel fieldType;
     private final boolean isStatic;
+    private final boolean isSynthetic;
 
     /**
      * creates an FieldModel given the class it belongs to, and the asmFieldNode
@@ -32,6 +33,7 @@ class FieldModel implements IFieldModel {
         modifier = Modifier.parse(access);
         isFinal = Modifier.parseIsFinal(access);
         isStatic = Modifier.parseIsStatic(access);
+        isSynthetic = Modifier.parseIsSynthetic(access);
         if (asmFieldNode.signature != null) {
             TypeModel rawfieldType = TypeParser.parseFieldTypeSignature(asmFieldNode.signature);
             fieldType = rawfieldType.replaceTypeVar(belongsTo.getParamsMap());
@@ -40,24 +42,34 @@ class FieldModel implements IFieldModel {
         }
     }
 
+    @Override
     public String getName() {
         return asmFieldNode.name;
     }
 
+    @Override
     public ClassModel getBelongTo() {
         return belongsTo;
     }
 
+    @Override
     public Modifier getModifier() {
         return modifier;
     }
 
+    @Override
     public boolean isFinal() {
         return isFinal;
     }
 
+    @Override
     public boolean isStatic() {
         return isStatic;
+    }
+
+    @Override
+    public boolean isSynthetic() {
+        return isSynthetic;
     }
 
     public TypeModel getFieldType() {
