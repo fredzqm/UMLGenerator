@@ -1,35 +1,42 @@
 package analyzer.favorComposition;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ISystemModelFilter;
+import analyzer.utility.*;
 import utility.ClassType;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Created by lamd on 1/15/2017.
  */
 public class FavorCompositionSystemModel extends ISystemModelFilter {
     private FavorCompositionConfiguration config;
+    private Collection<IClassModel> classes;
+    private Map<ClassPair, List<IRelationInfo>> relations;
 
     FavorCompositionSystemModel(ISystemModel systemModel, FavorCompositionConfiguration favorComConfig) {
         super(systemModel);
         this.config = favorComConfig;
+        this.classes = new ArrayList<>();
+        this.relations = new HashMap<>();
+        processModel();
     }
 
-    @Override
-    public Collection<? extends IClassModel> getClasses() {
-        Collection<IClassModel> analyzedClass = new ArrayList<>();
-        super.getClasses().forEach((c) -> {
-            if (violateFavorComposition(c)) {
-                analyzedClass.add(new FavorCompositionClassModel(c, config));
-            } else {
-                analyzedClass.add(c);
+    private void processModel() {
+        Set<IClassModel> violators = findViolators();
+        updateClasses(violators);
+        updateRelations(violators);
+    }
+
+    private Set<IClassModel> findViolators() {
+        Set<IClassModel> violators = new HashSet<>();
+        super.getClasses().forEach((clazz) -> {
+            if (violateFavorComposition(clazz)) {
+                violators.add(clazz);
+                violators.add(clazz.getSuperClass());
             }
         });
-        return analyzedClass;
+
+        return violators;
     }
 
     private boolean violateFavorComposition(IClassModel clazz) {
@@ -37,4 +44,35 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
         return superClass.getType() == ClassType.CONCRETE && !superClass.getName().equals("java.lang.Object");
     }
 
+    private void updateClasses(Set<IClassModel> violators) {
+        super.getClasses().forEach((clazz) -> {
+            if (violators.contains(clazz)) {
+                this.classes.add(new FavorCompositionClassModel(clazz, this.config));
+            } else {
+                this.classes.add(clazz);
+            }
+        });
+    }
+
+    private void updateRelations(Set<IClassModel> violators) {
+        super.getRelations().forEach((pair, infos) -> {
+            List<IRelationInfo> newInfos = new LinkedList<>();
+            if (violators.contains(pair.getFrom()) && violators.contains(pair.getTo())) {
+                for (IRelationInfo info : infos) {
+                    newInfos.add(new FavorCompositionRelation(info, this.config));
+                }
+            }
+            this.relations.put(pair, newInfos);
+        });
+    }
+
+    @Override
+    public Collection<? extends IClassModel> getClasses() {
+        return this.classes;
+    }
+
+    @Override
+    public Map<ClassPair, List<IRelationInfo>> getRelations() {
+        return this.relations;
+    }
 }

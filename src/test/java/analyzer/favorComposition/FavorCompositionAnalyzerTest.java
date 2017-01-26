@@ -1,8 +1,6 @@
 package analyzer.favorComposition;
 
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.ISystemModel;
+import analyzer.utility.*;
 import config.Configuration;
 import config.IConfiguration;
 import org.junit.Test;
@@ -10,8 +8,11 @@ import utility.ClassType;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
@@ -65,7 +66,7 @@ public class FavorCompositionAnalyzerTest {
 
 
         // verify
-        verify(noCompositionClassModel).getSuperClass();
+        verify(noCompositionClassModel, times(2)).getSuperClass();
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
