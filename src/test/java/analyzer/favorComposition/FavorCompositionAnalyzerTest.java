@@ -1,6 +1,8 @@
 package analyzer.favorComposition;
 
 import analyzer.classParser.ClassParserAnalyzer;
+import analyzer.relationParser.RelationBijectiveDecorator;
+import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.*;
 import config.Configuration;
@@ -8,8 +10,7 @@ import config.IConfiguration;
 import org.junit.Test;
 import utility.ClassType;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,25 +33,35 @@ public class FavorCompositionAnalyzerTest {
 
         IClassModel objectClassModel = mock(IClassModel.class, objectClass);
         when(objectClassModel.getName()).thenReturn(objectClass);
+        when(objectClassModel.getUnderlyingClassModel()).thenReturn(objectClassModel);
 
         IClassModel concreteClassModel = mock(IClassModel.class, concreteSuperClass);
         when(concreteClassModel.getName()).thenReturn(concreteSuperClass);
         when(concreteClassModel.getType()).thenReturn(ClassType.CONCRETE);
+        when(concreteClassModel.getUnderlyingClassModel()).thenReturn(concreteClassModel);
 
         IClassModel noCompositionClassModel = mock(IClassModel.class, noComposition);
         when(noCompositionClassModel.getName()).thenReturn(noComposition);
         when(noCompositionClassModel.getSuperClass()).thenReturn(concreteClassModel);
         when(noCompositionClassModel.getNodeStyle()).thenReturn("");
+        when(noCompositionClassModel.getUnderlyingClassModel()).thenReturn(noCompositionClassModel);
 
         IClassModel compositionClassModel = mock(IClassModel.class, composition);
         when(compositionClassModel.getName()).thenReturn(composition);
         when(compositionClassModel.getSuperClass()).thenReturn(objectClassModel);
         when(compositionClassModel.getNodeStyle()).thenReturn("");
+        when(compositionClassModel.getUnderlyingClassModel()).thenReturn(compositionClassModel);
+
+        Map<ClassPair, List<IRelationInfo>> relations = new HashMap<>();
+        relations.put(new ClassPair(noCompositionClassModel, concreteClassModel), Collections.singletonList(new RelationExtendsClass()));
+        relations.put(new ClassPair(compositionClassModel, objectClassModel), Collections.singletonList(new RelationExtendsClass()));
 
         // create systemModel
         ISystemModel systemModelMock = mock(ISystemModel.class);
         doReturn(Arrays.asList(compositionClassModel, noCompositionClassModel)).when(systemModelMock).getClasses();
+        doReturn(relations).when(systemModelMock).getRelations();
         // TODO: Add relations return
+
 
         // start
         ISystemModel systemModel = runAnalyzer(systemModelMock);
@@ -67,19 +78,14 @@ public class FavorCompositionAnalyzerTest {
 
 
         // verify
-        verify(noCompositionClassModel).getSuperClass();
+        verify(noCompositionClassModel, times(3)).getSuperClass();
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
-        IAnalyzer[] analyzers = {new ClassParserAnalyzer(), new RelationParserAnalyzer(), new FavorCompositionAnalyzer()};
+        IAnalyzer analyzer = new FavorCompositionAnalyzer();
         IConfiguration config = Configuration.getInstance();
 
-        ISystemModel systemModel = systemModelMock;
-        for (IAnalyzer analyzer : analyzers) {
-            systemModel = analyzer.analyze(systemModelMock, config);
-        }
-
-        return systemModel;
+        return analyzer.analyze(systemModelMock, config);
     }
 
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {
