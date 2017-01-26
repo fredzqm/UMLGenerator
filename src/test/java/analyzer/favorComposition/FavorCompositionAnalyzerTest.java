@@ -1,5 +1,7 @@
 package analyzer.favorComposition;
 
+import analyzer.classParser.ClassParserAnalyzer;
+import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.*;
 import config.Configuration;
 import config.IConfiguration;
@@ -8,8 +10,6 @@ import utility.ClassType;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -50,6 +50,7 @@ public class FavorCompositionAnalyzerTest {
         // create systemModel
         ISystemModel systemModelMock = mock(ISystemModel.class);
         doReturn(Arrays.asList(compositionClassModel, noCompositionClassModel)).when(systemModelMock).getClasses();
+        // TODO: Add relations return
 
         // start
         ISystemModel systemModel = runAnalyzer(systemModelMock);
@@ -66,13 +67,19 @@ public class FavorCompositionAnalyzerTest {
 
 
         // verify
-        verify(noCompositionClassModel, times(2)).getSuperClass();
+        verify(noCompositionClassModel).getSuperClass();
     }
 
     private ISystemModel runAnalyzer(ISystemModel systemModelMock) {
-        IAnalyzer analyzer = new FavorCompositionAnalyzer();
+        IAnalyzer[] analyzers = {new ClassParserAnalyzer(), new RelationParserAnalyzer(), new FavorCompositionAnalyzer()};
         IConfiguration config = Configuration.getInstance();
-        return analyzer.analyze(systemModelMock, config);
+
+        ISystemModel systemModel = systemModelMock;
+        for (IAnalyzer analyzer : analyzers) {
+            systemModel = analyzer.analyze(systemModelMock, config);
+        }
+
+        return systemModel;
     }
 
     private IClassModel getClassFromIterableByName(String _a_name, Iterable<? extends IClassModel> classList) {

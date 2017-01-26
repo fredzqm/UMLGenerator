@@ -1,7 +1,7 @@
 package app;
 
-import analyzer.classParser.AnalyzerClassParser;
-import analyzer.relationParser.AnalyzerRelationParser;
+import analyzer.classParser.ClassParserAnalyzer;
+import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.syntheticFilter.SyntheticFilterAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
@@ -32,7 +32,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
         this.config = config;
         this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
         this.config.setIfMissing(EngineConfiguration.SYNTHETIC, "true");
-        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, AnalyzerClassParser.class.getName(), AnalyzerRelationParser.class.getName());
+        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(), RelationParserAnalyzer.class.getName());
         if (Boolean.parseBoolean(this.config.getValue(SYNTHETIC))) {
             this.config.add(EngineConfiguration.ANALYZER_KEY, SyntheticFilterAnalyzer.class.getName());
         }

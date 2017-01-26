@@ -22,17 +22,16 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
     }
 
     private void processModel() {
-        Set<IClassModel> violators = findViolators();
+        Set<ClassPair>  violators = findViolators();
         updateClasses(violators);
         updateRelations(violators);
     }
 
-    private Set<IClassModel> findViolators() {
-        Set<IClassModel> violators = new HashSet<>();
+    private Set<ClassPair> findViolators() {
+        Set<ClassPair> violators = new HashSet<>();
         super.getClasses().forEach((clazz) -> {
             if (violateFavorComposition(clazz)) {
-                violators.add(clazz);
-                violators.add(clazz.getSuperClass());
+                violators.add(new ClassPair(clazz, clazz.getSuperClass()));
             }
         });
 
@@ -44,9 +43,9 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
         return superClass.getType() == ClassType.CONCRETE && !superClass.getName().equals("java.lang.Object");
     }
 
-    private void updateClasses(Set<IClassModel> violators) {
+    private void updateClasses(Set<ClassPair> violators) {
         super.getClasses().forEach((clazz) -> {
-            if (violators.contains(clazz)) {
+            if (violators.contains(new ClassPair(clazz, clazz.getSuperClass()))) {
                 this.classes.add(new FavorCompositionClassModel(clazz, this.config));
             } else {
                 this.classes.add(clazz);
@@ -54,10 +53,10 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
         });
     }
 
-    private void updateRelations(Set<IClassModel> violators) {
+    private void updateRelations(Set<ClassPair> violators) {
         super.getRelations().forEach((pair, infos) -> {
             List<IRelationInfo> newInfos = new LinkedList<>();
-            if (violators.contains(pair.getFrom()) && violators.contains(pair.getTo())) {
+            if (violators.contains(pair)) {
                 for (IRelationInfo info : infos) {
                     newInfos.add(new FavorCompositionRelation(info, this.config));
                 }
