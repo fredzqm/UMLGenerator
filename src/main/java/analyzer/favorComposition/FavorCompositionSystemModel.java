@@ -1,6 +1,7 @@
 package analyzer.favorComposition;
 
 import analyzer.utility.*;
+import org.json.JSONException;
 import utility.ClassType;
 
 import java.util.*;
@@ -60,6 +61,8 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
                 for (IRelationInfo info : infos) {
                     newInfos.add(new FavorCompositionRelation(info, this.config));
                 }
+            } else {
+                newInfos = infos;
             }
             this.relations.put(pair, newInfos);
         });
