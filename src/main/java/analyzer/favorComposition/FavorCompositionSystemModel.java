@@ -1,12 +1,13 @@
 package analyzer.favorComposition;
 
 import analyzer.utility.*;
-import org.json.JSONException;
 import utility.ClassType;
 
 import java.util.*;
 
 /**
+ * FavorComposition Analyzer's System Model.
+ * <p>
  * Created by lamd on 1/15/2017.
  */
 public class FavorCompositionSystemModel extends ISystemModelFilter {
@@ -23,7 +24,7 @@ public class FavorCompositionSystemModel extends ISystemModelFilter {
     }
 
     private void processModel() {
-        Set<ClassPair>  violators = findViolators();
+        Set<ClassPair> violators = findViolators();
         updateClasses(violators);
         updateRelations(violators);
     }

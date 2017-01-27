@@ -4,6 +4,8 @@ import analyzer.relationParser.RelationDecorator;
 import analyzer.utility.IRelationInfo;
 
 /**
+ * FavorComposoition Analyzer's Relation Class.
+ * <p>
  * Created by lamd on 1/26/2017.
  */
 public class FavorCompositionRelation extends RelationDecorator {

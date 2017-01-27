@@ -5,6 +5,8 @@ import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 
 /**
+ * FavorComposition Analyzer.
+ * <p>
  * Created by lamd on 1/14/2017.
  */
 public class FavorCompositionAnalyzer implements IAnalyzer {
