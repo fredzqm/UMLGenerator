@@ -1,4 +1,4 @@
-package analyzer.singleton;
+package analyzer.dependencyInversion;
 
 import analyzer.utility.*;
 import utility.MethodType;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SingletonSystemModel extends ISystemModelFilter {
-    private final SingletonConfiguration config;
+    private final DependencyInversionConfiguration config;
 
-    SingletonSystemModel(ISystemModel systemModel, SingletonConfiguration config) {
+    SingletonSystemModel(ISystemModel systemModel, DependencyInversionConfiguration config) {
         super(systemModel);
         this.config = config;
     }
@@ -19,6 +19,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
     public Collection<? extends IClassModel> getClasses() {
         Collection<IClassModel> classes = new ArrayList<>();
         for (IClassModel clazz : super.getClasses()) {
+            classes.add(checkSingleton(clazz));
             classes.add(checkSingleton(clazz));
         }
         return classes;
@@ -81,7 +82,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
         }
 
         String format = String.format("color=\"%s\"", this.config.getColor());
-        return new ClassModelStyleDecorator(clazz, format, "singleton");
+        return new ClassModelStyleDecorator(clazz, format);
     }
 
 }

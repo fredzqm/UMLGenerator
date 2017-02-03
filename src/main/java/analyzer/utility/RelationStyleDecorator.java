@@ -5,10 +5,10 @@ import analyzer.relationParser.RelationDecorator;
 /**
  * Created by lamd on 1/26/2017.
  */
-public class EdgeStyleRelationDecorator extends RelationDecorator {
+public class RelationStyleDecorator extends RelationDecorator {
     private final String edgeStyle;
 
-    public EdgeStyleRelationDecorator(IRelationInfo info, String edgeStyle) {
+    public RelationStyleDecorator(IRelationInfo info, String edgeStyle) {
         super(info);
         this.edgeStyle = edgeStyle;
     }

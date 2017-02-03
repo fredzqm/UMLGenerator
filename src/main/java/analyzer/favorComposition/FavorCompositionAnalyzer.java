@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.Set;
 
 import analyzer.utility.ClassPair;
-import analyzer.utility.EdgeStyleRelationDecorator;
+import analyzer.utility.RelationStyleDecorator;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.NodeStyleClassModelDecorator;
+import analyzer.utility.ClassModelStyleDecorator;
 import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 import utility.ClassType;
@@ -59,7 +59,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
         String nodeStyle = String.format("color=\"%s\"", config.getFavorComColor());
         for (IClassModel clazz : classes) {
             if (violators.contains(new ClassPair(clazz, clazz.getSuperClass()))) {
-                newClasses.add(new NodeStyleClassModelDecorator(clazz, nodeStyle));
+                newClasses.add(new ClassModelStyleDecorator(clazz, nodeStyle));
             } else {
                 newClasses.add(clazz);
             }
@@ -75,7 +75,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
             List<IRelationInfo> newInfos = new LinkedList<>();
             if (violators.contains(pair)) {
                 for (IRelationInfo info : infos) {
-                    newInfos.add(new EdgeStyleRelationDecorator(info, format));
+                    newInfos.add(new RelationStyleDecorator(info, format));
                 }
             } else {
                 newInfos = infos;
