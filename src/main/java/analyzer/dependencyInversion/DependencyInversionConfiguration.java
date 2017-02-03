@@ -25,7 +25,7 @@ public class DependencyInversionConfiguration implements Configurable {
         this.config.setIfMissing(FAVOR_COM_COLOR, "yellow");
     }
 
-    public List<String> getBlackList() {
+    public List<String> getWhiteList() {
         return this.config.getList(DependencyInversionConfiguration.WHITE_LIST);
     }
 

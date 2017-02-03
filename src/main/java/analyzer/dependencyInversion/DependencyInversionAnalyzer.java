@@ -13,7 +13,7 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
         DependencyInversionConfiguration favorComConfig = config
                 .createConfiguration(DependencyInversionConfiguration.class);
-        return new SingletonSystemModel(systemModel, favorComConfig);
+        return new DependencyInversionSystemModel(systemModel, favorComConfig);
     }
 
 }
