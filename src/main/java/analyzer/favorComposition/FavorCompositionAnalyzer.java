@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.Set;
 
 import analyzer.utility.ClassPair;
+import analyzer.utility.EdgeStyleRelationDecorator;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import analyzer.utility.NodeStyleClassModelDecorator;
 import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 import utility.ClassType;
@@ -54,9 +56,10 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
     private Collection<IClassModel> updateClasses(Set<ClassPair> violators, FavorCompositionConfiguration config,
             Collection<? extends IClassModel> classes) {
         Collection<IClassModel> newClasses = new ArrayList<>();
+        String nodeStyle = String.format("color=\"%s\"", config.getFavorComColor());
         for (IClassModel clazz : classes) {
             if (violators.contains(new ClassPair(clazz, clazz.getSuperClass()))) {
-                newClasses.add(new FavorCompositionClassModel(clazz, config));
+                newClasses.add(new NodeStyleClassModelDecorator(clazz, nodeStyle));
             } else {
                 newClasses.add(clazz);
             }
@@ -67,11 +70,12 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
     private Map<ClassPair, List<IRelationInfo>> updateRelations(Set<ClassPair> violators,
             FavorCompositionConfiguration config, Map<ClassPair, List<IRelationInfo>> relations) {
         Map<ClassPair, List<IRelationInfo>> newRelations = new HashMap<>();
+        String format = String.format("color=\"%s\"", config.getFavorComColor());
         relations.forEach((pair, infos) -> {
             List<IRelationInfo> newInfos = new LinkedList<>();
             if (violators.contains(pair)) {
                 for (IRelationInfo info : infos) {
-                    newInfos.add(new FavorCompositionRelation(info, config));
+                    newInfos.add(new EdgeStyleRelationDecorator(info, format));
                 }
             } else {
                 newInfos = infos;
