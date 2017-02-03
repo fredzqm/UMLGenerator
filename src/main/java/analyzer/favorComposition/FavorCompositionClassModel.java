@@ -4,8 +4,6 @@ import analyzer.utility.IClassModel;
 import analyzer.utility.IClassModelFilter;
 
 /**
- * FavorComposition Analyzer's ClassModel
- * <p>
  * Created by lamd on 1/15/2017.
  */
 public class FavorCompositionClassModel extends IClassModelFilter {
