@@ -43,7 +43,10 @@ public class DependencyInversionSystemModel extends ISystemModelFilter {
                 if (violate(t, clazz))
                     return true;
             for (IInstructionModel inst : method.getInstructions()) {
-                for (ITypeModel t : inst.getDependentClass())
+                // calls an static method on another class
+                if (inst.accessSatic() && !inst.getClassModelOn().equals(clazz))
+                    return true;
+                for (ITypeModel t : inst.getDependentTypes())
                     if (violate(t, clazz))
                         return true;
             }

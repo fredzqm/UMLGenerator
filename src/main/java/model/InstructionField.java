@@ -2,6 +2,8 @@ package model;
 
 import org.objectweb.asm.tree.FieldInsnNode;
 
+import analyzer.utility.IClassModel;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -28,7 +30,7 @@ public class InstructionField extends InstructionModel {
     }
 
     @Override
-    public Collection<TypeModel> getDependentClass() {
+    public Collection<TypeModel> getDependentTypes() {
         if (field == null)
             return Arrays.asList(calledOn);
         return Arrays.asList(calledOn, field.getFieldType());
@@ -40,4 +42,15 @@ public class InstructionField extends InstructionModel {
     public FieldModel getField() {
         return field;
     }
+
+    @Override
+    public boolean accessSatic() {
+        return field.isStatic();
+    }
+
+    @Override
+    public IClassModel getClassModelOn() {
+        return field.getBelongTo();
+    }
+    
 }
