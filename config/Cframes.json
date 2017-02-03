@@ -27,7 +27,7 @@
 		"analyzer_key":[
 			"analyzer.classParser.ClassParserAnalyzer",
 			"analyzer.relationParser.RelationParserAnalyzer",
-			"analyzer.favorComposition.FavorCompositionAnalyzer"
+			"analyzer.classParser.ClassParserAnalyzer"
 		],
 		"synthetic":true
 	}

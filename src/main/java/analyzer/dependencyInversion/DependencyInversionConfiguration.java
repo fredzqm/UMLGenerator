@@ -21,7 +21,8 @@ public class DependencyInversionConfiguration implements Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(DependencyInversionConfiguration.WHITE_LIST, "java");
+        this.config.setIfMissing(WHITE_LIST, "java");
+        this.config.setIfMissing(FAVOR_COM_COLOR, "yellow");
     }
 
     public List<String> getBlackList() {

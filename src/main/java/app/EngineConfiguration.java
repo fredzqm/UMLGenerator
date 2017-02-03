@@ -1,17 +1,16 @@
 package app;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import analyzer.classParser.ClassParserAnalyzer;
 import analyzer.relationParser.RelationParserAnalyzer;
-import analyzer.syntheticFilter.SyntheticFilterAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -23,7 +22,6 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public static final String CONFIG_PATH = "engine.";
     public static final String GENERATOR_KEY = CONFIG_PATH + "generator_key";
     public static final String ANALYZER_KEY = CONFIG_PATH + "analyzer_key";
-    public static final String SYNTHETIC = CONFIG_PATH + "synthetic";
 
     private IConfiguration config;
 
@@ -31,11 +29,8 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
-        this.config.setIfMissing(EngineConfiguration.SYNTHETIC, "true");
-        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(), RelationParserAnalyzer.class.getName());
-        if (Boolean.parseBoolean(this.config.getValue(SYNTHETIC))) {
-            this.config.add(EngineConfiguration.ANALYZER_KEY, SyntheticFilterAnalyzer.class.getName());
-        }
+        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(),
+                RelationParserAnalyzer.class.getName());
     }
 
     /**
@@ -85,8 +80,8 @@ public class EngineConfiguration implements Configurable, IConfiguration {
 
     @Override
     public void setIfMissing(String key, String... value) {
-        
-    	this.config.setIfMissing(key, value);
+
+        this.config.setIfMissing(key, value);
     }
 
     @Override
