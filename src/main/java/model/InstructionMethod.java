@@ -46,17 +46,7 @@ public class InstructionMethod extends InstructionModel {
     /**
      * @return the method this instruction calls
      */
-    public MethodModel getMethod() {
+    public MethodModel getAccessComponent() {
         return method;
-    }
-
-    @Override
-    public boolean accessSatic() {
-        return method.isStatic();
-    }
-
-    @Override
-    public IClassModel getClassModelOn() {
-        return method.getBelongTo();
     }
 }

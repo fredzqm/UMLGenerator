@@ -75,7 +75,7 @@ public class MethodModelTest {
         instructions.forEach((m) -> {
             if (m instanceof InstructionMethod) {
                 InstructionMethod minsn = InstructionMethod.class.cast(m);
-                actual.add(minsn.getMethod().getName());
+                actual.add(minsn.getAccessComponent().getName());
             }
         });
 
@@ -97,7 +97,7 @@ public class MethodModelTest {
         methods.forEach((m) -> {
             if (m instanceof InstructionField) {
                 InstructionField minsn = InstructionField.class.cast(m);
-                actual.add(minsn.getField().getName());
+                actual.add(minsn.getAccessComponent().getName());
             }
         });
 

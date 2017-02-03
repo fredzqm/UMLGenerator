@@ -44,7 +44,8 @@ public class DependencyInversionSystemModel extends ISystemModelFilter {
                     return true;
             for (IInstructionModel inst : method.getInstructions()) {
                 // calls an static method on another class
-                if (inst.accessSatic() && !inst.getClassModelOn().equals(clazz))
+                IClassComponent accessed = inst.getAccessComponent();
+                if (accessed != null && accessed.isStatic() && !accessed.getBelongTo().equals(clazz))
                     return true;
                 for (ITypeModel t : inst.getDependentTypes())
                     if (violate(t, clazz))

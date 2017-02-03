@@ -19,14 +19,7 @@ public interface IInstructionModel {
 
     /**
      * 
-     * @return true if this instruction access an static field or call a static
-     *         method
+     * @return the component it accessed
      */
-    boolean accessSatic();
-
-    /**
-     * 
-     * @return the classModel if this instruction access
-     */
-    IClassModel getClassModelOn();
+    IClassComponent getAccessComponent();
 }

@@ -39,18 +39,8 @@ public class InstructionField extends InstructionModel {
     /**
      * @return the field it accesses
      */
-    public FieldModel getField() {
+    public FieldModel getAccessComponent() {
         return field;
     }
 
-    @Override
-    public boolean accessSatic() {
-        return field.isStatic();
-    }
-
-    @Override
-    public IClassModel getClassModelOn() {
-        return field.getBelongTo();
-    }
-    
 }
