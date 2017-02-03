@@ -33,27 +33,27 @@ public class DependencyInversionSystemModel extends ISystemModelFilter {
      */
     private boolean violate(IClassModel clazz) {
         for (IFieldModel field : clazz.getFields()) {
-            if (violate(field.getFieldType()))
+            if (violate(field.getFieldType(), clazz))
                 return true;
         }
         for (IMethodModel method : clazz.getMethods()) {
-            if (violate(method.getReturnType()))
+            if (violate(method.getReturnType(), clazz))
                 return true;
             for (ITypeModel t : method.getArguments())
-                if (violate(t))
+                if (violate(t, clazz))
                     return true;
             for (IInstructionModel inst : method.getInstructions()) {
                 for (ITypeModel t : inst.getDependentClass())
-                    if (violate(t))
+                    if (violate(t, clazz))
                         return true;
             }
         }
         return false;
     }
 
-    private boolean violate(ITypeModel fieldType) {
+    private boolean violate(ITypeModel fieldType, IClassModel selfClass) {
         for (IClassModel clazz : fieldType.getDependentClass()) {
-            if (clazz.getType() == ClassType.CONCRETE && !isInWhiteList(clazz.getName())) {
+            if (clazz.getType() == ClassType.CONCRETE && !clazz.equals(selfClass) && !isInWhiteList(clazz.getName())) {
                 return true;
             }
         }

@@ -23,6 +23,13 @@
 	"classParser": {
 		"modifierFilter": "public"
 	},
+	"dependencyInversion": {
+		"color": "yellow",
+		"whiteList": [
+			"java.lang",
+			"java.util"
+		]
+	},
 	"engine": {
 		"analyzer_key":[
 			"analyzer.classParser.ClassParserAnalyzer",
