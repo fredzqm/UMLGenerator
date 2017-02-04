@@ -1,21 +1,31 @@
 package analyzer.favorComposition;
 
-import analyzer.classParser.ClassParserAnalyzer;
-import analyzer.relationParser.RelationBijectiveDecorator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
 import analyzer.relationParser.RelationExtendsClass;
-import analyzer.relationParser.RelationParserAnalyzer;
-import analyzer.utility.*;
+import analyzer.utility.ClassPair;
+import analyzer.utility.IAnalyzer;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IRelationInfo;
+import analyzer.utility.ISystemModel;
 import config.Configuration;
 import config.IConfiguration;
-import org.junit.Test;
 import utility.ClassType;
-
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
 
 /**
  * Test the FavorCompositionAnalyzer.

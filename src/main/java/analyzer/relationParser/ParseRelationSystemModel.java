@@ -123,7 +123,7 @@ public class ParseRelationSystemModel extends ISystemModelFilter {
                 checkType(t, map);
             checkType(method.getReturnType(), map);
             for (IInstructionModel inst : method.getInstructions())
-                for (ITypeModel t : inst.getDependentClass())
+                for (ITypeModel t : inst.getDependentTypes())
                     checkType(t, map);
 //            for (IFieldModel t : method.getAccessedFields()) {
 //                checkClass(t.getBelongTo(), map);
