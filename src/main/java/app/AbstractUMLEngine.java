@@ -1,7 +1,6 @@
 package app;
 
 import analyzer.utility.ISystemModel;
-import generator.IGraph;
 
 /**
  * TODO: FRED documentation.
@@ -26,7 +25,7 @@ public abstract class AbstractUMLEngine implements Runnable {
 
     abstract ISystemModel analyze(ISystemModel systemModel);
 
-    abstract String generate(IGraph systemModel);
+    abstract String generate(ISystemModel systemModel);
 
     abstract void executeRunner(String graphVisStr);
 }

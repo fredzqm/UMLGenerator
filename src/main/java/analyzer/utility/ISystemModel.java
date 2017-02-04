@@ -4,17 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import generator.IGraph;
-import generator.INode;
-import utility.IExpander;
-import utility.IMapper;
-
 /**
  * An Interface for System Models.
  * <p>
  * Created by lamd on 12/9/2016.
  */
-public interface ISystemModel extends IGraph {
+public interface ISystemModel {
     /**
      * Returns an Iterable of Class Models contained within the System Model.
      *
@@ -29,26 +24,4 @@ public interface ISystemModel extends IGraph {
      */
     Map<ClassPair, List<IRelationInfo>> getRelations();
 
-    /**
-     * Returns the vertices of the System Model. Class getClasses.
-     *
-     * @return Returns the classes of the System Model.
-     */
-    default Iterable<? extends INode> getNodes() {
-        return getClasses();
-    }
-
-    /**
-     * Returns the Iterable of Relation edges.
-     *
-     * @return Iterable of Relation edges.
-     */
-    default Iterable<Relation> getEdges() {
-        Map<ClassPair, List<IRelationInfo>> relations = getRelations();
-        IExpander<ClassPair, Relation> expander = (key) -> {
-            IMapper<IRelationInfo, Relation> mapper = (info) -> new Relation(key, info);
-            return mapper.map(relations.get(key));
-        };
-        return expander.expand(relations.keySet());
-    }
 }
