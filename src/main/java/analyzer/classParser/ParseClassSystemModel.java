@@ -1,11 +1,11 @@
 package analyzer.classParser;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ISystemModelFilter;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class ParseClassSystemModel extends ISystemModelFilter {
     private ClassParserConfiguration config;
@@ -21,8 +21,8 @@ public class ParseClassSystemModel extends ISystemModelFilter {
     }
 
     @Override
-    public Collection<? extends IClassModel> getClasses() {
-        Collection<IClassModel> classes = new ArrayList<>();
+    public Set<? extends IClassModel> getClasses() {
+        Set<IClassModel> classes = new HashSet<>();
 
         super.getClasses().forEach((c) -> {
             classes.add(new GraphVizClass(c, config));

@@ -1,14 +1,15 @@
 package model;
 
-import analyzer.utility.ClassPair;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import config.IConfiguration;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import analyzer.utility.ClassPair;
+import analyzer.utility.IRelationInfo;
+import analyzer.utility.ISystemModel;
+import config.IConfiguration;
 
 /**
  * This class representing the entire model of a java program
@@ -16,10 +17,10 @@ import java.util.Map;
  * @author zhang
  */
 public class SystemModel implements ISystemModel {
-    private Collection<ClassModel> classList;
+    private Set<ClassModel> classSet;
 
-    private SystemModel(Collection<ClassModel> importantList) {
-        this.classList = importantList;
+    private SystemModel(Set<ClassModel> importantList) {
+        this.classSet = importantList;
     }
 
     /**
@@ -42,7 +43,7 @@ public class SystemModel implements ISystemModel {
         }
 
         Collection<String> blackList = config.getBlackList();
-        Collection<ClassModel> ls = ASMParser.getClasses(importClassesList, blackList, recursiveFlag);
+        Set<ClassModel> ls = ASMParser.getClasses(importClassesList, blackList, recursiveFlag);
 
         Logger.setVerbose(config.isVerbose());
 
@@ -55,8 +56,8 @@ public class SystemModel implements ISystemModel {
     }
 
     @Override
-    public Collection<ClassModel> getClasses() {
-        return classList;
+    public Set<ClassModel> getClasses() {
+        return classSet;
     }
 
     @Override

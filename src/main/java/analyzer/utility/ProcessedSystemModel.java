@@ -1,21 +1,21 @@
 package analyzer.utility;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ProcessedSystemModel implements ISystemModel {
-    private Collection<? extends IClassModel> classes;
+    private Set<? extends IClassModel> classes;
     private Map<ClassPair, List<IRelationInfo>> relations;
 
-    public ProcessedSystemModel(Collection<? extends IClassModel> classes,
+    public ProcessedSystemModel(Set<? extends IClassModel> classes,
             Map<ClassPair, List<IRelationInfo>> relations) {
         this.classes = classes;
         this.relations = relations;
     }
 
     @Override
-    public Collection<? extends IClassModel> getClasses() {
+    public Set<? extends IClassModel> getClasses() {
         return classes;
     }
 

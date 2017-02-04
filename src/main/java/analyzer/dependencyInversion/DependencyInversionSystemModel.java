@@ -1,9 +1,17 @@
 package analyzer.dependencyInversion;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import analyzer.utility.*;
+import analyzer.utility.ClassModelStyleDecorator;
+import analyzer.utility.IClassComponent;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
+import analyzer.utility.IInstructionModel;
+import analyzer.utility.IMethodModel;
+import analyzer.utility.ISystemModel;
+import analyzer.utility.ISystemModelFilter;
+import analyzer.utility.ITypeModel;
 import utility.ClassType;
 
 public class DependencyInversionSystemModel extends ISystemModelFilter {
@@ -15,8 +23,8 @@ public class DependencyInversionSystemModel extends ISystemModelFilter {
     }
 
     @Override
-    public Collection<? extends IClassModel> getClasses() {
-        Collection<IClassModel> classes = new ArrayList<>();
+    public Set<? extends IClassModel> getClasses() {
+        Set<IClassModel> classes = new HashSet<>();
         String format = String.format("color=\"%s\"", this.config.getColor());
         for (IClassModel clazz : super.getClasses()) {
             if (violate(clazz))

@@ -1,10 +1,17 @@
 package model;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
-
-import java.io.IOException;
-import java.util.*;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -55,9 +62,9 @@ class ASMParser {
      *                          recursively parsed
      * @return the collection of classes acquired based on the requirement
      */
-    public static Collection<ClassModel> getClasses(Iterable<String> importClassesList, Collection<String> blackList,
+    public static Set<ClassModel> getClasses(Iterable<String> importClassesList, Collection<String> blackList,
                                                     int flag) {
-        Collection<ClassModel> classesList = new HashSet<>();
+        Set<ClassModel> classesList = new HashSet<>();
         Queue<ClassModel> unextended = new LinkedList<>();
         for (String impClass : importClassesList) {
             ClassModel explicitClass = getClassByName(impClass);

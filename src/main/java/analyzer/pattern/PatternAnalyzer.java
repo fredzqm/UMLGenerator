@@ -1,4 +1,4 @@
-package analyzer.favorComposition;
+package analyzer.pattern;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,9 +20,12 @@ import config.IConfiguration;
 import utility.ClassType;
 
 /**
- * Created by lamd on 1/14/2017.
+ * 
+ * @author zhang
+ *
  */
-public class FavorCompositionAnalyzer implements IAnalyzer {
+public abstract class PatternAnalyzer implements IAnalyzer {
+    
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
         FavorCompositionConfiguration favorComConfig = config.createConfiguration(FavorCompositionConfiguration.class);

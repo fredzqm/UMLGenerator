@@ -2,6 +2,13 @@ package analyzer.utility;
 
 import utility.Modifier;
 
+/**
+ * Representing ClassComponent like methods and fields. It contains some basic
+ * metadata getters.
+ * 
+ * @author zhang
+ *
+ */
 public interface IClassComponent {
     /**
      * Returns the String of this component

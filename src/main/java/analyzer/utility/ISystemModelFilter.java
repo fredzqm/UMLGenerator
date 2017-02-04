@@ -1,8 +1,8 @@
 package analyzer.utility;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A filter for ISystemModel
@@ -31,7 +31,7 @@ public abstract class ISystemModelFilter implements ISystemModel {
     }
 
     @Override
-    public Collection<? extends IClassModel> getClasses() {
+    public Set<? extends IClassModel> getClasses() {
         return systemModel.getClasses();
     }
 

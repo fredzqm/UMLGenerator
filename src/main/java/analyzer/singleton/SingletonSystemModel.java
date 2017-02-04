@@ -1,11 +1,17 @@
 package analyzer.singleton;
 
-import analyzer.utility.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import analyzer.utility.ClassModelStyleDecorator;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
+import analyzer.utility.IMethodModel;
+import analyzer.utility.ISystemModel;
+import analyzer.utility.ISystemModelFilter;
 import utility.MethodType;
 import utility.Modifier;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class SingletonSystemModel extends ISystemModelFilter {
     private final SingletonConfiguration config;
@@ -16,8 +22,8 @@ public class SingletonSystemModel extends ISystemModelFilter {
     }
 
     @Override
-    public Collection<? extends IClassModel> getClasses() {
-        Collection<IClassModel> classes = new ArrayList<>();
+    public Set<? extends IClassModel> getClasses() {
+        Set<IClassModel> classes = new HashSet<>();
         for (IClassModel clazz : super.getClasses()) {
             classes.add(checkSingleton(clazz));
         }

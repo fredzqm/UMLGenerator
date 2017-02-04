@@ -1,15 +1,25 @@
 package analyzer.relationParser;
 
-import analyzer.utility.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.junit.Test;
+
+import analyzer.utility.ClassPair;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IRelationInfo;
+import analyzer.utility.ISystemModel;
 
 public class AnalyzerRelationParserTest {
 
@@ -29,7 +39,7 @@ public class AnalyzerRelationParserTest {
 
         // create systemModel
         ISystemModel _sysModel = mock(ISystemModel.class);
-        doReturn(Arrays.asList(_a, _b)).when(_sysModel).getClasses();
+        doReturn(new HashSet<>(Arrays.asList(_a, _b))).when(_sysModel).getClasses();
 
         // start
         ISystemModel sysModel = runRelationAnalyzer(_sysModel);

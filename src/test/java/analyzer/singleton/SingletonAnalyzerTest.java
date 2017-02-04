@@ -9,9 +9,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import config.Configuration;
-import config.IConfiguration;
 import org.junit.Test;
 
 import analyzer.utility.IAnalyzer;
@@ -20,13 +20,15 @@ import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ITypeModel;
+import config.Configuration;
+import config.IConfiguration;
 import utility.Modifier;
 
 /**
  * Created by lamd on 1/15/2017.
  */
 public class SingletonAnalyzerTest {
-    
+
     @Test
     public void analyze() throws Exception {
         // mock creation
@@ -44,6 +46,7 @@ public class SingletonAnalyzerTest {
         // specify class model behavior
         when(_singletonClassModel.getName()).thenReturn(singletonName);
         when(_singletonClassModel.getNodeStyle()).thenReturn("");
+        when(_singletonClassModel.getUnderlyingClassModel()).thenReturn(_singletonClassModel);
         doReturn(Collections.singletonList(_staticSingletonField)).when(_singletonClassModel).getFields();
         doReturn(Collections.singletonList(_getInstanceMethod)).when(_singletonClassModel).getMethods();
         // specify class field model behavior
@@ -58,13 +61,13 @@ public class SingletonAnalyzerTest {
 
         // create systemModel
         ISystemModel _systemModelMock = mock(ISystemModel.class);
-        doReturn(Collections.singletonList(_singletonClassModel)).when(_systemModelMock).getClasses();
+        doReturn(new HashSet<>(Collections.singletonList(_singletonClassModel))).when(_systemModelMock).getClasses();
 
         // start
         ISystemModel systemModel = runAnalyzer(_systemModelMock);
 
         // get decorated classModels
-        Collection<? extends IClassModel> classList = systemModel.getClasses();
+        Set<? extends IClassModel> classList = systemModel.getClasses();
         assertEquals(1, classList.size());
 
         IClassModel singletonClassModel = getClassFromIterableByName(singletonName, classList);

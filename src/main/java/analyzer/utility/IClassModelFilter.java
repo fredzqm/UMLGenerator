@@ -1,9 +1,9 @@
 package analyzer.utility;
 
-import utility.ClassType;
-
 import java.util.Collection;
 import java.util.List;
+
+import utility.ClassType;
 
 /**
  * a filter for IClassModel
@@ -11,19 +11,18 @@ import java.util.List;
  * @author zhang
  */
 public abstract class IClassModelFilter implements IClassModel {
-    private IClassModel classModel;
+    private final IClassModel classModel;
+    private final IClassModel underlyingModel;
 
     /**
      * Constructs a Class Model Filter
      *
-     * @param classModel classModel decorated.
+     * @param classModel
+     *            classModel decorated.
      */
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
-    }
-
-    protected IClassModel getClassModel() {
-        return classModel;
+        this.underlyingModel = classModel.getUnderlyingClassModel();
     }
 
     public String getName() {
@@ -76,7 +75,7 @@ public abstract class IClassModelFilter implements IClassModel {
 
     @Override
     public IClassModel getUnderlyingClassModel() {
-        return classModel.getUnderlyingClassModel();
+        return underlyingModel;
     }
 
     @Override

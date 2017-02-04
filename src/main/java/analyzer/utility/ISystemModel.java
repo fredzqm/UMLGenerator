@@ -1,13 +1,13 @@
 package analyzer.utility;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import generator.IGraph;
 import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * An Interface for System Models.
@@ -20,7 +20,7 @@ public interface ISystemModel extends IGraph {
      *
      * @return Iterable of Class Models.
      */
-    Collection<? extends IClassModel> getClasses();
+    Set<? extends IClassModel> getClasses();
 
     /**
      * Returns an Iterable of Relations contained within the SystemModel.
