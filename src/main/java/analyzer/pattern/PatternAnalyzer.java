@@ -19,13 +19,13 @@ import config.IConfiguration;
  *
  */
 public abstract class PatternAnalyzer implements IAnalyzer {
+    protected Set<? extends IClassModel> classes;
+    protected Map<ClassPair, List<IRelationInfo>> relations;
 
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        Set<? extends IClassModel> classes = systemModel.getClasses();
-        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-
-        setUp(classes, relations, config);
+        classes = systemModel.getClasses();
+        relations = systemModel.getRelations();
 
         for (IClassModel clazz : classes) {
             List<IClassModel> composes = getComposeClasses(clazz, classes);
@@ -36,19 +36,10 @@ public abstract class PatternAnalyzer implements IAnalyzer {
                 }
             }
         }
-
+        
         return getProcessedSystemModel();
     }
 
-    /**
-     * set up the classes information
-     * 
-     * @param classes
-     * @param relations
-     * @param config
-     */
-    public abstract void setUp(Set<? extends IClassModel> classes, Map<ClassPair, List<IRelationInfo>> relations,
-            IConfiguration config);
 
     /**
      * process possible pattern pairs
