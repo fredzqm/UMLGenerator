@@ -32,15 +32,14 @@ public final class ClassPair {
 
     @Override
     public int hashCode() {
-        return from.getUnderlyingClassModel().hashCode() + to.getUnderlyingClassModel().hashCode() * 127;
+        return from.hashCode() + to.hashCode() * 127;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ClassPair) {
             ClassPair rel = (ClassPair) obj;
-            return to.getUnderlyingClassModel().equals(rel.to.getUnderlyingClassModel())
-                    && from.getUnderlyingClassModel().equals(rel.from.getUnderlyingClassModel());
+            return to.equals(rel.to) && from.equals(rel.from);
         }
         return false;
     }
