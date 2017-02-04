@@ -1,23 +1,17 @@
 package analyzer.pattern;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import analyzer.utility.ClassModelStyleDecorator;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.ProcessedSystemModel;
-import analyzer.utility.RelationStyleDecorator;
 import config.IConfiguration;
-import utility.ClassType;
 
 /**
  * 
@@ -25,66 +19,79 @@ import utility.ClassType;
  *
  */
 public abstract class PatternAnalyzer implements IAnalyzer {
-    
+
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        FavorCompositionConfiguration favorComConfig = config.createConfiguration(FavorCompositionConfiguration.class);
         Set<? extends IClassModel> classes = systemModel.getClasses();
         Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
 
-        Set<ClassPair> violators = findViolators(classes);
-        classes = updateClasses(violators, favorComConfig, classes);
-        relations = updateRelations(violators, favorComConfig, relations);
+        setUp(classes, relations, config);
 
-        return new ProcessedSystemModel(classes, relations);
-    }
-
-    private Set<ClassPair> findViolators(Collection<? extends IClassModel> classes) {
-        Set<ClassPair> violators = new HashSet<>();
-        classes.forEach((clazz) -> {
-            if (violateFavorComposition(clazz)) {
-                violators.add(new ClassPair(clazz, clazz.getSuperClass()));
-            }
-        });
-
-        return violators;
-    }
-
-    private boolean violateFavorComposition(IClassModel clazz) {
-        IClassModel superClass = clazz.getSuperClass();
-        return superClass.getType() == ClassType.CONCRETE && !superClass.getName().equals("java.lang.Object");
-    }
-
-    private Set<IClassModel> updateClasses(Set<ClassPair> violators, FavorCompositionConfiguration config,
-            Collection<? extends IClassModel> classes) {
-        Set<IClassModel> newClasses = new HashSet<>();
-        String nodeStyle = String.format("color=\"%s\"", config.getFavorComColor());
         for (IClassModel clazz : classes) {
-            if (violators.contains(new ClassPair(clazz, clazz.getSuperClass()))) {
-                newClasses.add(new ClassModelStyleDecorator(clazz, nodeStyle));
-            } else {
-                newClasses.add(clazz);
+            List<IClassModel> composes = getComposeClasses(clazz, classes);
+            List<IClassModel> superClasses = getSuperClasses(clazz, classes);
+            for (IClassModel comp : composes) {
+                for (IClassModel sup : superClasses) {
+                    acceptPossiblePattern(clazz, comp, sup);
+                }
             }
         }
-        return newClasses;
+
+        return getProcessedSystemModel();
     }
 
-    private Map<ClassPair, List<IRelationInfo>> updateRelations(Set<ClassPair> violators,
-            FavorCompositionConfiguration config, Map<ClassPair, List<IRelationInfo>> relations) {
-        Map<ClassPair, List<IRelationInfo>> newRelations = new HashMap<>();
-        String format = String.format("color=\"%s\"", config.getFavorComColor());
-        relations.forEach((pair, infos) -> {
-            List<IRelationInfo> newInfos = new LinkedList<>();
-            if (violators.contains(pair)) {
-                for (IRelationInfo info : infos) {
-                    newInfos.add(new RelationStyleDecorator(info, format));
-                }
-            } else {
-                newInfos = infos;
+    /**
+     * set up the classes information
+     * 
+     * @param classes
+     * @param relations
+     * @param config
+     */
+    public abstract void setUp(Set<? extends IClassModel> classes, Map<ClassPair, List<IRelationInfo>> relations,
+            IConfiguration config);
+
+    /**
+     * process possible pattern pairs
+     * 
+     * @param clazz
+     * @param comp
+     * @param sup
+     * @return
+     */
+    public abstract boolean acceptPossiblePattern(IClassModel clazz, IClassModel comp, IClassModel sup);
+
+    /**
+     * based on the classes inspect generate the styled systemModel
+     * 
+     * @return
+     */
+    public abstract ISystemModel getProcessedSystemModel();
+
+    private List<IClassModel> getComposeClasses(IClassModel clazz, Set<? extends IClassModel> classls) {
+        List<IClassModel> composes = new ArrayList<>();
+        for (IFieldModel f : clazz.getFields()) {
+            IClassModel classModel = f.getFieldType().getClassModel();
+            if (classModel != null && classls.contains(classModel)) {
+                composes.add(classModel);
             }
-            newRelations.put(pair, newInfos);
-        });
-        return newRelations;
+        }
+        return composes;
+    }
+
+    private List<IClassModel> getSuperClasses(IClassModel clazz, Set<? extends IClassModel> classls) {
+        List<IClassModel> ls = new ArrayList<>();
+        addSuperClasses(ls, clazz, classls);
+        return ls;
+    }
+
+    private void addSuperClasses(List<IClassModel> ls, IClassModel clazz, Set<? extends IClassModel> classls) {
+        if (clazz == null || !classls.contains(clazz))
+            return;
+        ls.add(clazz);
+        addSuperClasses(ls, clazz.getSuperClass(), classls);
+        for (IClassModel interf : clazz.getInterfaces()) {
+            addSuperClasses(ls, interf, classls);
+        }
     }
 
 }
