@@ -1,16 +1,19 @@
-package analyzer.utility;
+package generator;
 
-import generator.IEdge;
+import analyzer.utility.ClassPair;
+import analyzer.utility.IRelationInfo;
 
-public class Relation implements IEdge {
+class Relation implements IEdge {
     private final ClassPair classPair;
     private final IRelationInfo info;
 
     /**
      * Set the Relation's ClassPair and IRelationInfo
      *
-     * @param classPair ClassPair to be set.
-     * @param info      IRelationInfo to be set.
+     * @param classPair
+     *            ClassPair to be set.
+     * @param info
+     *            IRelationInfo to be set.
      */
     public Relation(ClassPair classPair, IRelationInfo info) {
         this.classPair = classPair;

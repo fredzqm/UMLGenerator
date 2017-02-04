@@ -1,18 +1,17 @@
 package analyzer.utility;
 
-import generator.INode;
-import utility.ClassType;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import utility.ClassType;
 
 /**
  * An interface for Class Models.
  * <p>
  * Created by lamd on 12/9/2016.
  */
-public interface IClassModel extends INode {
+public interface IClassModel {
     /**
      * Returns the String of the Model's Class Name.
      *

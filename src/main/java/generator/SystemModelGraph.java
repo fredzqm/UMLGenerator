@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import analyzer.utility.ClassPair;
+import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.Relation;
 import utility.IExpander;
 import utility.IMapper;
 
@@ -23,7 +23,8 @@ public class SystemModelGraph implements IGraph {
      * @return Returns the classes of the System Model.
      */
     public Iterable<? extends INode> getNodes() {
-        return systemModel.getClasses();
+        IMapper<IClassModel, INode> mapper = (c) -> new Node(c);
+        return mapper.map(systemModel.getClasses());
     }
 
     /**
