@@ -1,5 +1,7 @@
 package generator;
 
+import adapter.SystemModelGraph;
+import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 
 /**
@@ -10,7 +12,9 @@ import config.IConfiguration;
  */
 public class GraphVizGenerator implements IGenerator {
     @Override
-    public String generate(IGraph graph, IConfiguration iConfig) {
+    public String generate(ISystemModel systemModel, IConfiguration iConfig) {
+        IGraph graph = new SystemModelGraph(systemModel);
+        
         GeneratorConfiguration config = iConfig.createConfiguration(GeneratorConfiguration.class);
 
         // DOT parent.
@@ -22,8 +26,8 @@ public class GraphVizGenerator implements IGenerator {
 
         // Render the classes
         Iterable<? extends INode> nodes = graph.getNodes();
-        nodes.forEach(node -> dotString.append(
-                String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t\t%s\n\t];\n", node.getName(), node.getLabel(), node.getNodeStyle().trim())));
+        nodes.forEach(node -> dotString.append(String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t\t%s\n\t];\n",
+                node.getName(), node.getLabel(), node.getNodeStyle().trim())));
 
         // Parse each relationship.
         Iterable<? extends IEdge> edges = graph.getEdges();

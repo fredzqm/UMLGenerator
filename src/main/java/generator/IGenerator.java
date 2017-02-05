@@ -1,5 +1,6 @@
 package generator;
 
+import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 
 /**
@@ -11,10 +12,10 @@ public interface IGenerator {
     /**
      * * Creates a file formatted to display classes.
      *
-     * @param graph  SystemModel containing all class information to diagram and
+     * @param systemModel  SystemModel containing all class information to diagram and
      *               analyze result
      * @param config the configuration object
      * @return the UML String.
      */
-    String generate(IGraph graph, IConfiguration config);
+    String generate(ISystemModel systemModel, IConfiguration config);
 }

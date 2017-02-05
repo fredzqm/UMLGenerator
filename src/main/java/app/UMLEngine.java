@@ -2,7 +2,6 @@ package app;
 
 import java.util.List;
 
-import adapter.SystemModelGraph;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
@@ -49,7 +48,7 @@ public class UMLEngine extends AbstractUMLEngine {
     @Override
     String generate(ISystemModel systemModel) {
         IGenerator gen = config.getGenerator();
-        return gen.generate(new SystemModelGraph(systemModel), config);
+        return gen.generate(systemModel, config);
     }
 
     @Override
