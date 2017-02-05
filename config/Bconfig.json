@@ -24,10 +24,10 @@
 	},
 	"engine": {
 		"analyzer_key":[
+			"analyzer.syntheticFilter.SyntheticFilterAnalyzer",
 			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.singleton.SingletonAnalyzer",
 			"analyzer.classParser.ClassParserAnalyzer"
-		],
-		"synthetic":true
+		]
 	}
 }
