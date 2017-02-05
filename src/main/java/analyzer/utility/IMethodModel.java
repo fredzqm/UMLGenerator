@@ -1,5 +1,6 @@
 package analyzer.utility;
 
+import model.Signature;
 import utility.MethodType;
 
 import java.util.Collection;
@@ -48,5 +49,12 @@ public interface IMethodModel extends IClassComponent {
      * @return the list of methods this method called
      */
     Collection<? extends IMethodModel> getCalledMethods();
+
+    /**
+     * Returns the Method Signature.
+     *
+     * @return MethodModel's Signature.
+     */
+    Signature getSignature();
 
 }
