@@ -125,6 +125,12 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         return updatedClasses;
     }
 
+    /**
+     * Create a Relation between the child and parent ClassModel.
+     *
+     * @param info Current IRelationInfo between child to parent.
+     * @return Decorated Relation between child and parent.
+     */
     protected abstract IRelationInfo createRelation(IRelationInfo info);
 
     /**
