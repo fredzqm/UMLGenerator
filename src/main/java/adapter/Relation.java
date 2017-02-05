@@ -1,7 +1,8 @@
-package generator;
+package adapter;
 
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
+import generator.IEdge;
 
 class Relation implements IEdge {
     private final ClassPair classPair;

@@ -3,7 +3,7 @@ package app;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import analyzer.classParser.AnalyzerClassParserTest;
+import adapter.classParser.AnalyzerClassParserTest;
 import analyzer.favorComposition.FavorCompositionAnalyzerTest;
 import analyzer.relationParser.AnalyzerRelationParserTest;
 import analyzer.singleton.SingletonAnalyzerTest;

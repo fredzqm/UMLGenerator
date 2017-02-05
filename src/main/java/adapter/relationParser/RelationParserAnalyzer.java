@@ -1,4 +1,4 @@
-package analyzer.relationParser;
+package adapter.relationParser;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;

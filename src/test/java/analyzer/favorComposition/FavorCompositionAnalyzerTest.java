@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import analyzer.relationParser.RelationExtendsClass;
+import adapter.relationParser.RelationExtendsClass;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;

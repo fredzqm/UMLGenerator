@@ -1,4 +1,4 @@
-package generator;
+package adapter;
 
 import java.util.List;
 import java.util.Map;
@@ -7,6 +7,8 @@ import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import generator.IGraph;
+import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
 

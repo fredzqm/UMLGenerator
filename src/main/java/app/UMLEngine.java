@@ -2,11 +2,11 @@ package app;
 
 import java.util.List;
 
+import adapter.SystemModelGraph;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import generator.IGenerator;
-import generator.SystemModelGraph;
 import model.SystemModel;
 import runner.GraphVizRunner;
 import runner.IRunner;

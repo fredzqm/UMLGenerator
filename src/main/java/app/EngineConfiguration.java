@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import analyzer.classParser.ClassParserAnalyzer;
-import analyzer.relationParser.RelationParserAnalyzer;
+import adapter.classParser.ClassParserAnalyzer;
+import adapter.relationParser.RelationParserAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;

@@ -16,10 +16,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import analyzer.classParser.ClassParserConfiguration;
-import analyzer.relationParser.RelationDependsOn;
-import analyzer.relationParser.RelationExtendsClass;
-import analyzer.relationParser.RelationImplement;
+import adapter.classParser.ClassParserConfiguration;
+import adapter.relationParser.RelationDependsOn;
+import adapter.relationParser.RelationExtendsClass;
+import adapter.relationParser.RelationImplement;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IRelationInfo;

@@ -1,4 +1,4 @@
-package analyzer.classParser;
+package adapter.classParser;
 
 /**
  * An Interface for Parsers.

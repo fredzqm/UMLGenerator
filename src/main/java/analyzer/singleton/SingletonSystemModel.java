@@ -87,7 +87,7 @@ public class SingletonSystemModel extends ISystemModelFilter {
         }
 
         String format = String.format("color=\"%s\"", this.config.getColor());
-        return new ClassModelStyleDecorator(clazz, format, "singleton");
+        return new ClassModelStyleDecorator(clazz, format, "Singleton");
     }
 
 }

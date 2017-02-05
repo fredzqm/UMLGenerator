@@ -1,4 +1,4 @@
-package analyzer.classParser;
+package adapter.classParser;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;

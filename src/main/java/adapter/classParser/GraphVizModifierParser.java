@@ -1,4 +1,4 @@
-package analyzer.classParser;
+package adapter.classParser;
 
 import utility.Modifier;
 

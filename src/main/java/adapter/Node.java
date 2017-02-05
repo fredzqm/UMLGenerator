@@ -1,6 +1,7 @@
-package generator;
+package adapter;
 
 import analyzer.utility.IClassModel;
+import generator.INode;
 
 public class Node implements INode {
     private final IClassModel classModel;

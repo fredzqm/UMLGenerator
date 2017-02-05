@@ -1,4 +1,4 @@
-package analyzer.classParser;
+package adapter.classParser;
 
 import analyzer.utility.IFieldModel;
 import analyzer.utility.ITypeModel;
