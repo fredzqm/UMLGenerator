@@ -113,6 +113,7 @@ class MethodModel implements IMethodModel {
         return isSynthetic;
     }
 
+    @Override
     public Signature getSignature() {
         return signature;
     }
