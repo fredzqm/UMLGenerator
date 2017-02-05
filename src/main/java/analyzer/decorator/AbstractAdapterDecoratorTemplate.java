@@ -22,12 +22,23 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         return new ProcessedSystemModel(classes, relations);
     }
 
-    private Collection<IClassModel> getPotentialParents(IClassModel clazz) {
+    private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
         Collection<IClassModel> potentialParents = new LinkedList<>();
+        Collection<IClassModel> candidates = new LinkedList<>();
+
         potentialParents.add(clazz.getSuperClass());
         clazz.getInterfaces().forEach(potentialParents::add);
 
-        return potentialParents;
+        for (IClassModel classModel : potentialParents) {
+            for (IClassModel fullModels : classes) {
+                if (fullModels.equals(classModel)) {
+                    candidates.add(fullModels);
+                    break;
+                }
+            }
+        }
+
+        return candidates;
     }
 
     /**
@@ -57,11 +68,13 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      * <p>
      * The Collection may be empty.
      *
+     *
+     * @param classes
      * @param clazz IClassModel to be evaluated.
      * @return Collection of IClassModel of ParentClassModel defined by the subclass.
      */
-    private Collection<IClassModel> evaluateClass(IClassModel clazz) {
-        Collection<IClassModel> potentialParents = getPotentialParents(clazz);
+    private Collection<IClassModel> evaluateClass(Collection<? extends IClassModel> classes, IClassModel clazz) {
+        Collection<IClassModel> potentialParents = getPotentialParents(classes, clazz);
         return potentialParents.stream()
                 .filter((parent) -> evaluateParent(clazz, parent))      // Subclasses define how to filter.
                 .map(this::createParentClassModel)                      // Create a ClassModel for each of the filtered parents.
@@ -72,7 +85,7 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         Map<IClassModel, Collection<IClassModel>> updateMap = new HashMap<>();
 
         for (IClassModel clazz : classes) {
-            updateMap.put(clazz, evaluateClass(clazz));
+            updateMap.put(clazz, evaluateClass(classes, clazz));
         }
 
         return updateMap;
@@ -118,7 +131,10 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
                 updatedClasses = updateRelatedClasses(updatedClasses, clazz);
             } else {
                 // It is a normal class if nothing is matched.
-                updatedClasses.add(clazz);
+//                updatedClasses.add(clazz);
+                if (!updatedClasses.contains(clazz)) {
+                    updatedClasses.add(clazz);
+                }
             }
         }
 

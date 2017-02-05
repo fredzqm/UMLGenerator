@@ -11,14 +11,14 @@ public class ClassModelStyleDecorator extends IClassModelFilter {
     private final String nodeStyle;
     private final String stereoType;
 
+    public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle) {
+        this(classModel, nodeStyle, null);
+    }
+
     public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle, String stereoType) {
         super(classModel);
         this.nodeStyle = nodeStyle;
         this.stereoType = stereoType;
-    }
-
-    public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle) {
-        this(classModel, nodeStyle, null);
     }
 
     @Override
