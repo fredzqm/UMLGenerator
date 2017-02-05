@@ -16,12 +16,12 @@ public class ProcessedSystemModel implements ISystemModel {
 
     @Override
     public Collection<? extends IClassModel> getClasses() {
-        return classes;
+        return this.classes;
     }
 
     @Override
     public Map<ClassPair, List<IRelationInfo>> getRelations() {
-        return relations;
+        return this.relations;
     }
 
 }
