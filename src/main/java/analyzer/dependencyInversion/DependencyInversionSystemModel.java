@@ -1,10 +1,10 @@
 package analyzer.dependencyInversion;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import analyzer.utility.*;
 import utility.ClassType;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class DependencyInversionSystemModel extends ISystemModelFilter {
     private final DependencyInversionConfiguration config;
@@ -27,7 +27,6 @@ public class DependencyInversionSystemModel extends ISystemModelFilter {
     }
 
     /**
-     * 
      * @param clazz
      * @return true if this class violates the dependency inversion principle
      */

@@ -9,7 +9,7 @@ public class ProcessedSystemModel implements ISystemModel {
     private Map<ClassPair, List<IRelationInfo>> relations;
 
     public ProcessedSystemModel(Collection<? extends IClassModel> classes,
-            Map<ClassPair, List<IRelationInfo>> relations) {
+                                Map<ClassPair, List<IRelationInfo>> relations) {
         this.classes = classes;
         this.relations = relations;
     }

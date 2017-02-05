@@ -26,7 +26,7 @@ public abstract class AbstractAdapterDecoratorTemplate extends ISystemModelFilte
     public final Collection<? extends IClassModel> getClasses() {
         super.getClasses().forEach(this::evaluateClass);
 
-        return ;
+        return;
     }
 
     @Override
@@ -45,12 +45,12 @@ public abstract class AbstractAdapterDecoratorTemplate extends ISystemModelFilte
             return validatedParents;
         }
         validatedParents.add(createChildClassModel(clazz));
-        return (validatedParents.isEmpty()) ? validatedParents : validatedParents.(clazz);
+        return (validatedParents.isEmpty()) ? validatedParents : validatedParents. (clazz);
     }
 
     /**
      * Evaluates a given parent class and the child and detect whether they meet the desired pattern.
-     *
+     * <p>
      * For example: decorator detection may check if child has a field of the parent,
      * a constructor that takes the field as an argument, and if the child overrides each of the parent's
      * methods where the child method's body uses the field of the parent type.

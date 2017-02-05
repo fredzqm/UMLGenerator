@@ -78,7 +78,7 @@ public class Configuration implements IConfiguration {
     @Override
     public void setIfMissing(String key, String... values) {
         if (key != null && !containsKey(key)) {
-        	String value = String.join(LIST_DELIMITER, values);
+            String value = String.join(LIST_DELIMITER, values);
             putToMap(key, value);
         }
     }

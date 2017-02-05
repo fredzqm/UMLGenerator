@@ -66,7 +66,7 @@ public interface IClassModel extends INode {
      * still equals to the original classModel
      *
      * @return get the reference to the innest {@link ClassModel} that is
-     *         decorated
+     * decorated
      */
     IClassModel getUnderlyingClassModel();
 

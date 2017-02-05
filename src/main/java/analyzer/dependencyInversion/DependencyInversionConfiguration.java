@@ -1,9 +1,9 @@
 package analyzer.dependencyInversion;
 
-import java.util.List;
-
 import config.Configurable;
 import config.IConfiguration;
+
+import java.util.List;
 
 /**
  * A Configurable for FavorComposition Analyzers.

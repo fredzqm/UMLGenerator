@@ -2,8 +2,6 @@ package model;
 
 import org.objectweb.asm.tree.FieldInsnNode;
 
-import analyzer.utility.IClassModel;
-
 import java.util.Arrays;
 import java.util.Collection;
 
