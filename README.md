@@ -111,11 +111,16 @@ This project takes a set of classes and draws the UML diagram for those set of c
      - Wrote ExplorerRunner to display generated output.
      - Added missing JavaDocs in all packages when possible.
      - Resolved bugs discovered in Generator.
-### Milestone 02:  
+### Milestone 03:  
 - **Fred:**  
      - Refactor the configuration, so that all configurations are stored as a Map from string to string.
      - Make Configuration a factory of any Configurable, which defines its default configuration
      - Rewrote the commandline parser so it takes config jsons and can override specific configuration
      - Implement the SingletonAnalyzer
-- **Adam:**  
+- **Adam:**   
 - **David:**  
+     - Implement the FavorCompositionAnalyzer
+     - Worked with Adam to implement Bidirectional Analyzer
+     - Worked with Fred on CommandLine Parser.
+     - Discussed about the new config JSON format.
+     - Refactored code to meet style standard and added javadoc.
