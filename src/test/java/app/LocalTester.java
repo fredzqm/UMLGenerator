@@ -1,7 +1,7 @@
 package app;
 
-import adapter.relationParser.RelationParserAnalyzer;
 import analyzer.favorComposition.FavorCompositionAnalyzer;
+import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
 import dummy.favorDummy.FavorDummyA;

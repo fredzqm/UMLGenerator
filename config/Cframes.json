@@ -34,8 +34,7 @@
 		"analyzer_key":[
 			"analyzer.syntheticFilter.SyntheticFilterAnalyzer",
 			"analyzer.relationParser.RelationParserAnalyzer",
-			"analyzer.dependencyInversion.DependencyInversionAnalyzer",
-			"analyzer.classParser.ClassParserAnalyzer"
+			"analyzer.dependencyInversion.DependencyInversionAnalyzer"
 		]
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import adapter.relationParser.RelationParserAnalyzer;
+import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;

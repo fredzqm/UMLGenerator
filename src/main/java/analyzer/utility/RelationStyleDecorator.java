@@ -1,6 +1,6 @@
 package analyzer.utility;
 
-import adapter.relationParser.RelationDecorator;
+import analyzer.relationParser.RelationDecorator;
 
 /**
  * Created by lamd on 1/26/2017.

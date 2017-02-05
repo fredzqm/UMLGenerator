@@ -1,4 +1,4 @@
-package adapter.relationParser;
+package analyzer.relationParser;
 
 import analyzer.utility.ClassPair;
 import analyzer.utility.IRelationInfo;
