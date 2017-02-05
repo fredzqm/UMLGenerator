@@ -1,21 +1,10 @@
 stages:
   - build
-  - test
 
 build:
   stage: build
   script:
     - gradle build
-  tags:
-    - gradle
-    - java
-    - linux
-    - graphviz
-
-test:
-  stage: test
-  script:
-    - gradle test
   tags:
     - gradle
     - java
