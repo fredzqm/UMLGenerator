@@ -18,7 +18,7 @@ public class SingletonConfiguration implements Configurable {
         this.config.setIfMissing(SingletonConfiguration.SINGLETON_COLOR, "blue");
     }
 
-    public String getSingletonColor() {
+    public String getColor() {
         return this.config.getValue(SingletonConfiguration.SINGLETON_COLOR);
     }
 }

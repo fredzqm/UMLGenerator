@@ -158,7 +158,7 @@ class MethodModel implements IMethodModel {
         for (InstructionModel instr : getInstructions()) {
             if (instr instanceof InstructionField) {
                 InstructionField instructionField = (InstructionField) instr;
-                accessedFields.add(instructionField.getField());
+                accessedFields.add(instructionField.getAccessComponent());
             }
         }
         return accessedFields;
@@ -170,7 +170,7 @@ class MethodModel implements IMethodModel {
         for (InstructionModel instr : getInstructions()) {
             if (instr instanceof InstructionMethod) {
                 InstructionMethod instructionMethod = (InstructionMethod) instr;
-                calledMethods.add(instructionMethod.getMethod());
+                calledMethods.add(instructionMethod.getAccessComponent());
             }
         }
         return calledMethods;

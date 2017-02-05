@@ -82,7 +82,7 @@ class ASMParser {
                         for (TypeModel t : args)
                             addToBothList(classesList, unextended, blackList, t.getDependentClass());
                         for (InstructionModel inst : method.getInstructions()) {
-                            for (TypeModel t : inst.getDependentClass())
+                            for (TypeModel t : inst.getDependentTypes())
                                 addToBothList(classesList, unextended, blackList, t.getDependentClass());
                         }
                     }

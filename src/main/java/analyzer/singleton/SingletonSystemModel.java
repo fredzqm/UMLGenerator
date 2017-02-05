@@ -20,8 +20,6 @@ public class SingletonSystemModel extends ISystemModelFilter {
         Collection<IClassModel> classes = new ArrayList<>();
         for (IClassModel clazz : super.getClasses()) {
             classes.add(checkSingleton(clazz));
-            if (clazz.getName().equals("demos.EagerChocolateBoiler"))
-                classes.add(checkSingleton(clazz));
         }
         return classes;
     }
@@ -82,7 +80,8 @@ public class SingletonSystemModel extends ISystemModelFilter {
             }
         }
 
-        return new SingletonClassModel(clazz, this.config);
+        String format = String.format("color=\"%s\"", this.config.getColor());
+        return new ClassModelStyleDecorator(clazz, format, "singleton");
     }
 
 }

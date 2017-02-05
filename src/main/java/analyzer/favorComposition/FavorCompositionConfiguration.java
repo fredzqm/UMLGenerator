@@ -10,17 +10,17 @@ import config.IConfiguration;
  */
 public class FavorCompositionConfiguration implements Configurable {
     public static final String CONFIG_PATH = "favorComposition.";
-    public static final String FAVOR_COM_COLOR = CONFIG_PATH + "color";
+    public static final String COLOR = CONFIG_PATH + "color";
 
     private IConfiguration config;
 
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(FavorCompositionConfiguration.FAVOR_COM_COLOR, "orange");
+        this.config.setIfMissing(FavorCompositionConfiguration.COLOR, "orange");
     }
 
     public String getFavorComColor() {
-        return this.config.getValue(FavorCompositionConfiguration.FAVOR_COM_COLOR);
+        return this.config.getValue(FavorCompositionConfiguration.COLOR);
     }
 }
