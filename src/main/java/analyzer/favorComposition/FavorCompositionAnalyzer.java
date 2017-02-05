@@ -1,29 +1,15 @@
 package analyzer.favorComposition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import analyzer.utility.ClassPair;
-import analyzer.utility.RelationStyleDecorator;
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ClassModelStyleDecorator;
-import analyzer.utility.ProcessedSystemModel;
+import analyzer.utility.*;
 import config.IConfiguration;
 import utility.ClassType;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * FavorComposition Analyzer.
- *
+ * <p>
  * Created by lamd on 1/14/2017.
  */
 public class FavorCompositionAnalyzer implements IAnalyzer {
@@ -52,7 +38,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
     }
 
     private Collection<IClassModel> updateClasses(Set<ClassPair> violators, FavorCompositionConfiguration config,
-            Collection<? extends IClassModel> classes) {
+                                                  Collection<? extends IClassModel> classes) {
         Collection<IClassModel> newClasses = new ArrayList<>();
         String nodeStyle = String.format("color=\"%s\"", config.getFavorComColor());
         for (IClassModel clazz : classes) {
@@ -67,7 +53,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
     }
 
     private Map<ClassPair, List<IRelationInfo>> updateRelations(Set<ClassPair> violators,
-            FavorCompositionConfiguration config, Map<ClassPair, List<IRelationInfo>> relations) {
+                                                                FavorCompositionConfiguration config, Map<ClassPair, List<IRelationInfo>> relations) {
         Map<ClassPair, List<IRelationInfo>> newRelations = new HashMap<>();
         String format = String.format("color=\"%s\"", config.getFavorComColor());
         relations.forEach((pair, infos) -> {
