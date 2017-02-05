@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import analyzer.utility.ClassPair;
 import analyzer.utility.RelationStyleDecorator;
@@ -21,6 +22,8 @@ import config.IConfiguration;
 import utility.ClassType;
 
 /**
+ * FavorComposition Analyzer.
+ *
  * Created by lamd on 1/14/2017.
  */
 public class FavorCompositionAnalyzer implements IAnalyzer {
@@ -38,14 +41,9 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
     }
 
     private Set<ClassPair> findViolators(Collection<? extends IClassModel> classes) {
-        Set<ClassPair> violators = new HashSet<>();
-        classes.forEach((clazz) -> {
-            if (violateFavorComposition(clazz)) {
-                violators.add(new ClassPair(clazz, clazz.getSuperClass()));
-            }
-        });
-
-        return violators;
+        return classes.stream().filter(this::violateFavorComposition)
+                .map((clazz) -> new ClassPair(clazz, clazz.getSuperClass()))
+                .collect(Collectors.toSet());
     }
 
     private boolean violateFavorComposition(IClassModel clazz) {
@@ -64,6 +62,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
                 newClasses.add(clazz);
             }
         }
+
         return newClasses;
     }
 
@@ -82,7 +81,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
             }
             newRelations.put(pair, newInfos);
         });
+
         return newRelations;
     }
-
 }
