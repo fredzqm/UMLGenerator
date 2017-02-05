@@ -25,9 +25,10 @@ public class GraphVizClass extends IClassModelFilter {
         IParser<IMethodModel> methodParser = config.getMethodParser();
 
         StringBuilder sb = new StringBuilder();
-        // Set the header.
 
+        // Set the header.
         sb.append(header.parse(this, config));
+
         // Filter the fields
         Iterable<? extends IFieldModel> fields = this.getFields();
         IFilter<IFieldModel> fieldFilters = (f) -> modifierFilter.filter(f.getModifier());
