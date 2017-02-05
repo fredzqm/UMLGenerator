@@ -263,4 +263,23 @@ class ClassModel extends TypeModel implements IClassModel {
         return false;
     }
 
+    @Override
+    public List<String> getStereoTypes() {
+        List<String> ls = new ArrayList<>();
+        switch (getType()) {
+            case INTERFACE:
+                ls.add("Interface");
+                break;
+            case CONCRETE:
+                break;
+            case ABSTRACT:
+                ls.add("Abstract");
+                break;
+            case ENUM:
+                ls.add("Enumeration");
+                break;
+        }
+        return ls;
+    }
+
 }

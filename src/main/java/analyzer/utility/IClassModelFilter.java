@@ -65,10 +65,6 @@ public abstract class IClassModelFilter implements IClassModel {
         return classModel.getStereoTypes();
     }
 
-    public String getLabel() {
-        return classModel.getLabel();
-    }
-
     public String getNodeStyle() {
         return classModel.getNodeStyle();
     }

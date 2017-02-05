@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import adapter.classParser.ClassParserAnalyzer;
 import adapter.relationParser.RelationParserAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
@@ -29,8 +28,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
-        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(),
-                RelationParserAnalyzer.class.getName());
+        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName());
     }
 
     /**

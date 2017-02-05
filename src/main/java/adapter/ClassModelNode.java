@@ -1,20 +1,20 @@
-package adapter.classParser;
+package adapter;
 
+import adapter.classParser.ClassParserConfiguration;
+import adapter.classParser.IParser;
 import analyzer.utility.IClassModel;
-import analyzer.utility.IClassModelFilter;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
+import generator.INode;
 import utility.IFilter;
 import utility.Modifier;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GraphVizClass extends IClassModelFilter {
+public class ClassModelNode implements INode {
+    private IClassModel classModel;
     private ClassParserConfiguration config;
 
-    public GraphVizClass(IClassModel classModel, ClassParserConfiguration config) {
-        super(classModel);
+    public ClassModelNode(IClassModel classModel, ClassParserConfiguration config) {
+        this.classModel = classModel;
         this.config = config;
     }
 
@@ -27,9 +27,9 @@ public class GraphVizClass extends IClassModelFilter {
         StringBuilder sb = new StringBuilder();
         // Set the header.
 
-        sb.append(header.parse(this, config));
+        sb.append(header.parse(classModel, config));
         // Filter the fields
-        Iterable<? extends IFieldModel> fields = this.getFields();
+        Iterable<? extends IFieldModel> fields = classModel.getFields();
         IFilter<IFieldModel> fieldFilters = (f) -> modifierFilter.filter(f.getModifier());
         fields = fieldFilters.filter(fields);
         // Render the fields
@@ -38,7 +38,7 @@ public class GraphVizClass extends IClassModelFilter {
         }
 
         // Filter the methods
-        Iterable<? extends IMethodModel> methods = this.getMethods();
+        Iterable<? extends IMethodModel> methods = classModel.getMethods();
         IFilter<IMethodModel> methodFilters = (m) -> modifierFilter.filter(m.getModifier());
         methods = methodFilters.filter(methods);
         // Render the methods
@@ -51,22 +51,13 @@ public class GraphVizClass extends IClassModelFilter {
     }
 
     @Override
-    public List<String> getStereoTypes() {
-        List<String> ls = new ArrayList<>(super.getStereoTypes());
-        switch (super.getType()) {
-            case INTERFACE:
-                ls.add("Interface");
-                break;
-            case CONCRETE:
-                break;
-            case ABSTRACT:
-                ls.add("Abstract");
-                break;
-            case ENUM:
-                ls.add("Enumeration");
-                break;
-        }
-        return ls;
+    public String getName() {
+        return classModel.getName();
+    }
+
+    @Override
+    public String getNodeStyle() {
+        return classModel.getNodeStyle();
     }
 
 }

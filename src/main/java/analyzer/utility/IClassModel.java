@@ -77,20 +77,9 @@ public interface IClassModel {
     Collection<? extends IMethodModel> getMethods();
 
     /**
-     * Returns the Stereotypes of the Class Model.
-     *
-     * @return the list of stereotypes name for this class
+     * @return the list of stereotypes
      */
-    default List<String> getStereoTypes() {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return the label for this vertex
-     */
-    default String getLabel() {
-        return "";
-    }
+    List<String> getStereoTypes();
 
     /**
      * @return the vertex style of this class

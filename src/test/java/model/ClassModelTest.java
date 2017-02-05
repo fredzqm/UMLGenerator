@@ -196,10 +196,8 @@ public class ClassModelTest {
     }
 
     @Test
-    public void testGetLabelAndPrototype() {
+    public void testGetPrototype() {
         ClassModel model = ASMParser.getClassByName("java.lang.String");
-        String label = model.getLabel();
-        assertEquals("", label);
         Collection<String> stereoTypes = model.getStereoTypes();
         assertTrue(stereoTypes.isEmpty());
     }
