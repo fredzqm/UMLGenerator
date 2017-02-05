@@ -28,7 +28,7 @@ public class ClassModelStyleDecorator extends IClassModelFilter {
         }
 
         List<String> ls = new LinkedList<>(super.getStereoTypes());
-        ls.add("Singleton");
+        ls.add(this.stereoType);
         return ls;
     }
 
