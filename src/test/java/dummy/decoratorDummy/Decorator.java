@@ -12,6 +12,6 @@ public abstract class Decorator extends Component {
 
     @Override
     public String createString() {
-        return super.createString();
+        return this.component.createString();
     }
 }
