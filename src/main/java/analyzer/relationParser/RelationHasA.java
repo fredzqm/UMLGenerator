@@ -14,7 +14,7 @@ public class RelationHasA extends IRelationInfo {
      *
      * @param count count value of the relation.
      */
-    RelationHasA(int count) {
+    public RelationHasA(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
     }

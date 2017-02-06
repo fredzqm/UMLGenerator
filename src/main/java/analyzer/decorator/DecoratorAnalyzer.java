@@ -4,7 +4,10 @@ import analyzer.relationParser.RelationHasA;
 import analyzer.utility.*;
 import utility.MethodType;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -65,43 +68,32 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
     }
 
     @Override
+    protected void styleParent(ISystemModel systemModel, IClassModel parent) {
+        systemModel.addClassModelStyle(parent, "style", "filled");
+        systemModel.addClassModelStyle(parent, "fillcolor", "green");
+        systemModel.addClassModelSteretypes(parent, "component");
+    }
+
+    @Override
+    protected void styleChild(ISystemModel systemModel, IClassModel child) {
+        systemModel.addClassModelStyle(child, "style", "filled");
+        systemModel.addClassModelStyle(child, "fillcolor", "green");
+        systemModel.addClassModelSteretypes(child, "component");
+    }
+
+    @Override
+    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
+        systemModel.addStyleToRelation(child, parent, new RelationHasA(0), "xlabel", "decorates");
+    }
+
+    @Override
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
+
+    }
+
+    @Override
     protected boolean evaluateParent(IClassModel child, IClassModel parent) {
         return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
                 && hasParentMethodMapped(child, parent);
-
-    }
-
-    @Override
-    protected IClassModel createParentClassModel(IClassModel validatedParent) {
-        final String PARENT_NODE_STYLE = "style=\"filled\" fillcolor=\"green\"";
-        final String PARENT_STEREOTYPE = "component";
-        return new ClassModelStyleDecorator(validatedParent, PARENT_NODE_STYLE, PARENT_STEREOTYPE);
-    }
-
-    @Override
-    protected IClassModel createChildClassModel(IClassModel child) {
-        final String CHILD_NODE_STYLE = "style=\"filled\" fillcolor=\"green\"";
-        final String CHILD_STEREOTYPE = "decorator";
-        return new ClassModelStyleDecorator(child, CHILD_NODE_STYLE, CHILD_STEREOTYPE);
-    }
-
-    @Override
-    protected IRelationInfo createRelation(IRelationInfo info) {
-        final String RELATION_EDGE_STYLE = "xlabel=\"\\<\\<decorates\\>\\>\"";
-        return (info instanceof RelationHasA) ? new RelationStyleDecorator(info, RELATION_EDGE_STYLE) : info;
-    }
-
-    @Override
-    protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> classes, Map<IClassModel, Collection<IClassModel>> updateMap, IClassModel clazz) {
-        Set<IClassModel> updatedClasses = new HashSet<>();
-        updatedClasses.addAll(classes);
-
-        for (IClassModel model : updateMap.keySet()) {
-            if (!updatedClasses.contains(model)) {
-                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"", "decorator"));
-            }
-        }
-
-        return updatedClasses;
     }
 }

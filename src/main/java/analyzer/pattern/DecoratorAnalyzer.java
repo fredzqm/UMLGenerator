@@ -2,7 +2,6 @@ package analyzer.pattern;
 
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.ProcessedSystemModel;
 
 public class DecoratorAnalyzer extends PatternAnalyzer {
 
