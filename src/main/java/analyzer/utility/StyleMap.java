@@ -12,7 +12,7 @@ public class StyleMap {
     }
 
     public void addStyleMap(StyleMap styleMap) {
-        style = style + " " + styleMap.getStyleString();
+        style = styleMap.getStyleString() + " " + style;
     }
 
     public String getStyleString() {
