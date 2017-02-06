@@ -56,7 +56,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
         for (IMethodModel method : child.getMethods()) {
-            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods)) {
+            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && method.getAccessedFields().contains(parent)) {
                 decoratedMethods.add(method);
             }
         }
