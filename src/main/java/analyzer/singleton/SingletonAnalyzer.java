@@ -11,6 +11,10 @@ import config.IConfiguration;
 import utility.MethodType;
 import utility.Modifier;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 public class SingletonAnalyzer implements IAnalyzer {
 
     @Override

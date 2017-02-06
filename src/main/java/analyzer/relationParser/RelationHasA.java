@@ -6,17 +6,21 @@ import analyzer.utility.IRelationInfo;
  * RelationInfo that interprets Has-A Relationships.
  */
 public class RelationHasA extends IRelationInfo {
-    private final boolean many;
-    private final int count;
+    private boolean many;
+    private int count;
 
     /**
      * Constructs a RelationHasA object.
      *
-     * @param count count value of the relation.
+     * @param count
+     *            count value of the relation.
      */
     RelationHasA(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
+    }
+
+    public RelationHasA() {
     }
 
     /**

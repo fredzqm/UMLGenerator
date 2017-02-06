@@ -11,6 +11,9 @@ import analyzer.utility.ITypeModel;
 import config.IConfiguration;
 import utility.ClassType;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by lamd on 1/14/2017.
  */
@@ -29,7 +32,6 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
     }
     
     /**
-     * 
      * @param clazz
      * @return true if this class violates the dependency inversion principle
      */

@@ -1,12 +1,12 @@
 package analyzer.syntheticFilter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SyntheticFilterAnalyzer implements IAnalyzer {
 

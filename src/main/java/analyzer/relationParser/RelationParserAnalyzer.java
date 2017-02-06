@@ -24,6 +24,8 @@ import config.IConfiguration;
 import utility.IFilter;
 import utility.IMapper;
 
+import java.util.*;
+
 public class RelationParserAnalyzer implements IAnalyzer {
     @Override
     public void analyze(ISystemModel sm, IConfiguration config) {
@@ -172,7 +174,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
     }
 
     private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
-            Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+                                        Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         ClassPair reverse = next.reverse();
         List<IRelationInfo> b;
         ListIterator<IRelationInfo> aitr, bitr;

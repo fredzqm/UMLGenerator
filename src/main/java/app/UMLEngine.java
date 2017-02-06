@@ -11,6 +11,8 @@ import model.SystemModelFactory;
 import runner.GraphVizRunner;
 import runner.IRunner;
 
+import java.util.List;
+
 /**
  * This is a concrete implementation of algorithm for analyzing a UML. It
  * depends on the Configuration setup and SystemModel in our program
@@ -23,9 +25,8 @@ public class UMLEngine extends AbstractUMLEngine {
     }
 
     /**
-     * @param config
-     *            the configuration object read from command line arguments, or
-     *            parsed from file. See {@link ConfigurationFactor}
+     * @param config the configuration object read from command line arguments, or
+     *               parsed from file. See {@link ConfigurationFactor}
      * @return the UML engine
      */
     static UMLEngine getInstance(IConfiguration config) {

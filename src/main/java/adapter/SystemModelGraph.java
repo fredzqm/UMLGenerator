@@ -15,6 +15,9 @@ import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
 
+import java.util.List;
+import java.util.Map;
+
 public class SystemModelGraph implements IGraph {
     private final ISystemModel systemModel;
     private ClassParserConfiguration classParserConfig;

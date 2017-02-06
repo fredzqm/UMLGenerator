@@ -1,9 +1,9 @@
 package model;
 
+import org.objectweb.asm.tree.FieldInsnNode;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.objectweb.asm.tree.FieldInsnNode;
 
 /**
  * represent a java byte code that accesses a field

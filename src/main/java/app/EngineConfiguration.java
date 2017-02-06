@@ -1,15 +1,15 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of

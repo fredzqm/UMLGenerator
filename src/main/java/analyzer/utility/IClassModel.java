@@ -1,8 +1,8 @@
 package analyzer.utility;
 
-import java.util.Collection;
-
 import utility.ClassType;
+
+import java.util.Collection;
 
 /**
  * An interface for Class Models.
@@ -63,7 +63,7 @@ public interface IClassModel {
      * still equals to the original classModel
      *
      * @return get the reference to the innest {@link ClassModel} that is
-     *         decorated
+     * decorated
      */
     IClassModel getUnderlyingClassModel();
 

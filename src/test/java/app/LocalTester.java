@@ -1,11 +1,12 @@
 package app;
 
-import analyzer.favorComposition.FavorCompositionAnalyzer;
+import analyzer.decorator.DecoratorAnalyzer;
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
-import dummy.favorDummy.FavorDummyA;
-import dummy.favorDummy.FavorDummyB;
+import dummy.decoratorDummy.Component;
+import dummy.decoratorDummy.ConcreteDecorator;
+import dummy.decoratorDummy.Decorator;
 import generator.GeneratorConfiguration;
 import model.ModelConfiguration;
 import runner.RunnerConfiguration;
@@ -27,13 +28,15 @@ public class LocalTester {
         config.set(RunnerConfiguration.FILE_NAME, "asmClass");
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
-        config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(),
-                FavorCompositionAnalyzer.class.getName());
-        config.add(ModelConfiguration.CLASSES_KEY, FavorDummyA.class.getName(), FavorDummyB.class.getName());
+        config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(), DecoratorAnalyzer.class.getName());
+        config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), Decorator.class.getName(), ConcreteDecorator.class.getName());
 
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
         engine.analyze(systemModel);
+
+        System.out.println(systemModel.getRelations());
+        System.out.println(systemModel.getClasses());
 
         String actual = engine.generate(systemModel);
         engine.executeRunner(actual);

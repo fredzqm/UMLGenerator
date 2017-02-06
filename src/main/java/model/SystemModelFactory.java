@@ -1,11 +1,11 @@
 package model;
 
+import analyzer.utility.IClassModel;
+import config.IConfiguration;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import analyzer.utility.IClassModel;
-import config.IConfiguration;
 
 /**
  * This class representing the entire model of a java program

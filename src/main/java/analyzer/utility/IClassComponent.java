@@ -5,9 +5,8 @@ import utility.Modifier;
 /**
  * Representing ClassComponent like methods and fields. It contains some basic
  * metadata getters.
- * 
- * @author zhang
  *
+ * @author zhang
  */
 public interface IClassComponent {
     /**

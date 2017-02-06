@@ -1,30 +1,26 @@
-package analyzer.pattern;
+package analyzer.decorator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import analyzer.utility.ClassPair;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
-import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 
-/**
- * @author zhang
- */
 public abstract class PatternAnalyzer implements IAnalyzer {
-    protected Set<? extends IClassModel> classes;
-    protected Map<ClassPair, List<IRelationInfo>> relations;
 
     @Override
     public void analyze(ISystemModel systemModel, IConfiguration config) {
-        for (IClassModel clazz : classes) {
-            List<IClassModel> composes = getComposeClasses(clazz, classes);
-            List<IClassModel> superClasses = getSuperClasses(clazz, classes);
+        
+        initialize(systemModel, config);
+        
+        Set<? extends IClassModel> classlist = systemModel.getClasses();
+        for (IClassModel clazz : classlist) {
+            List<IClassModel> composes = getComposeClasses(clazz, classlist);
+            List<IClassModel> superClasses = getSuperClasses(clazz, classlist);
             for (IClassModel comp : composes) {
                 for (IClassModel sup : superClasses) {
                     acceptPossiblePattern(systemModel, clazz, comp, sup);
@@ -33,16 +29,17 @@ public abstract class PatternAnalyzer implements IAnalyzer {
         }
     }
 
+    public abstract void initialize(ISystemModel systemModel, IConfiguration config);
+
     /**
      * process possible pattern pairs
      *
      * @param clazz
-     * @param comp
-     * @param sup
-     * @return
+     * @param composedClass
+     * @param superClass
      */
-    public abstract boolean acceptPossiblePattern(ISystemModel systemModel, IClassModel clazz, IClassModel comp,
-            IClassModel sup);
+    public abstract void acceptPossiblePattern(ISystemModel systemModel, IClassModel clazz, IClassModel composedClass,
+            IClassModel superClass);
 
     private List<IClassModel> getComposeClasses(IClassModel clazz, Set<? extends IClassModel> classls) {
         List<IClassModel> composes = new ArrayList<>();
