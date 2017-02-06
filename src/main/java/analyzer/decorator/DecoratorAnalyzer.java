@@ -1,17 +1,11 @@
 package analyzer.decorator;
 
+import analyzer.relationParser.RelationHasA;
+import analyzer.utility.*;
+import utility.MethodType;
+
 import java.util.*;
 import java.util.stream.Collectors;
-
-import analyzer.relationParser.RelationHasA;
-import analyzer.utility.ClassModelStyleDecorator;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ITypeModel;
-import analyzer.utility.RelationStyleDecorator;
-import utility.MethodType;
 
 /**
  * Created by lamd on 2/2/2017.
@@ -21,9 +15,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
         Collection<? extends IFieldModel> fields = child.getFields();
 
         for (IFieldModel field : fields) {
-            // TODO: Fred how do I compare field types with the superClasses
-            // type?
-            if (field.getFieldType().getClassModel().equals(parent)) {
+            if (field.getFieldType().equals(parent)) {
                 return true;
             }
         }
@@ -103,14 +95,13 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
     }
 
     @Override
-    protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> classes, IClassModel clazz) {
+    protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> classes, Map<IClassModel, Collection<IClassModel>> updateMap, IClassModel clazz) {
         Set<IClassModel> updatedClasses = new HashSet<>();
+        updatedClasses.addAll(classes);
 
-        for (IClassModel model : classes) {
-            if (model.getSuperClass().equals(clazz)) {
-                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"", "xlabel=\"\\<\\<decorates\\>\\>\""));
-            } else {
-                updatedClasses.add(model);
+        for (IClassModel model : updateMap.keySet()) {
+            if (!updatedClasses.contains(model)) {
+                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"", "decorator"));
             }
         }
 

@@ -58,9 +58,8 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      * <p>
      * The Collection may be empty.
      *
-     *
      * @param classes
-     * @param clazz IClassModel to be evaluated.
+     * @param clazz   IClassModel to be evaluated.
      * @return Collection of IClassModel of ParentClassModel defined by the subclass.
      */
     private Collection<IClassModel> evaluateClass(Collection<? extends IClassModel> classes, IClassModel clazz) {
@@ -98,14 +97,14 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      *
      * @param updatedClasses Collection of updatedClasses
      * @param updateMap      Map of all classes.
-     *@param clazz           IClassModel to be updated.  @return Updated Collection of IClassModel.
+     * @param clazz          IClassModel to be updated.  @return Updated Collection of IClassModel.
      */
-    protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> updatedClasses, IClassModel clazz) {
+    protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> updatedClasses, Map<IClassModel, Collection<IClassModel>> updateMap, IClassModel clazz) {
         return updatedClasses;
     }
 
     private Set<? extends IClassModel> updateClasses(Map<IClassModel, Collection<IClassModel>> updateMap) {
-        Set<IClassModel> updatedClasses = new HashSet<>(); // We are only inserting. Avoid worst case.
+        Set<IClassModel> updatedClasses = new HashSet<>();
 
         Collection<IClassModel> matchedClasses;
         for (IClassModel clazz : updateMap.keySet()) {
@@ -118,11 +117,11 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
                 updatedClasses.add(createChildClassModel(clazz));
 
                 // Hook.
-                updatedClasses = updateRelatedClasses(updatedClasses, clazz);
+                updatedClasses = updateRelatedClasses(updatedClasses, updateMap, clazz);
             } else {
                 // It is a normal class if nothing is matched.
                 if (!updatedClasses.contains(clazz)) {
-                    updatedClasses.add(clazz);
+                    updatedClasses.add(createParentClassModel(clazz));
                 }
             }
         }

@@ -14,7 +14,7 @@ public class GraphVizGenerator implements IGenerator {
     @Override
     public String generate(ISystemModel systemModel, IConfiguration iConfig) {
         IGraph graph = new SystemModelGraph(systemModel, iConfig);
-        
+
         GeneratorConfiguration config = iConfig.createConfiguration(GeneratorConfiguration.class);
 
         // DOT parent.
