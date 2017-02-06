@@ -13,7 +13,7 @@ import java.util.Objects;
  *
  * @author zhang
  */
-class Signature {
+public class Signature {
     private final List<TypeModel> args;
     private final String name;
     private int hashCode;

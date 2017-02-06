@@ -1,9 +1,8 @@
 package model;
 
+import analyzer.utility.IFieldModel;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
-
-import analyzer.utility.IFieldModel;
 import utility.Modifier;
 
 /**

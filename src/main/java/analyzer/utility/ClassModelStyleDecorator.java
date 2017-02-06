@@ -1,6 +1,7 @@
 package analyzer.utility;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -10,19 +11,19 @@ public class ClassModelStyleDecorator extends IClassModelFilter {
     private final String nodeStyle;
     private final String stereoType;
 
+    public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle) {
+        this(classModel, nodeStyle, null);
+    }
+
     public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle, String stereoType) {
         super(classModel);
         this.nodeStyle = nodeStyle;
         this.stereoType = stereoType;
     }
 
-    public ClassModelStyleDecorator(IClassModel classModel, String nodeStyle) {
-        this(classModel, nodeStyle, null);
-    }
-
     @Override
     public List<String> getStereoTypes() {
-        if (stereoType == null)
+        if (this.stereoType == null)
             return super.getStereoTypes();
         List<String> ls = new ArrayList<>(super.getStereoTypes());
         ls.add(stereoType);
@@ -31,7 +32,7 @@ public class ClassModelStyleDecorator extends IClassModelFilter {
 
     @Override
     public String getNodeStyle() {
-        return super.getNodeStyle() + " " + nodeStyle;
+        return super.getNodeStyle() + " " + this.nodeStyle;
     }
 
 }

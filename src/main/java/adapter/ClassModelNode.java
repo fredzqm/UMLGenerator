@@ -25,7 +25,6 @@ public class ClassModelNode implements INode {
         IParser<IMethodModel> methodParser = config.getMethodParser();
 
         StringBuilder sb = new StringBuilder();
-        // Set the header.
 
         sb.append(header.parse(classModel, config));
         // Filter the fields
