@@ -10,25 +10,15 @@ import java.util.stream.Collectors;
  * Created by lamd on 2/2/2017.
  */
 public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
-    @Override
-    public final ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        Set<? extends IClassModel> classes = systemModel.getClasses();
-        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-
-        Map<IClassModel, Collection<IClassModel>> updateMap = createUpdateMap(classes);
-        classes = updateClasses(updateMap);
-        relations = updateRelations(updateMap, relations);
-
-        return new ProcessedSystemModel(classes, relations);
-    }
-
     private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
         Collection<IClassModel> potentialParents = new LinkedList<>();
         Collection<IClassModel> candidates = new LinkedList<>();
 
+        // Put clazz's super class and interfaces into the potential parent's Collection.
         potentialParents.add(clazz.getSuperClass());
         clazz.getInterfaces().forEach(potentialParents::add);
 
+        // Go through the potentialParents and find its matching ClassModel in classes;
         for (IClassModel classModel : potentialParents) {
             for (IClassModel fullModels : classes) {
                 if (fullModels.equals(classModel)) {
@@ -107,8 +97,8 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      * overriden and return an updated list of the IClassModel.
      *
      * @param updatedClasses Collection of updatedClasses
-     * @param clazz          IClassModel to be updated.
-     * @return Updated Collection of IClassModel.
+     * @param updateMap      Map of all classes.
+     *@param clazz           IClassModel to be updated.  @return Updated Collection of IClassModel.
      */
     protected Set<IClassModel> updateRelatedClasses(Set<IClassModel> updatedClasses, IClassModel clazz) {
         return updatedClasses;
@@ -131,7 +121,6 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
                 updatedClasses = updateRelatedClasses(updatedClasses, clazz);
             } else {
                 // It is a normal class if nothing is matched.
-//                updatedClasses.add(clazz);
                 if (!updatedClasses.contains(clazz)) {
                     updatedClasses.add(clazz);
                 }
@@ -196,5 +185,17 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         }
 
         return updatedRelations;
+    }
+
+    @Override
+    public final ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
+        Set<? extends IClassModel> classes = systemModel.getClasses();
+        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
+
+        Map<IClassModel, Collection<IClassModel>> updateMap = createUpdateMap(classes);
+        classes = updateClasses(updateMap);
+        relations = updateRelations(updateMap, relations);
+
+        return new ProcessedSystemModel(classes, relations);
     }
 }

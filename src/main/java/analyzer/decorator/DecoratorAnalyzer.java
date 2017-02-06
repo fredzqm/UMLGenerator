@@ -1,9 +1,6 @@
 package analyzer.decorator;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import analyzer.relationParser.RelationHasA;
@@ -111,8 +108,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
         for (IClassModel model : classes) {
             if (model.getSuperClass().equals(clazz)) {
-                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"",
-                        "xlabel=\"\\<\\<decorates\\>\\>\""));
+                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"", "xlabel=\"\\<\\<decorates\\>\\>\""));
             } else {
                 updatedClasses.add(model);
             }
