@@ -4,17 +4,13 @@ import analyzer.relationParser.RelationHasA;
 import analyzer.utility.*;
 import utility.MethodType;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by lamd on 2/2/2017.
  */
 public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
-
     private boolean hasParentAsField(IClassModel child, IClassModel parent) {
         Collection<? extends IFieldModel> fields = child.getFields();
 
@@ -83,16 +79,36 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
     @Override
     protected IClassModel createParentClassModel(IClassModel validatedParent) {
-        return new ClassModelStyleDecorator(validatedParent, "style=\"filled\" fillcolor=\"green\"", "component");
+        final String PARENT_NODE_STYLE = "style=\"filled\" fillcolor=\"green\"";
+        final String PARENT_STEREOTYPE = "component";
+        return new ClassModelStyleDecorator(validatedParent, PARENT_NODE_STYLE, PARENT_STEREOTYPE);
     }
 
     @Override
     protected IClassModel createChildClassModel(IClassModel child) {
-        return new ClassModelStyleDecorator(child, "style=\"filled\" fillcolor=\"green\"", "decorator");
+        final String CHILD_NODE_STYLE = "style=\"filled\" fillcolor=\"green\"";
+        final String CHILD_STEREOTYPE = "decorator";
+        return new ClassModelStyleDecorator(child, CHILD_NODE_STYLE, CHILD_STEREOTYPE);
     }
 
     @Override
     protected IRelationInfo createRelation(IRelationInfo info) {
-        return (info instanceof RelationHasA) ? new RelationStyleDecorator(info, "xlabel=\"\\<\\<decorates\\>\\>\"") : info;
+        final String RELATION_EDGE_STYLE = "xlabel=\"\\<\\<decorates\\>\\>\"";
+        return (info instanceof RelationHasA) ? new RelationStyleDecorator(info, RELATION_EDGE_STYLE) : info;
+    }
+
+    @Override
+    protected Collection<IClassModel> updateRelatedClasses(Collection<IClassModel> classes, IClassModel clazz) {
+        Collection<IClassModel> updatedClasses = new LinkedList<>();
+
+        for (IClassModel model : classes) {
+            if (model.getSuperClass().equals(clazz)) {
+                updatedClasses.add(new ClassModelStyleDecorator(model, "style=\"filled\" fillcolor=\"green\"", "xlabel=\"\\<\\<decorates\\>\\>\""));
+            } else {
+                updatedClasses.add(model);
+            }
+        }
+
+        return updatedClasses;
     }
 }
