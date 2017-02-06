@@ -244,7 +244,7 @@ public class SystemTest {
 //
         String actual = engine.generate(systemModel);
         String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy,
-                "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\"  ];");
+                "[arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\"];");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 

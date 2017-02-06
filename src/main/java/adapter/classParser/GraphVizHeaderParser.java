@@ -6,25 +6,25 @@ import analyzer.utility.ISystemModel;
 public class GraphVizHeaderParser implements IParser<IClassModel> {
     @Override
     public String parse(IClassModel classModel, ISystemModel systemModel, ClassParserConfiguration config) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder headerBuilder = new StringBuilder();
         switch (classModel.getType()) {
             case INTERFACE:
-                addHeader(sb, "Interface");
+                addHeader(headerBuilder, "Interface");
                 break;
             case CONCRETE:
                 break;
             case ABSTRACT:
-                addHeader(sb, "Abstract");
+                addHeader(headerBuilder, "Abstract");
                 break;
             case ENUM:
-                addHeader(sb, "Enumeration");
+                addHeader(headerBuilder, "Enumeration");
                 break;
         }
         for (String sterotype : systemModel.getStereoTypes(classModel)) {
-            addHeader(sb, sterotype);
+            addHeader(headerBuilder, sterotype);
         }
-        sb.append(classModel.getName());
-        return sb.toString();
+        headerBuilder.append(classModel.getName());
+        return headerBuilder.toString();
     }
 
     private StringBuilder addHeader(StringBuilder sb, String sterotype) {
