@@ -40,7 +40,7 @@ public class RelationDependsOn implements IRelationInfo {
     @Override
     public StyleMap getStyleMap() {
         StyleMap styleMap = new StyleMap();
-        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("arrowhead", "vee");
         styleMap.addStyle("style", "dashed");
         if (isMany()) {
             styleMap.addStyle("headlabel", "0..*");

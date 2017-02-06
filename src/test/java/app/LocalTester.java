@@ -35,8 +35,6 @@ public class LocalTester {
         ISystemModel systemModel = engine.createSystemModel();
         engine.analyze(systemModel);
 
-        System.out.println(systemModel.getRelations());
-        System.out.println(systemModel.getClasses());
         systemModel.getClasses().forEach((c) -> System.out.println(systemModel.getNodeStyle(c)));
 
         String actual = engine.generate(systemModel);

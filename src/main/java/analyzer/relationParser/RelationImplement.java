@@ -16,7 +16,7 @@ public class RelationImplement implements IRelationInfo {
     @Override
     public StyleMap getStyleMap() {
         StyleMap styleMap = new StyleMap();
-        styleMap.addStyle("arrowtail", "onormal");
+        styleMap.addStyle("arrowhead", "onormal");
         styleMap.addStyle("style", "dashed");
         return styleMap;
     }

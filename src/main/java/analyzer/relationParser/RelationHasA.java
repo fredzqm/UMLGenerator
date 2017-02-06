@@ -51,7 +51,7 @@ public class RelationHasA implements IRelationInfo {
     @Override
     public StyleMap getStyleMap() {
         StyleMap styleMap = new StyleMap();
-        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("arrowhead", "vee");
         styleMap.addStyle("style", "");
         if (isMany()) {
             styleMap.addStyle("headlabel", String.format("%d..*", getCount()));
