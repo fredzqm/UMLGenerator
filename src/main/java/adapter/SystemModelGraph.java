@@ -1,8 +1,5 @@
 package adapter;
 
-import java.util.List;
-import java.util.Map;
-
 import adapter.classParser.ClassParserConfiguration;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
@@ -13,6 +10,9 @@ import generator.IGraph;
 import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
+
+import java.util.List;
+import java.util.Map;
 
 public class SystemModelGraph implements IGraph {
     private final ISystemModel systemModel;

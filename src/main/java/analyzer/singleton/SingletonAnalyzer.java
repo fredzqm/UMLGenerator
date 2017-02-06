@@ -1,19 +1,13 @@
 package analyzer.singleton;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import analyzer.utility.ClassModelStyleDecorator;
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ProcessedSystemModel;
+import analyzer.utility.*;
 import config.IConfiguration;
 import utility.MethodType;
 import utility.Modifier;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SingletonAnalyzer implements IAnalyzer {
     private SingletonConfiguration config;

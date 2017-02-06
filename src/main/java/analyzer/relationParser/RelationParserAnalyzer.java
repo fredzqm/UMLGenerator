@@ -1,29 +1,11 @@
 package analyzer.relationParser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import analyzer.utility.ClassPair;
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IInstructionModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ITypeModel;
-import analyzer.utility.ProcessedSystemModel;
+import analyzer.utility.*;
 import config.IConfiguration;
 import utility.IFilter;
 import utility.IMapper;
+
+import java.util.*;
 
 public class RelationParserAnalyzer implements IAnalyzer {
     @Override
@@ -33,7 +15,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
     }
 
     public Map<ClassPair, List<IRelationInfo>> generateRelation(Set<? extends IClassModel> classList,
-            Map<ClassPair, List<IRelationInfo>> relations) {
+                                                                Map<ClassPair, List<IRelationInfo>> relations) {
         Map<ClassPair, List<IRelationInfo>> map = new HashMap<>();
         for (IClassModel classModel : classList) {
             // add related super class relationship
@@ -169,7 +151,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
     }
 
     private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
-            Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+                                        Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         ClassPair reverse = next.reverse();
         List<IRelationInfo> b;
         ListIterator<IRelationInfo> aitr, bitr;

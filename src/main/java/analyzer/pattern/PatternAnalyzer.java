@@ -1,22 +1,15 @@
 package analyzer.pattern;
 
+import analyzer.utility.*;
+import config.IConfiguration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import analyzer.utility.ClassPair;
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import config.IConfiguration;
-
 /**
- * 
  * @author zhang
- *
  */
 public abstract class PatternAnalyzer implements IAnalyzer {
     protected Set<? extends IClassModel> classes;
@@ -36,14 +29,14 @@ public abstract class PatternAnalyzer implements IAnalyzer {
                 }
             }
         }
-        
+
         return getProcessedSystemModel();
     }
 
 
     /**
      * process possible pattern pairs
-     * 
+     *
      * @param clazz
      * @param comp
      * @param sup
@@ -53,7 +46,7 @@ public abstract class PatternAnalyzer implements IAnalyzer {
 
     /**
      * based on the classes inspect generate the styled systemModel
-     * 
+     *
      * @return
      */
     public abstract ISystemModel getProcessedSystemModel();

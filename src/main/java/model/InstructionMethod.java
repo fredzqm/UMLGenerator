@@ -1,9 +1,9 @@
 package model;
 
+import org.objectweb.asm.tree.MethodInsnNode;
+
 import java.util.Collection;
 import java.util.HashSet;
-
-import org.objectweb.asm.tree.MethodInsnNode;
 
 /**
  * represent a java byte code instruction that calls a method

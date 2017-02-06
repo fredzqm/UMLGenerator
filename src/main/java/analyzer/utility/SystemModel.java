@@ -6,12 +6,12 @@ import java.util.Set;
 
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
-    
+
     private Map<IClassModel, String> nodeStyle;
     private Map<IClassModel, List<String>> prototypes;
     private Map<IClassModel, Map<IClassModel, List<IRelationInfo>>> relations;
-    
-    
+
+
     public SystemModel(Set<IClassModel> importantList) {
         this.classSet = importantList;
     }

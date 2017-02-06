@@ -66,12 +66,9 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
     @Override
     protected boolean evaluateParent(IClassModel child, IClassModel parent) {
-        if (hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
-                && hasParentMethodMapped(child, parent)) {
-            return true;
-        }
+        return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
+                && hasParentMethodMapped(child, parent);
 
-        return false;
     }
 
     @Override
