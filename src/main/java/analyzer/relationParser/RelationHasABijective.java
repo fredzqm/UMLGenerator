@@ -5,7 +5,7 @@ import analyzer.utility.IRelationInfo;
 /**
  * RelationInfo for bijective has-a relations.
  */
-public class RelationHasABijective implements IRelationInfo {
+public class RelationHasABijective extends IRelationInfo {
     private RelationHasA a, b;
 
     /**

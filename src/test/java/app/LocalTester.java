@@ -33,7 +33,7 @@ public class LocalTester {
 
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
-        systemModel = engine.analyze(systemModel);
+        engine.analyze(systemModel);
 
         System.out.println(systemModel.getRelations());
         System.out.println(systemModel.getClasses());

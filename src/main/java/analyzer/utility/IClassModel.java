@@ -3,7 +3,6 @@ package analyzer.utility;
 import utility.ClassType;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An interface for Class Models.
@@ -74,17 +73,5 @@ public interface IClassModel {
      * @return Methods of the Model.
      */
     Collection<? extends IMethodModel> getMethods();
-
-    /**
-     * @return the list of stereotypes
-     */
-    List<String> getStereoTypes();
-
-    /**
-     * @return the vertex style of this class
-     */
-    default String getNodeStyle() {
-        return "";
-    }
 
 }

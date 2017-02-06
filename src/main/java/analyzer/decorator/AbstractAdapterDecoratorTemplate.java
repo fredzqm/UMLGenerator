@@ -4,32 +4,31 @@ import analyzer.utility.*;
 import config.IConfiguration;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by lamd on 2/2/2017.
  */
 public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
-    private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
-        Collection<IClassModel> potentialParents = new LinkedList<>();
-        Collection<IClassModel> candidates = new LinkedList<>();
-
-        // Put clazz's super class and interfaces into the potential parent's Collection.
-        potentialParents.add(clazz.getSuperClass());
-        clazz.getInterfaces().forEach(potentialParents::add);
-
-        // Go through the potentialParents and find its matching ClassModel in classes;
-        for (IClassModel classModel : potentialParents) {
-            for (IClassModel fullModels : classes) {
-                if (fullModels.equals(classModel)) {
-                    candidates.add(fullModels);
-                    break;
-                }
-            }
-        }
-
-        return candidates;
-    }
+//    private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
+//        Collection<IClassModel> potentialParents = new LinkedList<>();
+//        Collection<IClassModel> candidates = new LinkedList<>();
+//
+//        // Put clazz's super class and interfaces into the potential parent's Collection.
+//        potentialParents.add(clazz.getSuperClass());
+//        clazz.getInterfaces().forEach(potentialParents::add);
+//
+//        // Go through the potentialParents and find its matching ClassModel in classes;
+//        for (IClassModel classModel : potentialParents) {
+//            for (IClassModel fullModels : classes) {
+//                if (fullModels.equals(classModel)) {
+//                    candidates.add(fullModels);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return candidates;
+//    }
 
     /**
      * Evaluates a given parent class and the child and detect whether they meet the desired pattern.
@@ -52,6 +51,8 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      */
     protected abstract IClassModel createParentClassModel(IClassModel validatedParent);
 
+    protected abstract void styleParent(IClassModel parent, ISystemModel systemModel);
+
     /**
      * Returns a Collection of ClassModel that are parents of the given ClassModel that fulfills the evaluation criteria
      * defined by the subclass.
@@ -62,22 +63,23 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      * @param clazz   IClassModel to be evaluated.
      * @return Collection of IClassModel of ParentClassModel defined by the subclass.
      */
-    private Collection<IClassModel> evaluateClass(Collection<? extends IClassModel> classes, IClassModel clazz) {
-        Collection<IClassModel> potentialParents = getPotentialParents(classes, clazz);
-        return potentialParents.stream()
+    private void evaluateClass(ISystemModel systemModel, Collection<? extends IClassModel> classes, IClassModel clazz) {
+//        Collection<IClassModel> potentialParents = getPotentialParents(classes, clazz);
+        classes.stream()
                 .filter((parent) -> evaluateParent(clazz, parent))      // Subclasses define how to filter.
-                .map(this::createParentClassModel)                      // Create a ClassModel for each of the filtered parents.
-                .collect(Collectors.toList());                          // Collect the results into a Collection List.
+                .forEach((parent) -> styleParent(parent, systemModel));     // Create a ClassModel for each of the filtered parents.
+//                .collect(Collectors.toList());                          // Collect the results into a Collection List.
     }
 
-    private Map<IClassModel, Collection<IClassModel>> createUpdateMap(Collection<? extends IClassModel> classes) {
-        Map<IClassModel, Collection<IClassModel>> updateMap = new HashMap<>();
-
-        for (IClassModel clazz : classes) {
-            updateMap.put(clazz, evaluateClass(classes, clazz));
-        }
-
-        return updateMap;
+//    private Map<IClassModel, Collection<IClassModel>> createUpdateMap(ISystemModel systemModel, Collection<? extends IClassModel> classes) {
+////        Map<IClassModel, Collection<IClassModel>> updateMap = new HashMap<>();
+//        evaluateClass(systemModel, cla);
+//        for (IClassModel clazz : classes) {
+////            updateMap.put(clazz, evaluateClass(systemModel, classes, clazz));
+//            evaluateClass(systemModel, classes, clazz);
+//        }
+//
+//        return updateMap;
     }
 
     /**
@@ -103,7 +105,7 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         return updatedClasses;
     }
 
-    private Set<? extends IClassModel> updateClasses(Map<IClassModel, Collection<IClassModel>> updateMap) {
+    private Set<? extends IClassModel> updateClasses(Map<IClassModel, Collection<IClassModel>> updateMap, ISystemModel systemModel) {
         Set<IClassModel> updatedClasses = new HashSet<>();
 
         Collection<IClassModel> matchedClasses;
@@ -113,6 +115,7 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
             if (!matchedClasses.isEmpty()) {
                 for (IClassModel match : matchedClasses) {
                     updatedClasses.add(match);
+                    systemModel.addClassModelStyle(match, );
                 }
                 updatedClasses.add(createChildClassModel(clazz));
 
@@ -186,15 +189,15 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
         return updatedRelations;
     }
 
+    private void updateClasses(ISystemModel systemModel, Set<? extends IClassModel> classes) {
+        classes.forEach((clazz) -> evaluateClass(systemModel, clazz));
+
     @Override
-    public final ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
+    public final void analyze(ISystemModel systemModel, IConfiguration config) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
 
-        Map<IClassModel, Collection<IClassModel>> updateMap = createUpdateMap(classes);
-        classes = updateClasses(updateMap);
+//        Map<IClassModel, Collection<IClassModel>> updateMap = createUpdateMap(classes);
+        classes = updateClasses(classes);
         relations = updateRelations(updateMap, relations);
-
-        return new ProcessedSystemModel(classes, relations);
     }
 }
