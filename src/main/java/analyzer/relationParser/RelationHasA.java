@@ -51,7 +51,7 @@ public class RelationHasA extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
         if (isMany()) {
             edgeBuilder.append(String.format("headlabel=\"%d..*\" ", getCount()));

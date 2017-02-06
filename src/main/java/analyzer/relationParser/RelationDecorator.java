@@ -32,8 +32,8 @@ public abstract class RelationDecorator extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
-        return this.decorated.getEdgeStyle();
+    public String getBaseEdgeStyle() {
+        return this.decorated.getBaseEdgeStyle();
     }
 
     @Override

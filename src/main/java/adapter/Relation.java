@@ -62,6 +62,6 @@ class Relation implements IEdge {
 
     @Override
     public String getEdgeStyle() {
-        return this.info.getEdgeStyle();
+        return this.info.getEdgeSytle();
     }
 }

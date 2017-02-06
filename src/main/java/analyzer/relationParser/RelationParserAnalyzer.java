@@ -24,8 +24,6 @@ import config.IConfiguration;
 import utility.IFilter;
 import utility.IMapper;
 
-import java.util.*;
-
 public class RelationParserAnalyzer implements IAnalyzer {
     @Override
     public void analyze(ISystemModel sm, IConfiguration config) {

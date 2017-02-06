@@ -21,8 +21,8 @@ public class RelationBijectiveDecorator extends RelationDecorator {
     }
 
     @Override
-    public String getEdgeStyle() {
-        return super.getEdgeStyle() + "arrowtail=\"vee\" dir=both ";
+    public String getBaseEdgeStyle() {
+        return super.getBaseEdgeStyle() + "arrowtail=\"vee\" dir=both ";
     }
 
     @Override

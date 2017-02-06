@@ -36,7 +36,7 @@ public class RelationDependsOn extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
 
         if (isMany()) {
