@@ -1,11 +1,11 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets depends-on relation.
  */
-public class RelationDependsOn extends IRelationInfo {
+public class RelationDependsOn implements IRelationInfo {
     private final boolean many;
 
     /**
@@ -36,14 +36,19 @@ public class RelationDependsOn extends IRelationInfo {
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
-
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("style", "dashed");
         if (isMany()) {
-            edgeBuilder.append("headlabel=\"0..*\" ");
+            styleMap.addStyle("headlabel", "0..*");
         }
+        return styleMap;
+    }
 
-        return edgeBuilder.toString();
+    @Override
+    public String getRelKey() {
+        return "dependsOn";
     }
 
     @Override

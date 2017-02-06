@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import analyzer.relationParser.IRelationInfo;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
-import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.StyleMap;
 
@@ -18,7 +18,7 @@ public class SystemModel implements ISystemModel {
 
     private Map<IClassModel, StyleMap> nodeStyle;
     private Map<IClassModel, List<String>> stereotypes;
-    private Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> relations;
+    private Map<ClassPair, Map<String, StyleMap>> relations;
 
     public SystemModel(Set<IClassModel> importantList) {
         this.classSet = importantList;
@@ -36,7 +36,7 @@ public class SystemModel implements ISystemModel {
         return classSet;
     }
 
-    public Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> getRelations() {
+    public Map<ClassPair, Map<String, StyleMap>> getRelations() {
         return relations;
     }
 
@@ -67,24 +67,24 @@ public class SystemModel implements ISystemModel {
     }
 
     @Override
-    public void addStyleToRelation(IClassModel from, IClassModel to, IRelationInfo relInfo, String key, String value) {
+    public void addStyleToRelation(IClassModel from, IClassModel to, String relKey, String key, String value) {
         ClassPair pair = new ClassPair(from, to);
         if (!relations.containsKey(pair))
             relations.put(pair, new HashMap<>());
-        Map<Class<? extends IRelationInfo>, IRelationInfo> map = relations.get(pair);
-        if (!map.containsKey(relInfo.getClass()))
-            map.put(relInfo.getClass(), relInfo);
-        map.get(relInfo.getClass()).addStyle(key, value);
+        Map<String, StyleMap> map = relations.get(pair);
+        if (!map.containsKey(relKey))
+            map.put(relKey, new StyleMap());
+        map.get(relKey).addStyle(key, value);
     }
 
     @Override
-    public void addRelation(IClassModel from, IClassModel to, IRelationInfo relInfo) {
+    public void addRelation(IClassModel from, IClassModel to, String relKey, StyleMap styleMap) {
         ClassPair pair = new ClassPair(from, to);
         if (!relations.containsKey(pair))
             relations.put(pair, new HashMap<>());
-        Map<Class<? extends IRelationInfo>, IRelationInfo> map = relations.get(pair);
-        if (!map.containsKey(relInfo.getClass()))
-            map.put(relInfo.getClass(), relInfo);
+        Map<String, StyleMap> map = relations.get(pair);
+        if (!map.containsKey(relKey))
+            map.put(relKey, styleMap);
     }
 
 }

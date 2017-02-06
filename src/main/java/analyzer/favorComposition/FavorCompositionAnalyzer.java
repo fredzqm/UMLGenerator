@@ -20,7 +20,7 @@ public class FavorCompositionAnalyzer implements IAnalyzer {
         for (IClassModel clazz : systemModel.getClasses()) {
             if (violateFavorComposition(clazz)) {
                 systemModel.addClassModelStyle(clazz, "color", config.getFavorComColor());
-                systemModel.addStyleToRelation(clazz, clazz.getSuperClass(), new RelationExtendsClass(), "color",
+                systemModel.addStyleToRelation(clazz, clazz.getSuperClass(), "extend", "color",
                         config.getFavorComColor());
 
             }

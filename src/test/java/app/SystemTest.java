@@ -17,13 +17,14 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import adapter.classParser.ClassParserConfiguration;
+import analyzer.relationParser.IRelationInfo;
 import analyzer.relationParser.RelationDependsOn;
 import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationImplement;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
-import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import analyzer.utility.StyleMap;
 import config.Configuration;
 import dummy.generic.GenDummyClass;
 import dummy.hasDependsRel.RelDummyClass;
@@ -277,13 +278,13 @@ public class SystemTest {
         assertNotNull(stringModel);
 
         // Get relations.
-        Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> relations = systemModel.getRelations();
+        Map<ClassPair, Map<String, StyleMap>> relations = systemModel.getRelations();
 
-        Collection<IRelationInfo> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel)).values();
+        Collection<StyleMap> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel)).values();
         assertEquals(1, dummyStringRelation.size());
         assertEquals(new RelationDependsOn(false), dummyStringRelation.iterator().next());
 
-        Collection<IRelationInfo> dummyIntStreamRelation = relations.get(new ClassPair(dummyModel, intStreamModel)).values();
+        Collection<StyleMap> dummyIntStreamRelation = relations.get(new ClassPair(dummyModel, intStreamModel)).values();
         assertEquals(1, dummyIntStreamRelation.size());
         assertEquals(new RelationDependsOn(false), dummyIntStreamRelation.iterator().next());
 

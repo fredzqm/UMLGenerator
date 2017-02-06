@@ -1,19 +1,27 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets Extends relations.
  */
-public class RelationExtendsClass extends IRelationInfo {
+public class RelationExtendsClass implements IRelationInfo {
     @Override
     public String toString() {
         return "Extends";
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        return "arrowhead=\"onormal\" style=\"\" ";
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowtail", "onormal");
+        styleMap.addStyle("style", "");
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return "extends";
     }
 
     @Override

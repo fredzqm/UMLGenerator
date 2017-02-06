@@ -51,7 +51,7 @@ public class DecoratorAnalyzer extends PatternAnalyzer {
         if (composedClass.equals(superClass) && hasParentMethodMapped(clazz, superClass)) {
             markDecorator(systemModel, clazz);
             markComponent(systemModel, superClass);
-            systemModel.addStyleToRelation(clazz, superClass, new RelationHasA(), "xlabel", "decorates");
+            systemModel.addStyleToRelation(clazz, superClass, "hasa", "xlabel", "decorates");
         }
     }
 

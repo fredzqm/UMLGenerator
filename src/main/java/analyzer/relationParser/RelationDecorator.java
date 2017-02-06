@@ -1,11 +1,11 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * Created by lamd on 1/26/2017.
  */
-public abstract class RelationDecorator extends IRelationInfo {
+public abstract class RelationDecorator implements IRelationInfo {
     private IRelationInfo decorated;
 
     /**
@@ -32,8 +32,8 @@ public abstract class RelationDecorator extends IRelationInfo {
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        return this.decorated.getBaseEdgeStyle();
+    public StyleMap getStyleMap() {
+        return decorated.getStyleMap();
     }
 
     @Override

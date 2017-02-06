@@ -1,6 +1,6 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets bijectvie relations.
@@ -21,8 +21,16 @@ public class RelationBijectiveDecorator extends RelationDecorator {
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        return super.getBaseEdgeStyle() + "arrowtail=\"vee\" dir=both ";
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = super.getStyleMap();
+        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("dir", "both");
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return "implements";
     }
 
     @Override
@@ -33,4 +41,5 @@ public class RelationBijectiveDecorator extends RelationDecorator {
         }
         return false;
     }
+
 }
