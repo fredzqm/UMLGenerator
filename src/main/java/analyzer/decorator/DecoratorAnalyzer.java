@@ -16,20 +16,17 @@ import java.util.stream.Collectors;
 public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
     private boolean hasParentAsField(IClassModel child, IClassModel parent) {
         Collection<? extends IFieldModel> fields = child.getFields();
-
         for (IFieldModel field : fields) {
             if (field.getFieldType().equals(parent)) {
                 return true;
             }
         }
-
         return false;
     }
 
     private boolean hasParentAsConstructorArgument(IClassModel child, IClassModel parent) {
-        Collection<? extends IMethodModel> methods = child.getMethods();
-
         List<? extends ITypeModel> arguments;
+        Collection<? extends IMethodModel> methods = child.getMethods();
         for (IMethodModel method : methods) {
             if (method.getMethodType() == MethodType.CONSTRUCTOR) {
                 arguments = method.getArguments();
@@ -40,7 +37,6 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
                 }
             }
         }
-
         return false;
     }
 
@@ -59,7 +55,6 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -68,11 +63,9 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
-        for (IMethodModel method : child.getMethods()) {
-            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method)) {
-                decoratedMethods.add(method);
-            }
-        }
+        child.getMethods().stream()
+                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method))
+                .forEach(decoratedMethods::add);
 
         return decoratedMethods.size() == parentMethods.size();
     }
@@ -101,9 +94,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
-        Collection<? extends IClassModel> classes = systemModel.getClasses();
-
-        classes.forEach((classModel) -> {
+        systemModel.getClasses().forEach((classModel) -> {
             if (classModel.getSuperClass().equals(decoratorClass)) {
                 addCommonDecoratorStyle(systemModel, classModel);
                 systemModel.addClassModelSteretypes(classModel, "decorator");
