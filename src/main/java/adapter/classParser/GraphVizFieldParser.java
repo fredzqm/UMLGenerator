@@ -12,10 +12,10 @@ import utility.Modifier;
  */
 public class GraphVizFieldParser implements IParser<IFieldModel> {
     @Override
-    public String parse(IFieldModel field,ISystemModel systemModel,ClassParserConfiguration config) {
+    public String parse(IFieldModel field, ISystemModel systemModel, ClassParserConfiguration config) {
         IParser<ITypeModel> typeParser = config.getTypeParser();
         IParser<Modifier> modifierParser = config.getModifierParser();
-        return String.format("%s %s : %s \\l", modifierParser.parse(field.getModifier(),systemModel, config), field.getName(),
-                typeParser.parse(field.getFieldType(),systemModel, config));
+        return String.format("%s %s : %s \\l", modifierParser.parse(field.getModifier(), systemModel, config), field.getName(),
+                typeParser.parse(field.getFieldType(), systemModel, config));
     }
 }

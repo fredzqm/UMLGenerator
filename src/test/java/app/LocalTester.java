@@ -37,7 +37,7 @@ public class LocalTester {
 
         System.out.println(systemModel.getRelations());
         System.out.println(systemModel.getClasses());
-        systemModel.getClasses().forEach((clazz) -> System.out.println(String.format("%s %s", clazz.toString(), clazz.getNodeStyle())));
+        systemModel.getClasses().forEach((c) -> System.out.println(systemModel.getNodeStyle(c)));
 
         String actual = engine.generate(systemModel);
         engine.executeRunner(actual);

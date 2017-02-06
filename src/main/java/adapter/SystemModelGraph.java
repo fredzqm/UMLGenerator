@@ -1,7 +1,5 @@
 package adapter;
 
-import java.util.Map;
-
 import adapter.classParser.ClassParserConfiguration;
 import adapter.classParser.GraphvizClassParser;
 import adapter.classParser.IParser;
@@ -15,7 +13,6 @@ import generator.INode;
 import utility.IExpander;
 import utility.IMapper;
 
-import java.util.List;
 import java.util.Map;
 
 public class SystemModelGraph implements IGraph {

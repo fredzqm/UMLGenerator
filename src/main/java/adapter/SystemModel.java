@@ -1,17 +1,8 @@
 package adapter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import analyzer.utility.*;
 
-import analyzer.utility.ClassPair;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.StyleMap;
+import java.util.*;
 
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
@@ -27,13 +18,13 @@ public class SystemModel implements ISystemModel {
         stereotypes = new HashMap<>();
     }
 
+    public Set<IClassModel> getClasses() {
+        return classSet;
+    }
+
     @Override
     public void setClasses(Set<IClassModel> classSet) {
         this.classSet = classSet;
-    }
-
-    public Set<IClassModel> getClasses() {
-        return classSet;
     }
 
     public Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> getRelations() {

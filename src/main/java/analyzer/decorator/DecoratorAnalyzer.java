@@ -59,7 +59,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
         for (IMethodModel method : child.getMethods()) {
-            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && method.getAccessedFields().contains(parent)) {
+            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods)) {
                 decoratedMethods.add(method);
             }
         }
@@ -87,12 +87,20 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
     }
 
     @Override
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
+        Collection<? extends IClassModel> classes = systemModel.getClasses();
 
+        classes.forEach((classModel) -> {
+            if (classModel.getSuperClass().equals(decoratorClass)) {
+                systemModel.addClassModelStyle(classModel, "style", "filled");
+                systemModel.addClassModelStyle(classModel, "fillcolor", "green");
+                systemModel.addClassModelSteretypes(classModel, "decorator");
+            }
+        });
     }
 
     @Override
-    protected boolean evaluateParent(IClassModel child, IClassModel parent) {
+    protected boolean detectPattern(IClassModel child, IClassModel parent) {
         return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
                 && hasParentMethodMapped(child, parent);
     }

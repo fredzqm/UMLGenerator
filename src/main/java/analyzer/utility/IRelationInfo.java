@@ -11,11 +11,15 @@ public abstract class IRelationInfo {
         styleMap.addStyle(key, value);
     }
 
+    public String getEdgeSytle() {
+        return getBaseEdgeStyle() + " " + styleMap;
+    }
+
     /**
      * Returns the String of the Relations edge style.
      *
      * @return String of the Edge Style.
      */
-    public abstract String getEdgeStyle();
+    public abstract String getBaseEdgeStyle();
 
 }

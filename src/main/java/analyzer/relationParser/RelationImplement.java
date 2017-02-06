@@ -12,7 +12,7 @@ public class RelationImplement extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         return "arrowhead=\"onormal\" style=dashed ";
     }
 

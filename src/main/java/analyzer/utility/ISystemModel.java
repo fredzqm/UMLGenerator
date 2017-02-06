@@ -17,11 +17,11 @@ public interface ISystemModel {
      */
     Set<? extends IClassModel> getClasses();
 
+    void setClasses(Set<IClassModel> classSet);
+
     void addClassModelStyle(IClassModel clazz, String key, String value);
 
     void addStyleToRelation(IClassModel from, IClassModel to, IRelationInfo relInfo, String key, String value);
-
-    void setClasses(Set<IClassModel> classSet);
 
     void addClassModelSteretypes(IClassModel clazz, String stereotype);
 

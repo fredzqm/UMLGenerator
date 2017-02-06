@@ -12,8 +12,7 @@ public interface IParser<T> {
     /**
      * Parse single data.
      *
-     * @param data
-     *            Data to be parsed.
+     * @param data   Data to be parsed.
      * @param config
      * @return String of Parsed Data.
      */
@@ -22,8 +21,7 @@ public interface IParser<T> {
     /**
      * Parse a data list and append them together.
      *
-     * @param dataList
-     *            List of Data to be parsed.
+     * @param dataList List of Data to be parsed.
      * @param config
      * @return String of all parsed data.
      */

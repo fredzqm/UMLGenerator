@@ -3,7 +3,6 @@ package analyzer.utility;
 import utility.ClassType;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * a filter for IClassModel

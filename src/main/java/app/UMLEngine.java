@@ -1,7 +1,5 @@
 package app;
 
-import java.util.List;
-
 import adapter.SystemModel;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;

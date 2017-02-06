@@ -1,18 +1,8 @@
 package analyzer.dependencyInversion;
 
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassComponent;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IInstructionModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import analyzer.utility.ITypeModel;
+import analyzer.utility.*;
 import config.IConfiguration;
 import utility.ClassType;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by lamd on 1/14/2017.
@@ -30,7 +20,7 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
                 systemModel.addClassModelStyle(clazz, "color", config.getColor());
         }
     }
-    
+
     /**
      * @param clazz
      * @return true if this class violates the dependency inversion principle

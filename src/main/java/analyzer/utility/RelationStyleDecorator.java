@@ -19,7 +19,7 @@ public class RelationStyleDecorator extends RelationDecorator {
     }
 
     @Override
-    public String getEdgeStyle() {
-        return super.getEdgeStyle() + " " + this.edgeStyle;
+    public String getBaseEdgeStyle() {
+        return super.getBaseEdgeStyle() + " " + this.edgeStyle;
     }
 }

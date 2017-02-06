@@ -33,7 +33,7 @@ public class RelationHasABijective extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         RelationHasA forward = getForward();
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
 

@@ -12,7 +12,7 @@ public class RelationExtendsClass extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         return "arrowhead=\"onormal\" style=\"\" ";
     }
 

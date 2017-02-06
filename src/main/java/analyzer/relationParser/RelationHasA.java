@@ -6,8 +6,8 @@ import analyzer.utility.IRelationInfo;
  * RelationInfo that interprets Has-A Relationships.
  */
 public class RelationHasA extends IRelationInfo {
-    private final boolean many;
-    private final int count;
+    private boolean many;
+    private int count;
 
     /**
      * Constructs a RelationHasA object.
@@ -17,6 +17,9 @@ public class RelationHasA extends IRelationInfo {
     public RelationHasA(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
+    }
+
+    public RelationHasA() {
     }
 
     /**
@@ -47,7 +50,7 @@ public class RelationHasA extends IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
+    public String getBaseEdgeStyle() {
         StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
         if (isMany()) {
             edgeBuilder.append(String.format("headlabel=\"%d..*\" ", getCount()));

@@ -14,4 +14,9 @@ public class StyleMap {
     public String getStyleString() {
         return style;
     }
+
+    @Override
+    public String toString() {
+        return style;
+    }
 }

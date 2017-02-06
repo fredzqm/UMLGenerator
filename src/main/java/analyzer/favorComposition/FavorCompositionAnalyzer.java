@@ -7,8 +7,6 @@ import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import utility.ClassType;
 
-import java.util.*;
-
 /**
  * Created by lamd on 1/14/2017.
  */
