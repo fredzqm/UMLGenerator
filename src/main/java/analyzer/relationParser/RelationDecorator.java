@@ -5,7 +5,7 @@ import analyzer.utility.IRelationInfo;
 /**
  * Created by lamd on 1/26/2017.
  */
-public abstract class RelationDecorator implements IRelationInfo {
+public abstract class RelationDecorator extends IRelationInfo {
     private IRelationInfo decorated;
 
     /**

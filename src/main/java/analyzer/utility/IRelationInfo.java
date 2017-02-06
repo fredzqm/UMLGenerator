@@ -1,10 +1,21 @@
 package analyzer.utility;
 
-public interface IRelationInfo {
+public abstract class IRelationInfo {
+    private StyleMap styleMap;
+
+    public IRelationInfo() {
+        styleMap = new StyleMap();
+    }
+
+    public void addStyle(String key, String value) {
+        styleMap.addStyle(key, value);
+    }
+
     /**
      * Returns the String of the Relations edge style.
      *
      * @return String of the Edge Style.
      */
-    String getEdgeStyle();
+    public abstract String getEdgeStyle();
+
 }

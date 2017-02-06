@@ -6,23 +6,19 @@ import java.util.Set;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 
 public class SyntheticFilterAnalyzer implements IAnalyzer {
 
     @Override
-    public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        return new ProcessedSystemModel(getClasses(systemModel.getClasses()), systemModel.getRelations());
-    }
-
-    public Set<? extends IClassModel> getClasses(Set<? extends IClassModel> classList) {
+    public void analyze(ISystemModel systemModel, IConfiguration config) {
         Set<IClassModel> classes = new HashSet<>();
-        classList.forEach((clazz) -> {
+        for (IClassModel clazz : systemModel.getClasses()) {
             if (!clazz.isSynthetic()) {
                 classes.add(new SyntheticFilterClassModel(clazz));
             }
-        });
-        return classes;
+        }
+        systemModel.setClasses(classes);
     }
+
 }

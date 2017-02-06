@@ -20,20 +20,23 @@ import analyzer.utility.IMethodModel;
 import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ITypeModel;
-import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 import utility.IFilter;
 import utility.IMapper;
 
 public class RelationParserAnalyzer implements IAnalyzer {
     @Override
-    public ISystemModel analyze(ISystemModel sm, IConfiguration config) {
+    public void analyze(ISystemModel sm, IConfiguration config) {
         Set<? extends IClassModel> classList = sm.getClasses();
-        return new ProcessedSystemModel(classList, mergeRelations(generateRelation(classList, sm.getRelations())));
+        Map<ClassPair, List<IRelationInfo>> map = mergeRelations(generateRelation(classList));
+        for (ClassPair pair : map.keySet()) {
+            for (IRelationInfo info : map.get(pair)) {
+                sm.addRelation(pair.getFrom(), pair.getTo(), info);
+            }
+        }
     }
 
-    public Map<ClassPair, List<IRelationInfo>> generateRelation(Set<? extends IClassModel> classList,
-            Map<ClassPair, List<IRelationInfo>> relations) {
+    public Map<ClassPair, List<IRelationInfo>> generateRelation(Set<? extends IClassModel> classList) {
         Map<ClassPair, List<IRelationInfo>> map = new HashMap<>();
         for (IClassModel classModel : classList) {
             // add related super class relationship

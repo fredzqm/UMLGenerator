@@ -12,7 +12,7 @@ public abstract class AbstractUMLEngine implements Runnable {
         ISystemModel systemModel = createSystemModel();
 
         // analyze
-        systemModel = analyze(systemModel);
+        analyze(systemModel);
 
         // generate
         String graphVisStr = generate(systemModel);
@@ -23,7 +23,7 @@ public abstract class AbstractUMLEngine implements Runnable {
 
     abstract ISystemModel createSystemModel();
 
-    abstract ISystemModel analyze(ISystemModel systemModel);
+    abstract void analyze(ISystemModel systemModel);
 
     abstract String generate(ISystemModel systemModel);
 

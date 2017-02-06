@@ -5,7 +5,7 @@ import analyzer.utility.IRelationInfo;
 /**
  * RelationInfo that interprets Extends relations.
  */
-public class RelationExtendsClass implements IRelationInfo {
+public class RelationExtendsClass extends IRelationInfo {
     @Override
     public String toString() {
         return "Extends";

@@ -40,7 +40,6 @@ public class ClassParserConfiguration implements Configurable {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(MODIFIER_FILTER, MODIFIER_FILTER_PRIVATE);
-        this.config.setIfMissing(HEADER_PARSER, GraphVizHeaderParser.class.getName());
         this.config.setIfMissing(FIELD_PARSER, GraphVizFieldParser.class.getName());
         this.config.setIfMissing(METHOD_PARSER, GraphVizMethodParser.class.getName());
         this.config.setIfMissing(TYPE_PARSER, GraphVizTypeParser.class.getName());

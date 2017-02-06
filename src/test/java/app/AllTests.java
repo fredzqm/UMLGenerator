@@ -4,9 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import adapter.classParser.AnalyzerClassParserTest;
-import analyzer.favorComposition.FavorCompositionAnalyzerTest;
-import analyzer.relationParser.AnalyzerRelationParserTest;
-import analyzer.singleton.SingletonAnalyzerTest;
 import config.CommandLineParserTest;
 import model.ASMParserTest;
 import model.ClassModelTest;
@@ -24,10 +21,9 @@ import utility.IMapperTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ AnalyzerClassParserTest.class, FavorCompositionAnalyzerTest.class,
-        AnalyzerRelationParserTest.class, SingletonAnalyzerTest.class, SystemTest.class, CommandLineParserTest.class,
-        ASMParserTest.class, ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class,
-        TypeModelTest.class, TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class })
+@Suite.SuiteClasses({ AnalyzerClassParserTest.class, SystemTest.class, CommandLineParserTest.class, ASMParserTest.class,
+        ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class, TypeModelTest.class,
+        TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class })
 
 public class AllTests {
 

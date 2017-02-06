@@ -1,35 +1,29 @@
 package analyzer.singleton;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import analyzer.utility.ClassModelStyleDecorator;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 import utility.MethodType;
 import utility.Modifier;
 
 public class SingletonAnalyzer implements IAnalyzer {
-    private SingletonConfiguration config;
 
     @Override
-    public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
-        this.config = config.createConfiguration(SingletonConfiguration.class);
-        return new ProcessedSystemModel(getClasses(systemModel.getClasses()), systemModel.getRelations());
-    }
+    public void analyze(ISystemModel systemModel, IConfiguration iConfig) {
+        SingletonConfiguration config = iConfig.createConfiguration(SingletonConfiguration.class);
 
-    public Set<? extends IClassModel> getClasses(Set<? extends IClassModel> classList) {
-        Set<IClassModel> classes = new HashSet<>();
-        for (IClassModel clazz : classList) {
-            classes.add(checkSingleton(clazz));
+        for (IClassModel clazz : systemModel.getClasses()) {
+            if (checkSingleton(clazz)) {
+                systemModel.addClassModelStyle(clazz, "color", config.getColor());
+                systemModel.addClassModelSteretypes(clazz, "Singleton");
+            }
         }
-        return classes;
+
     }
 
     /**
@@ -42,7 +36,7 @@ public class SingletonAnalyzer implements IAnalyzer {
      * @param clazz
      * @return
      */
-    private IClassModel checkSingleton(IClassModel clazz) {
+    private boolean checkSingleton(IClassModel clazz) {
         // check all methods to make sure there is only private constructor
         Collection<? extends IMethodModel> methods = clazz.getMethods();
         IMethodModel privateConstructor = null;
@@ -52,7 +46,7 @@ public class SingletonAnalyzer implements IAnalyzer {
                     privateConstructor = method;
                 } else {
                     // non private constructor or multiple constructor
-                    return clazz;
+                    return false;
                 }
             }
         }
@@ -66,13 +60,13 @@ public class SingletonAnalyzer implements IAnalyzer {
                     staticSingletonField = field;
                 } else {
                     // more than two staticSingletonField
-                    return clazz;
+                    return false;
                 }
             }
         }
         // no static field
         if (staticSingletonField == null)
-            return clazz;
+            return false;
 
         IMethodModel staticGetInstanceMethod = null;
         for (IMethodModel method : methods) {
@@ -82,14 +76,12 @@ public class SingletonAnalyzer implements IAnalyzer {
                         staticGetInstanceMethod = method;
                     } else {
                         // more than two staticGetInstanceMethod
-                        return clazz;
+                        return false;
                     }
                 }
             }
         }
-
-        String format = String.format("color=\"%s\"", this.config.getColor());
-        return new ClassModelStyleDecorator(clazz, format, "Singleton");
+        return true;
     }
 
 }

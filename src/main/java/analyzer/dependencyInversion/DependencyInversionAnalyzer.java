@@ -3,7 +3,6 @@ package analyzer.dependencyInversion;
 import java.util.HashSet;
 import java.util.Set;
 
-import analyzer.utility.ClassModelStyleDecorator;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassComponent;
 import analyzer.utility.IClassModel;
@@ -12,7 +11,6 @@ import analyzer.utility.IInstructionModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.ITypeModel;
-import analyzer.utility.ProcessedSystemModel;
 import config.IConfiguration;
 import utility.ClassType;
 
@@ -24,22 +22,15 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
     private DependencyInversionConfiguration config;
 
     @Override
-    public ISystemModel analyze(ISystemModel systemModel, IConfiguration iConfig) {
+    public void analyze(ISystemModel systemModel, IConfiguration iConfig) {
         this.config = iConfig.createConfiguration(DependencyInversionConfiguration.class);
-        return new ProcessedSystemModel(getClasses(systemModel.getClasses()), systemModel.getRelations());
-    }
 
-    public Set<? extends IClassModel> getClasses(Set<? extends IClassModel> classList) {
-        Set<IClassModel> classes = new HashSet<>();
-        String format = String.format("color=\"%s\"", this.config.getColor());
-        for (IClassModel clazz : classList) {
+        for (IClassModel clazz : systemModel.getClasses()) {
             if (violate(clazz))
-                clazz = new ClassModelStyleDecorator(clazz, format);
-            classes.add(clazz);
+                systemModel.addClassModelStyle(clazz, "color", config.getColor());
         }
-        return classes;
     }
-
+    
     /**
      * 
      * @param clazz

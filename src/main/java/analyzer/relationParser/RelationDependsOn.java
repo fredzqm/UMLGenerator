@@ -5,7 +5,7 @@ import analyzer.utility.IRelationInfo;
 /**
  * RelationInfo that interprets depends-on relation.
  */
-public class RelationDependsOn implements IRelationInfo {
+public class RelationDependsOn extends IRelationInfo {
     private final boolean many;
 
     /**

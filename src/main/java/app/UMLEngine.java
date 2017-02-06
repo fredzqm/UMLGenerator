@@ -2,9 +2,9 @@ package app;
 
 import java.util.List;
 
+import adapter.SystemModel;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.SystemModel;
 import config.IConfiguration;
 import generator.IGenerator;
 import model.SystemModelFactory;
@@ -38,12 +38,11 @@ public class UMLEngine extends AbstractUMLEngine {
     }
 
     @Override
-    ISystemModel analyze(ISystemModel systemModel) {
+    public void analyze(ISystemModel systemModel) {
         List<IAnalyzer> anClassLs = this.config.getAnalyzers();
         for (IAnalyzer analyzer : anClassLs) {
-            systemModel = analyzer.analyze(systemModel, config);
+            analyzer.analyze(systemModel, config);
         }
-        return systemModel;
     }
 
     @Override

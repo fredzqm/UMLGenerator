@@ -17,11 +17,20 @@ public interface ISystemModel {
      */
     Set<? extends IClassModel> getClasses();
 
-    /**
-     * Returns an Iterable of Relations contained within the SystemModel.
-     *
-     * @return Iterable of Relations contained within the SystemModel.
-     */
-    Map<ClassPair, List<IRelationInfo>> getRelations();
+    void addClassModelStyle(IClassModel clazz, String key, String value);
+
+    void addStyleToRelation(IClassModel from, IClassModel to, IRelationInfo relInfo, String key, String value);
+
+    void setClasses(Set<IClassModel> classSet);
+
+    void addClassModelSteretypes(IClassModel clazz, String stereotype);
+
+    void addRelation(IClassModel from, IClassModel to, IRelationInfo info);
+
+    Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> getRelations();
+
+    String getNodeStyle(IClassModel c);
+
+    List<String> getStereoTypes(IClassModel c);
 
 }

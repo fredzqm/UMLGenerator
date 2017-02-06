@@ -5,7 +5,7 @@ import analyzer.utility.IRelationInfo;
 /**
  * RelationInfo that interprets Has-A Relationships.
  */
-public class RelationHasA implements IRelationInfo {
+public class RelationHasA extends IRelationInfo {
     private final boolean many;
     private final int count;
 
