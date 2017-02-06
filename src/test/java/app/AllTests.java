@@ -12,7 +12,6 @@ import model.ASMParserTest;
 import model.ClassModelTest;
 import model.MethodModelTest;
 import model.SignatureTest;
-import model.SystemModelTest;
 import model.TypeModelTest;
 import model.TypeParserTest;
 import utility.IExpanderTest;
@@ -25,10 +24,10 @@ import utility.IMapperTest;
  * Created by lamd on 12/12/2016.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({AnalyzerClassParserTest.class, FavorCompositionAnalyzerTest.class, AnalyzerRelationParserTest.class,SingletonAnalyzerTest.class,
-        SystemTest.class, CommandLineParserTest.class, ASMParserTest.class,
-        ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class, SystemModelTest.class, TypeModelTest.class,
-        TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class})
+@Suite.SuiteClasses({ AnalyzerClassParserTest.class, FavorCompositionAnalyzerTest.class,
+        AnalyzerRelationParserTest.class, SingletonAnalyzerTest.class, SystemTest.class, CommandLineParserTest.class,
+        ASMParserTest.class, ASMParserTest.class, ClassModelTest.class, MethodModelTest.class, SignatureTest.class,
+        TypeModelTest.class, TypeParserTest.class, IExpanderTest.class, IFilterTest.class, IMapperTest.class })
 
 public class AllTests {
 

@@ -4,9 +4,10 @@ import java.util.List;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
+import analyzer.utility.SystemModel;
 import config.IConfiguration;
 import generator.IGenerator;
-import model.SystemModel;
+import model.SystemModelFactory;
 import runner.GraphVizRunner;
 import runner.IRunner;
 
@@ -33,7 +34,7 @@ public class UMLEngine extends AbstractUMLEngine {
 
     @Override
     public ISystemModel createSystemModel() {
-        return SystemModel.getInstance(config);
+        return new SystemModel(SystemModelFactory.getInstance(config));
     }
 
     @Override

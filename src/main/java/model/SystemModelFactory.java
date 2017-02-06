@@ -1,14 +1,10 @@
 package model;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
-import analyzer.utility.ClassPair;
-import analyzer.utility.IRelationInfo;
-import analyzer.utility.ISystemModel;
+import analyzer.utility.IClassModel;
 import config.IConfiguration;
 
 /**
@@ -16,12 +12,7 @@ import config.IConfiguration;
  *
  * @author zhang
  */
-public class SystemModel implements ISystemModel {
-    private Set<ClassModel> classSet;
-
-    private SystemModel(Set<ClassModel> importantList) {
-        this.classSet = importantList;
-    }
+public class SystemModelFactory {
 
     /**
      * constructs an instance of SystemModel given the configuration
@@ -29,7 +20,7 @@ public class SystemModel implements ISystemModel {
      * @param config
      * @return
      */
-    public static SystemModel getInstance(ModelConfiguration config) {
+    public static Set<IClassModel> getInstance(ModelConfiguration config) {
         Iterable<String> importClassesList = config.getClasses();
         if (importClassesList == null)
             throw new RuntimeException("important classes list cannot be null!");
@@ -47,22 +38,12 @@ public class SystemModel implements ISystemModel {
 
         Logger.setVerbose(config.isVerbose());
 
-        return new SystemModel(ls);
+        return new HashSet<>(ls);
     }
 
-    public static SystemModel getInstance(IConfiguration iConfig) {
+    public static Set<IClassModel> getInstance(IConfiguration iConfig) {
         ModelConfiguration config = iConfig.createConfiguration(ModelConfiguration.class);
         return getInstance(config);
-    }
-
-    @Override
-    public Set<ClassModel> getClasses() {
-        return classSet;
-    }
-
-    @Override
-    public Map<ClassPair, List<IRelationInfo>> getRelations() {
-        return Collections.emptyMap();
     }
 
 }
