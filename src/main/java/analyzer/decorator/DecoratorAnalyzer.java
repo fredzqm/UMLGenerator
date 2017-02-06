@@ -78,7 +78,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
     protected void styleChild(ISystemModel systemModel, IClassModel child) {
         systemModel.addClassModelStyle(child, "style", "filled");
         systemModel.addClassModelStyle(child, "fillcolor", "green");
-        systemModel.addClassModelSteretypes(child, "component");
+        systemModel.addClassModelSteretypes(child, "decorator");
     }
 
     @Override
