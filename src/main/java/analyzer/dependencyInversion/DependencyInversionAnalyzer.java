@@ -1,8 +1,5 @@
 package analyzer.dependencyInversion;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassComponent;
 import analyzer.utility.IClassModel;
