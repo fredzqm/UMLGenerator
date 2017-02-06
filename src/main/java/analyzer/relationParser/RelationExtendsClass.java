@@ -6,6 +6,8 @@ import analyzer.utility.StyleMap;
  * RelationInfo that interprets Extends relations.
  */
 public class RelationExtendsClass implements IRelationInfo {
+    public static final String REL_KEY = "extends";
+
     @Override
     public String toString() {
         return "Extends";
@@ -21,7 +23,7 @@ public class RelationExtendsClass implements IRelationInfo {
 
     @Override
     public String getRelKey() {
-        return "extends";
+        return RelationExtendsClass.REL_KEY;
     }
 
     @Override

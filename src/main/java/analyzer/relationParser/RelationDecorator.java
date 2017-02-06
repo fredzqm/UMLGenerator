@@ -11,7 +11,7 @@ public abstract class RelationDecorator implements IRelationInfo {
     /**
      * Constructs a RelationBijectiveDecorator.
      *
-     * @param rel
+     * @param decorated
      */
     public RelationDecorator(IRelationInfo decorated) {
         this.decorated = decorated;
@@ -24,6 +24,11 @@ public abstract class RelationDecorator implements IRelationInfo {
      */
     IRelationInfo getDecorated() {
         return this.decorated;
+    }
+
+    @Override
+    public String getRelKey() {
+        return this.decorated.getRelKey();
     }
 
     @Override

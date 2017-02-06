@@ -6,6 +6,8 @@ import analyzer.utility.StyleMap;
  * RelationInfo that interprets interfaces.
  */
 public class RelationImplement implements IRelationInfo {
+    public static final String REL_KEY = "implements";
+
     @Override
     public String toString() {
         return "Implements";
@@ -21,7 +23,7 @@ public class RelationImplement implements IRelationInfo {
 
     @Override
     public String getRelKey() {
-        return "Implements";
+        return RelationImplement.REL_KEY;
     }
 
     @Override

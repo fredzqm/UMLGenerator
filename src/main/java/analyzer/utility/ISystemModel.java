@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import analyzer.relationParser.IRelationInfo;
-
 /**
  * An Interface for System Models.
  * <p>

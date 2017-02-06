@@ -6,6 +6,8 @@ import analyzer.utility.StyleMap;
  * RelationInfo that interprets depends-on relation.
  */
 public class RelationDependsOn implements IRelationInfo {
+    public static final String REL_KEY = "depends_on";
+
     private final boolean many;
 
     /**
@@ -48,7 +50,7 @@ public class RelationDependsOn implements IRelationInfo {
 
     @Override
     public String getRelKey() {
-        return "dependsOn";
+        return RelationDependsOn.REL_KEY;
     }
 
     @Override

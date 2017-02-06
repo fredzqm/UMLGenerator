@@ -6,15 +6,15 @@ import analyzer.utility.StyleMap;
  * RelationInfo for bijective has-a relations.
  */
 public class RelationHasABijective implements IRelationInfo {
+    public static final String REL_KEY = "has_a_bijective";
+
     private RelationHasA a, b;
 
     /**
      * Constructs a RelationHasABijective object.
      *
-     * @param aRel
-     *            RelationHasA to relation.
-     * @param bRel
-     *            RelationHasA from relation.
+     * @param aRel RelationHasA to relation.
+     * @param bRel RelationHasA from relation.
      */
     RelationHasABijective(RelationHasA aRel, RelationHasA bRel) {
         this.a = aRel;
@@ -51,7 +51,7 @@ public class RelationHasABijective implements IRelationInfo {
 
     @Override
     public String getRelKey() {
-        return "hasa";
+        return RelationHasABijective.REL_KEY;
     }
 
     @Override

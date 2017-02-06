@@ -6,6 +6,8 @@ import analyzer.utility.StyleMap;
  * RelationInfo that interprets bijectvie relations.
  */
 public class RelationBijectiveDecorator extends RelationDecorator {
+    public static final String REL_KEY = "bijective_relation";
+
     /**
      * Constructs a RelationBijectiveDecorator.
      *
@@ -30,7 +32,7 @@ public class RelationBijectiveDecorator extends RelationDecorator {
 
     @Override
     public String getRelKey() {
-        return "implements";
+        return RelationBijectiveDecorator.REL_KEY;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package analyzer.favorComposition;
 
-import analyzer.relationParser.RelationExtendsClass;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
