@@ -14,7 +14,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
         Map<ClassPair, List<IRelationInfo>> map = mergeRelations(generateRelation(classList));
         for (ClassPair pair : map.keySet()) {
             for (IRelationInfo info : map.get(pair)) {
-                sm.addRelation(pair.getFrom(), pair.getTo(), info);
+                sm.addRelation(pair.getFrom(), pair.getTo(), info.getRelKey(), info.getStyleMap());
             }
         }
     }
@@ -155,7 +155,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
     }
 
     private void mergeBijectiveRelation(Map<ClassPair, List<IRelationInfo>> oldMap,
-                                        Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
+            Map<ClassPair, List<IRelationInfo>> newMap, ClassPair next, List<IRelationInfo> a) {
         ClassPair reverse = next.reverse();
         List<IRelationInfo> b;
         ListIterator<IRelationInfo> aitr, bitr;

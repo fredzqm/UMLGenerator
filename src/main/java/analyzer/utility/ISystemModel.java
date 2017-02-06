@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import analyzer.relationParser.IRelationInfo;
+
 /**
  * An Interface for System Models.
  * <p>
@@ -21,13 +23,13 @@ public interface ISystemModel {
 
     void addClassModelStyle(IClassModel clazz, String key, String value);
 
-    void addStyleToRelation(IClassModel from, IClassModel to, IRelationInfo relInfo, String key, String value);
+    void addStyleToRelation(IClassModel from, IClassModel to, String relKey, String key, String value);
 
     void addClassModelSteretypes(IClassModel clazz, String stereotype);
 
-    void addRelation(IClassModel from, IClassModel to, IRelationInfo info);
+    void addRelation(IClassModel from, IClassModel to, String relKey, StyleMap styleMap);
 
-    Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> getRelations();
+    Map<ClassPair, Map<String, StyleMap>> getRelations();
 
     String getNodeStyle(IClassModel c);
 

@@ -89,7 +89,8 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
     @Override
     protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-        systemModel.addStyleToRelation(child, parent, new RelationHasA(0), "xlabel", "decorates");
+//        systemModel.addStyleToRelation(child, parent, new RelationHasA(0), "xlabel", "decorates");
+        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel", "decorates");
     }
 
     @Override

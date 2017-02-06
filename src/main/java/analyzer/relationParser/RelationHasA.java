@@ -1,13 +1,15 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets Has-A Relationships.
  */
-public class RelationHasA extends IRelationInfo {
-    private boolean many;
-    private int count;
+public class RelationHasA implements IRelationInfo {
+    public static final String REL_KEY = "has_a";
+
+    private final boolean many;
+    private final int count;
 
     /**
      * Constructs a RelationHasA object.
@@ -17,9 +19,6 @@ public class RelationHasA extends IRelationInfo {
     public RelationHasA(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
-    }
-
-    public RelationHasA() {
     }
 
     /**
@@ -50,14 +49,21 @@ public class RelationHasA extends IRelationInfo {
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("style", "");
         if (isMany()) {
-            edgeBuilder.append(String.format("headlabel=\"%d..*\" ", getCount()));
+            styleMap.addStyle("headlabel", String.format("%d..*", getCount()));
         } else {
-            edgeBuilder.append(String.format("headlabel=\"%d\" ", getCount()));
+            styleMap.addStyle("headlabel", String.format("%d", getCount()));
         }
-        return edgeBuilder.toString();
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return RelationHasA.REL_KEY;
     }
 
     @Override

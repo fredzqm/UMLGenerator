@@ -1,18 +1,20 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo for bijective has-a relations.
  */
-public class RelationHasABijective extends IRelationInfo {
+public class RelationHasABijective implements IRelationInfo {
     private RelationHasA a, b;
 
     /**
      * Constructs a RelationHasABijective object.
      *
-     * @param aRel RelationHasA to relation.
-     * @param bRel RelationHasA from relation.
+     * @param aRel
+     *            RelationHasA to relation.
+     * @param bRel
+     *            RelationHasA from relation.
      */
     RelationHasABijective(RelationHasA aRel, RelationHasA bRel) {
         this.a = aRel;
@@ -33,20 +35,23 @@ public class RelationHasABijective extends IRelationInfo {
     }
 
     @Override
-    public String getBaseEdgeStyle() {
-        RelationHasA forward = getForward();
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = getForward().getStyleMap();
+        styleMap.addStyle("dir", "both");
 
-        if (forward.isMany() || forward.getCount() > 1) {
-            edgeBuilder.append("headlabel=\"1..*\" ");
+        RelationHasA backward = getForward();
+        if (backward.isMany()) {
+            styleMap.addStyle("taillabel", String.format("%d..*", backward.getCount()));
+        } else {
+            styleMap.addStyle("taillabel", String.format("%d", backward.getCount()));
         }
 
-        RelationHasA backward = getBackward();
-        if (backward.isMany() || backward.getCount() > 1) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
-        }
+        return styleMap;
+    }
 
-        return edgeBuilder.toString();
+    @Override
+    public String getRelKey() {
+        return "hasa";
     }
 
     @Override

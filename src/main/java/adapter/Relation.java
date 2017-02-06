@@ -1,22 +1,23 @@
 package adapter;
 
 import analyzer.utility.ClassPair;
-import analyzer.utility.IRelationInfo;
 import generator.IEdge;
 
 class Relation implements IEdge {
     private final ClassPair classPair;
-    private final IRelationInfo info;
+    private final String edgeStyle;
 
     /**
      * Set the Relation's ClassPair and IRelationInfo
      *
-     * @param classPair ClassPair to be set.
-     * @param info      IRelationInfo to be set.
+     * @param classPair
+     *            ClassPair to be set.
+     * @param info
+     *            IRelationInfo to be set.
      */
-    public Relation(ClassPair classPair, IRelationInfo info) {
+    public Relation(ClassPair classPair, String edgeStyle) {
         this.classPair = classPair;
-        this.info = info;
+        this.edgeStyle = edgeStyle;
     }
 
     /**
@@ -46,22 +47,13 @@ class Relation implements IEdge {
         return this.classPair.getTo().getName();
     }
 
-    /**
-     * Returns the Relationship's Info.
-     *
-     * @return Relationship's Info.
-     */
-    public IRelationInfo getInfo() {
-        return this.info;
-    }
-
     @Override
     public String toString() {
-        return String.format("%s -> %s:\t\t%s\n", classPair.getFrom(), classPair.getTo(), this.info.toString());
+        return String.format("%s -> %s:\t\t%s\n", classPair.getFrom(), classPair.getTo(), edgeStyle);
     }
 
     @Override
     public String getEdgeStyle() {
-        return this.info.getEdgeSytle();
+        return edgeStyle;
     }
 }

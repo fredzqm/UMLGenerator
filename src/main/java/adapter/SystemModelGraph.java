@@ -5,8 +5,8 @@ import adapter.classParser.GraphvizClassParser;
 import adapter.classParser.IParser;
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
-import analyzer.utility.IRelationInfo;
 import analyzer.utility.ISystemModel;
+import analyzer.utility.StyleMap;
 import config.IConfiguration;
 import generator.IGraph;
 import generator.INode;
@@ -43,9 +43,9 @@ public class SystemModelGraph implements IGraph {
      * @return Iterable of Relation edges.
      */
     public Iterable<Relation> getEdges() {
-        Map<ClassPair, Map<Class<? extends IRelationInfo>, IRelationInfo>> relations = systemModel.getRelations();
+        Map<ClassPair, Map<String, StyleMap>> relations = systemModel.getRelations();
         IExpander<ClassPair, Relation> expander = (key) -> {
-            IMapper<IRelationInfo, Relation> mapper = (info) -> new Relation(key, info);
+            IMapper<StyleMap, Relation> mapper = (info) -> new Relation(key, info.getStyleString());
             return mapper.map(relations.get(key).values());
         };
         return expander.expand(relations.keySet());
