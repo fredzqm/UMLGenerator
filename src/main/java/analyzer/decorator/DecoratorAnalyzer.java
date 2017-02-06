@@ -77,17 +77,20 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
         return decoratedMethods.size() == parentMethods.size();
     }
 
+    private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
+        systemModel.addClassModelStyle(classModel, "style", "filled");
+        systemModel.addClassModelStyle(classModel, "fillcolor", "green");
+    }
+
     @Override
     protected void styleParent(ISystemModel systemModel, IClassModel parent) {
-        systemModel.addClassModelStyle(parent, "style", "filled");
-        systemModel.addClassModelStyle(parent, "fillcolor", "green");
+        addCommonDecoratorStyle(systemModel, parent);
         systemModel.addClassModelSteretypes(parent, "component");
     }
 
     @Override
     protected void styleChild(ISystemModel systemModel, IClassModel child) {
-        systemModel.addClassModelStyle(child, "style", "filled");
-        systemModel.addClassModelStyle(child, "fillcolor", "green");
+        addCommonDecoratorStyle(systemModel, child);
         systemModel.addClassModelSteretypes(child, "decorator");
     }
 
@@ -102,8 +105,7 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
 
         classes.forEach((classModel) -> {
             if (classModel.getSuperClass().equals(decoratorClass)) {
-                systemModel.addClassModelStyle(classModel, "style", "filled");
-                systemModel.addClassModelStyle(classModel, "fillcolor", "green");
+                addCommonDecoratorStyle(systemModel, classModel);
                 systemModel.addClassModelSteretypes(classModel, "decorator");
             }
         });
