@@ -53,19 +53,24 @@ public class DecoratorAnalyzer extends AbstractAdapterDecoratorTemplate {
         return false;
     }
 
+    private boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
+        for (IFieldModel field : method.getAccessedFields()) {
+            if (field.getFieldType().equals(parent)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private boolean hasParentMethodMapped(IClassModel child, IClassModel parent) {
         Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
         for (IMethodModel method : child.getMethods()) {
-            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods)) {
-                for (IFieldModel field : method.getAccessedFields()) {
-                    if (field.getFieldType().equals(parent)) {
-                        decoratedMethods.add(method);
-                        break;
-                    }
-                }
+            if (method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method)) {
+                decoratedMethods.add(method);
             }
         }
 

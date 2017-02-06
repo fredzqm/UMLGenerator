@@ -22,7 +22,6 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
     private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
         Collection<IClassModel> potentialParents = new LinkedList<>();
 
-        // Put clazz's super class and interfaces into the potential parent's Collection.
         potentialParents.add(clazz.getSuperClass());
         clazz.getInterfaces().forEach(potentialParents::add);
 
