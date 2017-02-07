@@ -4,7 +4,7 @@ import analyzer.utility.IClassModel;
 import config.IConfiguration;
 
 /**
- * A Good Decorator Pattern Analyzer. It will highlight in green all suspected decorator classes in green.
+ * A Good Decorator Pattern Analyzer. It will highlight in green all suspected decorator classes in green (default).
  * <p>
  * Created by lamd on 2/2/2017.
  */

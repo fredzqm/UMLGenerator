@@ -20,15 +20,15 @@ public class DependencyInversionConfiguration implements Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(WHITE_LIST, "java");
-        this.config.setIfMissing(COLOR, "yellow");
+        this.config.setIfMissing(DependencyInversionConfiguration.WHITE_LIST, "java");
+        this.config.setIfMissing(DependencyInversionConfiguration.COLOR, "yellow");
     }
 
     public List<String> getWhiteList() {
-        return this.config.getList(WHITE_LIST);
+        return this.config.getList(DependencyInversionConfiguration.WHITE_LIST);
     }
 
     public String getColor() {
-        return this.config.getValue(COLOR);
+        return this.config.getValue(DependencyInversionConfiguration.COLOR);
     }
 }

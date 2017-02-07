@@ -4,7 +4,7 @@ import analyzer.utility.IClassModel;
 import config.IConfiguration;
 
 /**
- * A Bad Decorator Analyzer. It will highlight classes that are likely decorators that are incomplete in yellow.
+ * A Bad Decorator Analyzer. It will highlight classes that are likely decorators that are incomplete in yellow (default).
  * <p>
  * Created by lamd on 2/2/2017.
  */
