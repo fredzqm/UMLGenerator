@@ -26,12 +26,12 @@ public class GraphVizGenerator implements IGenerator {
 
         // Render the classes
         Iterable<? extends INode> nodes = graph.getNodes();
-        nodes.forEach(node -> dotString.append(String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t\t%s\n\t];\n",
+        nodes.forEach((node) -> dotString.append(String.format("\t\"%s\" [\n\t\tlabel = \"{%s}\"\n\t\t%s\n\t];\n",
                 node.getName(), node.getLabel(), node.getNodeStyle().trim())));
 
         // Parse each relationship.
         Iterable<? extends IEdge> edges = graph.getEdges();
-        edges.forEach(edge -> dotString.append(
+        edges.forEach((edge) -> dotString.append(
                 String.format("\t\"%s\" -> \"%s\" [%s];\n", edge.getFrom(), edge.getTo(), edge.getEdgeStyle())));
 
         return String.format("digraph GraphVizGeneratedDOT {\n%s}", dotString.toString());
