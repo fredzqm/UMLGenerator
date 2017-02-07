@@ -4,6 +4,7 @@ import org.objectweb.asm.tree.FieldInsnNode;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * represent a java byte code that accesses a field
@@ -18,8 +19,9 @@ public class InstructionField extends InstructionModel {
         super(method);
         calledOn = TypeParser.parseClassInternalName(fiedlCall.owner);
         ClassModel destClass = calledOn.getClassModel();
-        if (destClass == null)
+        if (destClass == null) {
             throw new RuntimeException();
+        }
         field = destClass.getFieldByName(fiedlCall.name);
         if (field == null) {
             Logger.logError(getClass().getName() + "::field is null: " + fiedlCall.desc + "\tname\t" + fiedlCall.name
@@ -29,8 +31,9 @@ public class InstructionField extends InstructionModel {
 
     @Override
     public Collection<TypeModel> getDependentTypes() {
-        if (field == null)
-            return Arrays.asList(calledOn);
+        if (field == null) {
+            return Collections.singletonList(calledOn);
+        }
         return Arrays.asList(calledOn, field.getFieldType());
     }
 

@@ -22,8 +22,9 @@ public class SystemModelFactory {
      */
     public static Set<IClassModel> getInstance(ModelConfiguration config) {
         Iterable<String> importClassesList = config.getClasses();
-        if (importClassesList == null)
+        if (importClassesList == null) {
             throw new RuntimeException("important classes list cannot be null!");
+        }
 
         int recursiveFlag;
         if (config.isRecursive()) {

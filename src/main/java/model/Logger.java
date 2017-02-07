@@ -8,7 +8,8 @@ public class Logger {
     }
 
     public static void logError(String error) {
-        if (verbose)
+        if (verbose) {
             System.err.println(error);
+        }
     }
 }

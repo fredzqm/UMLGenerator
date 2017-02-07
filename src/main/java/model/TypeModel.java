@@ -96,12 +96,14 @@ abstract class TypeModel implements ITypeModel {
      * @return
      */
     public TypeModel assignTo(ClassModel clazz) {
-        if (this == clazz)
+        if (this == clazz) {
             return clazz;
+        }
         for (TypeModel sup : getSuperTypes()) {
             TypeModel t = sup.assignTo(clazz);
-            if (t != null)
+            if (t != null) {
                 return t;
+            }
         }
         return null;
     }

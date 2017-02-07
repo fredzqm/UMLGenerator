@@ -73,9 +73,12 @@ class ClassModel extends TypeModel implements IClassModel {
     }
 
     private int getAccess(ClassNode asmClassNode) {
-        for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses)
-            if (asmClassNode.name.equals(inner.name))
+        for (InnerClassNode inner : (List<InnerClassNode>) asmClassNode.innerClasses) {
+            if (asmClassNode.name.equals(inner.name)) {
                 return inner.access;
+            }
+        }
+
         return asmClassNode.access;
     }
 
@@ -161,8 +164,9 @@ class ClassModel extends TypeModel implements IClassModel {
     }
 
     public ClassModel getSuperClass() {
-        if (superClass == null && asmClassNode.superName != null)
+        if (superClass == null && asmClassNode.superName != null) {
             superClass = ASMParser.getClassByName(asmClassNode.superName);
+        }
         return superClass;
     }
 
@@ -171,8 +175,9 @@ class ClassModel extends TypeModel implements IClassModel {
             interfaces = new ArrayList<>();
             for (String s : (List<String>) asmClassNode.interfaces) {
                 ClassModel m = ASMParser.getClassByName(s);
-                if (m != null)
+                if (m != null) {
                     interfaces.add(m);
+                }
             }
         }
         return interfaces;
@@ -183,17 +188,20 @@ class ClassModel extends TypeModel implements IClassModel {
     }
 
     MethodModel getMethodBySignature(Signature signature) {
-        if (getMethodsMap().containsKey(signature))
+        if (getMethodsMap().containsKey(signature)) {
             return getMethodsMap().get(signature);
+        }
         if (getSuperClass() != null) {
             MethodModel m = getSuperClass().getMethodBySignature(signature);
-            if (m != null)
+            if (m != null) {
                 return m;
+            }
         }
         for (ClassModel c : getInterfaces()) {
             MethodModel m = c.getMethodBySignature(signature);
-            if (m != null)
+            if (m != null) {
                 return m;
+            }
         }
         return null;
     }
@@ -232,10 +240,12 @@ class ClassModel extends TypeModel implements IClassModel {
     }
 
     FieldModel getFieldByName(String name) {
-        if (getFieldMap().containsKey(name))
+        if (getFieldMap().containsKey(name)) {
             return getFieldMap().get(name);
-        if (getSuperClass() != null)
+        }
+        if (getSuperClass() != null) {
             return getSuperClass().getFieldByName(name);
+        }
         return null;
     }
 
