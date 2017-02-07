@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * <p>
  * Created by lamd on 2/2/2017.
  */
-public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
+public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     @Override
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
         updateModel(systemModel);
