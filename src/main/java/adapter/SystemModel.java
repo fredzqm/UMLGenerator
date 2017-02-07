@@ -1,11 +1,16 @@
 package adapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.StyleMap;
-
-import java.util.*;
 
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
@@ -62,23 +67,22 @@ public class SystemModel implements ISystemModel {
 
     @Override
     public void addStyleToRelation(IClassModel from, IClassModel to, String relKey, String key, String value) {
+        getRelationStyleMap(from, to, relKey).addStyle(key, value);
+    }
+
+    @Override
+    public void addRelation(IClassModel from, IClassModel to, String relKey, StyleMap styleMap) {
+        getRelationStyleMap(from, to, relKey).addStyleMap(styleMap);
+    }
+
+    private StyleMap getRelationStyleMap(IClassModel from, IClassModel to, String relKey) {
         ClassPair pair = new ClassPair(from, to);
         if (!relations.containsKey(pair))
             relations.put(pair, new HashMap<>());
         Map<String, StyleMap> map = relations.get(pair);
         if (!map.containsKey(relKey))
             map.put(relKey, new StyleMap());
-        map.get(relKey).addStyle(key, value);
-    }
-
-    @Override
-    public void addRelation(IClassModel from, IClassModel to, String relKey, StyleMap styleMap) {
-        ClassPair pair = new ClassPair(from, to);
-        if (!relations.containsKey(pair))
-            relations.put(pair, new HashMap<>());
-        Map<String, StyleMap> map = relations.get(pair);
-        if (!map.containsKey(relKey))
-            map.put(relKey, styleMap);
+        return map.get(relKey);
     }
 
 }
