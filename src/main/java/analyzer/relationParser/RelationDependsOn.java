@@ -13,7 +13,7 @@ public class RelationDependsOn implements IRelationInfo {
     /**
      * Constructs a RelationHasA object.
      *
-     * @param many
+     * @param many TODO: Fred
      */
     public RelationDependsOn(boolean many) {
         this.many = many;
@@ -30,11 +30,7 @@ public class RelationDependsOn implements IRelationInfo {
 
     @Override
     public String toString() {
-        if (isMany()) {
-            return "Depends on many";
-        } else {
-            return "Depends on ";
-        }
+        return (isMany()) ? "Depends on many" : "Depends on ";
     }
 
     @Override
@@ -55,8 +51,8 @@ public class RelationDependsOn implements IRelationInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationDependsOn.class) {
-            RelationDependsOn x = (RelationDependsOn) obj;
+        if (obj instanceof RelationDependsOn) {
+            RelationDependsOn x = RelationDependsOn.class.cast(obj);
             return x.many == this.many;
         }
         return false;

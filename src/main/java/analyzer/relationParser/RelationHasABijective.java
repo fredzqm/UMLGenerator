@@ -56,8 +56,8 @@ public class RelationHasABijective implements IRelationInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationHasABijective.class) {
-            RelationHasABijective x = (RelationHasABijective) obj;
+        if (obj instanceof RelationHasABijective) {
+            RelationHasABijective x = RelationHasABijective.class.cast(obj);
             return x.a.equals(this.a) && x.b.equals(this.b);
         }
         return false;

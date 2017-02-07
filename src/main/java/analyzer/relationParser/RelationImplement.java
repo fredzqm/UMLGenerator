@@ -28,7 +28,7 @@ public class RelationImplement implements IRelationInfo {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == RelationImplement.class;
+        return obj instanceof RelationImplement;
     }
 
     @Override

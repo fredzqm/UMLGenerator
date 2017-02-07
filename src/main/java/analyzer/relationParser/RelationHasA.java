@@ -41,11 +41,7 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public String toString() {
-        if (isMany()) {
-            return String.format("has many %d..n", this.count);
-        } else {
-            return "has " + getCount();
-        }
+        return isMany() ? String.format("has many %d..n", this.count) : "has " + getCount();
     }
 
     @Override
@@ -68,8 +64,8 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationHasA.class) {
-            RelationHasA x = (RelationHasA) obj;
+        if (obj instanceof RelationHasA) {
+            RelationHasA x = RelationHasA.class.cast(obj);
             return x.count == this.count && x.many == this.many;
         }
         return false;
@@ -77,6 +73,6 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public int hashCode() {
-        return count * 31 + (many ? 1 : 15);
+        return count * 31 + (this.many ? 1 : 15);
     }
 }

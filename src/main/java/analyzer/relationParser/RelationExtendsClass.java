@@ -28,7 +28,7 @@ public class RelationExtendsClass implements IRelationInfo {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == RelationExtendsClass.class;
+        return obj instanceof RelationExtendsClass;
     }
 
     @Override

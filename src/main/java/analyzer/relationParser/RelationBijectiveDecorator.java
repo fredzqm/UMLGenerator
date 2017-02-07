@@ -11,7 +11,7 @@ public class RelationBijectiveDecorator extends RelationDecorator {
     /**
      * Constructs a RelationBijectiveDecorator.
      *
-     * @param rel
+     * @param decorated
      */
     RelationBijectiveDecorator(IRelationInfo decorated) {
         super(decorated);
@@ -37,8 +37,8 @@ public class RelationBijectiveDecorator extends RelationDecorator {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationBijectiveDecorator.class) {
-            RelationBijectiveDecorator x = (RelationBijectiveDecorator) obj;
+        if (obj instanceof RelationBijectiveDecorator) {
+            RelationBijectiveDecorator x = RelationBijectiveDecorator.class.cast(obj);
             return x.getDecorated().equals(super.getDecorated());
         }
         return false;

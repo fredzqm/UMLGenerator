@@ -217,7 +217,7 @@ public class RelationParserAnalyzer implements IAnalyzer {
     }
 
     private IRelationInfo merge(IRelationInfo aRel, IRelationInfo bRel) {
-        if (aRel.getClass() == bRel.getClass()) {
+        if (aRel.getClass().equals(bRel.getClass())) {
             if (aRel instanceof RelationDependsOn) {
                 return new RelationBijectiveDecorator(aRel);
             } else if (aRel instanceof RelationHasA) {
