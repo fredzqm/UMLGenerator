@@ -7,7 +7,7 @@ import analyzer.utility.ISystemModel;
  */
 public abstract class AbstractUMLEngine implements Runnable {
     @Override
-    public void run() {
+    public final void run() {
         // get the system model
         ISystemModel systemModel = createSystemModel();
 

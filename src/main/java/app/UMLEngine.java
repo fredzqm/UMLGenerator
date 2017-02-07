@@ -1,15 +1,12 @@
 package app;
 
 import adapter.SystemModel;
-import analyzer.utility.IAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import generator.IGenerator;
 import model.SystemModelFactory;
 import runner.GraphVizRunner;
 import runner.IRunner;
-
-import java.util.List;
 
 /**
  * This is a concrete implementation of algorithm for analyzing a UML. It
@@ -38,16 +35,13 @@ public class UMLEngine extends AbstractUMLEngine {
 
     @Override
     public void analyze(ISystemModel systemModel) {
-        List<IAnalyzer> anClassLs = this.config.getAnalyzers();
-        for (IAnalyzer analyzer : anClassLs) {
-            analyzer.analyze(systemModel, config);
-        }
+        this.config.getAnalyzers().forEach((analyzer) -> analyzer.analyze(systemModel, this.config));
     }
 
     @Override
     String generate(ISystemModel systemModel) {
-        IGenerator gen = config.getGenerator();
-        return gen.generate(systemModel, config);
+        IGenerator generator = config.getGenerator();
+        return generator.generate(systemModel, config);
     }
 
     @Override
