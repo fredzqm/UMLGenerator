@@ -7,14 +7,17 @@ public enum MethodType {
 
     public static MethodType parse(String name, int access) {
         if (Modifier.parseIsStatic(access)) {
-            if (name.equals("<clinit>"))
+            if (name.equals("<clinit>")) {
                 return STATIC_INITIALIZER;
+            }
             return STATIC;
         } else {
-            if ((access & Opcodes.ACC_ABSTRACT) != 0)
+            if ((access & Opcodes.ACC_ABSTRACT) != 0) {
                 return ABSTRACT;
-            if (name.equals("<init>"))
+            }
+            if (name.equals("<init>")) {
                 return CONSTRUCTOR;
+            }
             return METHOD;
         }
     }
