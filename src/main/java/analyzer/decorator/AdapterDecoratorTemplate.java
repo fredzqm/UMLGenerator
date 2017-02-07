@@ -19,13 +19,8 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         updateModel(systemModel);
     }
 
-    private Collection<IClassModel> getPotentialParents(Collection<? extends IClassModel> classes, IClassModel clazz) {
-        Collection<IClassModel> potentialParents = new LinkedList<>();
-
-        potentialParents.add(clazz.getSuperClass());
-        clazz.getInterfaces().forEach(potentialParents::add);
-
-        return potentialParents;
+    private void updateModel(ISystemModel systemModel) {
+        systemModel.getClasses().forEach((clazz) -> evaluateClass(systemModel, clazz));
     }
 
     /**
@@ -33,21 +28,28 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * defined by the subclass.
      * <p>
      *
-     * @param classes
-     * @param child   IClassModel to be evaluated.
+     * @param child IClassModel to be evaluated.
      * @return Collection of IClassModel of ParentClassModel defined by the subclass.
      */
-    private void evaluateClass(ISystemModel systemModel, Collection<? extends IClassModel> classes, IClassModel child) {
-        Collection<IClassModel> potentialParents = getPotentialParents(classes, child);
+    private void evaluateClass(ISystemModel systemModel, IClassModel child) {
+        getPotentialParents(child).stream()
+                .filter((parent) -> detectPattern(child, parent))
+                .forEach((parent) -> {
+                    styleParent(systemModel, parent);
+                    styleChild(systemModel, child);
+                    styleChildParentRelationship(systemModel, child, parent);
+                    updateRelatedClasses(systemModel, child);
+                });
+    }
+
+    private Collection<IClassModel> getPotentialParents(IClassModel child) {
+        Collection<IClassModel> potentialParents = new LinkedList<>();
+
+        potentialParents.add(child.getSuperClass());
+        child.getInterfaces().forEach(potentialParents::add);
         potentialParents.add(child);
-        for (IClassModel parent : potentialParents) {
-            if (detectPattern(child, parent)) {
-                styleParent(systemModel, parent);
-                styleChild(systemModel, child);
-                styleChildParentRelationship(systemModel, child, parent);
-                updateRelatedClasses(systemModel, child);
-            }
-        }
+
+        return potentialParents;
     }
 
     /**
@@ -83,13 +85,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      */
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
         // Hook
-    }
-
-    private void updateModel(ISystemModel systemModel) {
-        Collection<? extends IClassModel> classes = systemModel.getClasses();
-        for (IClassModel clazz : classes) {
-            evaluateClass(systemModel, classes, clazz);
-        }
     }
 
     /**
