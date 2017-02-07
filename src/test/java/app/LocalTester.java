@@ -1,12 +1,11 @@
 package app;
 
+import analyzer.decorator.BadDecoratorAnalyzer;
 import analyzer.decorator.DecoratorAnalyzer;
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
-import dummy.decoratorDummy.Component;
-import dummy.decoratorDummy.ConcreteDecorator;
-import dummy.decoratorDummy.Decorator;
+import dummy.decoratorDummy.*;
 import generator.GeneratorConfiguration;
 import model.ModelConfiguration;
 import runner.RunnerConfiguration;
@@ -28,8 +27,9 @@ public class LocalTester {
         config.set(RunnerConfiguration.FILE_NAME, "asmClass");
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
-        config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(), DecoratorAnalyzer.class.getName());
-        config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), Decorator.class.getName(), ConcreteDecorator.class.getName());
+        config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(), DecoratorAnalyzer.class.getName(), BadDecoratorAnalyzer.class.getName());
+        config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), GoodDecorator.class.getName(), GoodConcreteDecorator.class.getName(),
+                BadDecorator.class.getName(), BadConcreteDecorator.class.getName());
 
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
