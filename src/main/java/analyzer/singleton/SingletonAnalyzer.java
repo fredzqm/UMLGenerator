@@ -7,19 +7,19 @@ import utility.Modifier;
 
 import java.util.Collection;
 
+/**
+ * A Singleton Pattern Analyzer. It will add the sterotype Singleton to each detected class and shade its outline color (default: blue).
+ */
 public class SingletonAnalyzer implements IAnalyzer {
-
     @Override
     public void analyze(ISystemModel systemModel, IConfiguration iConfig) {
         SingletonConfiguration config = iConfig.createConfiguration(SingletonConfiguration.class);
-
-        for (IClassModel clazz : systemModel.getClasses()) {
-            if (checkSingleton(clazz)) {
-                systemModel.addClassModelStyle(clazz, "color", config.getColor());
-                systemModel.addClassModelSteretypes(clazz, "Singleton");
-            }
-        }
-
+        systemModel.getClasses().stream()
+                .filter(this::checkSingleton)
+                .forEach((clazz) -> {
+                    systemModel.addClassModelStyle(clazz, "color", config.getColor());
+                    systemModel.addClassModelSteretypes(clazz, "Singleton");
+                });
     }
 
     /**
