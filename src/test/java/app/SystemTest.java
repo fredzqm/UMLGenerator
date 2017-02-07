@@ -68,13 +68,13 @@ public class SystemTest {
         assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [ arrowhead=\"onormal\" style=\"\"];",
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [ arrowhead=\"onormal\" style=\"\" ];",
                 dummyClassName);
         assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [ arrowhead=\"vee\" style=\"\" headlabel=\"2\"];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [ arrowhead=\"vee\" style=\"\" headlabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Check expected fields and methods.
@@ -118,13 +118,13 @@ public class SystemTest {
         assertTrue("Missing primary class name.", actual.contains(String.format("\"%s\"", dummyClassName)));
 
         // See if it has its expected super class.
-        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [ arrowhead=\"onormal\" style=\"\"];",
+        String expectedSuperClass = String.format("\"%s\" -> \"java.lang.Object\" [ arrowhead=\"onormal\" style=\"\" ];",
                 dummyClassName);
         assertTrue("Missing super class relation.", actual.contains(expectedSuperClass));
 
         // See if it has its expected dependencies.
         String expectedDependencies = String.format(
-                "\"%s\" -> \"java.lang.String\" [ arrowhead=\"vee\" style=\"\" headlabel=\"2\"];", dummyClassName);
+                "\"%s\" -> \"java.lang.String\" [ arrowhead=\"vee\" style=\"\" headlabel=\"2\" ];", dummyClassName);
         assertTrue("Missing dependency relations.", actual.contains(expectedDependencies));
 
         // Set up expected fields and methods.
@@ -242,7 +242,7 @@ public class SystemTest {
 //
         String actual = engine.generate(systemModel);
         String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy,
-                "[ arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\"];");
+                "[ arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedDependencyCardinality));
     }
 
@@ -285,17 +285,17 @@ public class SystemTest {
 
         Collection<StyleMap> dummyStringRelation = relations.get(new ClassPair(dummyModel, stringModel)).values();
         assertEquals(1, dummyStringRelation.size());
-        assertEquals(" arrowhead=\"vee\" style=\"dashed\"", dummyStringRelation.iterator().next().getStyleString());
+        assertEquals(" arrowhead=\"vee\" style=\"dashed\" ", dummyStringRelation.iterator().next().getStyleString());
 
         Collection<StyleMap> dummyIntStreamRelation = relations.get(new ClassPair(dummyModel, intStreamModel)).values();
         assertEquals(1, dummyIntStreamRelation.size());
-        assertEquals(" arrowhead=\"vee\" style=\"dashed\"", dummyIntStreamRelation.iterator().next().getStyleString());
+        assertEquals(" arrowhead=\"vee\" style=\"dashed\" ", dummyIntStreamRelation.iterator().next().getStyleString());
 
         String actual = engine.generate(systemModel);
-        String expectedStringDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, string,
-                " arrowhead=\"vee\" style=\"dashed\"");
-        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s\" [%s];", dummy, intStream,
-                " arrowhead=\"vee\" style=\"dashed\"");
+        String expectedStringDependency = String.format("\"%s\" -> \"%s\" [ %s ];", dummy, string,
+                "arrowhead=\"vee\" style=\"dashed\"");
+        String expectedIntStreamDependency = String.format("\"%s\" -> \"%s\" [ %s ];", dummy, intStream,
+                "arrowhead=\"vee\" style=\"dashed\"");
         assertTrue("Missing GraphViz dependency", actual.contains(expectedStringDependency));
         assertTrue("Missing GraphViz dependency", actual.contains(expectedIntStreamDependency));
     }
