@@ -31,6 +31,6 @@ public interface ISystemModel {
 
     String getNodeStyle(IClassModel c);
 
-    List<String> getStereoTypes(IClassModel c);
+    Set<String> getStereoTypes(IClassModel c);
 
 }

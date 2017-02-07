@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by lamd on 2/2/2017.
  */
-public class DecoratorAnalyzer extends DecoratorTemplate {
+public class GoodDecoratorAnalyzer extends DecoratorTemplate {
     private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
         systemModel.addClassModelStyle(classModel, "style", "filled");
         systemModel.addClassModelStyle(classModel, "fillcolor", "green");

@@ -1,33 +1,28 @@
 package adapter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import analyzer.utility.ClassPair;
 import analyzer.utility.IClassModel;
 import analyzer.utility.ISystemModel;
 import analyzer.utility.StyleMap;
 
+import java.util.*;
+
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
 
     private Map<IClassModel, StyleMap> nodeStyle;
-    private Map<IClassModel, List<String>> stereotypes;
+    private Map<IClassModel, Set<String>> stereotypes;
     private Map<ClassPair, Map<String, StyleMap>> relations;
 
     public SystemModel(Set<IClassModel> importantList) {
         this.classSet = importantList;
-        nodeStyle = new HashMap<>();
-        relations = new HashMap<>();
-        stereotypes = new HashMap<>();
+        this.nodeStyle = new HashMap<>();
+        this.relations = new HashMap<>();
+        this.stereotypes = new HashMap<>();
     }
 
     public Set<IClassModel> getClasses() {
-        return classSet;
+        return this.classSet;
     }
 
     @Override
@@ -36,33 +31,36 @@ public class SystemModel implements ISystemModel {
     }
 
     public Map<ClassPair, Map<String, StyleMap>> getRelations() {
-        return relations;
+        return this.relations;
     }
 
     @Override
-    public List<String> getStereoTypes(IClassModel c) {
-        return stereotypes.getOrDefault(c, Collections.emptyList());
+    public Set<String> getStereoTypes(IClassModel clazz) {
+        return this.stereotypes.getOrDefault(clazz, Collections.emptySet());
     }
 
     @Override
     public void addClassModelStyle(IClassModel clazz, String key, String value) {
-        if (!nodeStyle.containsKey(clazz))
-            nodeStyle.put(clazz, new StyleMap());
-        nodeStyle.get(clazz).addStyle(key, value);
+        if (!this.nodeStyle.containsKey(clazz)) {
+            this.nodeStyle.put(clazz, new StyleMap());
+        }
+        this.nodeStyle.get(clazz).addStyle(key, value);
     }
 
     @Override
     public String getNodeStyle(IClassModel clazz) {
-        if (nodeStyle.containsKey(clazz))
-            return nodeStyle.get(clazz).getStyleString();
+        if (this.nodeStyle.containsKey(clazz)) {
+            return this.nodeStyle.get(clazz).getStyleString();
+        }
         return "";
     }
 
     @Override
     public void addClassModelSteretypes(IClassModel clazz, String stereotype) {
-        if (!stereotypes.containsKey(clazz))
-            stereotypes.put(clazz, new ArrayList<>());
-        stereotypes.get(clazz).add(stereotype);
+        if (!this.stereotypes.containsKey(clazz)) {
+            this.stereotypes.put(clazz, new HashSet<>());
+        }
+        this.stereotypes.get(clazz).add(stereotype);
     }
 
     @Override
@@ -77,11 +75,13 @@ public class SystemModel implements ISystemModel {
 
     private StyleMap getRelationStyleMap(IClassModel from, IClassModel to, String relKey) {
         ClassPair pair = new ClassPair(from, to);
-        if (!relations.containsKey(pair))
-            relations.put(pair, new HashMap<>());
-        Map<String, StyleMap> map = relations.get(pair);
-        if (!map.containsKey(relKey))
+        if (!this.relations.containsKey(pair)) {
+            this.relations.put(pair, new HashMap<>());
+        }
+        Map<String, StyleMap> map = this.relations.get(pair);
+        if (!map.containsKey(relKey)) {
             map.put(relKey, new StyleMap());
+        }
         return map.get(relKey);
     }
 
