@@ -1,5 +1,8 @@
 package analyzer.utility;
 
+/**
+ * Fred
+ */
 public class StyleMap {
     String style;
 

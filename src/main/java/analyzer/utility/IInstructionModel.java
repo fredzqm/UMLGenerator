@@ -9,13 +9,16 @@ import java.util.Collection;
  * @author zhang
  */
 public interface IInstructionModel {
-
     /**
-     * @return the collection of types this instruction depends on
+     * Returns the Collection of types this instruction depends on.
+     *
+     * @return Collection of depended types this instruction depends on.
      */
     Collection<? extends ITypeModel> getDependentTypes();
 
     /**
+     * Returns the IClassComponent.
+     *
      * @return the component it accessed
      */
     IClassComponent getAccessComponent();

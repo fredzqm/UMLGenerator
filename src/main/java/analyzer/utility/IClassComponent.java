@@ -42,5 +42,4 @@ public interface IClassComponent {
      * @return Access Modifier.
      */
     Modifier getModifier();
-
 }

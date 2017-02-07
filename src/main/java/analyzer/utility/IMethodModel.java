@@ -12,7 +12,6 @@ import java.util.List;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel extends IClassComponent {
-
     /**
      * Returns the Method Type (Abstract, Constructor, Static, Static
      * Initializer, Method).
@@ -56,5 +55,4 @@ public interface IMethodModel extends IClassComponent {
      * @return MethodModel's Signature.
      */
     Signature getSignature();
-
 }

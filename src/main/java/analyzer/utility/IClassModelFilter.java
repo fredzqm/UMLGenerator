@@ -23,40 +23,41 @@ public abstract class IClassModelFilter implements IClassModel {
         this.underlyingModel = classModel.getUnderlyingClassModel();
     }
 
+    // TODO: Fred.
     public String getName() {
-        return classModel.getName();
+        return this.classModel.getName();
     }
 
     public ClassType getType() {
-        return classModel.getType();
+        return this.classModel.getType();
     }
 
     public boolean isFinal() {
-        return classModel.isFinal();
+        return this.classModel.isFinal();
     }
 
     public boolean isStatic() {
-        return classModel.isStatic();
+        return this.classModel.isStatic();
     }
 
     public boolean isSynthetic() {
-        return classModel.isSynthetic();
+        return this.classModel.isSynthetic();
     }
 
     public IClassModel getSuperClass() {
-        return classModel.getSuperClass();
+        return this.classModel.getSuperClass();
     }
 
     public Collection<? extends IClassModel> getInterfaces() {
-        return classModel.getInterfaces();
+        return this.classModel.getInterfaces();
     }
 
     public Collection<? extends IFieldModel> getFields() {
-        return classModel.getFields();
+        return this.classModel.getFields();
     }
 
     public Collection<? extends IMethodModel> getMethods() {
-        return classModel.getMethods();
+        return this.classModel.getMethods();
     }
 
     @Override
@@ -66,7 +67,7 @@ public abstract class IClassModelFilter implements IClassModel {
 
     @Override
     public String toString() {
-        return classModel.toString();
+        return this.classModel.toString();
     }
 
     @Override

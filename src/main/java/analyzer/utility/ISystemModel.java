@@ -1,6 +1,5 @@
 package analyzer.utility;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +16,7 @@ public interface ISystemModel {
      */
     Set<? extends IClassModel> getClasses();
 
+    // TODO Fred
     void setClasses(Set<IClassModel> classSet);
 
     void addClassModelStyle(IClassModel clazz, String key, String value);

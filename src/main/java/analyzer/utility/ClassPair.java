@@ -23,29 +23,29 @@ public final class ClassPair {
     }
 
     public ClassPair reverse() {
-        return new ClassPair(to, from);
+        return new ClassPair(this.to, this.from);
     }
 
     public boolean isLoop() {
-        return from.equals(to);
+        return this.from.equals(this.to);
     }
 
     @Override
     public int hashCode() {
-        return from.hashCode() + to.hashCode() * 127;
+        return this.from.hashCode() + this.to.hashCode() * 127;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ClassPair) {
-            ClassPair rel = (ClassPair) obj;
-            return to.equals(rel.to) && from.equals(rel.from);
+            ClassPair rel = ClassPair.class.cast(obj);
+            return this.to.equals(rel.to) && this.from.equals(rel.from);
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return String.format("%s -> %s", from, to);
+        return String.format("%s -> %s", this.from, this.to);
     }
 }

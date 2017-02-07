@@ -62,7 +62,7 @@ public interface IClassModel {
      * This method is used to ensure that even if a classModel is decorated, it
      * still equals to the original classModel
      *
-     * @return get the reference to the innest {@link ClassModel} that is
+     * @return get the reference to the innest {@link ClassModel} that is // FIXME Fred
      * decorated
      */
     IClassModel getUnderlyingClassModel();
