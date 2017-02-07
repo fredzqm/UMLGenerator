@@ -3,10 +3,10 @@ package dummy.decoratorDummy;
 /**
  * Created by lamd on 2/4/2017.
  */
-public abstract class Decorator extends Component {
+public abstract class GoodDecorator extends Component {
     private Component component;
 
-    public Decorator(Component component) {
+    public GoodDecorator(Component component) {
         this.component = component;
     }
 

@@ -3,8 +3,8 @@ package dummy.decoratorDummy;
 /**
  * Created by lamd on 2/4/2017.
  */
-public class ConcreteDecorator extends Decorator {
-    public ConcreteDecorator(Component component) {
+public class GoodConcreteDecorator extends GoodDecorator {
+    public GoodConcreteDecorator(Component component) {
         super(component);
     }
 
