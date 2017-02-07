@@ -1,49 +1,22 @@
 package analyzer.decorator;
 
-import analyzer.relationParser.RelationHasA;
-import analyzer.utility.*;
-import utility.MethodType;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import analyzer.utility.IClassModel;
+import config.IConfiguration;
 
 /**
+ * A Bad Decorator Analyzer. It will highlight classes that are likely decorators that are incomplete in yellow.
+ * <p>
  * Created by lamd on 2/2/2017.
  */
 public class BadDecoratorAnalyzer extends DecoratorTemplate {
-    private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
-        systemModel.addClassModelStyle(classModel, "style", "filled");
-        systemModel.addClassModelStyle(classModel, "fillcolor", "yellow");
-    }
-
     @Override
-    protected void styleParent(ISystemModel systemModel, IClassModel parent) {
-        addCommonDecoratorStyle(systemModel, parent);
-        systemModel.addClassModelSteretypes(parent, "component");
-    }
-
-    @Override
-    protected void styleChild(ISystemModel systemModel, IClassModel child) {
-        addCommonDecoratorStyle(systemModel, child);
-        systemModel.addClassModelSteretypes(child, "decorator");
-    }
-
-    @Override
-    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel", "decorates");
-    }
-
-    @Override
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
-        systemModel.getClasses().forEach((classModel) -> {
-            if (classModel.getSuperClass().equals(decoratorClass)) {
-                addCommonDecoratorStyle(systemModel, classModel);
-                systemModel.addClassModelSteretypes(classModel, "decorator");
-            }
-        });
+    protected IAdapterDecoratorConfiguration setupConfig(IConfiguration config) {
+        BadDecoratorConfiguration updatedConfig = config.createConfiguration(BadDecoratorConfiguration.class);
+        updatedConfig.setIfMissing(BadDecoratorConfiguration.FILL_COLOR, "yellow");
+        updatedConfig.setIfMissing(BadDecoratorConfiguration.PARENT_STEREOTYPE, "component");
+        updatedConfig.setIfMissing(BadDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
+        updatedConfig.setIfMissing(BadDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
+        return updatedConfig;
     }
 
     @Override

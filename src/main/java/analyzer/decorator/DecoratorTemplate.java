@@ -1,9 +1,7 @@
 package analyzer.decorator;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ITypeModel;
+import analyzer.relationParser.RelationHasA;
+import analyzer.utility.*;
 import utility.MethodType;
 
 import java.util.Collection;
@@ -13,6 +11,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * A Decorator Abstract class that contains basic utility methods used by both Good and Bad Decorator Analyzers.
+ * <p>
  * Created by lamd on 2/7/2017.
  */
 public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
@@ -70,5 +70,37 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
                 .forEach(decoratedMethods::add);
 
         return decoratedMethods.size() == parentMethods.size();
+    }
+
+    private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
+        systemModel.addClassModelStyle(classModel, "style", "filled");
+        systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
+    }
+
+    @Override
+    protected void styleParent(ISystemModel systemModel, IClassModel parent) {
+        addCommonDecoratorStyle(systemModel, parent);
+        systemModel.addClassModelSteretypes(parent, this.config.getParentStereotype());
+    }
+
+    @Override
+    protected void styleChild(ISystemModel systemModel, IClassModel child) {
+        addCommonDecoratorStyle(systemModel, child);
+        systemModel.addClassModelSteretypes(child, this.config.getChildStereotype());
+    }
+
+    @Override
+    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
+        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel", this.config.getChildParentRelationshipLabel());
+    }
+
+    @Override
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
+        systemModel.getClasses().forEach((classModel) -> {
+            if (classModel.getSuperClass().equals(decoratorClass)) {
+                addCommonDecoratorStyle(systemModel, classModel);
+                systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
+            }
+        });
     }
 }

@@ -6,7 +6,7 @@ import config.IConfiguration;
 import java.util.List;
 
 /**
- * A Configurable for FavorComposition Analyzers.
+ * A Configurable for Dependency Inversion Analyzers.
  * <p>
  * Created by lamd on 1/23/2017.
  */

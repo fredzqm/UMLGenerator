@@ -5,6 +5,8 @@ import config.IConfiguration;
 import utility.ClassType;
 
 /**
+ * A Dependency Inversion Principle Analyzer. It detects where classes violates the Dependency Inversion Principle.
+ * <p>
  * Created by lamd on 1/14/2017.
  */
 public class DependencyInversionAnalyzer implements IAnalyzer {

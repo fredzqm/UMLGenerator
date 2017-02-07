@@ -14,10 +14,15 @@ import java.util.LinkedList;
  * Created by lamd on 2/2/2017.
  */
 public abstract class AdapterDecoratorTemplate implements IAnalyzer {
+    protected IAdapterDecoratorConfiguration config;
+
     @Override
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
+        this.config = setupConfig(config);
         updateModel(systemModel);
     }
+
+    protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     private void updateModel(ISystemModel systemModel) {
         systemModel.getClasses().forEach((clazz) -> evaluateClass(systemModel, clazz));
@@ -29,7 +34,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * <p>
      *
      * @param child IClassModel to be evaluated.
-     * @return Collection of IClassModel of ParentClassModel defined by the subclass.
      */
     private void evaluateClass(ISystemModel systemModel, IClassModel child) {
         getPotentialParents(child).stream()
