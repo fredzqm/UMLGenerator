@@ -39,6 +39,7 @@ public abstract class AbstractAdapterDecoratorTemplate implements IAnalyzer {
      */
     private void evaluateClass(ISystemModel systemModel, Collection<? extends IClassModel> classes, IClassModel child) {
         Collection<IClassModel> potentialParents = getPotentialParents(classes, child);
+        potentialParents.add(child);
         for (IClassModel parent : potentialParents) {
             if (detectPattern(child, parent)) {
                 styleParent(systemModel, parent);
