@@ -8,7 +8,6 @@ import java.util.Map;
  * generation processes.
  */
 public interface IConfiguration {
-
     /**
      * This acts as a factory method for any java object, it gets the Class with
      * {@link Class#forName(String)} and then calls {@link Class#newInstance()}
@@ -19,14 +18,14 @@ public interface IConfiguration {
      * configuration string.
      *
      * @param className the name of class we want to instantiate
-     * @param returType the planned return type
+     * @param returnType the planned return type
      * @return the created object
      */
-    static <T> T instantiateWithName(String className, Class<T> returType) {
+    static <T> T instantiateWithName(String className, Class<T> returnType) {
         try {
             Class<?> forName = Class.forName(className);
-            if (!returType.isAssignableFrom(forName))
-                throw new RuntimeException(forName + " cannot be casted to " + returType);
+            if (!returnType.isAssignableFrom(forName))
+                throw new RuntimeException(forName + " cannot be casted to " + returnType);
             return (T) forName.newInstance();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(className + " is not a valid class", e);
