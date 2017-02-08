@@ -25,10 +25,6 @@ public class BadDecoratorConfiguration implements IAdapterDecoratorConfiguration
         this.config.setIfMissing(BadDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
     }
 
-    public void setIfMissing(String key, String value) {
-        this.config.setIfMissing(key, value);
-    }
-
     @Override
     public String getFillColor() {
         return this.config.getValue(BadDecoratorConfiguration.FILL_COLOR);

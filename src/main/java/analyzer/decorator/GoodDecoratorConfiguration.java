@@ -24,11 +24,7 @@ public class GoodDecoratorConfiguration implements IAdapterDecoratorConfiguratio
         this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
         this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
     }
-
-    public void setIfMissing(String key, String value) {
-        this.config.setIfMissing(key, value);
-    }
-
+    
     @Override
     public String getFillColor() {
         return this.config.getValue(GoodDecoratorConfiguration.FILL_COLOR);
