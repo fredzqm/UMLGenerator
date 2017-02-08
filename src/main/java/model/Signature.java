@@ -48,7 +48,7 @@ public class Signature {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Signature) {
-            Signature o = Signature.class.cast(obj);
+            Signature o = (Signature) obj;
             if (Objects.equals(name, o.name)) {
                 Iterator<TypeModel> a = args.iterator();
                 Iterator<TypeModel> b = args.iterator();

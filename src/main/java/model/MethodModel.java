@@ -130,7 +130,8 @@ class MethodModel implements IMethodModel {
         List<TypeModel> args = getArguments();
         if (args.size() > 0) {
             sb.append(args.get(0));
-            for (TypeModel arg : args) sb.append(",").append(arg);
+            for (int i = 1; i < args.size(); i++)
+                sb.append(",").append(args.get(i));
         }
         return String.format("%s %s(%s)", returnType.toString(), getName(), sb.toString());
     }

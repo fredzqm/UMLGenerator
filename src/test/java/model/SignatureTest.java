@@ -30,4 +30,5 @@ public class SignatureTest {
         assertEquals(a.hashCode(), b.hashCode());
         assertEquals(a, b);
     }
+    
 }
