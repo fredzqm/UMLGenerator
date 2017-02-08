@@ -15,23 +15,23 @@ public class InstructionField extends InstructionModel {
     private final TypeModel calledOn;
     private final FieldModel field;
 
-    public InstructionField(MethodModel method, FieldInsnNode fiedlCall) {
+    public InstructionField(MethodModel method, FieldInsnNode fieldCall) {
         super(method);
-        calledOn = TypeParser.parseClassInternalName(fiedlCall.owner);
+        this.calledOn = TypeParser.parseClassInternalName(fieldCall.owner);
         ClassModel destClass = calledOn.getClassModel();
         if (destClass == null) {
             throw new RuntimeException();
         }
-        field = destClass.getFieldByName(fiedlCall.name);
-        if (field == null) {
-            Logger.logError(getClass().getName() + "::field is null: " + fiedlCall.desc + "\tname\t" + fiedlCall.name
-                    + "\towner\t" + fiedlCall.owner);
+        this.field = destClass.getFieldByName(fieldCall.name);
+        if (this.field == null) {
+            Logger.logError(getClass().getName() + "::field is null: " + fieldCall.desc + "\tname\t" + fieldCall.name
+                    + "\towner\t" + fieldCall.owner);
         }
     }
 
     @Override
     public Collection<TypeModel> getDependentTypes() {
-        if (field == null) {
+        if (this.field == null) {
             return Collections.singletonList(calledOn);
         }
         return Arrays.asList(calledOn, field.getFieldType());
@@ -41,7 +41,7 @@ public class InstructionField extends InstructionModel {
      * @return the field it accesses
      */
     public FieldModel getAccessComponent() {
-        return field;
+        return this.field;
     }
 
 }
