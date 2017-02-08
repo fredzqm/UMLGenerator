@@ -42,7 +42,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         return false;
     }
 
-    private boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
+    protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
         for (IMethodModel parentMethod : parentMethods) {
             if (parentMethod.getSignature().equals(method.getSignature())) {
                 return true;
@@ -51,7 +51,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         return false;
     }
 
-    private boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
+    protected boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
         for (IFieldModel field : method.getAccessedFields()) {
             if (field.getFieldType().equals(parent)) {
                 return true;
@@ -59,18 +59,6 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         }
 
         return false;
-    }
-
-    protected boolean hasParentMethodMapped(IClassModel child, IClassModel parent) {
-        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
-
-        Set<IMethodModel> decoratedMethods = new HashSet<>();
-        child.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method))
-                .forEach(decoratedMethods::add);
-
-        return decoratedMethods.size() == parentMethods.size();
     }
 
     private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
