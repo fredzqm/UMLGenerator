@@ -16,7 +16,11 @@ public interface ISystemModel {
      */
     Set<? extends IClassModel> getClasses();
 
-    // TODO Fred
+    /**
+     * set the class set of systemModel
+     * 
+     * @param classSet
+     */
     void setClasses(Set<IClassModel> classSet);
 
     void addClassModelStyle(IClassModel clazz, String key, String value);

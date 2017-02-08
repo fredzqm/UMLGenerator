@@ -7,6 +7,18 @@ import analyzer.utility.StyleMap;
 
 import java.util.*;
 
+/**
+ * The system model tracks all necessary information it needs to draw a UML. It
+ * contains a classSet with all the information needed, and style information
+ * regarding each class and edges
+ * 
+ * In the high-level overview, there should be only one SystemModel for one UML.
+ * Each analyzer can register style information at SystemModel, or change the
+ * style set.
+ * 
+ * @author zhang
+ *
+ */
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
 
@@ -14,8 +26,13 @@ public class SystemModel implements ISystemModel {
     private Map<IClassModel, Set<String>> stereotypes;
     private Map<ClassPair, Map<String, StyleMap>> relations;
 
-    public SystemModel(Set<IClassModel> importantList) {
-        this.classSet = importantList;
+    /**
+     * Create an SystemModel based on a class set
+     * 
+     * @param classSet
+     */
+    public SystemModel(Set<IClassModel> classSet) {
+        this.classSet = classSet;
         this.nodeStyle = new HashMap<>();
         this.relations = new HashMap<>();
         this.stereotypes = new HashMap<>();

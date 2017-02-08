@@ -10,8 +10,10 @@ class Relation implements IEdge {
     /**
      * Set the Relation's ClassPair and IRelationInfo
      *
-     * @param classPair ClassPair to be set.
-     * @param info      IRelationInfo to be set.
+     * @param classPair
+     *            ClassPair to be set.
+     * @param edgeStyle
+     *            The edge style string for this relation
      */
     public Relation(ClassPair classPair, String edgeStyle) {
         this.classPair = classPair;
