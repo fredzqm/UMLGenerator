@@ -15,6 +15,14 @@ import utility.IMapper;
 
 import java.util.Map;
 
+/**
+ * An adapter from SystemModel to Graph Analyzers work on SystemModel, writing
+ * style information there. This adapter would convert those information to what
+ * Generator can understand
+ * 
+ * @author zhang
+ *
+ */
 public class SystemModelGraph implements IGraph {
     private final ISystemModel systemModel;
     private ClassParserConfiguration classParserConfig;
