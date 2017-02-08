@@ -123,12 +123,15 @@ class TypeParser {
     }
 
     private static TypeModel parseClassType(TypeModel type, ClassModel bound, List<TypeModel> genericEnv) {
-        if (bound.isStatic() || type != null && type.getGenericArgNumber() == 0)
+        if (bound.isStatic() || type != null && type.getGenericArgNumber() == 0) {
             type = null;
-        if (type == null && genericEnv == null)
+        }
+        if (type == null && genericEnv == null) {
             return bound;
-        if (genericEnv == null)
+        }
+        if (genericEnv == null) {
             genericEnv = Collections.emptyList();
+        }
         return new ParametizedClassModel(type, bound, genericEnv);
     }
 
@@ -163,8 +166,9 @@ class TypeParser {
                             || c == 'D') {
                         return true;
                     }
-                    if (c != '[')
+                    if (c != '[') {
                         start = false;
+                    }
                     return false;
                 } else {
                     if (c == ';') {
@@ -186,19 +190,22 @@ class TypeParser {
         String key = sp[0];
         List<TypeModel> ls = new ArrayList<>(1);
         for (int i = 1; i < sp.length; i++) {
-            if (sp[i].equals(""))
+            if (sp[i].equals("")) {
                 continue;
+            }
             TypeModel c = parseClassTypeSignature(sp[i]);
-            if (c == ASMParser.getObject())
+            if (c == ASMParser.getObject()) {
                 continue;
+            }
             ls.add(c);
         }
         return new GenericTypeParam(key, ls);
     }
 
     static List<GenericTypeParam> parseTypeParams(String paramList) {
-        if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>')
+        if (paramList.charAt(0) != '<' || paramList.charAt(paramList.length() - 1) != '>') {
             throw new RuntimeException(paramList + " is not a valid parameter list");
+        }
         List<GenericTypeParam> ret = new ArrayList<>(1);
         for (String s : splitOn(paramList.substring(1, paramList.length() - 1), (c) -> c == ';')) {
             ret.add(parseTypeParam(s));
@@ -235,11 +242,13 @@ class TypeParser {
             i = indexAfterClosing(methodSig, 0);
             typeParameters = parseTypeParams(methodSig.substring(0, i));
         }
-        if (methodSig.charAt(i) != '(')
+        if (methodSig.charAt(i) != '(') {
             throw new RuntimeException("Cannot find the start of parameter list at " + i + " of " + methodSig);
+        }
         int j = methodSig.indexOf(')');
-        if (j < 0)
+        if (j < 0) {
             throw new RuntimeException("Cannot find the end of parameter list of " + methodSig);
+        }
         List<TypeModel> argumentList = new ArrayList<>(1);
         for (String s : splitOn(methodSig.substring(i + 1, j), new Predicate<Character>() {
             private boolean start = true;
@@ -250,8 +259,9 @@ class TypeParser {
                     if (c == 'Z' || c == 'C' || c == 'B' || c == 'S' || c == 'I' || c == 'F' || c == 'J' || c == 'D') {
                         return true;
                     }
-                    if (c != '[')
+                    if (c != '[') {
                         start = false;
+                    }
                     return false;
                 } else {
                     if (c == ';') {
@@ -298,8 +308,9 @@ class TypeParser {
     }
 
     private static int indexAfterClosing(CharSequence signature, int i) {
-        if (signature.charAt(i) != '<')
+        if (signature.charAt(i) != '<') {
             return i;
+        }
         int c = 1;
         i++;
         while (i < signature.length()) {
@@ -308,8 +319,9 @@ class TypeParser {
                 c++;
             } else if (x == '>') {
                 c--;
-                if (c == 0)
+                if (c == 0) {
                     return i;
+                }
             }
         }
         throw new RuntimeException("bracket is not closed");
@@ -362,7 +374,5 @@ class TypeParser {
         List<TypeModel> getExceptionList() {
             return exceptionList;
         }
-
     }
-
 }

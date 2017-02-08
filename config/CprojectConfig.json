@@ -115,8 +115,7 @@
 		"analyzer_key": [
 			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.favorComposition.FavorCompositionAnalyzer",
-			"analyzer.dependencyInversion.DependencyInversionAnalyzer",
-			"analyzer.classParser.ClassParserAnalyzer"
+			"analyzer.dependencyInversion.DependencyInversionAnalyzer"
 		]
 	}
 }

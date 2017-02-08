@@ -1,18 +1,15 @@
 package analyzer.utility;
 
-import generator.INode;
 import utility.ClassType;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An interface for Class Models.
  * <p>
  * Created by lamd on 12/9/2016.
  */
-public interface IClassModel extends INode {
+public interface IClassModel {
     /**
      * Returns the String of the Model's Class Name.
      *
@@ -65,8 +62,8 @@ public interface IClassModel extends INode {
      * This method is used to ensure that even if a classModel is decorated, it
      * still equals to the original classModel
      *
-     * @return get the reference to the innest {@link ClassModel} that is
-     *         decorated
+     * @return get the reference to the innest {@link ClassModel} that is // FIXME Fred
+     * decorated
      */
     IClassModel getUnderlyingClassModel();
 
@@ -76,28 +73,5 @@ public interface IClassModel extends INode {
      * @return Methods of the Model.
      */
     Collection<? extends IMethodModel> getMethods();
-
-    /**
-     * Returns the Stereotypes of the Class Model.
-     *
-     * @return the list of stereotypes name for this class
-     */
-    default List<String> getStereoTypes() {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return the label for this vertex
-     */
-    default String getLabel() {
-        return "";
-    }
-
-    /**
-     * @return the vertex style of this class
-     */
-    default String getNodeStyle() {
-        return "";
-    }
 
 }

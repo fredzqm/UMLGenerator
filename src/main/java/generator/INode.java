@@ -1,7 +1,6 @@
 package generator;
 
 public interface INode {
-
     /**
      * @return the name for this vertex
      */

@@ -52,6 +52,12 @@ public class CommandLineParser implements ConfigurationFactory {
         this.args = args;
     }
 
+    /**
+     * TODO: Fred
+     * @param arg
+     * @return
+     * @throws FileNotFoundException
+     */
     static JSONObject readJsonObject(String arg) throws FileNotFoundException {
         Scanner scanner = null;
         try {

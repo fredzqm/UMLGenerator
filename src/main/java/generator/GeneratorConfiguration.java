@@ -50,5 +50,4 @@ public class GeneratorConfiguration implements Configurable {
     public String getNodeStyle() {
         return this.config.getValue(GeneratorConfiguration.NODE_STYLE);
     }
-
 }

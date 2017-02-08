@@ -1,17 +1,19 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets depends-on relation.
  */
 public class RelationDependsOn implements IRelationInfo {
+    public static final String REL_KEY = "depends_on";
+
     private final boolean many;
 
     /**
      * Constructs a RelationHasA object.
      *
-     * @param many
+     * @param many TODO: Fred
      */
     public RelationDependsOn(boolean many) {
         this.many = many;
@@ -28,28 +30,29 @@ public class RelationDependsOn implements IRelationInfo {
 
     @Override
     public String toString() {
-        if (isMany()) {
-            return "Depends on many";
-        } else {
-            return "Depends on ";
-        }
+        return (isMany()) ? "Depends on many" : "Depends on ";
     }
 
     @Override
-    public String getEdgeStyle() {
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"dashed\" ");
-
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowhead", "vee");
+        styleMap.addStyle("style", "dashed");
         if (isMany()) {
-            edgeBuilder.append("headlabel=\"0..*\" ");
+            styleMap.addStyle("headlabel", "0..*");
         }
+        return styleMap;
+    }
 
-        return edgeBuilder.toString();
+    @Override
+    public String getRelKey() {
+        return RelationDependsOn.REL_KEY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationDependsOn.class) {
-            RelationDependsOn x = (RelationDependsOn) obj;
+        if (obj instanceof RelationDependsOn) {
+            RelationDependsOn x = RelationDependsOn.class.cast(obj);
             return x.many == this.many;
         }
         return false;

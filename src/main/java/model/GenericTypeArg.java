@@ -45,10 +45,7 @@ abstract class GenericTypeArg extends TypeModel {
         private final TypeModel lowerBound;
 
         LowerBound(TypeModel lowerBound) {
-            if (lowerBound == null)
-                this.lowerBound = lowerBound;
-            else
-                this.lowerBound = lowerBound;
+            this.lowerBound = lowerBound;
         }
 
         public TypeModel getLowerBound() {
@@ -58,7 +55,7 @@ abstract class GenericTypeArg extends TypeModel {
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof LowerBound) {
-                LowerBound o = (LowerBound) obj;
+                LowerBound o = LowerBound.class.cast(obj);
                 return lowerBound.equals(o.lowerBound);
             }
             return false;
@@ -110,7 +107,7 @@ abstract class GenericTypeArg extends TypeModel {
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof UpperBound) {
-                UpperBound o = (UpperBound) obj;
+                UpperBound o = UpperBound.class.cast(obj);
                 return Objects.equals(upperBound, o.upperBound);
             }
             return false;
@@ -139,7 +136,6 @@ abstract class GenericTypeArg extends TypeModel {
     }
 
     static class WildType extends GenericTypeArg {
-
         @Override
         public String toString() {
             return "*";

@@ -1,8 +1,10 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
+ * A Decorator for Relation classes.
+ * <p>
  * Created by lamd on 1/26/2017.
  */
 public abstract class RelationDecorator implements IRelationInfo {
@@ -11,7 +13,7 @@ public abstract class RelationDecorator implements IRelationInfo {
     /**
      * Constructs a RelationBijectiveDecorator.
      *
-     * @param rel
+     * @param decorated Decorated IRelationInfo.
      */
     public RelationDecorator(IRelationInfo decorated) {
         this.decorated = decorated;
@@ -27,19 +29,24 @@ public abstract class RelationDecorator implements IRelationInfo {
     }
 
     @Override
+    public String getRelKey() {
+        return this.decorated.getRelKey();
+    }
+
+    @Override
     public String toString() {
         return this.decorated.toString();
     }
 
     @Override
-    public String getEdgeStyle() {
-        return this.decorated.getEdgeStyle();
+    public StyleMap getStyleMap() {
+        return decorated.getStyleMap();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationDecorator.class) {
-            RelationDecorator x = (RelationDecorator) obj;
+        if (obj instanceof RelationDecorator) {
+            RelationDecorator x = RelationDecorator.class.cast(obj);
             return x.getDecorated().equals(this.decorated);
         }
         return false;
