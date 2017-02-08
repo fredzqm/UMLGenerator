@@ -9,7 +9,8 @@ public interface ITypeModel {
     String getName();
 
     /**
-     * @return the lower bound class related to this type
+     * @return the lower bound class related to this type, null if this type is
+     *         primitive, so does not associate with ClassModel
      */
     IClassModel getClassModel();
 
@@ -50,7 +51,8 @@ public interface ITypeModel {
     Collection<? extends IClassModel> getDependentClass();
 
     /**
-     * @param className the name of the class
+     * @param className
+     *            the name of the class
      * @return the strictest type of className that this type can be assigned to
      */
     ITypeModel assignTo(String className);

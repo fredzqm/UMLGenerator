@@ -51,7 +51,7 @@ public class SingletonAnalyzer implements IAnalyzer {
         Collection<? extends IFieldModel> fields = clazz.getFields();
         IFieldModel staticSingletonField = null;
         for (IFieldModel field : fields) {
-            if (clazz.equals(field.getFieldType().getClassModel())) {
+            if (clazz.equals(field.getFieldType())) {
                 if (field.isStatic() && field.getModifier() == Modifier.PRIVATE && staticSingletonField == null) {
                     staticSingletonField = field;
                 } else {
