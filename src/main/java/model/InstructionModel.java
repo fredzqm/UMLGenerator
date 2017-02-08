@@ -36,6 +36,6 @@ public abstract class InstructionModel implements IInstructionModel {
         return belongTo;
     }
 
-    public abstract Collection<TypeModel> getDependentClass();
+    public abstract Collection<TypeModel> getDependentTypes();
 
 }

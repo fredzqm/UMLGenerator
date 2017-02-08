@@ -1,36 +1,16 @@
 package analyzer.utility;
 
-import utility.MethodType;
-import utility.Modifier;
-
 import java.util.Collection;
 import java.util.List;
+
+import utility.MethodType;
 
 /**
  * An Interface of the Method Models.
  * <p>
  * Created by lamd on 12/7/2016.
  */
-public interface IMethodModel {
-
-    /**
-     * Returns the name of the Method.
-     *
-     * @return Name of the Method.
-     */
-    String getName();
-
-    /**
-     * @return the class it belongs to
-     */
-    IClassModel getBelongTo();
-
-    /**
-     * Returns the access Modifier of this method.
-     *
-     * @return Access Modifier.
-     */
-    Modifier getModifier();
+public interface IMethodModel extends IClassComponent {
 
     /**
      * Returns the Method Type (Abstract, Constructor, Static, Static
@@ -39,23 +19,6 @@ public interface IMethodModel {
      * @return Method Type.
      */
     MethodType getMethodType();
-
-    /**
-     * @return true if this method is static
-     */
-    boolean isStatic();
-
-    /**
-     * Returns true if the Method is final.
-     *
-     * @return true if Final.
-     */
-    boolean isFinal();
-
-    /**
-     * @return true if this method is synthetic
-     */
-    boolean isSynthetic();
 
     /**
      * Returns the return type Type Model of the Method.

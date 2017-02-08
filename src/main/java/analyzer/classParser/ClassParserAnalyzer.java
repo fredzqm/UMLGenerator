@@ -10,7 +10,7 @@ import config.IConfiguration;
  *
  * @author zhang
  */
-public class AnalyzerClassParser implements IAnalyzer {
+public class ClassParserAnalyzer implements IAnalyzer {
     @Override
     public ISystemModel analyze(ISystemModel systemModel, IConfiguration config) {
         ClassParserConfiguration classParserConfig = config.createConfiguration(ClassParserConfiguration.class);

@@ -2,6 +2,8 @@ package model;
 
 import org.objectweb.asm.tree.MethodInsnNode;
 
+import analyzer.utility.IClassModel;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -31,7 +33,7 @@ public class InstructionMethod extends InstructionModel {
     }
 
     @Override
-    public Collection<TypeModel> getDependentClass() {
+    public Collection<TypeModel> getDependentTypes() {
         Collection<TypeModel> depends = new HashSet<>();
         depends.add(calledOn);
         if (method != null) {
@@ -44,7 +46,7 @@ public class InstructionMethod extends InstructionModel {
     /**
      * @return the method this instruction calls
      */
-    public MethodModel getMethod() {
+    public MethodModel getAccessComponent() {
         return method;
     }
 }

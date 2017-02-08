@@ -52,7 +52,7 @@ public class AnalyzerRelationParserTest {
     }
 
     private ISystemModel runRelationAnalyzer(ISystemModel _sysModel) {
-        AnalyzerRelationParser analyzerRelation = new AnalyzerRelationParser();
+        RelationParserAnalyzer analyzerRelation = new RelationParserAnalyzer();
         return analyzerRelation.analyze(_sysModel, null);
     }
 

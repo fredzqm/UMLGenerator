@@ -23,11 +23,19 @@
 	"classParser": {
 		"modifierFilter": "public"
 	},
+	"dependencyInversion": {
+		"color": "yellow",
+		"whiteList": [
+			"java.lang",
+			"java.util"
+		]
+	},
 	"engine": {
 		"analyzer_key":[
-			"analyzer.classParser.AnalyzerClassParser",
-			"analyzer.relationParser.AnalyzerRelationParser",
-			"analyzer.favorComposition.FavorCompositionAnalyzer"
+			"analyzer.classParser.ClassParserAnalyzer",
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.classParser.ClassParserAnalyzer",
+			"analyzer.dependencyInversion.DependencyInversionAnalyzer"
 		],
 		"synthetic":true
 	}

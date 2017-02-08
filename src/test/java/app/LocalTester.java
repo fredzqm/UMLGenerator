@@ -1,8 +1,8 @@
 package app;
 
-import analyzer.classParser.AnalyzerClassParser;
+import analyzer.classParser.ClassParserAnalyzer;
 import analyzer.favorComposition.FavorCompositionAnalyzer;
-import analyzer.relationParser.AnalyzerRelationParser;
+import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
 import dummy.favorDummy.FavorDummyA;
@@ -28,7 +28,7 @@ public class LocalTester {
         config.set(RunnerConfiguration.FILE_NAME, "asmClass");
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
-        config.add(EngineConfiguration.ANALYZER_KEY, FavorCompositionAnalyzer.class.getName(), AnalyzerClassParser.class.getName(),AnalyzerRelationParser.class.getName());
+        config.add(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(),RelationParserAnalyzer.class.getName(), FavorCompositionAnalyzer.class.getName());
         config.add(ModelConfiguration.CLASSES_KEY, FavorDummyA.class.getName(), FavorDummyB.class.getName());
 
         UMLEngine engine = UMLEngine.getInstance(config);
