@@ -30,12 +30,7 @@ public class GoodDecoratorAnalyzer extends DecoratorTemplate {
 
     @Override
     protected IAdapterDecoratorConfiguration setupConfig(IConfiguration config) {
-        GoodDecoratorConfiguration updatedConfig = config.createConfiguration(GoodDecoratorConfiguration.class);
-        updatedConfig.setIfMissing(GoodDecoratorConfiguration.FILL_COLOR, "green");
-        updatedConfig.setIfMissing(GoodDecoratorConfiguration.PARENT_STEREOTYPE, "component");
-        updatedConfig.setIfMissing(GoodDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
-        updatedConfig.setIfMissing(GoodDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
-        return updatedConfig;
+        return config.createConfiguration(GoodDecoratorConfiguration.class);
     }
 
     @Override

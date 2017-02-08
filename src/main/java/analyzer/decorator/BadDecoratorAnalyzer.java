@@ -16,31 +16,35 @@ import java.util.stream.Collectors;
  * Created by lamd on 2/2/2017.
  */
 public class BadDecoratorAnalyzer extends DecoratorTemplate {
-    private boolean hasParentMethodMapped(IClassModel child, IClassModel parent) {
+    private boolean missingParentMethodDecoration(IClassModel child, IClassModel parent) {
         Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
+        System.out.println(child.getName());
+        System.out.println(child.getMethods());
+        System.out.println(parent.getName());
+        System.out.println(parentMethods);
         child.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods))
-                .forEach(decoratedMethods::add);
+                .forEach((method) -> {
+                    decoratedMethods.add(method);
+                    System.out.println(method);
+                });
 
-        return decoratedMethods.size() == parentMethods.size();
+        System.out.println("decoration size: " + decoratedMethods.size());
+        System.out.println("parent size: " + parentMethods.size());
+        return decoratedMethods.size() != parentMethods.size();
     }
 
     @Override
     protected IAdapterDecoratorConfiguration setupConfig(IConfiguration config) {
-        BadDecoratorConfiguration updatedConfig = config.createConfiguration(BadDecoratorConfiguration.class);
-        updatedConfig.setIfMissing(BadDecoratorConfiguration.FILL_COLOR, "yellow");
-        updatedConfig.setIfMissing(BadDecoratorConfiguration.PARENT_STEREOTYPE, "component");
-        updatedConfig.setIfMissing(BadDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
-        updatedConfig.setIfMissing(BadDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
-        return updatedConfig;
+        return config.createConfiguration(BadDecoratorConfiguration.class);
     }
 
     @Override
     protected boolean detectPattern(IClassModel child, IClassModel parent) {
         return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
-                && !hasParentMethodMapped(child, parent);
+                && missingParentMethodDecoration(child, parent);
     }
 }

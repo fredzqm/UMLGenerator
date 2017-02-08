@@ -19,6 +19,10 @@ public class GoodDecoratorConfiguration implements IAdapterDecoratorConfiguratio
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
+        this.config.setIfMissing(GoodDecoratorConfiguration.FILL_COLOR, "green");
+        this.config.setIfMissing(GoodDecoratorConfiguration.PARENT_STEREOTYPE, "component");
+        this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
+        this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
     }
 
     public void setIfMissing(String key, String value) {

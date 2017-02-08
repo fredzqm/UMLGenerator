@@ -5,6 +5,10 @@ import analyzer.decorator.GoodDecoratorAnalyzer;
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.ISystemModel;
 import config.Configuration;
+import demos.Decorator;
+import demos.SwitchProcessor;
+import demos.TextProcessor;
+import demos.Transformer;
 import dummy.decoratorDummy.*;
 import generator.GeneratorConfiguration;
 import model.ModelConfiguration;
@@ -30,6 +34,8 @@ public class LocalTester {
         config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(), GoodDecoratorAnalyzer.class.getName(), BadDecoratorAnalyzer.class.getName());
         config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), GoodDecorator.class.getName(), GoodConcreteDecorator.class.getName(),
                 BadDecorator.class.getName(), BadConcreteDecorator.class.getName());
+
+//        config.add(ModelConfiguration.CLASSES_KEY, Decorator.class.getName(), SwitchProcessor.class.getName(), TextProcessor.class.getName(), Transformer.class.getName());
 
         UMLEngine engine = UMLEngine.getInstance(config);
         ISystemModel systemModel = engine.createSystemModel();
