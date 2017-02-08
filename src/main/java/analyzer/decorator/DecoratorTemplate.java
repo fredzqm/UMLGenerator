@@ -33,7 +33,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
             if (method.getMethodType() == MethodType.CONSTRUCTOR) {
                 arguments = method.getArguments();
                 for (ITypeModel type : arguments) {
-                    if (type.getClassModel().equals(parent)) {
+                    if (type.getClassModel() != null && type.getClassModel().equals(parent)) {
                         return true;
                     }
                 }
