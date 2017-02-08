@@ -1,0 +1,21 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "Stream"
+	},
+	"model": {
+		"classes": [
+			"java.io.InputStreamReader","java.io.OutputStreamWriter","java.awt.event.MouseAdapter","java.awt.event.MouseListener"
+		],
+		"isRecursive": false,
+		"blackList":[],
+		"verbose":"false"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer"
+		]
+	}
+}

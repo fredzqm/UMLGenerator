@@ -19,8 +19,7 @@ public class Configuration implements IConfiguration {
     }
 
     /**
-     * Returns an instance of the Configuration.
-     * *
+     * Returns an instance of the Configuration. *
      *
      * @return Configuration instance.
      */
@@ -98,6 +97,8 @@ public class Configuration implements IConfiguration {
     public List<String> getList(String key) {
         if (containsKey(key)) {
             String values = getFromMap(key);
+            if (values.length() == 0)
+                return Collections.emptyList();
             return Arrays.asList(values.split(Configuration.LIST_DELIMITER));
         }
         return Collections.emptyList();

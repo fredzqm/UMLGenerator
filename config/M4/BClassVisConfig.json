@@ -1,0 +1,21 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "ClassVis"
+	},
+	"model": {
+		"classes": [
+			"org.objectweb.asm.ClassVisitor","org.objectweb.asm.tree.ClassNode"
+		],
+		"isRecursive": false,
+		"blackList":[],
+		"verbose":"false"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer"
+		]
+	}
+}

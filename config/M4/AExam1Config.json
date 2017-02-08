@@ -1,0 +1,22 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "Exam1"
+	},
+	"model": {
+		"classes": [
+			"csse374.textprocessor.AllCapsTransformer", "csse374.textprocessor.ProcessorUI", "csse374.textprocessor.seed.AllCapsTransformer", "csse374.textprocessor.seed.TextProcessingApp", "csse374.textprocessor.seed.Transform","csse374.textprocessor.SubstitutionTransformer", "csse374.textprocessor.TextProcessingApp", "csse374.textprocessor.TextProcessor", "csse374.textprocessor.Transformer"
+		],
+		"isRecursive": false,
+		"blackList":[],
+		"verbose":"false"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.decorator.BadDecoratorAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer"
+		]
+	}
+}
