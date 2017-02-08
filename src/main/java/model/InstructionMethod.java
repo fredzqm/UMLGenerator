@@ -2,8 +2,6 @@ package model;
 
 import org.objectweb.asm.tree.MethodInsnNode;
 
-import analyzer.utility.IClassModel;
-
 import java.util.Collection;
 import java.util.HashSet;
 

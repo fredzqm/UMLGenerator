@@ -3,7 +3,6 @@ package analyzer.utility;
 import java.util.Collection;
 
 public interface ITypeModel {
-
     /**
      * @return name of the type
      */

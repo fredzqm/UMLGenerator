@@ -5,34 +5,31 @@ import analyzer.utility.IClassModelFilter;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class SyntheticFilterClassModel extends IClassModelFilter {
-
     SyntheticFilterClassModel(IClassModel classModel) {
         super(classModel);
     }
 
     @Override
     public Collection<? extends IMethodModel> getMethods() {
-        Collection<IMethodModel> methods = new ArrayList<>();
-        super.getMethods().forEach((method) -> {
-            if (!method.isSynthetic()) {
-                methods.add(method);
-            }
-        });
+        Collection<IMethodModel> methods = new LinkedList<>();
+        super.getMethods().stream()
+                .filter((method) -> !method.isSynthetic())
+                .forEach(methods::add);
+
         return methods;
     }
 
     @Override
     public Collection<? extends IFieldModel> getFields() {
-        Collection<IFieldModel> fields = new ArrayList<>();
-        super.getFields().forEach((field) -> {
-            if (!field.isSynthetic()) {
-                fields.add(field);
-            }
-        });
+        Collection<IFieldModel> fields = new LinkedList<>();
+        super.getFields().stream()
+                .filter((field) -> !field.isSynthetic())
+                .forEach(fields::add);
+
         return fields;
     }
 

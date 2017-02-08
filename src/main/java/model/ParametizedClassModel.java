@@ -14,8 +14,9 @@ class ParametizedClassModel extends TypeModel {
     private List<TypeModel> superTypes;
 
     ParametizedClassModel(TypeModel outterClassType, ClassModel classModel, List<TypeModel> genericList) {
-        if (classModel == null)
+        if (classModel == null) {
             throw new RuntimeException("ClassModel cannot be null");
+        }
         this.outterClassType = outterClassType;
         this.classModel = classModel;
         this.genericArgs = genericList;
@@ -48,7 +49,7 @@ class ParametizedClassModel extends TypeModel {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ParametizedClassModel) {
-            ParametizedClassModel o = (ParametizedClassModel) obj;
+            ParametizedClassModel o = ParametizedClassModel.class.cast(obj);
             return classModel == o.classModel && Objects.equals(outterClassType, outterClassType)
                     && genericArgs.equals(o.genericArgs);
         }
@@ -65,9 +66,10 @@ class ParametizedClassModel extends TypeModel {
     public Iterable<TypeModel> getSuperTypes() {
         if (superTypes == null) {
             List<GenericTypeParam> genels = classModel.getGenericList();
-            if (genels.size() != classModel.getGenericList().size())
+            if (genels.size() != classModel.getGenericList().size()) {
                 throw new RuntimeException("The number of generic arguments and parameters do not match"
                         + classModel.getGenericList() + " " + genels);
+            }
             Map<String, TypeModel> paramMap = new HashMap<>();
             if (outterClassType != null) {
                 List<GenericTypeParam> outterGenels = outterClassType.getClassModel().getGenericList();
@@ -91,15 +93,17 @@ class ParametizedClassModel extends TypeModel {
     @Override
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
         List<TypeModel> ls = new ArrayList<>(genericArgs.size());
-        for (TypeModel t : genericArgs)
+        for (TypeModel t : genericArgs) {
             ls.add(t.replaceTypeVar(paramMap));
+        }
         return new ParametizedClassModel(outterClassType, classModel, ls);
     }
 
     @Override
     public TypeModel assignTo(ClassModel clazz) {
-        if (getClassModel() == clazz)
+        if (getClassModel() == clazz) {
             return this;
+        }
         return super.assignTo(clazz);
     }
 
@@ -108,8 +112,9 @@ class ParametizedClassModel extends TypeModel {
         Collection<ClassModel> set = new HashSet<>();
         set.add(classModel);
         for (TypeModel t : genericArgs) {
-            if (checkRecursive(t))
+            if (checkRecursive(t)) {
                 continue;
+            }
             set.addAll(t.getDependentClass());
         }
         return set;
@@ -119,8 +124,9 @@ class ParametizedClassModel extends TypeModel {
         if (t.getGenericArgNumber() > 0) {
             for (int i = 0; i < t.getGenericArgNumber(); i++) {
                 TypeModel x = t.getGenericArg(i);
-                if (x == this)
+                if (x == this) {
                     return true;
+                }
             }
         }
         return false;

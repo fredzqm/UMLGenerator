@@ -6,9 +6,10 @@ package analyzer.utility;
  * Created by lamd on 12/9/2016.
  */
 public interface IFieldModel extends IClassComponent {
-
     /**
-     * @return the type of this field
+     * Returns the ITypeModel of the FieldModel.
+     *
+     * @return the ITypeModel of this field
      */
     ITypeModel getFieldType();
 

@@ -3,7 +3,6 @@ package analyzer.utility;
 import utility.ClassType;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * a filter for IClassModel
@@ -11,7 +10,8 @@ import java.util.List;
  * @author zhang
  */
 public abstract class IClassModelFilter implements IClassModel {
-    private IClassModel classModel;
+    private final IClassModel classModel;
+    private final IClassModel underlyingModel;
 
     /**
      * Constructs a Class Model Filter
@@ -20,68 +20,54 @@ public abstract class IClassModelFilter implements IClassModel {
      */
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
+        this.underlyingModel = classModel.getUnderlyingClassModel();
     }
 
-    protected IClassModel getClassModel() {
-        return classModel;
-    }
-
+    // TODO: Fred.
     public String getName() {
-        return classModel.getName();
+        return this.classModel.getName();
     }
 
     public ClassType getType() {
-        return classModel.getType();
+        return this.classModel.getType();
     }
 
     public boolean isFinal() {
-        return classModel.isFinal();
+        return this.classModel.isFinal();
     }
 
     public boolean isStatic() {
-        return classModel.isStatic();
+        return this.classModel.isStatic();
     }
 
     public boolean isSynthetic() {
-        return classModel.isSynthetic();
+        return this.classModel.isSynthetic();
     }
 
     public IClassModel getSuperClass() {
-        return classModel.getSuperClass();
+        return this.classModel.getSuperClass();
     }
 
     public Collection<? extends IClassModel> getInterfaces() {
-        return classModel.getInterfaces();
+        return this.classModel.getInterfaces();
     }
 
     public Collection<? extends IFieldModel> getFields() {
-        return classModel.getFields();
+        return this.classModel.getFields();
     }
 
     public Collection<? extends IMethodModel> getMethods() {
-        return classModel.getMethods();
-    }
-
-    public List<String> getStereoTypes() {
-        return classModel.getStereoTypes();
-    }
-
-    public String getLabel() {
-        return classModel.getLabel();
-    }
-
-    public String getNodeStyle() {
-        return classModel.getNodeStyle();
+        return this.classModel.getMethods();
     }
 
     @Override
     public IClassModel getUnderlyingClassModel() {
-        return classModel.getUnderlyingClassModel();
+        return underlyingModel;
     }
 
     @Override
     public String toString() {
-        return classModel.toString();
+        return this.classModel.toString();
     }
 
     @Override
