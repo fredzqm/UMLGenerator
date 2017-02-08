@@ -2,6 +2,7 @@ package analyzer.decorator;
 
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.*;
+import model.Signature;
 import utility.MethodType;
 
 import java.util.Collection;
@@ -40,8 +41,11 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
     }
 
     protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
+        Signature methodSignature = method.getSignature();
         for (IMethodModel parentMethod : parentMethods) {
-            if (parentMethod.getSignature().equals(method.getSignature())) {
+            if (parentMethod.getSignature().equals(methodSignature)) {
+                System.out.println("\tparentMethod: " + parentMethod);
+                System.out.println("\tchildMethod: " + methodSignature);
                 return true;
             }
         }
