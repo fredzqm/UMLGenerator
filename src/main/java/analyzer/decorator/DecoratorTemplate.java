@@ -57,6 +57,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -96,11 +97,11 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
 
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
-        systemModel.getClasses().forEach((classModel) -> {
-            if (decoratorClass.equals(classModel.getSuperClass())) {
-                addCommonDecoratorStyle(systemModel, classModel);
-                systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
-            }
-        });
+        systemModel.getClasses().stream()
+                .filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
+                .forEach((classModel) -> {
+                    addCommonDecoratorStyle(systemModel, classModel);
+                    systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
+                });
     }
 }
