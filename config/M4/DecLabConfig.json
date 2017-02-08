@@ -1,0 +1,22 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "DecLab"
+	},
+	"model": {
+		"classes": [
+			"problem.DecryptionInputStream","problem.EncryptionOutputStream","problem.IDecryption","problem.IEncryption","problem.SubstitutionCipher","java.io.FilterInputStream","java.io.InputStream"
+		],
+		"isRecursive": true,
+		"blackList":["java.lang","java.util","org"],
+		"verbose":"false"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer",
+			"analyzer.decorator.BadDecoratorAnalyzer"
+		]
+	}
+}

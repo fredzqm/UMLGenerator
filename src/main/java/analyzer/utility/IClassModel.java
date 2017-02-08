@@ -39,7 +39,7 @@ public interface IClassModel {
 
     /**
      * Returns the super class's model of the Class Model.
-     *
+     * {@Code} Null if the class itself is java.lang.Object
      * @return Class Model of the super class.
      */
     IClassModel getSuperClass();

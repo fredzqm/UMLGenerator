@@ -33,7 +33,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
             if (method.getMethodType() == MethodType.CONSTRUCTOR) {
                 arguments = method.getArguments();
                 for (ITypeModel type : arguments) {
-                    if (type.getClassModel() != null && type.getClassModel().equals(parent)) {
+                    if (parent.equals(type)) {
                         return true;
                     }
                 }
@@ -97,7 +97,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
         systemModel.getClasses().forEach((classModel) -> {
-            if (classModel.getSuperClass().equals(decoratorClass)) {
+            if (decoratorClass.equals(classModel.getSuperClass())) {
                 addCommonDecoratorStyle(systemModel, classModel);
                 systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
             }
