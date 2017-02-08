@@ -14,7 +14,6 @@ public class GoodDecoratorConfiguration implements IAdapterDecoratorConfiguratio
     public static final String CHILD_STEREOTYPE = CONFIG_PATH + "childStereotype";
     public static final String CHILD_PARENT_RELATIONSHIP_LABEL = CONFIG_PATH + "childParentRelationshipLabel";
 
-
     private IConfiguration config;
 
     @Override

@@ -17,7 +17,7 @@ public interface IConfiguration {
      * This method is helpful when we want to create an instance based on the
      * configuration string.
      *
-     * @param className the name of class we want to instantiate
+     * @param className  the name of class we want to instantiate
      * @param returnType the planned return type
      * @return the created object
      */

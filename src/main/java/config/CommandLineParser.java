@@ -54,6 +54,7 @@ public class CommandLineParser implements ConfigurationFactory {
 
     /**
      * TODO: Fred
+     *
      * @param arg
      * @return
      * @throws FileNotFoundException
