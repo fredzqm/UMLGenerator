@@ -5,10 +5,7 @@ import analyzer.utility.*;
 import utility.MethodType;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A Decorator Abstract class that contains basic utility methods used by both Good and Bad Decorator Analyzers.
