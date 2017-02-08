@@ -71,9 +71,7 @@ class MethodModel implements IMethodModel {
 
     Map<String, GenericTypeParam> getParamsMap() {
         Map<String, GenericTypeParam> paramMap = belongsTo.getParamsMap();
-        for (GenericTypeParam p : getGenericList()) {
-            paramMap.put(p.getName(), p);
-        }
+        getGenericList().forEach((param) -> paramMap.put(param.getName(), param));
         return paramMap;
     }
 
@@ -113,6 +111,7 @@ class MethodModel implements IMethodModel {
         return isSynthetic;
     }
 
+    @Override
     public Signature getSignature() {
         return signature;
     }
@@ -157,7 +156,7 @@ class MethodModel implements IMethodModel {
         Collection<FieldModel> accessedFields = new HashSet<>();
         for (InstructionModel instr : getInstructions()) {
             if (instr instanceof InstructionField) {
-                InstructionField instructionField = (InstructionField) instr;
+                InstructionField instructionField = InstructionField.class.cast(instr);
                 accessedFields.add(instructionField.getAccessComponent());
             }
         }
@@ -169,11 +168,10 @@ class MethodModel implements IMethodModel {
         Collection<MethodModel> calledMethods = new HashSet<>();
         for (InstructionModel instr : getInstructions()) {
             if (instr instanceof InstructionMethod) {
-                InstructionMethod instructionMethod = (InstructionMethod) instr;
+                InstructionMethod instructionMethod = InstructionMethod.class.cast(instr);
                 calledMethods.add(instructionMethod.getAccessComponent());
             }
         }
         return calledMethods;
     }
-
 }

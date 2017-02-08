@@ -1,24 +1,34 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets interfaces.
  */
 public class RelationImplement implements IRelationInfo {
+    public static final String REL_KEY = "implements";
+
     @Override
     public String toString() {
         return "Implements";
     }
 
     @Override
-    public String getEdgeStyle() {
-        return "arrowhead=\"onormal\" style=dashed ";
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowhead", "onormal");
+        styleMap.addStyle("style", "dashed");
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return RelationImplement.REL_KEY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == RelationImplement.class;
+        return obj instanceof RelationImplement;
     }
 
     @Override

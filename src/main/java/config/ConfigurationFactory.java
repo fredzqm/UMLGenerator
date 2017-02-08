@@ -1,7 +1,7 @@
 package config;
 
 /**
- *
+ * TODO Fred
  */
 public interface ConfigurationFactory {
     /**

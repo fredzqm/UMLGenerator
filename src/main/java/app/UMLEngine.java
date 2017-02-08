@@ -1,15 +1,12 @@
 package app;
 
-import analyzer.utility.IAnalyzer;
+import adapter.SystemModel;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import generator.IGenerator;
-import generator.IGraph;
-import model.SystemModel;
+import model.SystemModelFactory;
 import runner.GraphVizRunner;
 import runner.IRunner;
-
-import java.util.List;
 
 /**
  * This is a concrete implementation of algorithm for analyzing a UML. It
@@ -23,8 +20,8 @@ public class UMLEngine extends AbstractUMLEngine {
     }
 
     /**
-     * @param config the configuration object read from command line arguments, or parsed from
-     *               file. See {@link ConfigurationFactor}
+     * @param config the configuration object read from command line arguments, or
+     *               parsed from file. See {@link ConfigurationFactor}
      * @return the UML engine
      */
     static UMLEngine getInstance(IConfiguration config) {
@@ -33,22 +30,18 @@ public class UMLEngine extends AbstractUMLEngine {
 
     @Override
     public ISystemModel createSystemModel() {
-        return SystemModel.getInstance(config);
+        return new SystemModel(SystemModelFactory.getInstance(config));
     }
 
     @Override
-    ISystemModel analyze(ISystemModel systemModel) {
-        List<IAnalyzer> anClassLs = this.config.getAnalyzers();
-        for (IAnalyzer analyzer : anClassLs) {
-            systemModel = analyzer.analyze(systemModel, config);
-        }
-        return systemModel;
+    public void analyze(ISystemModel systemModel) {
+        this.config.getAnalyzers().forEach((analyzer) -> analyzer.analyze(systemModel, this.config));
     }
 
     @Override
-    String generate(IGraph graph) {
-        IGenerator gen = config.getGenerator();
-        return gen.generate(graph, config);
+    String generate(ISystemModel systemModel) {
+        IGenerator generator = config.getGenerator();
+        return generator.generate(systemModel, config);
     }
 
     @Override
@@ -57,8 +50,8 @@ public class UMLEngine extends AbstractUMLEngine {
         try {
             runner.execute(graphVisStr);
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.", e);
+            throw new RuntimeException("[ INFO ]: Ensure that GraphViz bin folder is set in the environment variable.",
+                    e);
         }
     }
 

@@ -1,16 +1,15 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import analyzer.classParser.ClassParserAnalyzer;
 import analyzer.relationParser.RelationParserAnalyzer;
 import analyzer.utility.IAnalyzer;
 import config.Configurable;
 import config.IConfiguration;
 import generator.GraphVizGenerator;
 import generator.IGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An IConfiguration concrete class. It uses Maps to store a variety of
@@ -29,8 +28,7 @@ public class EngineConfiguration implements Configurable, IConfiguration {
     public void setup(IConfiguration config) {
         this.config = config;
         this.config.setIfMissing(EngineConfiguration.GENERATOR_KEY, GraphVizGenerator.class.getName());
-        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, ClassParserAnalyzer.class.getName(),
-                RelationParserAnalyzer.class.getName());
+        this.config.setIfMissing(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName());
     }
 
     /**

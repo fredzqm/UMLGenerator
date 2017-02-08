@@ -1,11 +1,13 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo for bijective has-a relations.
  */
 public class RelationHasABijective implements IRelationInfo {
+    public static final String REL_KEY = "has_a_bijective";
+
     private RelationHasA a, b;
 
     /**
@@ -33,26 +35,29 @@ public class RelationHasABijective implements IRelationInfo {
     }
 
     @Override
-    public String getEdgeStyle() {
-        RelationHasA forward = getForward();
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" dir=both ");
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = getForward().getStyleMap();
+        styleMap.addStyle("dir", "both");
 
-        if (forward.isMany() || forward.getCount() > 1) {
-            edgeBuilder.append("headlabel=\"1..*\" ");
+        RelationHasA backward = getForward();
+        if (backward.isMany()) {
+            styleMap.addStyle("taillabel", String.format("%d..*", backward.getCount()));
+        } else {
+            styleMap.addStyle("taillabel", String.format("%d", backward.getCount()));
         }
 
-        RelationHasA backward = getBackward();
-        if (backward.isMany() || backward.getCount() > 1) {
-            edgeBuilder.append("taillabel=\"1..*\" ");
-        }
+        return styleMap;
+    }
 
-        return edgeBuilder.toString();
+    @Override
+    public String getRelKey() {
+        return RelationHasABijective.REL_KEY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationHasABijective.class) {
-            RelationHasABijective x = (RelationHasABijective) obj;
+        if (obj instanceof RelationHasABijective) {
+            RelationHasABijective x = RelationHasABijective.class.cast(obj);
             return x.a.equals(this.a) && x.b.equals(this.b);
         }
         return false;

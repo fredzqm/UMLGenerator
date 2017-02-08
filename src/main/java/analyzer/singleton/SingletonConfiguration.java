@@ -4,6 +4,8 @@ import config.Configurable;
 import config.IConfiguration;
 
 /**
+ * A Singleton Analyzer Configuration.
+ * <p>
  * Created by lamd on 1/23/2017.
  */
 public class SingletonConfiguration implements Configurable {

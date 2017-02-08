@@ -1,11 +1,13 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets Has-A Relationships.
  */
 public class RelationHasA implements IRelationInfo {
+    public static final String REL_KEY = "has_a";
+
     private final boolean many;
     private final int count;
 
@@ -14,7 +16,7 @@ public class RelationHasA implements IRelationInfo {
      *
      * @param count count value of the relation.
      */
-    RelationHasA(int count) {
+    public RelationHasA(int count) {
         this.many = count <= 0;
         this.count = Math.abs(count);
     }
@@ -39,28 +41,31 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public String toString() {
-        if (isMany()) {
-            return String.format("has many %d..n", this.count);
-        } else {
-            return "has " + getCount();
-        }
+        return isMany() ? String.format("has many %d..n", this.count) : "has " + getCount();
     }
 
     @Override
-    public String getEdgeStyle() {
-        StringBuilder edgeBuilder = new StringBuilder("arrowhead=\"vee\" style=\"\" ");
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = new StyleMap();
+        styleMap.addStyle("arrowhead", "vee");
+        styleMap.addStyle("style", "");
         if (isMany()) {
-            edgeBuilder.append(String.format("headlabel=\"%d..*\" ", getCount()));
+            styleMap.addStyle("headlabel", String.format("%d..*", getCount()));
         } else {
-            edgeBuilder.append(String.format("headlabel=\"%d\" ", getCount()));
+            styleMap.addStyle("headlabel", String.format("%d", getCount()));
         }
-        return edgeBuilder.toString();
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return RelationHasA.REL_KEY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationHasA.class) {
-            RelationHasA x = (RelationHasA) obj;
+        if (obj instanceof RelationHasA) {
+            RelationHasA x = RelationHasA.class.cast(obj);
             return x.count == this.count && x.many == this.many;
         }
         return false;
@@ -68,6 +73,6 @@ public class RelationHasA implements IRelationInfo {
 
     @Override
     public int hashCode() {
-        return count * 31 + (many ? 1 : 15);
+        return count * 31 + (this.many ? 1 : 15);
     }
 }

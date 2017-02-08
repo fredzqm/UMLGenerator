@@ -24,8 +24,9 @@ class GenericTypeParam extends TypeModel {
 
     @Override
     public ClassModel getClassModel() {
-        if (boundSuperTypes.isEmpty())
+        if (boundSuperTypes.isEmpty()) {
             return ASMParser.getObject();
+        }
         return boundSuperTypes.get(0).getClassModel();
     }
 
@@ -36,8 +37,9 @@ class GenericTypeParam extends TypeModel {
 
     @Override
     public Iterable<TypeModel> getSuperTypes() {
-        if (boundSuperTypes.isEmpty())
+        if (boundSuperTypes.isEmpty()) {
             return Collections.singletonList(ASMParser.getObject());
+        }
         return boundSuperTypes;
     }
 
@@ -68,8 +70,9 @@ class GenericTypeParam extends TypeModel {
     public Collection<ClassModel> getDependentClass() {
         Collection<ClassModel> set = new HashSet<>();
         for (TypeModel t : boundSuperTypes) {
-            if (checkRecursive(t))
+            if (checkRecursive(t)) {
                 continue;
+            }
             set.addAll(t.getDependentClass());
         }
         return set;
@@ -79,8 +82,9 @@ class GenericTypeParam extends TypeModel {
         if (t.getGenericArgNumber() > 0) {
             for (int i = 0; i < t.getGenericArgNumber(); i++) {
                 TypeModel x = t.getGenericArg(i);
-                if (x == this)
+                if (x == this) {
                     return true;
+                }
             }
         }
         return false;
@@ -95,10 +99,10 @@ class GenericTypeParam extends TypeModel {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (TypeModel t : boundSuperTypes) {
-            if (checkRecursive(t))
-                sb.append(" : ? extends " + getName());
-            else
-                sb.append(" :" + t.toString());
+            if (checkRecursive(t)) {
+                sb.append(" : ? extends ").append(getName());
+            } else
+                sb.append(" :").append(t.toString());
         }
         return "[" + key + sb.toString() + "]";
     }

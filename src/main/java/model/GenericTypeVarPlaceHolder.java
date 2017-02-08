@@ -30,7 +30,7 @@ class GenericTypeVarPlaceHolder extends TypeModel {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof GenericTypeVarPlaceHolder) {
-            GenericTypeVarPlaceHolder o = (GenericTypeVarPlaceHolder) obj;
+            GenericTypeVarPlaceHolder o = GenericTypeVarPlaceHolder.class.cast(obj);
             return key.equals(o.key);
         }
         return false;
@@ -43,8 +43,9 @@ class GenericTypeVarPlaceHolder extends TypeModel {
 
     @Override
     public TypeModel replaceTypeVar(Map<String, ? extends TypeModel> paramMap) {
-        if (paramMap.containsKey(key))
+        if (paramMap.containsKey(key)) {
             return paramMap.get(key);
+        }
         Logger.logError(getClass().getName() + " GenericTypeVarPlaceHolder " + key + " is not found in the paraMap: "
                 + paramMap);
         return this;

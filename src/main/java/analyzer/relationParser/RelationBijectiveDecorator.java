@@ -1,15 +1,17 @@
 package analyzer.relationParser;
 
-import analyzer.utility.IRelationInfo;
+import analyzer.utility.StyleMap;
 
 /**
  * RelationInfo that interprets bijectvie relations.
  */
 public class RelationBijectiveDecorator extends RelationDecorator {
+    public static final String REL_KEY = "bijective_relation";
+
     /**
      * Constructs a RelationBijectiveDecorator.
      *
-     * @param rel
+     * @param decorated
      */
     RelationBijectiveDecorator(IRelationInfo decorated) {
         super(decorated);
@@ -21,16 +23,25 @@ public class RelationBijectiveDecorator extends RelationDecorator {
     }
 
     @Override
-    public String getEdgeStyle() {
-        return super.getEdgeStyle() + "arrowtail=\"vee\" dir=both ";
+    public StyleMap getStyleMap() {
+        StyleMap styleMap = super.getStyleMap();
+        styleMap.addStyle("arrowtail", "vee");
+        styleMap.addStyle("dir", "both");
+        return styleMap;
+    }
+
+    @Override
+    public String getRelKey() {
+        return RelationBijectiveDecorator.REL_KEY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() == RelationBijectiveDecorator.class) {
-            RelationBijectiveDecorator x = (RelationBijectiveDecorator) obj;
+        if (obj instanceof RelationBijectiveDecorator) {
+            RelationBijectiveDecorator x = RelationBijectiveDecorator.class.cast(obj);
             return x.getDecorated().equals(super.getDecorated());
         }
         return false;
     }
+
 }

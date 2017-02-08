@@ -21,7 +21,7 @@ class ArrayTypeModel extends TypeModel {
      * @param dimension
      */
     ArrayTypeModel(TypeModel arrayType, int dimension) {
-        if (arrayType.getClass() == ArrayTypeModel.class) {
+        if (arrayType instanceof ArrayTypeModel) {
             throw new RuntimeException("Array type model cannot be an array of another array");
         }
         this.dimension = dimension;
@@ -50,7 +50,7 @@ class ArrayTypeModel extends TypeModel {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ArrayTypeModel) {
-            ArrayTypeModel o = (ArrayTypeModel) obj;
+            ArrayTypeModel o = ArrayTypeModel.class.cast(obj);
             return dimension == o.dimension && arrayType.equals(o.arrayType);
         }
         return false;
@@ -75,8 +75,9 @@ class ArrayTypeModel extends TypeModel {
     @Override
     public TypeModel assignTo(ClassModel clazz) {
         TypeModel t = arrayType.assignTo(clazz);
-        if (t != null)
+        if (t != null) {
             return new ArrayTypeModel(t, dimension);
+        }
         return null;
     }
 

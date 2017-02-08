@@ -10,7 +10,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import analyzer.classParser.ClassParserConfiguration;
+import adapter.classParser.ClassParserConfiguration;
 import generator.GeneratorConfiguration;
 import model.ModelConfiguration;
 import runner.RunnerConfiguration;

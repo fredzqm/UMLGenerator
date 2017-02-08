@@ -24,10 +24,9 @@
 	},
 	"engine": {
 		"analyzer_key":[
-			"analyzer.classParser.AnalyzerClassParser",
-			"analyzer.relationParser.AnalyzerRelationParser",
+			"analyzer.syntheticFilter.SyntheticFilterAnalyzer",
+			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.singleton.SingletonAnalyzer"
-		],
-		"synthetic":true
+		]
 	}
 }

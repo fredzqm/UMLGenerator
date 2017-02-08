@@ -1,12 +1,12 @@
 package analyzer.dependencyInversion;
 
-import java.util.List;
-
 import config.Configurable;
 import config.IConfiguration;
 
+import java.util.List;
+
 /**
- * A Configurable for FavorComposition Analyzers.
+ * A Configurable for Dependency Inversion Analyzers.
  * <p>
  * Created by lamd on 1/23/2017.
  */
@@ -20,15 +20,15 @@ public class DependencyInversionConfiguration implements Configurable {
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-        this.config.setIfMissing(WHITE_LIST, "java");
-        this.config.setIfMissing(COLOR, "yellow");
+        this.config.setIfMissing(DependencyInversionConfiguration.WHITE_LIST, "java");
+        this.config.setIfMissing(DependencyInversionConfiguration.COLOR, "yellow");
     }
 
     public List<String> getWhiteList() {
-        return this.config.getList(WHITE_LIST);
+        return this.config.getList(DependencyInversionConfiguration.WHITE_LIST);
     }
 
     public String getColor() {
-        return this.config.getValue(COLOR);
+        return this.config.getValue(DependencyInversionConfiguration.COLOR);
     }
 }

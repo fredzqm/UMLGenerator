@@ -11,12 +11,15 @@ public enum Modifier {
     PUBLIC, DEFAULT, PROTECTED, PRIVATE;
 
     public static Modifier parse(int access) {
-        if ((access & Opcodes.ACC_PUBLIC) != 0)
+        if ((access & Opcodes.ACC_PUBLIC) != 0) {
             return PUBLIC;
-        if ((access & Opcodes.ACC_PRIVATE) != 0)
+        }
+        if ((access & Opcodes.ACC_PRIVATE) != 0) {
             return PRIVATE;
-        if ((access & Opcodes.ACC_PROTECTED) != 0)
+        }
+        if ((access & Opcodes.ACC_PROTECTED) != 0) {
             return PROTECTED;
+        }
         return DEFAULT;
     }
 

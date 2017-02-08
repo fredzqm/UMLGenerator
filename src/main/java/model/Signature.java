@@ -13,7 +13,7 @@ import java.util.Objects;
  *
  * @author zhang
  */
-class Signature {
+public class Signature {
     private final List<TypeModel> args;
     private final String name;
     private int hashCode;
@@ -48,13 +48,14 @@ class Signature {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Signature) {
-            Signature o = (Signature) obj;
+            Signature o = Signature.class.cast(obj);
             if (Objects.equals(name, o.name)) {
                 Iterator<TypeModel> a = args.iterator();
                 Iterator<TypeModel> b = args.iterator();
                 while (a.hasNext() && b.hasNext()) {
-                    if (!Objects.equals(a.next().eraseGenericType(), b.next().eraseGenericType()))
+                    if (!Objects.equals(a.next().eraseGenericType(), b.next().eraseGenericType())) {
                         return false;
+                    }
                 }
                 return !a.hasNext() && !b.hasNext();
             }
@@ -66,8 +67,9 @@ class Signature {
     public int hashCode() {
         if (hashCode == 0) {
             hashCode = name.hashCode() * 31;
-            for (TypeModel t : args)
+            for (TypeModel t : args) {
                 hashCode = hashCode * 31 + t.eraseGenericType().hashCode();
+            }
         }
         return hashCode;
     }

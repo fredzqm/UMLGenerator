@@ -1,9 +1,10 @@
 package analyzer.utility;
 
+import model.Signature;
+import utility.MethodType;
+
 import java.util.Collection;
 import java.util.List;
-
-import utility.MethodType;
 
 /**
  * An Interface of the Method Models.
@@ -11,7 +12,6 @@ import utility.MethodType;
  * Created by lamd on 12/7/2016.
  */
 public interface IMethodModel extends IClassComponent {
-
     /**
      * Returns the Method Type (Abstract, Constructor, Static, Static
      * Initializer, Method).
@@ -49,4 +49,10 @@ public interface IMethodModel extends IClassComponent {
      */
     Collection<? extends IMethodModel> getCalledMethods();
 
+    /**
+     * Returns the Method Signature.
+     *
+     * @return MethodModel's Signature.
+     */
+    Signature getSignature();
 }
