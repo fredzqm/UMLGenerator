@@ -5,6 +5,7 @@ import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 /**
  * The concrete ASM service provider that will recursively parse all related
@@ -107,22 +108,20 @@ class ASMParser {
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
                                       Collection<String> blackList, ClassModel x) {
-        if (x != null) {
-            if (canBeAdded(classesList, blackList, x)) {
-                classesList.add(x);
-                unextended.add(x);
-            }
+        if (x != null && canBeAdded(classesList, blackList, x)) {
+            classesList.add(x);
+            unextended.add(x);
         }
     }
 
     private static void addToBothList(Collection<ClassModel> classesList, Collection<ClassModel> unextended,
                                       Collection<String> blackList, Iterable<? extends ClassModel> ls) {
-        for (ClassModel x : ls) {
-            if (canBeAdded(classesList, blackList, x)) {
-                classesList.add(x);
-                unextended.add(x);
-            }
-        }
+        StreamSupport.stream(ls.spliterator(), false)
+                .filter((clazz) -> canBeAdded(classesList, blackList, clazz))
+                .forEach((clazz) -> {
+                    classesList.add(clazz);
+                    unextended.add(clazz);
+                });
     }
 
     private static boolean canBeAdded(Collection<ClassModel> classesList, Collection<String> blackList, ClassModel x) {
@@ -131,8 +130,9 @@ class ASMParser {
         }
 
         for (String black : blackList) {
-            if (x.getName().startsWith(black))
+            if (x.getName().startsWith(black)) {
                 return false;
+            }
         }
 
         return true;

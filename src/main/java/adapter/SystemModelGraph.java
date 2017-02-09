@@ -31,9 +31,7 @@ public class SystemModelGraph implements IGraph {
      */
     public Iterable<? extends INode> getNodes() {
         IParser<IClassModel> parser = new GraphvizClassParser();
-        IMapper<IClassModel, INode> mapper = (c) -> {
-            return new Node(c.getName(), parser.parse(c, systemModel, classParserConfig), systemModel.getNodeStyle(c));
-        };
+        IMapper<IClassModel, INode> mapper = (c) -> new Node(c.getName(), parser.parse(c, systemModel, classParserConfig), systemModel.getNodeStyle(c));
         return mapper.map(systemModel.getClasses());
     }
 

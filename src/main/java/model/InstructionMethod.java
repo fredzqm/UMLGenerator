@@ -19,7 +19,7 @@ public class InstructionMethod extends InstructionModel {
         this.calledOn = TypeParser.parseClassInternalName(methodCall.owner);
         ClassModel destClass = calledOn.getClassModel();
         if (destClass == null) {
-            method = null;
+            this.method = null;
         } else {
             Signature signature = Signature.parse(methodCall.name, methodCall.desc);
             method = destClass.getMethodBySignature(signature);
@@ -45,6 +45,6 @@ public class InstructionMethod extends InstructionModel {
      * @return the method this instruction calls
      */
     public MethodModel getAccessComponent() {
-        return method;
+        return this.method;
     }
 }

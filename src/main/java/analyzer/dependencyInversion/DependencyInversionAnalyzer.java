@@ -10,17 +10,14 @@ import utility.ClassType;
  * Created by lamd on 1/14/2017.
  */
 public class DependencyInversionAnalyzer implements IAnalyzer {
-
     private DependencyInversionConfiguration config;
 
     @Override
     public void analyze(ISystemModel systemModel, IConfiguration iConfig) {
         this.config = iConfig.createConfiguration(DependencyInversionConfiguration.class);
-
-        for (IClassModel clazz : systemModel.getClasses()) {
-            if (violate(clazz))
-                systemModel.addClassModelStyle(clazz, "color", config.getColor());
-        }
+        systemModel.getClasses().stream()
+                .filter(this::violate)
+                .forEach((clazz) -> systemModel.addClassModelStyle(clazz, "color", this.config.getColor()));
     }
 
     /**
@@ -33,19 +30,25 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
                 return true;
         }
         for (IMethodModel method : clazz.getMethods()) {
-            if (violate(method.getReturnType(), clazz))
+            if (violate(method.getReturnType(), clazz)) {
                 return true;
-            for (ITypeModel t : method.getArguments())
-                if (violate(t, clazz))
+            }
+            for (ITypeModel t : method.getArguments()) {
+                if (violate(t, clazz)) {
                     return true;
+                }
+            }
             for (IInstructionModel inst : method.getInstructions()) {
                 // calls an static method on another class
                 IClassComponent accessed = inst.getAccessComponent();
-                if (accessed != null && accessed.isStatic() && !accessed.getBelongTo().equals(clazz))
+                if (accessed != null && accessed.isStatic() && !accessed.getBelongTo().equals(clazz)) {
                     return true;
-                for (ITypeModel t : inst.getDependentTypes())
-                    if (violate(t, clazz))
+                }
+                for (ITypeModel t : inst.getDependentTypes()) {
+                    if (violate(t, clazz)) {
                         return true;
+                    }
+                }
             }
         }
         return false;
@@ -62,8 +65,9 @@ public class DependencyInversionAnalyzer implements IAnalyzer {
 
     private boolean isInWhiteList(String className) {
         for (String p : config.getWhiteList()) {
-            if (className.startsWith(p))
+            if (className.startsWith(p)) {
                 return true;
+            }
         }
         return false;
     }
