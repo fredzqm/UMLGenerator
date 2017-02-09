@@ -2,8 +2,10 @@ package analyzer.decorator;
 
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
+import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
+import model.Signature;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,6 +56,31 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         potentialParents.add(child);
 
         return potentialParents;
+    }
+
+    /**
+     * Returns if the given method is a decorated method of some parent class.
+     *
+     * @param method        IMethodModel of child class.
+     * @param parentMethods Collection of IMethodModels of parent methods.
+     * @return true if the given method decorates a parentMethods.
+     */
+    protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
+        Signature methodSignature = method.getSignature();
+        return parentMethods.stream()
+                .map(IMethodModel::getSignature)
+                .anyMatch((parentMethodSignature) -> parentMethodSignature.equals(methodSignature));
+    }
+
+    /**
+     * A utility method to apply a common fill color style to a given classModel.
+     *
+     * @param systemModel ISystemModel maintaining class styles.
+     * @param classModel  IClassModel classModel to by styled.
+     */
+    protected void addCommonFillColor(ISystemModel systemModel, IClassModel classModel) {
+        systemModel.addClassModelStyle(classModel, "style", "filled");
+        systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
     }
 
     /**

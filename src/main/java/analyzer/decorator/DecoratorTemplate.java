@@ -5,10 +5,7 @@ import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
-import model.Signature;
 import utility.MethodType;
-
-import java.util.Collection;
 
 /**
  * A Decorator Abstract class that contains basic utility methods used by both
@@ -29,33 +26,21 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
                 .anyMatch(parent::equals);
     }
 
-    protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
-        Signature methodSignature = method.getSignature();
-        return parentMethods.stream()
-                .map(IMethodModel::getSignature)
-                .anyMatch((parentMethodSignature) -> parentMethodSignature.equals(methodSignature));
-    }
-
     protected boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
         return method.getAccessedFields().stream()
                 .map(IFieldModel::getFieldType)
                 .anyMatch((type) -> type.equals(parent));
     }
 
-    private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
-        systemModel.addClassModelStyle(classModel, "style", "filled");
-        systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
-    }
-
     @Override
     protected void styleParent(ISystemModel systemModel, IClassModel parent) {
-        addCommonDecoratorStyle(systemModel, parent);
+        addCommonFillColor(systemModel, parent);
         systemModel.addClassModelSteretypes(parent, this.config.getParentStereotype());
     }
 
     @Override
     protected void styleChild(ISystemModel systemModel, IClassModel child) {
-        addCommonDecoratorStyle(systemModel, child);
+        addCommonFillColor(systemModel, child);
         systemModel.addClassModelSteretypes(child, this.config.getChildStereotype());
     }
 
@@ -70,7 +55,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         systemModel.getClasses().stream()
                 .filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
                 .forEach((classModel) -> {
-                    addCommonDecoratorStyle(systemModel, classModel);
+                    addCommonFillColor(systemModel, classModel);
                     systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
                 });
     }
