@@ -89,7 +89,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         systemModel.getClasses().stream().filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
                 .forEach((classModel) -> {
                     addCommonDecoratorStyle(systemModel, classModel);
-                    systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
+                    systemModel.addClassModelSteretypes(classModel, this.config.getRelatedClassStereotype());
                 });
     }
 }

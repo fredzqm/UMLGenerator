@@ -35,4 +35,11 @@ public interface IAdapterDecoratorConfiguration extends Configurable {
      * @return String of Relation Label.
      */
     String getChildParentRelationshipLabel();
+
+    /**
+     * Returns the Related Classes Stereotype label that meets the pattern analyzer class
+     *
+     * @return String of the Related Classes stereotype label
+     */
+    String getRelatedClassStereotype();
 }

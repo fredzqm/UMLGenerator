@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import analyzer.decorator.AdapterDecoratorTemplate;
 import analyzer.decorator.IAdapterDecoratorConfiguration;
@@ -24,7 +23,6 @@ import utility.MethodType;
  * Created by fineral on 2/9/2017.
  */
 public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
-	
 	private Set<IFieldModel> active = new HashSet<>(); 
     
 	/**
@@ -61,7 +59,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
 		IClassModel adaptee = active.iterator().next().getFieldType().getClassModel();
 		addCommonDecoratorStyle(systemModel, adaptee);
-        systemModel.addClassModelSteretypes(adaptee, ((AdapterDetectorConfiguration) this.config).getAdapteeStereotype());
+        systemModel.addClassModelSteretypes(adaptee, this.config.getRelatedClassStereotype());
     }
 
 	@Override
