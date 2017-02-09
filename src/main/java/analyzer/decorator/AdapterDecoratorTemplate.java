@@ -1,5 +1,6 @@
 package analyzer.decorator;
 
+import analyzer.relationParser.RelationHasA;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IMethodModel;
@@ -89,7 +90,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param systemModel ISystemModel that stores the styling information per class.
      * @param parent      IClassModel of the parent class in the Child-to-Parent Relationship.
      */
-    protected abstract void styleParent(ISystemModel systemModel, IClassModel parent);
+    protected void styleParent(ISystemModel systemModel, IClassModel parent) {
+        addCommonFillColor(systemModel, parent);
+        systemModel.addClassModelSteretypes(parent, this.config.getParentStereotype());
+    }
 
     /**
      * Define how to style the child of the Child-to-Parent Relationship.
@@ -97,7 +101,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param systemModel ISystemModel that stores the styling information per class.
      * @param child       IClassModel of the child class in the Child-to-Parent Relationship.
      */
-    protected abstract void styleChild(ISystemModel systemModel, IClassModel child);
+    protected void styleChild(ISystemModel systemModel, IClassModel child) {
+        addCommonFillColor(systemModel, child);
+        systemModel.addClassModelSteretypes(child, this.config.getChildStereotype());
+    }
 
     /**
      * Define how to style the Child-to-Parent Relationship.
@@ -106,7 +113,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param child       IClassModel of a child of a Superclass relation.
      * @param parent      IClassModel of a parent of a Superclass relation.
      */
-    protected abstract void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent);
+    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
+        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
+                this.config.getChildParentRelationshipLabel());
+    }
 
     /**
      * Updates Classes related the the class clazz if necessary. This is a hook method.

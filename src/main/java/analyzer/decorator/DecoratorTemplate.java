@@ -1,6 +1,5 @@
 package analyzer.decorator;
 
-import analyzer.relationParser.RelationHasA;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
@@ -30,24 +29,6 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         return method.getAccessedFields().stream()
                 .map(IFieldModel::getFieldType)
                 .anyMatch((type) -> type.equals(parent));
-    }
-
-    @Override
-    protected void styleParent(ISystemModel systemModel, IClassModel parent) {
-        addCommonFillColor(systemModel, parent);
-        systemModel.addClassModelSteretypes(parent, this.config.getParentStereotype());
-    }
-
-    @Override
-    protected void styleChild(ISystemModel systemModel, IClassModel child) {
-        addCommonFillColor(systemModel, child);
-        systemModel.addClassModelSteretypes(child, this.config.getChildStereotype());
-    }
-
-    @Override
-    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
-                this.config.getChildParentRelationshipLabel());
     }
 
     @Override
