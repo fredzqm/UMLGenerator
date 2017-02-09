@@ -37,10 +37,10 @@ public class LocalTester {
         config.set(RunnerConfiguration.EXECUTABLE_PATH, "dot");
         config.set(RunnerConfiguration.OUTPUT_FORMAT, "svg");
         config.add(EngineConfiguration.ANALYZER_KEY, RelationParserAnalyzer.class.getName(),GoodDecoratorAnalyzer.class.getName() , BadDecoratorAnalyzer.class.getName());
-//        config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), GoodDecorator.class.getName(), GoodConcreteDecorator.class.getName(),
-//                BadDecorator.class.getName(), BadConcreteDecorator.class.getName());
-//
-//        config.add(ModelConfiguration.CLASSES_KEY, Decorator.class.getName(), SwitchProcessor.class.getName(), TextProcessor.class.getName(), Transformer.class.getName());
+        config.add(ModelConfiguration.CLASSES_KEY, Component.class.getName(), GoodDecorator.class.getName(), GoodConcreteDecorator.class.getName(),
+                BadDecorator.class.getName(), BadConcreteDecorator.class.getName());
+
+        config.add(ModelConfiguration.CLASSES_KEY, Decorator.class.getName(), SwitchProcessor.class.getName(), TextProcessor.class.getName(), Transformer.class.getName());
         config.add(ModelConfiguration.CLASSES_KEY, FilterInputStream.class.getName(), FilterOutputStream.class.getName(), InputStream.class.getName(), OutputStream.class.getName());
 
         UMLEngine engine = UMLEngine.getInstance(config);

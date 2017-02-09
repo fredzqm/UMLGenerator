@@ -1,14 +1,14 @@
 package analyzer.decorator;
 
-import analyzer.utility.IClassModel;
-import analyzer.utility.IMethodModel;
-import config.IConfiguration;
-import utility.MethodType;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import analyzer.utility.IClassModel;
+import analyzer.utility.IMethodModel;
+import config.IConfiguration;
+import utility.MethodType;
 
 /**
  * A Good Decorator Pattern Analyzer. It will highlight in green all suspected decorator classes in green (default).
@@ -22,9 +22,9 @@ public class GoodDecoratorAnalyzer extends DecoratorTemplate {
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
         child.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method))
+                .filter((method) -> method.getMethodType() == MethodType.METHOD
+                        && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method))
                 .forEach(decoratedMethods::add);
-
         return decoratedMethods.size() == parentMethods.size();
     }
 
