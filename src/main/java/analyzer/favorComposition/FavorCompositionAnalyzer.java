@@ -7,9 +7,6 @@ import analyzer.utility.ISystemModel;
 import config.IConfiguration;
 import utility.ClassType;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * Favor Composition Pattern Analyzer. It will flag classes that breaks the principle Favor Composition over Inheritance.
  * <p>

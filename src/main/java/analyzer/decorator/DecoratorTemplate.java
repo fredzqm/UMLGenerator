@@ -2,16 +2,15 @@ package analyzer.decorator;
 
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.*;
+import model.Signature;
 import utility.MethodType;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * A Decorator Abstract class that contains basic utility methods used by both Good and Bad Decorator Analyzers.
+ * A Decorator Abstract class that contains basic utility methods used by both
+ * Good and Bad Decorator Analyzers.
  * <p>
  * Created by lamd on 2/7/2017.
  */
@@ -42,34 +41,24 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         return false;
     }
 
-    private boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
+    protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
+        Signature methodSignature = method.getSignature();
         for (IMethodModel parentMethod : parentMethods) {
-            if (parentMethod.getSignature().equals(method.getSignature())) {
+            Signature signature = parentMethod.getSignature();
+            if (signature.equals(methodSignature)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
+    protected boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
         for (IFieldModel field : method.getAccessedFields()) {
             if (field.getFieldType().equals(parent)) {
                 return true;
             }
         }
         return false;
-    }
-
-    protected boolean hasParentMethodMapped(IClassModel child, IClassModel parent) {
-        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
-
-        Set<IMethodModel> decoratedMethods = new HashSet<>();
-        child.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods) && isParentFieldCalled(parent, method))
-                .forEach(decoratedMethods::add);
-
-        return decoratedMethods.size() == parentMethods.size();
     }
 
     private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
@@ -91,16 +80,16 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
 
     @Override
     protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel", this.config.getChildParentRelationshipLabel());
+        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
+                this.config.getChildParentRelationshipLabel());
     }
 
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
-        systemModel.getClasses().forEach((classModel) -> {
-            if (decoratorClass.equals(classModel.getSuperClass())) {
-                addCommonDecoratorStyle(systemModel, classModel);
-                systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
-            }
-        });
+        systemModel.getClasses().stream().filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
+                .forEach((classModel) -> {
+                    addCommonDecoratorStyle(systemModel, classModel);
+                    systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
+                });
     }
 }

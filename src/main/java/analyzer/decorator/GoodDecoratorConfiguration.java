@@ -14,16 +14,15 @@ public class GoodDecoratorConfiguration implements IAdapterDecoratorConfiguratio
     public static final String CHILD_STEREOTYPE = CONFIG_PATH + "childStereotype";
     public static final String CHILD_PARENT_RELATIONSHIP_LABEL = CONFIG_PATH + "childParentRelationshipLabel";
 
-
     private IConfiguration config;
 
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-    }
-
-    public void setIfMissing(String key, String value) {
-        this.config.setIfMissing(key, value);
+        this.config.setIfMissing(GoodDecoratorConfiguration.FILL_COLOR, "green");
+        this.config.setIfMissing(GoodDecoratorConfiguration.PARENT_STEREOTYPE, "component");
+        this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
+        this.config.setIfMissing(GoodDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
     }
 
     @Override

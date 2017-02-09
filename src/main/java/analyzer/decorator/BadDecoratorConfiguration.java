@@ -19,10 +19,10 @@ public class BadDecoratorConfiguration implements IAdapterDecoratorConfiguration
     @Override
     public void setup(IConfiguration config) {
         this.config = config;
-    }
-
-    public void setIfMissing(String key, String value) {
-        this.config.setIfMissing(key, value);
+        this.config.setIfMissing(BadDecoratorConfiguration.FILL_COLOR, "yellow");
+        this.config.setIfMissing(BadDecoratorConfiguration.PARENT_STEREOTYPE, "component");
+        this.config.setIfMissing(BadDecoratorConfiguration.CHILD_STEREOTYPE, "decorator");
+        this.config.setIfMissing(BadDecoratorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "decorates");
     }
 
     @Override

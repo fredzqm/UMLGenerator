@@ -6,16 +6,20 @@
 	},
 	"model": {
 		"classes": [
-			"demos.Decorator","demos.SwitchProcessor","demos.TextProcessor","demos.Transformer"
+			"demos.Decorator",
+			"demos.SwitchProcessor",
+			"demos.TextProcessor",
+			"demos.Transformer"
 		],
 		"isRecursive": false,
-		"blackList":[],
-		"verbose":"false"
+		"blackList": [],
+		"verbose": "false"
 	},
 	"engine": {
-		"analyzer_key":[
+		"analyzer_key": [
 			"analyzer.relationParser.RelationParserAnalyzer",
-			"analyzer.decorator.BadDecoratorAnalyzer"
+			"analyzer.decorator.BadDecoratorAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer"
 		]
 	}
 }
