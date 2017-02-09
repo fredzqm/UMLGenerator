@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 public class BadDecoratorAnalyzer extends DecoratorTemplate {
     private boolean missingParentMethodDecoration(IClassModel child, IClassModel parent) {
         Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
+                .filter((method) -> method.getMethodType() == MethodType.METHOD)
+                .collect(Collectors.toList());
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
 
