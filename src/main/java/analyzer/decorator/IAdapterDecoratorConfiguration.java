@@ -16,21 +16,21 @@ public interface IAdapterDecoratorConfiguration extends Configurable {
     String getFillColor();
 
     /**
-     * Returns the Parent Sterotype label that meets the pattern analyzer class.
+     * Returns the Parent Stereotype label that meets the pattern analyzer class.
      *
-     * @return String of parent sterotype label.
+     * @return String of parent stereotype label.
      */
     String getParentStereotype();
 
     /**
-     * Returns the Child Sterotype label that meets the pattern analyzer class.
+     * Returns the Child Stereotype label that meets the pattern analyzer class.
      *
      * @return String of the child stereotype label.
      */
     String getChildStereotype();
 
     /**
-     * Returns the ChildParent Relation lable.
+     * Returns the ChildParent Relation label.
      *
      * @return String of Relation Label.
      */
