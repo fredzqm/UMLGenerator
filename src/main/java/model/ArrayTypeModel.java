@@ -36,7 +36,7 @@ class ArrayTypeModel extends TypeModel {
     @Override
     public String getName() {
         StringBuilder sb = new StringBuilder(arrayType.getName());
-        for (int i = 0; i < dimension; i++) {
+        for (int i = 0; i < this.dimension; i++) {
             sb.append("[]");
         }
         return sb.toString();
@@ -75,10 +75,7 @@ class ArrayTypeModel extends TypeModel {
     @Override
     public TypeModel assignTo(ClassModel clazz) {
         TypeModel t = arrayType.assignTo(clazz);
-        if (t != null) {
-            return new ArrayTypeModel(t, dimension);
-        }
-        return null;
+        return (t != null) ? new ArrayTypeModel(t, this.dimension) : null;
     }
 
     @Override

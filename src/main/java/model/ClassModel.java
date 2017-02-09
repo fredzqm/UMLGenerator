@@ -157,9 +157,7 @@ class ClassModel extends TypeModel implements IClassModel {
         List<GenericTypeParam> genList = getGenericList();
         Map<String, GenericTypeParam> paramMap = outterClass == null ? new HashMap<>(genList.size())
                 : outterClass.getParamsMap();
-        for (GenericTypeParam p : genList) {
-            paramMap.put(p.getName(), p);
-        }
+        genList.forEach((param) -> paramMap.put(param.getName(), param));
         return paramMap;
     }
 
@@ -172,7 +170,7 @@ class ClassModel extends TypeModel implements IClassModel {
 
     public Collection<ClassModel> getInterfaces() {
         if (interfaces == null) {
-            interfaces = new ArrayList<>();
+            interfaces = new LinkedList<>();
             for (String s : (List<String>) asmClassNode.interfaces) {
                 ClassModel m = ASMParser.getClassByName(s);
                 if (m != null) {
@@ -265,10 +263,9 @@ class ClassModel extends TypeModel implements IClassModel {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof IClassModel) {
-            IClassModel c = (IClassModel) obj;
+            IClassModel c = IClassModel.class.cast(obj);
             return this == c.getUnderlyingClassModel();
         }
         return false;
     }
-
 }
