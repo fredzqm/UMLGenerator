@@ -88,7 +88,8 @@ public class MethodModelTest {
         ClassModel dummy = ASMParser.getClassByName(dummyClass);
         assertEquals(dummyClass, dummy.getName());
 
-        MethodModel privateMethodModel = dummy.getMethodBySignature(new Signature(Collections.emptyList(), "privateMethod"));
+        MethodModel privateMethodModel = dummy
+                .getMethodBySignature(new Signature(Collections.emptyList(), "privateMethod"));
 
         Set<String> expected = new HashSet<>(Arrays.asList("proctedField", "defaultField", "publicField"));
         Collection<String> actual = new HashSet<>();
@@ -109,7 +110,8 @@ public class MethodModelTest {
         String dummyClass = GenericDummyClass.class.getName();
         ClassModel genericdummy = ASMParser.getClassByName(dummyClass);
 
-        MethodModel iteratorMethod = genericdummy.getMethodBySignature(new Signature(Collections.emptyList(), "iterator"));
+        MethodModel iteratorMethod = genericdummy
+                .getMethodBySignature(new Signature(Collections.emptyList(), "iterator"));
 
         assertEquals("iterator", iteratorMethod.getName());
         assertEquals(genericdummy, iteratorMethod.getBelongTo());
@@ -154,5 +156,22 @@ public class MethodModelTest {
         assertEquals("doPrivileged", method.getName());
         assertEquals(clazz, method.getBelongTo());
         assertEquals(method.getGenericList().get(0), method.getReturnType());
+    }
+
+    @Test
+    public void testSignatureEquals() {
+        ClassModel outputStream = ASMParser.getClassByName("java.io.OutputStream");
+        ClassModel filterOutputStream = ASMParser.getClassByName("java.io.FilterOutputStream");
+
+        Signature a = new Signature(Arrays.asList(new ArrayTypeModel(PrimitiveType.BYTE, 1)), "write");
+        Signature b = new Signature(
+                Arrays.asList(new ArrayTypeModel(PrimitiveType.BYTE, 1), PrimitiveType.INT, PrimitiveType.INT),
+                "write");
+
+        MethodModel am = outputStream.getMethodBySignature(a);
+        MethodModel bm = outputStream.getMethodBySignature(b);
+        
+        assertNotNull(am);
+        assertNotNull(bm);
     }
 }

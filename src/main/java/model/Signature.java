@@ -51,7 +51,7 @@ public class Signature {
             Signature o = Signature.class.cast(obj);
             if (Objects.equals(name, o.name)) {
                 Iterator<TypeModel> a = args.iterator();
-                Iterator<TypeModel> b = args.iterator();
+                Iterator<TypeModel> b = o.args.iterator();
                 while (a.hasNext() && b.hasNext()) {
                     if (!Objects.equals(a.next().eraseGenericType(), b.next().eraseGenericType())) {
                         return false;

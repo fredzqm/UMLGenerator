@@ -21,19 +21,11 @@ public class BadDecoratorAnalyzer extends DecoratorTemplate {
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
         Set<IMethodModel> decoratedMethods = new HashSet<>();
-        System.out.println(child.getName());
-        System.out.println(child.getMethods());
-        System.out.println(parent.getName());
-        System.out.println(parentMethods);
+
         child.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods))
-                .forEach((method) -> {
-                    decoratedMethods.add(method);
-                    System.out.println(method);
-                });
+                .forEach(decoratedMethods::add);
 
-        System.out.println("decoration size: " + decoratedMethods.size());
-        System.out.println("parent size: " + parentMethods.size());
         return decoratedMethods.size() != parentMethods.size();
     }
 
