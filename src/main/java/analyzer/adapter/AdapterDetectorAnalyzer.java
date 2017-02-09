@@ -69,7 +69,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 
 	@Override
 	protected boolean detectPattern(IClassModel adapter, IClassModel target) {
-		return getConstructed(adapter, target) && getMethodFields(adapter, target) && singleField();
+		return getConstructed(adapter, target) && getMethodFields(adapter, target) && hasSingleField();
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 	 * @return 	true - if there is a single field
 	 * 			false - if otherwise
 	 */
-	private boolean singleField() {
+	private boolean hasSingleField() {
 		return active.size() == 1;
 	}
 	
@@ -143,10 +143,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
                 }
             }
         }
-        if(active.isEmpty()){
-        	return false;
-        }
-        return true;
+		return !active.isEmpty();
 	}
 	 /**
 	  * Determines if the given method has the same signature as a method in targetMethods
