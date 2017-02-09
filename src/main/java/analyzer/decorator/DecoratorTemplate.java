@@ -1,12 +1,14 @@
 package analyzer.decorator;
 
 import analyzer.relationParser.RelationHasA;
-import analyzer.utility.*;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
+import analyzer.utility.IMethodModel;
+import analyzer.utility.ISystemModel;
 import model.Signature;
 import utility.MethodType;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A Decorator Abstract class that contains basic utility methods used by both
@@ -16,49 +18,28 @@ import java.util.List;
  */
 public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
     protected boolean hasParentAsField(IClassModel child, IClassModel parent) {
-        Collection<? extends IFieldModel> fields = child.getFields();
-        for (IFieldModel field : fields) {
-            if (field.getFieldType().equals(parent)) {
-                return true;
-            }
-        }
-        return false;
+        return child.getFields().stream()
+                .anyMatch((field) -> field.getFieldType().equals(parent));
     }
 
     protected boolean hasParentAsConstructorArgument(IClassModel child, IClassModel parent) {
-        List<? extends ITypeModel> arguments;
-        Collection<? extends IMethodModel> methods = child.getMethods();
-        for (IMethodModel method : methods) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR) {
-                arguments = method.getArguments();
-                for (ITypeModel type : arguments) {
-                    if (parent.equals(type)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return child.getMethods().stream()
+                .filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
+                .flatMap((method) -> method.getArguments().stream())
+                .anyMatch(parent::equals);
     }
 
     protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
         Signature methodSignature = method.getSignature();
-        for (IMethodModel parentMethod : parentMethods) {
-            Signature signature = parentMethod.getSignature();
-            if (signature.equals(methodSignature)) {
-                return true;
-            }
-        }
-        return false;
+        return parentMethods.stream()
+                .map(IMethodModel::getSignature)
+                .anyMatch((parentMethodSignature) -> parentMethodSignature.equals(methodSignature));
     }
 
     protected boolean isParentFieldCalled(IClassModel parent, IMethodModel method) {
-        for (IFieldModel field : method.getAccessedFields()) {
-            if (field.getFieldType().equals(parent)) {
-                return true;
-            }
-        }
-        return false;
+        return method.getAccessedFields().stream()
+                .map(IFieldModel::getFieldType)
+                .anyMatch((type) -> type.equals(parent));
     }
 
     private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
@@ -86,7 +67,8 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
 
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass) {
-        systemModel.getClasses().stream().filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
+        systemModel.getClasses().stream()
+                .filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
                 .forEach((classModel) -> {
                     addCommonDecoratorStyle(systemModel, classModel);
                     systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
