@@ -56,7 +56,7 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
                 .filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
                 .forEach((classModel) -> {
                     addCommonFillColor(systemModel, classModel);
-                    systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
+                    systemModel.addClassModelSteretypes(classModel, this.config.getRelatedClassStereotype());
                 });
     }
 }

@@ -6,7 +6,7 @@
 	},
 	"model": {
 		"classes": [
-			"java.io.InputStreamReader","java.io.OutputStreamWriter","java.awt.event.MouseAdapter","java.awt.event.MouseListener"
+			"problem.client.App","problem.lib.ArrayListToEnumeration","problem.lib.LinearTransformer","java.util.Iterator","java.util.Enumeration"
 		],
 		"isRecursive": false,
 		"blackList":["java.util","org","java.lang"],
