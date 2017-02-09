@@ -58,6 +58,8 @@ public class SystemModel implements ISystemModel {
 
     @Override
     public void addClassModelStyle(IClassModel clazz, String key, String value) {
+        if (clazz == null)
+            throw new RuntimeException("ClassModel cannot be null");
         if (!this.nodeStyle.containsKey(clazz)) {
             this.nodeStyle.put(clazz, new StyleMap());
         }
@@ -74,6 +76,8 @@ public class SystemModel implements ISystemModel {
 
     @Override
     public void addClassModelSteretypes(IClassModel clazz, String stereotype) {
+        if (clazz == null)
+            throw new RuntimeException("ClassModel cannot be null");
         if (!this.stereotypes.containsKey(clazz)) {
             this.stereotypes.put(clazz, new HashSet<>());
         }
@@ -91,6 +95,10 @@ public class SystemModel implements ISystemModel {
     }
 
     private StyleMap getRelationStyleMap(IClassModel from, IClassModel to, String relKey) {
+        if (from == null)
+            throw new RuntimeException("from ClassModel cannot be null");
+        if (to == null)
+            throw new RuntimeException("to ClassModel cannot be null");
         ClassPair pair = new ClassPair(from, to);
         if (!this.relations.containsKey(pair)) {
             this.relations.put(pair, new HashMap<>());

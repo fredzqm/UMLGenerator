@@ -8,7 +8,7 @@
 		"classes": [
 			"java.io.InputStreamReader","java.io.OutputStreamWriter","java.awt.event.MouseAdapter","java.awt.event.MouseListener"
 		],
-		"isRecursive": false,
+		"isRecursive": true,
 		"blackList":["java.util","org","java.lang"],
 		"verbose":"false"
 	},
