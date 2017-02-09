@@ -43,6 +43,11 @@ public class AdapterDetectorConfiguration implements IAdapterDecoratorConfigurat
         return this.config.getValue(AdapterDetectorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL);
     }
     
+    /**
+     * Returns the Adaptee Stereotype label that meets the adapter analyzer class
+     * 
+     * @return String of the adaptee stereotype label
+     */
     public String getAdapteeStereotype() {
     	return this.config.getValue(AdapterDetectorConfiguration.ADAPTEE_STEREOTYPE);
     }

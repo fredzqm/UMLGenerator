@@ -19,14 +19,20 @@ import model.Signature;
 import utility.MethodType;
 
 /**
- * A Good Decorator Pattern Analyzer. It will highlight in green all suspected decorator classes in green (default).
+ * An Adapter Pattern Analyzer. It will highlight in some color (defaulted to red) all classes part of the Adapter pattern instance.
  * <p>
- * Created by lamd on 2/2/2017.
+ * Created by fineral on 2/9/2017.
  */
 public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 	
 	private Set<IFieldModel> active = new HashSet<>(); 
     
+	/**
+	 * Add the fill color to the class model
+	 * 
+	 * @param systemModel
+	 * @param classModel - class to add fill to
+	 */
 	private void addCommonDecoratorStyle(ISystemModel systemModel, IClassModel classModel) {
         systemModel.addClassModelStyle(classModel, "style", "filled");
         systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
@@ -47,7 +53,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 
 	@Override
 	protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-		systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
+		systemModel.addStyleToRelation(child, active.iterator().next().getFieldType().getClassModel(), RelationHasA.REL_KEY, "xlabel",
                 this.config.getChildParentRelationshipLabel());
 	}
 	
@@ -65,13 +71,29 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 
 	@Override
 	protected boolean detectPattern(IClassModel adapter, IClassModel target) {
-		return getConstructed(adapter, target) && getMethodFields(adapter, target) && singleField(adapter,target);
+		return getConstructed(adapter, target) && getMethodFields(adapter, target) && singleField();
 	}
 	
-	private boolean singleField(IClassModel adapter, IClassModel target) {
+	/**
+	 * Detects if there is a single field after trying to determine if a class is adapting another
+	 * 
+	 * 
+	 * @return 	true - if there is a single field
+	 * 			false - if otherwise
+	 */
+	private boolean singleField() {
 		return active.size() == 1;
 	}
 	
+	/**
+	 * Determine if the adapter contains the correct amount of adapted methods from the target, it also finds all the
+	 * fields from the constructor that have been used in every method
+	 * 
+	 * @param adapter
+	 * @param target
+	 * @return 	true - if the adapter contains all necessary methods from target
+	 * 			false - if otherwise
+	 */
 	private boolean getMethodFields(IClassModel adapter, IClassModel target){
 		Collection<? extends IMethodModel> targetMethods = target.getMethods();
 
@@ -95,6 +117,15 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
         return decoratedMethods.size() == targetMethods.size();
 	}
 	
+	/**
+	 * Determines if adapter is a subclass of target and determines if some constructor in adapter
+	 * contains arguments
+	 * 
+	 * @param adapter
+	 * @param target
+	 * @return 	true - if all criteria are met
+	 * 			false - if otherwise
+	 */
 	private boolean getConstructed(IClassModel adapter, IClassModel target) {
 		if(!adapter.getSuperClass().equals(target) && !adapter.getInterfaces().contains(target)){
 			return false;
@@ -119,17 +150,14 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
         }
         return true;
 	}
-	
-//	private boolean hasAdapteeAsField(IClassModel adapter, IClassModel adaptee){
-//		Collection<? extends IFieldModel> fields = adapter.getFields();
-//        for (IFieldModel field : fields) {
-//            if (field.getFieldType().equals(adaptee)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//	}
-	
+	 /**
+	  * Determines if the given method has the same signature as a method in targetMethods
+	  * 
+	  * @param method
+	  * @param targetMethods
+	  * @return true - if the criteria are met
+	  * 		false - if otherwise
+	  */
 	protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> targetMethods) {
         Signature methodSignature = method.getSignature();
         for (IMethodModel parentMethod : targetMethods) {
@@ -140,13 +168,4 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
         }
         return false;
     }
-	
-//	protected boolean isAdaptedFieldCalled(IClassModel adaptee, IMethodModel method) {
-//        for (IFieldModel field : method.getAccessedFields()) {
-//            if (field.getFieldType().equals(adaptee)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 }
