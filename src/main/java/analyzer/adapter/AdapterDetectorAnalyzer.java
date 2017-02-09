@@ -18,10 +18,10 @@ import java.util.Set;
  */
 public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     private Set<IFieldModel> active = new HashSet<>();
+    private IClassModel adaptee;
 
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
-        IClassModel adaptee = this.active.iterator().next().getFieldType().getClassModel(); // TODO Fred, create a method to simplify this chain.
         addCommonFillColor(systemModel, adaptee);
         systemModel.addClassModelSteretypes(adaptee, this.config.getRelatedClassStereotype());
     }
@@ -35,6 +35,11 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     protected boolean detectPattern(IClassModel adapter, IClassModel target) {
         return getConstructed(adapter, target) && getMethodFields(adapter, target) && hasSingleField();
     }
+    
+    @Override
+    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
+    	super.styleChildParentRelationship(systemModel, child, adaptee);
+    }
 
     /**
      * Detects if there is a single field after trying to determine if a class is adapting another
@@ -43,7 +48,11 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
      * false - if otherwise
      */
     private boolean hasSingleField() {
-        return this.active.size() == 1;
+        if(this.active.size() == 1){
+        	adaptee = this.active.iterator().next().getFieldType().getClassModel();
+        	return true;
+        }
+        return false;
     }
 
     /**
@@ -63,18 +72,23 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
                 .filter((method) -> isDecoratedMethod(method, targetMethods))
                 .forEach(decoratedMethods::add);
 
+        if(decoratedMethods.size() != targetMethods.size()){
+        	return false;
+        }
+        
         for (IMethodModel method : decoratedMethods) {
             Set<IFieldModel> commonFields = new HashSet<>();
             Collection<? extends IFieldModel> fieldsUsed = method.getAccessedFields();
             for (IFieldModel field : fieldsUsed) {
-                if (this.active.contains(field)) {
+            	ITypeModel type = field.getFieldType();
+                if (this.active.contains(field) && type.getDimension() == 0 && type.getClassModel() != null) {
                     commonFields.add(field);
                 }
             }
             this.active = commonFields;
         }
 
-        return decoratedMethods.size() == targetMethods.size();
+        return true;
     }
 
     /**
@@ -105,7 +119,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
                     }
                 }
             }
-        }
-        return !this.active.isEmpty();
+        }return !this.active.isEmpty();
+        
     }
 }
