@@ -9,6 +9,7 @@ public class AdapterDetectorConfiguration implements IAdapterDecoratorConfigurat
     public static final String PARENT_STEREOTYPE = CONFIG_PATH + "parentStereotype";
     public static final String CHILD_PARENT_RELATIONSHIP_LABEL = CONFIG_PATH + "childParentRelationshipLabel";
     public static final String ADAPTEE_STEREOTYPE = CONFIG_PATH + "adapteeStereotype";
+    public static final String CHILD_STEREOTYPE = CONFIG_PATH + "childStereotype";
     
     private IConfiguration config;
   
@@ -19,6 +20,7 @@ public class AdapterDetectorConfiguration implements IAdapterDecoratorConfigurat
         this.config.setIfMissing(AdapterDetectorConfiguration.PARENT_STEREOTYPE, "target");
         this.config.setIfMissing(AdapterDetectorConfiguration.CHILD_PARENT_RELATIONSHIP_LABEL, "<<adapts>>");
         this.config.setIfMissing(AdapterDetectorConfiguration.ADAPTEE_STEREOTYPE, "adaptee");
+        this.config.setIfMissing(AdapterDetectorConfiguration.CHILD_STEREOTYPE,"adapter");
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class AdapterDetectorConfiguration implements IAdapterDecoratorConfigurat
 
     @Override
     public String getChildStereotype() {
-        throw new UnsupportedOperationException();
+    	return this.config.getValue(AdapterDetectorConfiguration.CHILD_STEREOTYPE);
     }
 
     @Override
