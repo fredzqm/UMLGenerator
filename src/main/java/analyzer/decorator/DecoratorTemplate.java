@@ -45,6 +45,8 @@ public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
         Signature methodSignature = method.getSignature();
         for (IMethodModel parentMethod : parentMethods) {
             if (parentMethod.getSignature().equals(methodSignature)) {
+                System.out.println("parentMethod: " + parentMethod);
+                System.out.println("childMethod: " + methodSignature);
                 return true;
             }
         }
