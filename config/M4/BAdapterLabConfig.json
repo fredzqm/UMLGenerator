@@ -6,14 +6,23 @@
 	},
 	"model": {
 		"classes": [
-			"problem.client.App","problem.lib.ArrayListToEnumeration","problem.lib.LinearTransformer","java.util.Iterator","java.util.Enumeration"
+			"problem.client.App",
+			"problem.client.EnumerationAdpter",
+			"problem.lib.ArrayListToEnumeration",
+			"java.util.Iterator",
+			"java.util.Enumeration",
+			"problem.lib.ArrayListToEnumeration"
 		],
 		"isRecursive": false,
-		"blackList":["java.util","org","java.lang"],
-		"verbose":"false"
+		"blackList": [
+			"java.util",
+			"org",
+			"java.lang"
+		],
+		"verbose": "false"
 	},
 	"engine": {
-		"analyzer_key":[
+		"analyzer_key": [
 			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.adapter.AdapterDetectorAnalyzer"
 		]
