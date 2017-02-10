@@ -25,18 +25,23 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         systemModel.getClasses().forEach((clazz) -> {
             Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
             Collection<IClassModel> potentialFields = getPotentialComposition(clazz, systemModel);
-            potentialParents.stream().forEach((parent) -> {
-                potentialFields.stream().forEach((compClazz) -> {
-                    Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
-                    if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
-                        styleParent(systemModel, parent);
-                        styleChild(systemModel, clazz);
-                        styleComposedClass(systemModel, compClazz);
-                        styleChildParentRelationship(systemModel, clazz, parent);
-                        styleComposedClassRelationship(systemModel, clazz, compClazz);
-                        updateRelatedClasses(systemModel, clazz, compClazz, parent);
-                    }
-                });
+            evaluateClass(systemModel, clazz, potentialParents, potentialFields);
+        });
+    }
+
+    private void evaluateClass(ISystemModel systemModel, IClassModel clazz, Collection<IClassModel> potentialParents,
+            Collection<IClassModel> potentialFields) {
+        potentialParents.stream().forEach((parent) -> {
+            potentialFields.stream().forEach((compClazz) -> {
+                Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
+                if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
+                    styleParent(systemModel, parent);
+                    styleChild(systemModel, clazz);
+                    styleComposedClass(systemModel, compClazz);
+                    styleChildParentRelationship(systemModel, clazz, parent);
+                    styleComposedClassRelationship(systemModel, clazz, compClazz);
+                    updateRelatedClasses(systemModel, clazz, compClazz, parent);
+                }
             });
         });
     }
