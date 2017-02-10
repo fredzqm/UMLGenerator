@@ -50,9 +50,8 @@ public interface IMethodModel extends IClassComponent {
     Collection<? extends IMethodModel> getCalledMethods();
 
     /**
-     * Returns the Method Signature.
-     *
-     * @return MethodModel's Signature.
+     * 
+     * @return true if two method model has the same signature
      */
-    Signature getSignature();
+    boolean hasSameSignature(IMethodModel methodModel);
 }

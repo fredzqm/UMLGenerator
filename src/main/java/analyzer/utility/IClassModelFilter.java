@@ -16,7 +16,8 @@ public abstract class IClassModelFilter implements IClassModel {
     /**
      * Constructs a Class Model Filter
      *
-     * @param classModel classModel decorated.
+     * @param classModel
+     *            classModel decorated.
      */
     public IClassModelFilter(IClassModel classModel) {
         this.classModel = classModel;
@@ -58,6 +59,11 @@ public abstract class IClassModelFilter implements IClassModel {
 
     public Collection<? extends IMethodModel> getMethods() {
         return this.classModel.getMethods();
+    }
+
+    @Override
+    public boolean isSubClazzOf(IClassModel superClazz) {
+        return this.classModel.isSubClazzOf(superClazz);
     }
 
     @Override

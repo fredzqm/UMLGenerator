@@ -38,8 +38,8 @@ public interface IClassModel {
     boolean isSynthetic();
 
     /**
-     * Returns the super class's model of the Class Model.
-     * {@Code} Null if the class itself is java.lang.Object
+     * Returns the super class's model of the Class Model. {@Code} Null if the
+     * class itself is java.lang.Object
      *
      * @return Class Model of the super class.
      */
@@ -58,13 +58,20 @@ public interface IClassModel {
      * @return Fields of the Model.
      */
     Collection<? extends IFieldModel> getFields();
+    
+    /**
+     * 
+     * @param superClazz
+     * @return true if it is the sub class of superClazz
+     */
+    boolean isSubClazzOf(IClassModel superClazz);
 
     /**
      * This method is used to ensure that even if a classModel is decorated, it
      * still equals to the original classModel
      *
-     * @return get the reference to the innest {@link ClassModel} that is // FIXME Fred
-     * decorated
+     * @return get the reference to the innest {@link ClassModel} that is //
+     *         FIXME Fred decorated
      */
     IClassModel getUnderlyingClassModel();
 

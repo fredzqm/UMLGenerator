@@ -268,4 +268,13 @@ class ClassModel extends TypeModel implements IClassModel {
         }
         return false;
     }
+
+    @Override
+    public boolean isSubClazzOf(IClassModel superClazz) {
+        if (superClazz instanceof IClassModel) {
+            ClassModel c = ClassModel.class.cast(superClazz);
+            return assignTo(c) != null;
+        }
+        return false;
+    }
 }

@@ -5,6 +5,8 @@ import utility.IMapper;
 import java.util.Collection;
 import java.util.Map;
 
+import analyzer.utility.ITypeModel;
+
 /**
  * A decorate class for array
  *
