@@ -1,10 +1,9 @@
 package analyzer.utility;
 
-import model.Signature;
-import utility.MethodType;
-
 import java.util.Collection;
 import java.util.List;
+
+import utility.MethodType;
 
 /**
  * An Interface of the Method Models.

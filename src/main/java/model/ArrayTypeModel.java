@@ -1,11 +1,9 @@
 package model;
 
-import utility.IMapper;
-
 import java.util.Collection;
 import java.util.Map;
 
-import analyzer.utility.ITypeModel;
+import utility.IMapper;
 
 /**
  * A decorate class for array

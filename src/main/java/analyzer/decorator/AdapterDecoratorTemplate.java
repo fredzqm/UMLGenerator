@@ -21,14 +21,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     @Override
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
         this.config = setupConfig(config);
-        updateModel(systemModel);
+        systemModel.getClasses().forEach((clazz) -> evaluateClass(systemModel, clazz));
     }
 
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
-
-    private void updateModel(ISystemModel systemModel) {
-        systemModel.getClasses().forEach((clazz) -> evaluateClass(systemModel, clazz));
-    }
 
     /**
      * Returns a Collection of ClassModel that are parents of the given
