@@ -101,6 +101,71 @@ public class FavorCompositionConfiguration implements Configurable {
     }
 }
 ```
+### How to add style in an analyzer
+
+You can create an class the implments the following interface:
+```
+public interface IAnalyzer {
+    /**
+     * Returns an Analyzed System Model.
+     *
+     * @param systemModel System Model to be analyzed.
+     * @param config      IConfiguration object that the analyzer can retrieves
+     *                    configurations from
+     */
+    void analyze(ISystemModel systemModel, IConfiguration config);
+}
+```
+In an analyzer, you can decorate the classModel, filter out a uneeded methods. You can also add styles to the UML through method in IystemModel.
+```
+  /**
+     * Set the class set of systemModel
+     *
+     * @param classSet
+     */
+    void setClasses(Set<IClassModel> classSet);
+
+    /**
+     * Add node style to certain class,
+     *
+     * @param clazz
+     *            the class to add style for
+     * @param key
+     *            the key of Graphviz style
+     * @param value
+     *            the value of Graphviz style
+     */
+    void addClassModelStyle(IClassModel clazz, String key, String value);
+
+    /**
+     * Add a stereotypes to class model If stereotype is an empty string, it
+     * would ignore and discard it
+     * 
+     * @param clazz
+     *            to add stereotype to
+     * @param stereotype
+     *            the stereotype String
+     */
+    void addClassModelSteretype(IClassModel clazz, String stereotype);
+
+    /**
+     * Add style to a relation
+     *
+     * @param from
+     *            the edge from here
+     * @param to
+     *            the edge end here
+     * @param relKey
+     *            an key that identifies the type of relation. It should be an
+     *            unique string
+     * @param key
+     *            the key of Graphviz style
+     * @param value
+     *            the value of Graphviz style
+     */
+    void addStyleToRelation(IClassModel from, IClassModel to, String relKey, String key, String value);
+
+```
 ## Project UML:
 Here is a link to our project's overall UML. There are around 100 classes in our project, so it is a pretty huge UML.
 [Project UML svg](/ProjectUML.svg "Project UML")
