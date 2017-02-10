@@ -18,7 +18,7 @@ public class SingletonAnalyzer implements IAnalyzer {
                 .filter(this::checkSingleton)
                 .forEach((clazz) -> {
                     systemModel.addClassModelStyle(clazz, "color", config.getColor());
-                    systemModel.addClassModelSteretypes(clazz, "Singleton");
+                    systemModel.addClassModelSteretype(clazz, "Singleton");
                 });
     }
 

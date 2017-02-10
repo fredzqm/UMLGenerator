@@ -165,7 +165,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      */
     protected void styleComposedClass(ISystemModel systemModel, IClassModel composedClazz) {
         addCommonFillColor(systemModel, composedClazz);
-        systemModel.addClassModelSteretypes(composedClazz, this.config.getComposedStereotype());
+        systemModel.addClassModelSteretype(composedClazz, this.config.getComposedStereotype());
     }
 
     /**
@@ -177,7 +177,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      */
     protected void styleParent(ISystemModel systemModel, IClassModel parent) {
         addCommonFillColor(systemModel, parent);
-        systemModel.addClassModelSteretypes(parent, this.config.getParentStereotype());
+        systemModel.addClassModelSteretype(parent, this.config.getParentStereotype());
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      */
     protected void styleChild(ISystemModel systemModel, IClassModel child) {
         addCommonFillColor(systemModel, child);
-        systemModel.addClassModelSteretypes(child, this.config.getChildStereotype());
+        systemModel.addClassModelSteretype(child, this.config.getChildStereotype());
     }
 
     /**

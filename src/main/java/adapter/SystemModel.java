@@ -78,7 +78,7 @@ public class SystemModel implements ISystemModel {
     }
 
     @Override
-    public void addClassModelSteretypes(IClassModel clazz, String stereotype) {
+    public void addClassModelSteretype(IClassModel clazz, String stereotype) {
         if (clazz == null) {
             throw new RuntimeException("ClassModel cannot be null");
         }
