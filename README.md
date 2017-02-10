@@ -103,7 +103,7 @@ public class FavorCompositionConfiguration implements Configurable {
 ```
 ## Project UML:
 Here is a link to our project's overall UML. There are around 100 classes in our project, so it is a pretty huge UML.
-![Project UML svg](/ProjectUML.svg "Project UML")
+[Project UML svg](/ProjectUML.svg "Project UML")
 
 ## Change Logs:
 
