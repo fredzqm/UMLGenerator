@@ -17,18 +17,21 @@ import utility.MethodType;
  * Created by lamd on 2/2/2017.
  */
 public class BadDecoratorAnalyzer extends DecoratorTemplate {
+
     @Override
-    protected boolean methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
-        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
+    protected Set<IMethodModel> methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
+        Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
-        Set<IMethodModel> decoratedMethods = new HashSet<>();
+        Set<IMethodModel> overridingMethods = new HashSet<>();
 
         child.getMethods().stream().filter(
-                (method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods))
-                .forEach(decoratedMethods::add);
+                (method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, overridedMethods))
+                .forEach(overridingMethods::add);
 
-        return decoratedMethods.size() != parentMethods.size();
+        if (overridingMethods.size() == overridedMethods.size())
+            return null;
+        return overridingMethods;
     }
 
     @Override
@@ -37,7 +40,8 @@ public class BadDecoratorAnalyzer extends DecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent) {
+    protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
+            Set<IMethodModel> overridingMethods) {
         return composedClazz.equals(parent);
     }
 

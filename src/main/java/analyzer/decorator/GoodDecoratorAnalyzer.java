@@ -41,7 +41,8 @@ public class GoodDecoratorAnalyzer extends DecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent) {
+    protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
+            Set<IMethodModel> overridingMethods) {
         return composedClazz.equals(parent) && hasParentMethodMapped(clazz, parent);
     }
 

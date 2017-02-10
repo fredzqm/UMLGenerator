@@ -30,31 +30,33 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
             Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
             Collection<IClassModel> potentialFields = getPotentialComposition(clazz, systemModel);
             potentialParents.stream().forEach((parent) -> {
-                potentialFields.stream()
-                    .filter((compClazz) -> methodsMapped(clazz, compClazz, parent))
-                    .filter((compClazz) -> detectPattern(clazz, compClazz, parent))
-                    .forEach((compClazz) -> {
-                            styleParent(systemModel, parent);
-                            styleChild(systemModel, clazz);
-                            styleFieldClass(systemModel, compClazz);
-                            styleChildParentRelationship(systemModel, clazz, parent);
-                            styleChildFieldClassRelationship(systemModel, clazz, compClazz);
-                            updateRelatedClasses(systemModel, clazz, compClazz, parent);
-                        });
+                potentialFields.stream().forEach((compClazz) -> {
+                    Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
+                    if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
+                        styleParent(systemModel, parent);
+                        styleChild(systemModel, clazz);
+                        styleComposedClass(systemModel, compClazz);
+                        styleChildParentRelationship(systemModel, clazz, parent);
+                        styleComposedClassRelationship(systemModel, clazz, compClazz);
+                        updateRelatedClasses(systemModel, clazz, compClazz, parent);
+                    }
+                });
             });
         });
     }
 
-    protected boolean methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
-        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
+    protected Set<IMethodModel> methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
+        Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
-        Set<IMethodModel> decoratedMethods = new HashSet<>();
+        Set<IMethodModel> overridingMethods = new HashSet<>();
         child.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD
-                        && isDecoratedMethod(method, parentMethods) && isFieldCalled(composedClazz, method))
-                .forEach(decoratedMethods::add);
-        return decoratedMethods.size() == parentMethods.size();
+                        && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClazz, method))
+                .forEach(overridingMethods::add);
+        if (overridingMethods.size() != overridedMethods.size())
+            return null;
+        return overridingMethods;
     }
 
     private boolean isFieldCalled(IClassModel composedClazz, IMethodModel method) {
@@ -62,18 +64,17 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
                 .anyMatch((type) -> type.equals(composedClazz));
     }
 
-    private void styleChildFieldClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel fieldClazz) {
-        // TODO Auto-generated method stub
+    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz) {
 
     }
 
-    private void styleFieldClass(ISystemModel systemModel, IClassModel classModel) {
-        // TODO Auto-generated method stub
+    protected void styleComposedClass(ISystemModel systemModel, IClassModel classModel) {
 
     }
 
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
+        
         Collection<IClassModel> potentialComposed = new LinkedList<>();
         clazz.getFields().forEach((f) -> {
             IClassModel composeClazz = f.getClassModel();
@@ -87,15 +88,24 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
+        Set<? extends IClassModel> classes = systemModel.getClasses();
+        
         Collection<IClassModel> potentialParents = new LinkedList<>();
-
-        potentialParents.add(child.getSuperClass());
-        child.getInterfaces().forEach(potentialParents::add);
-        potentialParents.add(child);
+        addToSet(classes, potentialParents, child.getSuperClass());
+        for (IClassModel intf : child.getInterfaces()) {
+            addToSet(classes, potentialParents, intf);
+        }
 
         return potentialParents;
     }
 
+    private void addToSet(Set<? extends IClassModel> classes, Collection<IClassModel> potentialParents,
+            IClassModel clazz) {
+        if (classes.contains(clazz))
+            potentialParents.add(clazz);
+    }
+
+    
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     /**
@@ -202,7 +212,11 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      *            the field for this pattern
      * @param parent
      *            IClassModel of the depended Relation.
+     * @param overridingMethods
+     *            the methods of parent that gets overrided in clazz. Those
+     *            methods belong to clazz.
      * @return true if the parent and child should be updated for this analyzer.
      */
-    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent);
+    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
+            Set<IMethodModel> overridingMethods);
 }
