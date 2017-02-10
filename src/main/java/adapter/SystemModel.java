@@ -11,13 +11,12 @@ import java.util.*;
  * The system model tracks all necessary information it needs to draw a UML. It
  * contains a classSet with all the information needed, and style information
  * regarding each class and edges
- * 
+ * <p>
  * In the high-level overview, there should be only one SystemModel for one UML.
  * Each analyzer can register style information at SystemModel, or change the
  * style set.
- * 
- * @author zhang
  *
+ * @author zhang
  */
 public class SystemModel implements ISystemModel {
     private Set<IClassModel> classSet;
@@ -28,7 +27,7 @@ public class SystemModel implements ISystemModel {
 
     /**
      * Create an SystemModel based on a class set
-     * 
+     *
      * @param classSet
      */
     public SystemModel(Set<IClassModel> classSet) {
@@ -58,10 +57,12 @@ public class SystemModel implements ISystemModel {
 
     @Override
     public void addClassModelStyle(IClassModel clazz, String key, String value) {
-        if (clazz == null)
+        if (clazz == null) {
             throw new RuntimeException("ClassModel cannot be null");
-        if (!classSet.contains(clazz))
+        }
+        if (!classSet.contains(clazz)) {
             throw new RuntimeException("ClassModel (" + clazz + ") cannot be null");
+        }
         if (!this.nodeStyle.containsKey(clazz)) {
             this.nodeStyle.put(clazz, new StyleMap());
         }
@@ -78,12 +79,14 @@ public class SystemModel implements ISystemModel {
 
     @Override
     public void addClassModelSteretypes(IClassModel clazz, String stereotype) {
-        if (clazz == null)
+        if (clazz == null) {
             throw new RuntimeException("ClassModel cannot be null");
+        }
         if (!this.stereotypes.containsKey(clazz)) {
             this.stereotypes.put(clazz, new HashSet<>());
         }
-        this.stereotypes.get(clazz).add(stereotype);
+        if (stereotype.length() > 1)
+            this.stereotypes.get(clazz).add(stereotype);
     }
 
     @Override
@@ -97,14 +100,18 @@ public class SystemModel implements ISystemModel {
     }
 
     private StyleMap getRelationStyleMap(IClassModel from, IClassModel to, String relKey) {
-        if (from == null)
+        if (from == null) {
             throw new RuntimeException("from ClassModel cannot be null");
-        if (to == null)
+        }
+        if (to == null) {
             throw new RuntimeException("to ClassModel cannot be null");
-        if (!classSet.contains(from))
+        }
+        if (!classSet.contains(from)) {
             throw new RuntimeException("from ClassModel (" + from + ") must be in classSet");
-        if (!classSet.contains(to))
+        }
+        if (!classSet.contains(to)) {
             throw new RuntimeException("to ClassModel (" + to + ") must be in classSet");
+        }
         ClassPair pair = new ClassPair(from, to);
         if (!this.relations.containsKey(pair)) {
             this.relations.put(pair, new HashMap<>());

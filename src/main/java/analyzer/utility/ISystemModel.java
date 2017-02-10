@@ -18,14 +18,14 @@ public interface ISystemModel {
 
     /**
      * set the class set of systemModel
-     * 
+     *
      * @param classSet
      */
     void setClasses(Set<IClassModel> classSet);
 
     /**
      * Add node style to certain class,
-     * 
+     *
      * @param clazz
      * @param key
      * @param value
@@ -34,7 +34,7 @@ public interface ISystemModel {
 
     /**
      * Add a stereotypes to class model
-     * 
+     *
      * @param clazz
      * @param stereotype
      */
@@ -42,7 +42,7 @@ public interface ISystemModel {
 
     /**
      * Add style to a relation
-     * 
+     *
      * @param from
      * @param to
      * @param relKey
@@ -53,7 +53,7 @@ public interface ISystemModel {
 
     /**
      * Add a certain relation with specific styleMap
-     * 
+     *
      * @param from
      * @param to
      * @param relKey
@@ -62,20 +62,17 @@ public interface ISystemModel {
     void addRelation(IClassModel from, IClassModel to, String relKey, StyleMap styleMap);
 
     /**
-     * 
      * @return the relation maps within this SytemModel
      */
     Map<ClassPair, Map<String, StyleMap>> getRelations();
 
     /**
-     * 
      * @param clazz
      * @return the node style of a specific class
      */
     String getNodeStyle(IClassModel clazz);
 
     /**
-     * 
      * @param c
      * @return the stereotypes list of a specific class
      */

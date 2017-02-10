@@ -43,8 +43,8 @@ A key can be mapped to multiple things as long it is space separated. See [confi
 ### Built-Ins
 |      Identifier     |              Key             |         Default        | Description                                                           |
 |:-------------------:|:----------------------------:|:----------------------:|:---------------------------------------------------------------------:|
-|     classParser     |            header            |  GraphVizHeaderParser  | Qualified class name of the header parser                             |
-|                     |             field            |   GraphVizFieldParser  | Qualified class name of the field parser                              |
+| classParser         | header                       | GraphVizHeaderParser   | Qualified class name of the header parser                             |
+|                     | field                        | GraphVizFieldParser    | Qualified class name of the field parser                              |
 |                     | method                       | GraphVizMethodParser   | Qualified class name of the method parser                             |
 |                     | type                         | GraphVizTypeParser     | Qualified class name of the type parser                               |
 |                     | modifierParser               | GraphVizModifierParser | Qualified class name of the modifier parser                           |
@@ -52,10 +52,15 @@ A key can be mapped to multiple things as long it is space separated. See [confi
 |                     | parentStereotype             | component              | Class being decorated added stereotype                                |
 |                     | childStereotype              | decorator              | Class decorator added stereotype                                      |
 |                     | childParentRelationshipLabel | decorates              | Relationship label on the RelationHasA between child and parent.      |
-| badDecorator        | fillColor                    | blue                   | Fill color of the class record that is properly decorated             |
+| goodDecorator       | fillColor                    | blue                   | Fill color of the class record that is properly decorated             |
 |                     | parentStereotype             | component              | Class being decorated added stereotype                                |
 |                     | childStereotype              | decorator              | Class decorator added stereotype                                      |
 |                     | childParentRelationshipLabel | decorates              | Relationship label on the RelationHasA between child and parent.      |
+| adapter             | fillColor                    | red                    | Fill color of the class record that is in an adaptor pattern          |
+|                     | parentStereotype             | target                 | Class being decorated added stereotype                                |
+|                     | childStereotype              | adapter                | Class decorator added stereotype                                      |
+|                     | adapteeStereotype            | adaptee                | Relationship label on the RelationHasA between child and parent.      |
+|                     |childComposedRelationshipLabel| adapts                 | Relationship label on the RelationHasA between child and parent.      |
 | dependencyInversion | whiteList                    | java                   | A list of packages that will be ignored if they trigger a violation   |
 |                     | color                        | yellow                 | Outline color of the class record violating the dependency            |
 | favorComposition    | color                        | orange                 | Outline color of the class record violating the dependency            |
@@ -63,8 +68,7 @@ A key can be mapped to multiple things as long it is space separated. See [confi
 | engine              | generator_key                | GraphVizGenerator      | Qualified class name of the header parser of graph generator          |
 |                     | analyzer_key                 | RelationParserAnalyzer | Qualified class name of the analyzers to run (order-dependent)        |
 | model               | isRecursive                  | false                  | Recursively parse relation if true                                    |
-|                     | classes                
-|                        | List of classes to parse                                              |
+|                     | classes                      |                        | List of classes to parse                                              |
 |                     | blackList                    |                        | List of classes to ignore while parsing.                              |
 |                     | verbose                      | false                  | Print error messages of classes unable to parse                       |
 | graphviz            | nodeSep                      | "1.0"                  | Node Separation factor for GraphViz                                   |

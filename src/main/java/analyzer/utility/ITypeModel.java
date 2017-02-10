@@ -49,7 +49,7 @@ public interface ITypeModel {
      * @return all the classes that this type depends on
      */
     Collection<? extends IClassModel> getDependentClass();
-    
+
     /**
      * @param className the name of the class
      * @return the strictest type of className that this type can be assigned to

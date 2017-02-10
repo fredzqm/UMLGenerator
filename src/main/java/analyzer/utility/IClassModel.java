@@ -58,9 +58,8 @@ public interface IClassModel {
      * @return Fields of the Model.
      */
     Collection<? extends IFieldModel> getFields();
-    
+
     /**
-     * 
      * @param superClazz
      * @return true if it is the sub class of superClazz
      */
@@ -71,7 +70,7 @@ public interface IClassModel {
      * still equals to the original classModel
      *
      * @return get the reference to the innest {@link ClassModel} that is //
-     *         FIXME Fred decorated
+     * FIXME Fred decorated
      */
     IClassModel getUnderlyingClassModel();
 

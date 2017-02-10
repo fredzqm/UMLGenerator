@@ -12,11 +12,12 @@ import analyzer.utility.ISystemModel;
 public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass, IClassModel composedClazz,
-            IClassModel parent) {
-        systemModel.getClasses().stream().filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
+                                        IClassModel parent) {
+        systemModel.getClasses().stream()
+                .filter((classModel) -> decoratorClass.equals(classModel.getSuperClass()))
                 .forEach((classModel) -> {
                     addCommonFillColor(systemModel, classModel);
-                    systemModel.addClassModelSteretypes(classModel, this.config.getRelatedClassStereotype());
+                    systemModel.addClassModelSteretypes(classModel, this.config.getChildStereotype());
                 });
     }
 }

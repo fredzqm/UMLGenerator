@@ -1,17 +1,15 @@
 package analyzer.adapter;
 
+import analyzer.decorator.AdapterDecoratorTemplate;
+import analyzer.decorator.IAdapterDecoratorConfiguration;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IMethodModel;
+import config.IConfiguration;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import analyzer.decorator.AdapterDecoratorTemplate;
-import analyzer.decorator.IAdapterDecoratorConfiguration;
-import analyzer.relationParser.RelationHasA;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import config.IConfiguration;
 
 /**
  * An Adapter Pattern Analyzer. It will highlight in some color (defaulted to
@@ -28,13 +26,8 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 
     @Override
     protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
-            Set<IMethodModel> overridingMethods) {
-        if (clazz.isSubClazzOf(composedClazz))
-            return false;
-        if (usedByAllAdaptedMethods(composedClazz, overridingMethods)) {
-            return true;
-        }
-        return false;
+                                    Set<IMethodModel> overridingMethods) {
+        return !(clazz.isSubClazzOf(composedClazz) || composedClazz.isSubClazzOf(parent)) && usedByAllAdaptedMethods(composedClazz, overridingMethods);
     }
 
     private boolean usedByAllAdaptedMethods(IClassModel type, Set<IMethodModel> adaptedMethods) {
@@ -47,22 +40,4 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
         return methodCalledOnTheField.size() == adaptedMethods.size();
     }
 
-    @Override
-    protected void styleChild(ISystemModel systemModel, IClassModel child) {
-        // TODO Auto-generated method stub
-        super.styleChild(systemModel, child);
-    }
-    
-    @Override
-    protected void styleComposedClass(ISystemModel systemModel, IClassModel composedClass) {
-        addCommonFillColor(systemModel, composedClass);
-        systemModel.addClassModelSteretypes(composedClass, this.config.getRelatedClassStereotype());
-    }
-    
-    @Override
-    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz) {
-        systemModel.addStyleToRelation(clazz, composedClazz, RelationHasA.REL_KEY, "xlabel",
-                this.config.getChildParentRelationshipLabel());
-    }
-    
 }
