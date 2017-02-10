@@ -6,7 +6,6 @@ import config.IConfiguration;
 import utility.MethodType;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,31 +29,36 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     private void evaluateClass(ISystemModel systemModel, IClassModel clazz, Collection<IClassModel> potentialParents,
-            Collection<IClassModel> potentialFields) {
-        potentialParents.stream().forEach((parent) -> {
-            potentialFields.stream().forEach((compClazz) -> {
-                Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
-                if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
-                    styleParent(systemModel, parent);
-                    styleChild(systemModel, clazz);
-                    styleComposedClass(systemModel, compClazz);
-                    styleChildParentRelationship(systemModel, clazz, parent);
-                    styleComposedClassRelationship(systemModel, clazz, compClazz);
-                    updateRelatedClasses(systemModel, clazz, compClazz, parent);
-                }
-            });
-        });
+                               Collection<IClassModel> potentialFields) {
+        potentialParents.forEach((parent) -> potentialFields.forEach((compClazz) -> {
+            Set<IMethodModel> overridingMethods = getMappedMethods(clazz, compClazz, parent);
+            if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
+                styleParent(systemModel, parent);
+                styleChild(systemModel, clazz);
+                styleComposedClass(systemModel, compClazz);
+                styleChildParentRelationship(systemModel, clazz, parent);
+                styleComposedClassRelationship(systemModel, clazz, compClazz);
+                updateRelatedClasses(systemModel, clazz, compClazz, parent);
+            }
+        }));
     }
 
-    protected Set<IMethodModel> methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
+    /**
+     * Returns a Set of IMethodModel that child class has in common with the parent class.
+     *
+     * @param child         IClassModel child in the Child-Parent in a super class relation.
+     * @param composedClass IFieldModel's underlying class of the child.
+     * @param parent        IClassModel parent in the Child-Parent in a super class relation.
+     * @return
+     */
+    protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
         Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
-        Set<IMethodModel> overridingMethods = new HashSet<>();
-        child.getMethods().stream()
+        Set<IMethodModel> overridingMethods = child.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD
-                        && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClazz, method))
-                .forEach(overridingMethods::add);
+                        && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClass, method))
+                .collect(Collectors.toSet());
 
         if (overridingMethods.size() != overridedMethods.size()) {
             return null;
@@ -63,10 +67,18 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     private boolean isFieldCalled(IClassModel composedClazz, IMethodModel method) {
-        return method.getAccessedFields().stream().map(IFieldModel::getFieldType)
+        return method.getAccessedFields().stream()
+                .map(IFieldModel::getFieldType)
                 .anyMatch((type) -> type.equals(composedClazz));
     }
 
+    /**
+     * Style the composed class's Relationship.
+     *
+     * @param systemModel   ISystemModel holding the style information.
+     * @param clazz         IClassModel the composedClass is composed within.
+     * @param composedClazz IClassModel of the composedClass.
+     */
     protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz) {
         // Hook.
     }
@@ -75,22 +87,15 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         // Hook.
     }
 
+    /**
+     * Returns a Collection of IClassModel that are potentially a composed class.
+     *
+     * @param clazz       IClassModel of class for which to get potential composed class.
+     * @param systemModel ISystemModel that holds all classes and style information.
+     * @return
+     */
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-
-//        Collection<IClassModel> potentialComposed = new LinkedList<>();
-//        clazz.getFields().forEach((f) -> {
-//            IClassModel composeClazz = f.getClassModel();
-//            if (composeClazz != null && classes.contains(composeClazz)) {
-//                if (clazz.getMethods().stream()
-//                        .filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
-//                        .flatMap((method) -> method.getArguments().stream()).anyMatch(composeClazz::equals)) {
-//                    potentialComposed.add(composeClazz);
-//                }
-//            }
-//        });
-//
-//        return potentialComposed;
         return clazz.getFields().stream()
                 .map(IFieldModel::getClassModel)
                 .filter((composedClass) -> composedClass != null && classes.contains(composedClass))
@@ -100,6 +105,13 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns a Collection of IClassModel of potential parents.
+     *
+     * @param child       IClassModel child in the child-parent super class relation.
+     * @param systemModel ISystemModel storing the style class information.
+     * @return Collection of potential parents.
+     */
     protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
 
@@ -117,7 +129,12 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         }
     }
 
-
+    /**
+     * Returns a setup IAdapterDecoratorConfiguration.
+     *
+     * @param config IConfiguration passed into analyze method.
+     * @return IAdapterDecoratorConfiguration.
+     */
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     /**
