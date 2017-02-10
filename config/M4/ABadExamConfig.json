@@ -19,6 +19,7 @@
 		"analyzer_key": [
 			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.decorator.BadDecoratorAnalyzer",
+			"analyzer.adapter.AdapterDetectorAnalyzer",
 			"analyzer.decorator.GoodDecoratorAnalyzer"
 		]
 	}
