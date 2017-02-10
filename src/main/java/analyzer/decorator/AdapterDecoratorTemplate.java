@@ -1,8 +1,10 @@
 package analyzer.decorator;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.IAnalyzer;
@@ -10,8 +12,8 @@ import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
-import analyzer.utility.ITypeModel;
 import config.IConfiguration;
+import utility.MethodType;
 
 /**
  * An Abstract Template for Adapter and Decorator pattern detection.
@@ -26,19 +28,38 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         this.config = setupConfig(config);
         systemModel.getClasses().forEach((clazz) -> {
             Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
-            Collection<IFieldModel> potentialFields = getPotentialFields(clazz, systemModel);
+            Collection<IClassModel> potentialFields = getPotentialComposition(clazz, systemModel);
             potentialParents.stream().forEach((parent) -> {
-                potentialFields.stream().filter((field) -> detectPattern(clazz, field, parent)).forEach((field) -> {
-                    IClassModel fieldClazz = field.getClassModel();
-                    styleParent(systemModel, parent);
-                    styleChild(systemModel, clazz);
-                    styleFieldClass(systemModel, fieldClazz);
-                    styleChildParentRelationship(systemModel, clazz, parent);
-                    styleChildFieldClassRelationship(systemModel, clazz, fieldClazz);
-                    updateRelatedClasses(systemModel, clazz, field, parent);
-                });
+                potentialFields.stream()
+                    .filter((compClazz) -> methodsMapped(clazz, compClazz, parent))
+                    .filter((compClazz) -> detectPattern(clazz, compClazz, parent))
+                    .forEach((compClazz) -> {
+                            styleParent(systemModel, parent);
+                            styleChild(systemModel, clazz);
+                            styleFieldClass(systemModel, compClazz);
+                            styleChildParentRelationship(systemModel, clazz, parent);
+                            styleChildFieldClassRelationship(systemModel, clazz, compClazz);
+                            updateRelatedClasses(systemModel, clazz, compClazz, parent);
+                        });
             });
         });
+    }
+
+    protected boolean methodsMapped(IClassModel child, IClassModel composedClazz, IClassModel parent) {
+        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
+                .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
+
+        Set<IMethodModel> decoratedMethods = new HashSet<>();
+        child.getMethods().stream()
+                .filter((method) -> method.getMethodType() == MethodType.METHOD
+                        && isDecoratedMethod(method, parentMethods) && isFieldCalled(composedClazz, method))
+                .forEach(decoratedMethods::add);
+        return decoratedMethods.size() == parentMethods.size();
+    }
+
+    private boolean isFieldCalled(IClassModel composedClazz, IMethodModel method) {
+        return method.getAccessedFields().stream().map(IFieldModel::getFieldType)
+                .anyMatch((type) -> type.equals(composedClazz));
     }
 
     private void styleChildFieldClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel fieldClazz) {
@@ -51,16 +72,18 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
 
     }
 
-    protected Collection<IFieldModel> getPotentialFields(IClassModel clazz, ISystemModel systemModel) {
+    protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        Collection<IFieldModel> potentialFields = new LinkedList<>();
+        Collection<IClassModel> potentialComposed = new LinkedList<>();
         clazz.getFields().forEach((f) -> {
-            ITypeModel t = f.getFieldType();
-            if (t.getDimension() == 0 && t.getClassModel() != null && classes.contains(t.getClassModel())) {
-                potentialFields.add(f);
+            IClassModel composeClazz = f.getClassModel();
+            if (composeClazz != null && classes.contains(composeClazz)) {
+                if (clazz.getMethods().stream().filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
+                        .flatMap((method) -> method.getArguments().stream()).anyMatch(composeClazz::equals))
+                    potentialComposed.add(composeClazz);
             }
         });
-        return potentialFields;
+        return potentialComposed;
     }
 
     protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
@@ -156,9 +179,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      *            updated.
      * @param parent
      *            the parent class in this pattern
-     * @param field
+     * @param composedClazz
+     *            the class composed in clazz
      */
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IFieldModel field,
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz,
             IClassModel parent) {
         // Hook
     }
@@ -174,11 +198,11 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      *
      * @param child
      *            IClassModel of the dependent Relation.
-     * @param field
+     * @param compClazz
      *            the field for this pattern
      * @param parent
      *            IClassModel of the depended Relation.
      * @return true if the parent and child should be updated for this analyzer.
      */
-    protected abstract boolean detectPattern(IClassModel child, IFieldModel field, IClassModel parent);
+    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent);
 }

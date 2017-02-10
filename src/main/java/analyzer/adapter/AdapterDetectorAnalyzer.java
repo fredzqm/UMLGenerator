@@ -30,26 +30,25 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel adapter, IFieldModel field, IClassModel parent) {
+    protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent) {
         // first make sure all methods in the interface are adapted
-        if (adapter.equals(parent))
+        if (clazz.equals(parent))
             return false;
         Collection<? extends IMethodModel> targetMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
         Set<IMethodModel> adaptedMethods = new HashSet<>();
-        adapter.getMethods().stream().filter((method) -> isDecoratedMethod(method, targetMethods))
+        clazz.getMethods().stream().filter((method) -> isDecoratedMethod(method, targetMethods))
                 .forEach(adaptedMethods::add);
         // not all methods are adapted
         if (adaptedMethods.size() != targetMethods.size()) {
             return false;
         }
         // second find the adaptee field
-        for (IFieldModel f : adapter.getFields()) {
+        for (IFieldModel f : clazz.getFields()) {
             ITypeModel type = f.getFieldType();
-            if (type.getDimension() > 0 || type.getClassModel() == null || adapter.isSubClazzOf(type.getClassModel()))
+            if (type.getDimension() > 0 || type.getClassModel() == null || clazz.isSubClazzOf(type.getClassModel()))
                 continue;
-            if (injectedInConstructor(f.getFieldType(), adapter)
-                    && usedByAllAdaptedMethods(f, adaptedMethods)) {
+            if (usedByAllAdaptedMethods(f, adaptedMethods)) {
                 adaptee = f.getFieldType().getClassModel();
                 return true;
             }
@@ -72,19 +71,8 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
         return methodCalledOnTheField.size() == adaptedMethods.size();
     }
 
-    private boolean injectedInConstructor(ITypeModel iTypeModel, IClassModel adapter) {
-        Collection<? extends IMethodModel> methods = adapter.getMethods();
-        for (IMethodModel method : methods) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR) {
-                if (method.getArguments().contains(iTypeModel))
-                    return true;
-            }
-        }
-        return false;
-    }
-
     @Override
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IFieldModel field,
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz,
             IClassModel parent) {
         addCommonFillColor(systemModel, adaptee);
         systemModel.addClassModelSteretypes(adaptee, this.config.getRelatedClassStereotype());
