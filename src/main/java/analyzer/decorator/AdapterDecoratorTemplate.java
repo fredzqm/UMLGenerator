@@ -1,15 +1,20 @@
 package analyzer.decorator;
 
-import analyzer.relationParser.RelationExtendsClass;
-import analyzer.relationParser.RelationHasA;
-import analyzer.utility.*;
-import config.IConfiguration;
-import utility.MethodType;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import analyzer.relationParser.RelationExtendsClass;
+import analyzer.relationParser.RelationHasA;
+import analyzer.utility.IAnalyzer;
+import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
+import analyzer.utility.IMethodModel;
+import analyzer.utility.ISystemModel;
+import analyzer.utility.ITypeModel;
+import config.IConfiguration;
+import utility.MethodType;
 
 /**
  * An Abstract Template for Adapter and Decorator pattern detection.
@@ -114,7 +119,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @return Collection of IClassModel that are potentially a composed class.
      */
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
-        System.out.println(clazz);
         Set<? extends IClassModel> classes = systemModel.getClasses();
         Collection<IClassModel> potentialComposed = new LinkedList<>();
         for (IFieldModel f : clazz.getFields()) {
@@ -140,16 +144,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         }
         return false;
     }
-    // Set<? extends IClassModel> classes = systemModel.getClasses();
-    // return clazz.getFields().stream().map(IFieldModel::getClassModel)
-    // .filter((composedClass) -> composedClass != null &&
-    // classes.contains(composedClass))
-    // .filter((composedClass) -> clazz.getMethods().stream()
-    // .filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
-    // .flatMap((method) ->
-    // method.getArguments().stream()).anyMatch(composedClass::equals))
-    // .collect(Collectors.toSet());
-    // }
 
     /**
      * Returns a Collection of IClassModel of potential parents.

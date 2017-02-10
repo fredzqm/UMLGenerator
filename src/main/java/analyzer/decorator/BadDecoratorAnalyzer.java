@@ -39,6 +39,6 @@ public class BadDecoratorAnalyzer extends DecoratorTemplate {
     @Override
     protected boolean detectPattern(IClassModel clazz, IClassModel composedClass, IClassModel parent,
                                     Set<IMethodModel> overridingMethods) {
-        return composedClass.equals(parent);
+        return composedClass.isSubClazzOf(parent);
     }
 }

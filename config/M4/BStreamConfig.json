@@ -6,14 +6,24 @@
 	},
 	"model": {
 		"classes": [
-			"java.io.InputStreamReader","java.io.OutputStreamWriter","java.awt.event.MouseAdapter","java.awt.event.MouseListener"
+			"java.io.InputStreamReader",
+			"sun.nio.cs.StreamDecoder",
+			"java.io.Reader",
+			"java.io.OutputStreamWriter",
+			"java.awt.event.MouseListener",
+			"java.awt.event.MouseAdapter",
+			"java.awt.event.MouseListener"
 		],
-		"isRecursive": true,
-		"blackList":["java.util","org","java.lang"],
-		"verbose":"false"
+		"isRecursive": false,
+		"blackList": [
+			"java.util",
+			"org",
+			"java.lang"
+		],
+		"verbose": "false"
 	},
 	"engine": {
-		"analyzer_key":[
+		"analyzer_key": [
 			"analyzer.relationParser.RelationParserAnalyzer",
 			"analyzer.adapter.AdapterDetectorAnalyzer"
 		]
