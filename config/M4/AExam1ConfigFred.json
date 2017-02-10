@@ -1,0 +1,31 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "Exam1"
+	},
+	"model": {
+		"classes": [
+			"AllCapsTransformer",
+			"ProcessorUI",
+			"SubstitutionTransformer",
+			"TextProcessingApp",
+			"ToggleTransform",
+			"textProcessor",
+			"Transformer",
+			"TransformerDecorator"
+		],
+		"isRecursive": true,
+		"blackList": [
+			"java"
+		],
+		"verbose": "false"
+	},
+	"engine": {
+		"analyzer_key": [
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.decorator.BadDecoratorAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer"
+		]
+	}
+}
