@@ -32,10 +32,6 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     @Override
     protected boolean detectPattern(IClassModel adapter, IFieldModel field, IClassModel parent) {
         // first make sure all methods in the interface are adapted
-        System.out.println(adapter + " " + parent);
-        if ("dummy.decoratorDummy.GoodDecorator dummy.decoratorDummy.Component".equals(adapter + " " + parent))
-            System.out.println(adapter + " " + parent);
-
         if (adapter.equals(parent))
             return false;
         Collection<? extends IMethodModel> targetMethods = parent.getMethods().stream()

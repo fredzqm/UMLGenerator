@@ -13,9 +13,6 @@ import utility.MethodType;
  * Created by lamd on 2/7/2017.
  */
 public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
-    protected boolean hasParentAsField(IClassModel child, IClassModel parent) {
-        return child.getFields().stream().anyMatch((field) -> field.getFieldType().equals(parent));
-    }
 
     protected boolean hasParentAsConstructorArgument(IClassModel child, IClassModel parent) {
         return child.getMethods().stream().filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)

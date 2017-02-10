@@ -29,7 +29,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
             Collection<IFieldModel> potentialFields = getPotentialFields(clazz, systemModel);
             potentialParents.stream().forEach((parent) -> {
                 potentialFields.stream().filter((field) -> detectPattern(clazz, field, parent)).forEach((field) -> {
-                    IClassModel fieldClazz = field.getFieldType().getClassModel();
+                    IClassModel fieldClazz = field.getClassModel();
                     styleParent(systemModel, parent);
                     styleChild(systemModel, clazz);
                     styleFieldClass(systemModel, fieldClazz);
