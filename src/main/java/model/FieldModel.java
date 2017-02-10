@@ -1,5 +1,6 @@
 package model;
 
+import analyzer.utility.IClassModel;
 import analyzer.utility.IFieldModel;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
@@ -78,7 +79,14 @@ class FieldModel implements IFieldModel {
 
     @Override
     public String toString() {
-        return getFieldType().toString() + getName();
+        return fieldType.toString() + getName();
+    }
+
+    @Override
+    public IClassModel getClassModel() {
+        if (fieldType.getDimension() != 0)
+            return null;
+        return fieldType.getClassModel();
     }
 
 }

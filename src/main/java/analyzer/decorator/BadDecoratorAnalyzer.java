@@ -6,27 +6,29 @@ import config.IConfiguration;
 import utility.MethodType;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A Bad Decorator Analyzer. It will highlight classes that are likely decorators that are incomplete in yellow (default).
+ * A Bad Decorator Analyzer. It will highlight classes that are likely
+ * decorators that are incomplete in yellow (default).
  * <p>
  * Created by lamd on 2/2/2017.
  */
 public class BadDecoratorAnalyzer extends DecoratorTemplate {
-    private boolean missingParentMethodDecoration(IClassModel child, IClassModel parent) {
-        Collection<? extends IMethodModel> parentMethods = parent.getMethods().stream()
+    @Override
+    protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
+        Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
 
-        Set<IMethodModel> decoratedMethods = new HashSet<>();
+        Set<IMethodModel> overridingMethods = child.getMethods().stream()
+                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, overridedMethods))
+                .collect(Collectors.toSet());
 
-        child.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD && isDecoratedMethod(method, parentMethods))
-                .forEach(decoratedMethods::add);
-
-        return decoratedMethods.size() != parentMethods.size();
+        if (overridingMethods.size() == overridedMethods.size()) {
+            return null;
+        }
+        return overridingMethods;
     }
 
     @Override
@@ -35,8 +37,8 @@ public class BadDecoratorAnalyzer extends DecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel child, IClassModel parent) {
-        return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
-                && missingParentMethodDecoration(child, parent);
+    protected boolean detectPattern(IClassModel clazz, IClassModel composedClass, IClassModel parent,
+                                    Set<IMethodModel> overridingMethods) {
+        return composedClass.equals(parent);
     }
 }

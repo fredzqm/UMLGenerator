@@ -1,10 +1,9 @@
 package analyzer.utility;
 
-import model.Signature;
-import utility.MethodType;
-
 import java.util.Collection;
 import java.util.List;
+
+import utility.MethodType;
 
 /**
  * An Interface of the Method Models.
@@ -50,9 +49,8 @@ public interface IMethodModel extends IClassComponent {
     Collection<? extends IMethodModel> getCalledMethods();
 
     /**
-     * Returns the Method Signature.
-     *
-     * @return MethodModel's Signature.
+     * 
+     * @return true if two method model has the same signature
      */
-    Signature getSignature();
+    boolean hasSameSignature(IMethodModel methodModel);
 }

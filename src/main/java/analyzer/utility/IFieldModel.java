@@ -13,4 +13,10 @@ public interface IFieldModel extends IClassComponent {
      */
     ITypeModel getFieldType();
 
+    /**
+     * 
+     * @return the classModel of the fields type, null if this field is an array
+     *         or primitive type
+     */
+    IClassModel getClassModel();
 }

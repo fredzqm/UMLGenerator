@@ -111,9 +111,17 @@ class MethodModel implements IMethodModel {
         return isSynthetic;
     }
 
-    @Override
     public Signature getSignature() {
         return signature;
+    }
+
+    @Override
+    public boolean hasSameSignature(IMethodModel methodModel) {
+        if (methodModel instanceof MethodModel) {
+            MethodModel m = (MethodModel) methodModel;
+            return signature.equals(m.signature);
+        }
+        return false;
     }
 
     public List<TypeModel> getArguments() {

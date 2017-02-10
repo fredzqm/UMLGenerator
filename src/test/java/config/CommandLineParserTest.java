@@ -31,7 +31,7 @@ public class CommandLineParserTest {
 
     @Test
     public void testString() {
-        IConfiguration parser = parseParameter("config/String.json");
+        IConfiguration parser = parseParameter("config/Default/String.json");
         
         ModelConfiguration modelConfig = parser.createConfiguration(ModelConfiguration.class);
         assertFalse(modelConfig.isRecursive());
