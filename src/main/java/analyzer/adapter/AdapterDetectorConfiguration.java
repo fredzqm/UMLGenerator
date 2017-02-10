@@ -4,7 +4,7 @@ import analyzer.decorator.IAdapterDecoratorConfiguration;
 import config.IConfiguration;
 
 public class AdapterDetectorConfiguration implements IAdapterDecoratorConfiguration {
-    public static final String CONFIG_PATH = "adapterDetector.";
+    public static final String CONFIG_PATH = "adapter.";
     public static final String FILL_COLOR = CONFIG_PATH + "fillColor";
     public static final String PARENT_STEREOTYPE = CONFIG_PATH + "parentStereotype";
     public static final String CHILD_COMPOSED_RELATIONSHIP_LABEL = CONFIG_PATH + "childComposedRelationshipLabel";
