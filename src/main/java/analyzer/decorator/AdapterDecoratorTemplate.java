@@ -21,27 +21,18 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     @Override
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
         this.config = setupConfig(config);
-        systemModel.getClasses().forEach((clazz) -> evaluateClass(systemModel, clazz));
+        systemModel.getClasses().forEach((clazz) -> {
+            getPotentialParents(clazz).stream()
+                .filter((parent) -> detectPattern(clazz, parent)).forEach((parent) -> {
+                    styleParent(systemModel, parent);
+                    styleChild(systemModel, clazz);
+                    styleChildParentRelationship(systemModel, clazz, parent);
+                    updateRelatedClasses(systemModel, clazz);
+                });
+        });
     }
 
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
-
-    /**
-     * Returns a Collection of ClassModel that are parents of the given
-     * ClassModel that fulfills the evaluation criteria defined by the subclass.
-     * <p>
-     *
-     * @param child
-     *            IClassModel to be evaluated.
-     */
-    private void evaluateClass(ISystemModel systemModel, IClassModel child) {
-        getPotentialParents(child).stream().filter((parent) -> detectPattern(child, parent)).forEach((parent) -> {
-            styleParent(systemModel, parent);
-            styleChild(systemModel, child);
-            styleChildParentRelationship(systemModel, child, parent);
-            updateRelatedClasses(systemModel, child);
-        });
-    }
 
     private Collection<IClassModel> getPotentialParents(IClassModel child) {
         Collection<IClassModel> potentialParents = new LinkedList<>();

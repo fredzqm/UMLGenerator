@@ -60,6 +60,8 @@ public class SystemModel implements ISystemModel {
     public void addClassModelStyle(IClassModel clazz, String key, String value) {
         if (clazz == null)
             throw new RuntimeException("ClassModel cannot be null");
+        if (!classSet.contains(clazz))
+            throw new RuntimeException("ClassModel (" + clazz + ") cannot be null");
         if (!this.nodeStyle.containsKey(clazz)) {
             this.nodeStyle.put(clazz, new StyleMap());
         }
@@ -99,6 +101,10 @@ public class SystemModel implements ISystemModel {
             throw new RuntimeException("from ClassModel cannot be null");
         if (to == null)
             throw new RuntimeException("to ClassModel cannot be null");
+        if (!classSet.contains(from))
+            throw new RuntimeException("from ClassModel (" + from + ") must be in classSet");
+        if (!classSet.contains(to))
+            throw new RuntimeException("to ClassModel (" + to + ") must be in classSet");
         ClassPair pair = new ClassPair(from, to);
         if (!this.relations.containsKey(pair)) {
             this.relations.put(pair, new HashMap<>());
