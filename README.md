@@ -38,7 +38,7 @@ $ java -jar \path\to\UMLify.jar --config \path\to\config.json [--param x=y]
 }
 ```
 
-A key can be mapped to multiple things as long it is space separated. See [config]() for examples.
+A key can be mapped to multiple things as long it is space separated. See [config](https://ada.csse.rose-hulman.edu/zhangq2/Fad/tree/master/config) for examples.
 
 ### Built-Ins
 |      Identifier     |              Key             |         Default        | Description                                                           |
@@ -99,4 +99,4 @@ public class FavorCompositionConfiguration implements Configurable {
 
 ## Change Logs:
 
-See each members responsibility [here]().
+See each members responsibility [here](https://ada.csse.rose-hulman.edu/zhangq2/Fad/blob/master/CHANGELOG.md).
