@@ -1,0 +1,27 @@
+{
+	"runner": {
+		"executablePath": "dot",
+		"outputFormat": "svg",
+		"fileName": "DepInversion"
+	},
+	"model": {
+		"classes": [
+			"adapter.classParser.ClassParserConfiguration", "adapter.classParser.GraphvizClassParser", "adapter.classParser.GraphVizFieldParser", "adapter.classParser.GraphVizHeaderParser", "adapter.classParser.GraphVizMethodParser", "adapter.classParser.GraphVizModifierParser", "adapter.classParser.GraphVizTypeParser", "adapter.classParser.IParser","adapter.Node", "adapter.Relation", "adapter.SystemModel", "adapter.SystemModelGraph","analyzer.adapter.AdapterDetectorAnalyzer", "analyzer.adapter.AdapterDetectorConfiguration","analyzer.decorator.AdapterDecoratorTemplate", "analyzer.decorator.BadDecoratorAnalyzer", "analyzer.decorator.BadDecoratorConfiguration", "analyzer.decorator.DecoratorTemplate", "analyzer.decorator.GoodDecoratorAnalyzer", "analyzer.decorator.GoodDecoratorConfiguration", "analyzer.decorator.IAdapterDecoratorConfiguration","analyzer.dependencyInversion.DependencyInversionAnalyzer", "analyzer.dependencyInversion.DependencyInversionConfiguration","analyzer.favorComposition.FavorCompositionAnalyzer", "analyzer.favorComposition.FavorCompositionConfiguration","analyzer.relationParser.IRelationInfo", "analyzer.relationParser.RelationBijectiveDecorator", "analyzer.relationParser.RelationDecorator", "analyzer.relationParser.RelationDependsOn", "analyzer.relationParser.RelationExtendsClass", "analyzer.relationParser.RelationHasA", "analyzer.relationParser.RelationHasABijective", "analyzer.relationParser.RelationImplement", "analyzer.relationParser.RelationParserAnalyzer","analyzer.singleton.SingletonAnalyzer", "analyzer.singleton.SingletonConfiguration","analyzer.syntheticFilter.SyntheticFilterAnalyzer", "analyzer.syntheticFilter.SyntheticFilterClassModel","analyzer.utility.ClassPair", "analyzer.utility.IAnalyzer", "analyzer.utility.IClassComponent", "analyzer.utility.IClassModel", "analyzer.utility.IClassModelFilter", "analyzer.utility.IFieldModel", "analyzer.utility.IInstructionModel", "analyzer.utility.IMethodModel", "analyzer.utility.ISystemModel", "analyzer.utility.ITypeModel", "analyzer.utility.StyleMap","app.AbstractUMLEngine", "app.Application", "app.EngineConfiguration", "app.UMLEngine","config.CommandLineParser", "config.Configurable", "config.Configuration", "config.ConfigurationFactory", "config.IConfiguration","generator.GeneratorConfiguration", "generator.GraphVizGenerator", "generator.IEdge", "generator.IGenerator", "generator.IGraph", "generator.INode","model.ArrayTypeModel", "model.ASMParser", "model.ClassModel", "model.FieldModel", "model.GenericTypeArg", "model.GenericTypeParam", "model.GenericTypeVarPlaceHolder", "model.InstructionField", "model.InstructionMethod", "model.InstructionModel", "model.Logger", "model.MethodModel", "model.ModelConfiguration", "model.ParametizedClassModel", "model.PrimitiveType", "model.Signature", "model.SystemModelFactory", "model.TypeModel", "model.TypeParser","runner.GraphVizRunner", "runner.IRunner", "runner.RunnerConfiguration","utility.ClassType", "utility.ExpandIterator", "utility.FilteredIterator", "utility.IExpander", "utility.IFilter", "utility.IMapper", "utility.MappedIterator", "utility.MethodType", "utility.Modifier","viewer.Viewer"
+		],
+		"isRecursive": false,
+		"blackList":[],
+		"verbose":"false"
+	},
+	"engine": {
+		"analyzer_key":[
+			"analyzer.relationParser.RelationParserAnalyzer",
+			"analyzer.dependencyInversion.DependencyInversionAnalyzer",
+			"analyzer.adapter.AdapterDetectorAnalyzer",
+			"analyzer.decorator.BadDecoratorAnalyzer",
+			"analyzer.decorator.GoodDecoratorAnalyzer",
+			"analyzer.favorComposition.FavorCompositionAnalyzer",
+			"analyzer.singleton.SingletonAnalyzer",
+			"analyzer.syntheticFilter.SyntheticFilterAnalyzer"
+		]
+	}
+}
