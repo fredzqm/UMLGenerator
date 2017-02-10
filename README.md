@@ -1,133 +1,102 @@
 # UMLify: Team FAD CSSE 374 Project
-[![build status](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/build.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master)
-[![coverage report](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/coverage.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master)
+
+**F**red Zhang, **A**dam Finer, **D**avid Lam
+
+[![build status](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/build.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master) [![coverage report](https://ada.csse.rose-hulman.edu/zhangq2/Fad/badges/master/coverage.svg)](https://ada.csse.rose-hulman.edu/zhangq2/Fad/commits/master)
 
 ## Description:
-This project takes a set of classes and draws the UML diagram for those set of classes.
+
+This project takes a set of classes and draws the UML diagram for those set of classes. It has been design to be able to draw UML such that design patterns can be detected
 
 ## Command Line Usage:
+
 ### Usage:
-`class1 class2 ... classN [(-e|--executable) <path>] (-d|--directory) <outputDirectory> (-o|--outputfile) <outputfile> [(-x|--extension) <extension>] [(-f|--filters) <filters>] [(-n|--nodesep) <nodeseparationvalue>] [-r|--recursive] [-k|--direction]`
+
+```
+$ java -jar \path\to\UMLify.jar --config \path\to\config.json [--param x=y]
+```
 
 ### Arguments:
-  - class1 class2 ... classN
-     - **Description:** space separated list of the name of the classes you want the UMLfor
-     - **Default**: java.lang.String)
 
-  - [(-e|--executable) <path>]
-      - **Description:** the name of the executable path for graphviz on your machine
-      - **Default:** dot
+- `config.json`: A Configuration in JSON format that defines configuration settings for UMLify. It defines basic settings or can take customize input settings.
+- `param x=y`: Overrides the setting `x` with the value `y`. This is useful for when you wish use the same configuration JSON but with slightly tweaked settings.
 
-  - (-d|--directory) <outputDirectory>
-      - **Description:**the name of the directory which you want output to go to
-      - **Default:** output
+## Config JSON:
+### Creating a Config JSON:
+```
+{
+  "some_outer_identifier_1" : {
+    "key_1" : "value_1",
+    "key_2" : "value_2"
+    ...
+  },
+  "some_outer_identifier_2" : {
+    "key_1" : "value_3",
+    "key_3" : "value_4"
+    ...
+  }
+}
+```
 
-  - (-o|--outputfile) <outputfile>
-      - **Description:**the name of the output file
-      - **Default:** output
+A key can be mapped to multiple things as long it is space separated. See [config]() for examples.
 
-  - [(-x|--extension) <extension>]
-      - **Description:**the name extension of the output file without the dot
-      - **Default:** svg
+### Built-Ins
+|      Identifier     |              Key             |         Default        | Description                                                           |
+|:-------------------:|:----------------------------:|:----------------------:|:---------------------------------------------------------------------:|
+|     classParser     |            header            |  GraphVizHeaderParser  | Qualified class name of the header parser                             |
+|                     |             field            |   GraphVizFieldParser  | Qualified class name of the field parser                              |
+|                     | method                       | GraphVizMethodParser   | Qualified class name of the method parser                             |
+|                     | type                         | GraphVizTypeParser     | Qualified class name of the type parser                               |
+|                     | modifierParser               | GraphVizModifierParser | Qualified class name of the modifier parser                           |
+| badDecorator        | fillColor                    | yellow                 | Fill color of the class record that is poorly decorated               |
+|                     | parentStereotype             | component              | Class being decorated added stereotype                                |
+|                     | childStereotype              | decorator              | Class decorator added stereotype                                      |
+|                     | childParentRelationshipLabel | decorates              | Relationship label on the RelationHasA between child and parent.      |
+| badDecorator        | fillColor                    | blue                   | Fill color of the class record that is properly decorated             |
+|                     | parentStereotype             | component              | Class being decorated added stereotype                                |
+|                     | childStereotype              | decorator              | Class decorator added stereotype                                      |
+|                     | childParentRelationshipLabel | decorates              | Relationship label on the RelationHasA between child and parent.      |
+| dependencyInversion | whiteList                    | java                   | A list of packages that will be ignored if they trigger a violation   |
+|                     | color                        | yellow                 | Outline color of the class record violating the dependency            |
+| favorComposition    | color                        | orange                 | Outline color of the class record violating the dependency            |
+| singleton           | color                        | blue                   | Outline color of the class record violating the dependency            |
+| engine              | generator_key                | GraphVizGenerator      | Qualified class name of the header parser of graph generator          |
+|                     | analyzer_key                 | RelationParserAnalyzer | Qualified class name of the analyzers to run (order-dependent)        |
+| model               | isRecursive                  | false                  | Recursively parse relation if true                                    |
+|                     | classes                      |                        | List of classes to parse                                              |
+|                     | blackList                    |                        | List of classes to ignore while parsing.                              |
+|                     | verbose                      | false                  | Print error messages of classes unable to parse                       |
+| graphviz            | nodeSep                      | "1.0"                  | Node Separation factor for GraphViz                                   |
+|                     | rankDir                      | BT                     | Rank direction preference                                             |
+|                     | nodeStyle                    | node [shape=record]    | Universal Node styling                                                |
+| runner              | outputFormat                 | svg                    | Output format of the generated Graph                                  |
+|                     | outputDir                    | output                 | Output directory of all generated files                               |
+|                     | executablePath               | dot                    | Graph Generator binary executable path                                |
+|                     | fileName                     | output                 | Output file name of all generated files                               |
 
-  - [(-f|--filters) <filters>]
-      - **Description:**use this flag if you want to filter out certain modifiers
-        if public, you filter out protected and private
-        if protected, you filter out private
-        if empty or private, you filter out nothing
-      - **Default:** private
+## How To Add Custom Pattern Analyzer:
+To create a custom analyzer, you need to create a class the implements `IAnalyzer` and implement the `analyze` method. This method is used to scan the current system model and modify the styling of the classes if needed. If the class requires custom configurations, create a configuration that implements `Configurable`. This must implement the `setup` method. This method should be used to setup default values for the configuration. Here is an example:
+```java
+public class FavorCompositionConfiguration implements Configurable {
+    public static final String CONFIG_PATH = "favorComposition.";                 // This should be the same as the outer identifier.
+    public static final String COLOR = CONFIG_PATH + "color";                     // All subsequent field should use this CONFIG_PATH to define other variables.
 
-  - [(-n|--nodesep) <nodeseparationvalue>]
-      - **Description:**the node seperation value, which is greater than 0
-      - **Default:** 1
+    private IConfiguration config;                                                // It is a good idea to store the IConfiguration instance.
+                                                                                  // IConfiguration stores a map of values and will be passed arround to all classes.
 
-  - [-r|--recursive]
-      - **Description:**use this flag if you want to recursively create the UML with all superclasses
+    @Override
+    public void setup(IConfiguration config) {
+        this.config = config;
+        this.config.setIfMissing(FavorCompositionConfiguration.COLOR, "orange");  // setIfMissing and add are useful IConfiguration methods to add values into the IConfiguration
+                                                                                  // conditionally.
+    }
 
-  - [-k|--direction]
-      - **Description:** use this flag if you want the UML to be outputed Top down, otherwise it will be outputed Bottom up
+    public String getFavorComColor() {                                            // It is a good idea for a specific configuration to have a getter method for each static field type.
+        return this.config.getValue(FavorCompositionConfiguration.COLOR);
+    }
+}
+```
 
-## Member Contributions:
-### Milestone 01:
-- **Fred:**
-     - Performed Debugging
-     - Discuss Design Decisions
-     - Implemented Models.
-     - Implemented Displayer.
-     - Implemented IFilter.
-     - Assisted in Generator Design
-     - Refactored Code.
-     - Code Review.
-     - Wrote test code.
-- **Adam:**
-     - Managed the creation and updates to the UML
-     - Discuss Design Decisions
-     - Coded the CommandLineParser and Configuration
-     - Performed Debugging
-     - Created the README.
-     - Wrote test code.
-- **David:**
-     - Performed Debugging
-     - Discuss Design Decisions
-     - Added Continuous Integration.
-     - Implemented Generator.
-     - Implemented Runner.
-     - Integrated GraphViz.
-     - Setup Project structure.
-     - Created Generator Interfaces.
-     - Formatted README with MarkDown syntax.
-     - Refactored Code.
-     - Code Review.
-     - Wrote test code.
-  
-### Milestone 02:  
-- **Fred:**  
-     - Designed the overall decorator pattern, break down generator into classParserAnalyzer,
-     	and RelationParserAnalyzer, so that all fields are open to extension
-     - Refactored code out of Generator into Relationship.
-     - Implemented basic class parsing analyzer from previous generator code.
-     - Figured out generics parsing with ASM, parse all the generic signature in JVM.
-     - Refactor TypeModel to use decorator pattern, so all generic parameters and types can be represented.
-     - Refactored Model to return cardinality information.
-     - Add the InstructionModel, so that analyzers can analyzer the details of each java bytecode.
-     - Resolved bugs discovered in Model.
-     - Wrote test.
-     - Code reviewed.
-- **Adam:**  
-     - Updated UML
-     - Discovered bugs in output inconsistency with Milestone requirements.
-     - Added JSON file support.
-     - Wrote Python to get qualified class names.
-- **David:**  
-     - Added bijective arrow Relationship support in GraphViz.
-     - Added GraphViz cardinality support in Relationship.
-     - Assisted in Relation and Generator refactor.
-     - Refactored Configuration to be more extensible.
-     - Wrote test.
-     - Code reviewed.
-     - Cleaned code to for readability.
-     - Fixed and improved Python script from Adam.
-     - Debug GraphViz generator and Model integrations.
-     - Wrote ExplorerRunner to display generated output.
-     - Added missing JavaDocs in all packages when possible.
-     - Resolved bugs discovered in Generator.
-### Milestone 03:  
-- **Fred:**  
-     - Refactor the configuration, so that all configurations are stored as a Map from string to string.
-     - Make Configuration a factory of any Configurable, which defines its default configuration
-     - Rewrote the commandline parser so it takes config jsons and can override specific configuration
-     - Implement the SingletonAnalyzer
-- **Adam:**
-- **David:**  
-     - Implement the FavorCompositionAnalyzer
-     - Worked with Adam to implement Bidirectional Analyzer
-     - Worked with Fred on CommandLine Parser.
-     - Discussed about the new config JSON format.
-     - Refactored code to meet style standard and added javadoc.
-### Milestone 0:  
-- **Fred:**  
-     - Implemented the Dependency Inversion violation detector
-     - Refactor SystemModel to be an styleRecorder, so we don't have to decorate classModel every time.
-     - Fix bugs in model
-- **Adam:**
-- **David:**
+## Change Logs:
+
+See each members responsibility [here]().
