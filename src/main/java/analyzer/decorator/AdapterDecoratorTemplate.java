@@ -1,5 +1,6 @@
 package analyzer.decorator;
 
+import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.*;
 import config.IConfiguration;
@@ -60,12 +61,12 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
         Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
-
+    
         Set<IMethodModel> overridingMethods = child.getMethods().stream()
                 .filter((method) -> method.getMethodType() == MethodType.METHOD
                         && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClass, method))
                 .collect(Collectors.toSet());
-
+    
         if (overridingMethods.size() != overridedMethods.size()) {
             return null;
         }
@@ -78,23 +79,27 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     /**
-     * Style the composed class's Relationship.
+     * Evaluates a given parent class and the child class and determine whether
+     * they meet the desired pattern criteria.
+     * <p>
+     * For example: decorator detection may check if child has a field of the
+     * parent, a constructor that takes the field as an argument, and if the
+     * child overrides each of the parent's methods where the child method's
+     * body uses the field of the parent type.
      *
-     * @param systemModel
-     *            ISystemModel holding the style information.
      * @param clazz
-     *            IClassModel the composedClass is composed within.
+     *            IClassModel of the dependent Relation.
      * @param composedClazz
-     *            IClassModel of the composedClass.
+     *            the field for this pattern
+     * @param parent
+     *            IClassModel of the depended Relation.
+     * @param overridingMethods
+     *            the methods of parent that gets overrided in clazz. Those
+     *            methods belong to clazz.
+     * @return true if the parent and child should be updated for this analyzer.
      */
-    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz,
-            IClassModel composedClazz) {
-        // Hook.
-    }
-
-    protected void styleComposedClass(ISystemModel systemModel, IClassModel classModel) {
-        // Hook.
-    }
+    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
+            Set<IMethodModel> overridingMethods);
 
     /**
      * Returns a Collection of IClassModel that are potentially a composed
@@ -165,17 +170,18 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     /**
-     * A utility method to apply a common fill color style to a given
-     * classModel.
+     * Style the composed class
      *
      * @param systemModel
-     *            ISystemModel maintaining class styles.
-     * @param classModel
-     *            IClassModel classModel to by styled.
+     *            ISystemModel holding the style information.
+     * @param clazz
+     *            IClassModel the composedClass is composed within.
+     * @param composedClazz
+     *            IClassModel of the composedClass.
      */
-    protected void addCommonFillColor(ISystemModel systemModel, IClassModel classModel) {
-        systemModel.addClassModelStyle(classModel, "style", "filled");
-        systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
+    protected void styleComposedClass(ISystemModel systemModel, IClassModel composedClazz) {
+        addCommonFillColor(systemModel, composedClazz);
+        systemModel.addClassModelSteretypes(composedClazz, this.config.getComposedStereotype());
     }
 
     /**
@@ -207,17 +213,33 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     /**
+     * Style the composed class's Relationship.
+     *
+     * @param systemModel
+     *            ISystemModel holding the style information.
+     * @param child
+     *            IClassModel the composedClass is composed within.
+     * @param composedClazz
+     *            IClassModel of the composedClass.
+     */
+    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel child,
+            IClassModel composedClazz) {
+        systemModel.addStyleToRelation(child, composedClazz, RelationHasA.REL_KEY, "xlabel",
+                this.config.getChildComposedRelationshipLabel());
+    }
+
+    /**
      * Define how to style the Child-to-Parent Relationship.
      *
      * @param systemModel
      *            ISystemModel that stores the styling information per class.
-     * @param child
+     * @param clazz
      *            IClassModel of a child of a Superclass relation.
      * @param parent
      *            IClassModel of a parent of a Superclass relation.
      */
-    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
-        systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
+    protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel parent) {
+        systemModel.addStyleToRelation(clazz, parent, RelationExtendsClass.REL_KEY, "xlabel",
                 this.config.getChildParentRelationshipLabel());
     }
 
@@ -241,25 +263,16 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     /**
-     * Evaluates a given parent class and the child class and determine whether
-     * they meet the desired pattern criteria.
-     * <p>
-     * For example: decorator detection may check if child has a field of the
-     * parent, a constructor that takes the field as an argument, and if the
-     * child overrides each of the parent's methods where the child method's
-     * body uses the field of the parent type.
+     * A utility method to apply a common fill color style to a given
+     * classModel.
      *
-     * @param clazz
-     *            IClassModel of the dependent Relation.
-     * @param composedClazz
-     *            the field for this pattern
-     * @param parent
-     *            IClassModel of the depended Relation.
-     * @param overridingMethods
-     *            the methods of parent that gets overrided in clazz. Those
-     *            methods belong to clazz.
-     * @return true if the parent and child should be updated for this analyzer.
+     * @param systemModel
+     *            ISystemModel maintaining class styles.
+     * @param classModel
+     *            IClassModel classModel to by styled.
      */
-    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
-            Set<IMethodModel> overridingMethods);
+    protected void addCommonFillColor(ISystemModel systemModel, IClassModel classModel) {
+        systemModel.addClassModelStyle(classModel, "style", "filled");
+        systemModel.addClassModelStyle(classModel, "fillcolor", this.config.getFillColor());
+    }
 }

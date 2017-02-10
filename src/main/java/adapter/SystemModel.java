@@ -83,7 +83,8 @@ public class SystemModel implements ISystemModel {
         if (!this.stereotypes.containsKey(clazz)) {
             this.stereotypes.put(clazz, new HashSet<>());
         }
-        this.stereotypes.get(clazz).add(stereotype);
+        if (stereotype.length() > 1)
+            this.stereotypes.get(clazz).add(stereotype);
     }
 
     @Override
