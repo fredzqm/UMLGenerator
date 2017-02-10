@@ -10,7 +10,6 @@ import analyzer.utility.ISystemModel;
  * Created by lamd on 2/7/2017.
  */
 public abstract class DecoratorTemplate extends AdapterDecoratorTemplate {
-
     @Override
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel decoratorClass, IClassModel composedClazz,
             IClassModel parent) {

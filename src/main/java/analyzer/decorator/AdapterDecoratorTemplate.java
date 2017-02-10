@@ -1,19 +1,15 @@
 package analyzer.decorator;
 
+import analyzer.relationParser.RelationHasA;
+import analyzer.utility.*;
+import config.IConfiguration;
+import utility.MethodType;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import analyzer.relationParser.RelationHasA;
-import analyzer.utility.IAnalyzer;
-import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
-import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
-import config.IConfiguration;
-import utility.MethodType;
 
 /**
  * An Abstract Template for Adapter and Decorator pattern detection.
@@ -54,8 +50,10 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
                 .filter((method) -> method.getMethodType() == MethodType.METHOD
                         && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClazz, method))
                 .forEach(overridingMethods::add);
-        if (overridingMethods.size() != overridedMethods.size())
+
+        if (overridingMethods.size() != overridedMethods.size()) {
             return null;
+        }
         return overridingMethods;
     }
 
@@ -65,70 +63,76 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     }
 
     protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz) {
-
+        // Hook.
     }
 
     protected void styleComposedClass(ISystemModel systemModel, IClassModel classModel) {
-
+        // Hook.
     }
 
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        
-        Collection<IClassModel> potentialComposed = new LinkedList<>();
-        clazz.getFields().forEach((f) -> {
-            IClassModel composeClazz = f.getClassModel();
-            if (composeClazz != null && classes.contains(composeClazz)) {
-                if (clazz.getMethods().stream().filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
-                        .flatMap((method) -> method.getArguments().stream()).anyMatch(composeClazz::equals))
-                    potentialComposed.add(composeClazz);
-            }
-        });
-        return potentialComposed;
+
+//        Collection<IClassModel> potentialComposed = new LinkedList<>();
+//        clazz.getFields().forEach((f) -> {
+//            IClassModel composeClazz = f.getClassModel();
+//            if (composeClazz != null && classes.contains(composeClazz)) {
+//                if (clazz.getMethods().stream()
+//                        .filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
+//                        .flatMap((method) -> method.getArguments().stream()).anyMatch(composeClazz::equals)) {
+//                    potentialComposed.add(composeClazz);
+//                }
+//            }
+//        });
+//
+//        return potentialComposed;
+        return clazz.getFields().stream()
+                .map(IFieldModel::getClassModel)
+                .filter((composedClass) -> composedClass != null && classes.contains(composedClass))
+                .filter((composedClass) -> clazz.getMethods().stream()
+                        .filter((method) -> method.getMethodType() == MethodType.CONSTRUCTOR)
+                        .flatMap((method) -> method.getArguments().stream()).anyMatch(composedClass::equals))
+                .collect(Collectors.toSet());
     }
 
     protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        
+
         Collection<IClassModel> potentialParents = new LinkedList<>();
         addToSet(classes, potentialParents, child.getSuperClass());
-        for (IClassModel intf : child.getInterfaces()) {
-            addToSet(classes, potentialParents, intf);
-        }
+        child.getInterfaces().forEach((inter) -> addToSet(classes, potentialParents, inter));
 
         return potentialParents;
     }
 
     private void addToSet(Set<? extends IClassModel> classes, Collection<IClassModel> potentialParents,
-            IClassModel clazz) {
-        if (classes.contains(clazz))
+                          IClassModel clazz) {
+        if (classes.contains(clazz)) {
             potentialParents.add(clazz);
+        }
     }
 
-    
+
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     /**
      * Returns if the given method is a decorated method of some parent class.
      *
-     * @param method
-     *            IMethodModel of child class.
-     * @param parentMethods
-     *            Collection of IMethodModels of parent methods.
+     * @param method        IMethodModel of child class.
+     * @param parentMethods Collection of IMethodModels of parent methods.
      * @return true if the given method decorates a parentMethods.
      */
     protected boolean isDecoratedMethod(IMethodModel method, Collection<? extends IMethodModel> parentMethods) {
-        return parentMethods.stream().anyMatch((parentMethdo) -> method.hasSameSignature(parentMethdo));
+        return parentMethods.stream()
+                .anyMatch(method::hasSameSignature);
     }
 
     /**
      * A utility method to apply a common fill color style to a given
      * classModel.
      *
-     * @param systemModel
-     *            ISystemModel maintaining class styles.
-     * @param classModel
-     *            IClassModel classModel to by styled.
+     * @param systemModel ISystemModel maintaining class styles.
+     * @param classModel  IClassModel classModel to by styled.
      */
     protected void addCommonFillColor(ISystemModel systemModel, IClassModel classModel) {
         systemModel.addClassModelStyle(classModel, "style", "filled");
@@ -138,11 +142,9 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     /**
      * Define how to style the parent of the Child-to-Parent Relationship.
      *
-     * @param systemModel
-     *            ISystemModel that stores the styling information per class.
-     * @param parent
-     *            IClassModel of the parent class in the Child-to-Parent
-     *            Relationship.
+     * @param systemModel ISystemModel that stores the styling information per class.
+     * @param parent      IClassModel of the parent class in the Child-to-Parent
+     *                    Relationship.
      */
     protected void styleParent(ISystemModel systemModel, IClassModel parent) {
         addCommonFillColor(systemModel, parent);
@@ -152,11 +154,9 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     /**
      * Define how to style the child of the Child-to-Parent Relationship.
      *
-     * @param systemModel
-     *            ISystemModel that stores the styling information per class.
-     * @param child
-     *            IClassModel of the child class in the Child-to-Parent
-     *            Relationship.
+     * @param systemModel ISystemModel that stores the styling information per class.
+     * @param child       IClassModel of the child class in the Child-to-Parent
+     *                    Relationship.
      */
     protected void styleChild(ISystemModel systemModel, IClassModel child) {
         addCommonFillColor(systemModel, child);
@@ -166,12 +166,9 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     /**
      * Define how to style the Child-to-Parent Relationship.
      *
-     * @param systemModel
-     *            ISystemModel that stores the styling information per class.
-     * @param child
-     *            IClassModel of a child of a Superclass relation.
-     * @param parent
-     *            IClassModel of a parent of a Superclass relation.
+     * @param systemModel ISystemModel that stores the styling information per class.
+     * @param child       IClassModel of a child of a Superclass relation.
+     * @param parent      IClassModel of a parent of a Superclass relation.
      */
     protected void styleChildParentRelationship(ISystemModel systemModel, IClassModel child, IClassModel parent) {
         systemModel.addStyleToRelation(child, parent, RelationHasA.REL_KEY, "xlabel",
@@ -182,18 +179,14 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * Updates Classes related the the class clazz if necessary. This is a hook
      * method.
      *
-     * @param systemModel
-     *            ISystemModel that stores the styling information per class.
-     * @param clazz
-     *            IClassModel of the child class with possible subclasses to be
-     *            updated.
-     * @param parent
-     *            the parent class in this pattern
-     * @param composedClazz
-     *            the class composed in clazz
+     * @param systemModel   ISystemModel that stores the styling information per class.
+     * @param clazz         IClassModel of the child class with possible subclasses to be
+     *                      updated.
+     * @param parent        the parent class in this pattern
+     * @param composedClazz the class composed in clazz
      */
     protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz,
-            IClassModel parent) {
+                                        IClassModel parent) {
         // Hook
     }
 
@@ -206,17 +199,13 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * child overrides each of the parent's methods where the child method's
      * body uses the field of the parent type.
      *
-     * @param child
-     *            IClassModel of the dependent Relation.
-     * @param compClazz
-     *            the field for this pattern
-     * @param parent
-     *            IClassModel of the depended Relation.
-     * @param overridingMethods
-     *            the methods of parent that gets overrided in clazz. Those
-     *            methods belong to clazz.
+     * @param clazz             IClassModel of the dependent Relation.
+     * @param composedClazz     the field for this pattern
+     * @param parent            IClassModel of the depended Relation.
+     * @param overridingMethods the methods of parent that gets overrided in clazz. Those
+     *                          methods belong to clazz.
      * @return true if the parent and child should be updated for this analyzer.
      */
     protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
-            Set<IMethodModel> overridingMethods);
+                                             Set<IMethodModel> overridingMethods);
 }
