@@ -1,16 +1,15 @@
 package analyzer.adapter;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import analyzer.decorator.AdapterDecoratorTemplate;
 import analyzer.decorator.IAdapterDecoratorConfiguration;
 import analyzer.utility.IClassModel;
 import analyzer.utility.IMethodModel;
-import analyzer.utility.ISystemModel;
 import config.IConfiguration;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An Adapter Pattern Analyzer. It will highlight in some color (defaulted to
@@ -27,13 +26,8 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
 
     @Override
     protected boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
-            Set<IMethodModel> overridingMethods) {
-        if (clazz.isSubClazzOf(composedClazz) || composedClazz.isSubClazzOf(parent))
-            return false;
-        if (usedByAllAdaptedMethods(composedClazz, overridingMethods)) {
-            return true;
-        }
-        return false;
+                                    Set<IMethodModel> overridingMethods) {
+        return !(clazz.isSubClazzOf(composedClazz) || composedClazz.isSubClazzOf(parent)) && usedByAllAdaptedMethods(composedClazz, overridingMethods);
     }
 
     private boolean usedByAllAdaptedMethods(IClassModel type, Set<IMethodModel> adaptedMethods) {
