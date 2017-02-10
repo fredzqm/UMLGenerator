@@ -53,7 +53,8 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param composedClass IFieldModel's underlying class of the child.
      * @param parent        IClassModel parent in the Child-Parent in a super class
      *                      relation.
-     * @return
+     * @return Set of IMethodModel that child class has in common with the
+     * parent class.
      */
     protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
         Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
@@ -102,7 +103,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param clazz       IClassModel of class for which to get potential composed
      *                    class.
      * @param systemModel ISystemModel that holds all classes and style information.
-     * @return
+     * @return Collection of IClassModel that are potentially a composed class.
      */
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
@@ -160,7 +161,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * Style the composed class
      *
      * @param systemModel   ISystemModel holding the style information.
-     * @param clazz         IClassModel the composedClass is composed within.
      * @param composedClazz IClassModel of the composedClass.
      */
     protected void styleComposedClass(ISystemModel systemModel, IClassModel composedClazz) {
