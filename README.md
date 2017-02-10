@@ -13,7 +13,7 @@ This project takes a set of classes and draws the UML diagram for those set of c
 ### Usage:
 
 ```
-$ java -jar \path\to\UMLify.jar --config \path\to\config.json [--param x=y]
+$ java -cp "/path/to/otherProject.jar;/path/to/Fad-all-1.0.0-SNAPSHOT.jar" app.Application --config[-c] config.json [--param[-p]x=y]
 ```
 
 ### Arguments:
