@@ -63,7 +63,8 @@ A key can be mapped to multiple things as long it is space separated. See [confi
 | engine              | generator_key                | GraphVizGenerator      | Qualified class name of the header parser of graph generator          |
 |                     | analyzer_key                 | RelationParserAnalyzer | Qualified class name of the analyzers to run (order-dependent)        |
 | model               | isRecursive                  | false                  | Recursively parse relation if true                                    |
-|                     | classes                      |                        | List of classes to parse                                              |
+|                     | classes                
+|                        | List of classes to parse                                              |
 |                     | blackList                    |                        | List of classes to ignore while parsing.                              |
 |                     | verbose                      | false                  | Print error messages of classes unable to parse                       |
 | graphviz            | nodeSep                      | "1.0"                  | Node Separation factor for GraphViz                                   |
@@ -96,6 +97,9 @@ public class FavorCompositionConfiguration implements Configurable {
     }
 }
 ```
+## Project UML:
+Here is a link to our project's overall UML. There are around 100 classes in our project, so it is a pretty huge UML.
+![Project UML svg](/ProjectUML.svg "Project UML")
 
 ## Change Logs:
 
