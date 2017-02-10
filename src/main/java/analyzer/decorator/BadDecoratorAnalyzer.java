@@ -1,6 +1,7 @@
 package analyzer.decorator;
 
 import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import config.IConfiguration;
 import utility.MethodType;
@@ -36,8 +37,9 @@ public class BadDecoratorAnalyzer extends DecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel child, IClassModel parent) {
+    protected boolean detectPattern(IClassModel child, IFieldModel field, IClassModel parent) {
         return hasParentAsField(child, parent) && hasParentAsConstructorArgument(child, parent)
                 && missingParentMethodDecoration(child, parent);
     }
+    
 }

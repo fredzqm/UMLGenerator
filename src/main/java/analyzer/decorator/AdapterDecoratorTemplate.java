@@ -2,12 +2,15 @@ package analyzer.decorator;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Set;
 
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.IAnalyzer;
 import analyzer.utility.IClassModel;
+import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
+import analyzer.utility.ITypeModel;
 import config.IConfiguration;
 
 /**
@@ -22,19 +25,45 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
         this.config = setupConfig(config);
         systemModel.getClasses().forEach((clazz) -> {
-            getPotentialParents(clazz).stream()
-                .filter((parent) -> detectPattern(clazz, parent)).forEach((parent) -> {
+            Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
+            Collection<IFieldModel> potentialFields = getPotentialFields(clazz, systemModel);
+            potentialParents.stream().forEach((parent) -> {
+                potentialFields.stream().filter((field) -> detectPattern(clazz, field, parent)).forEach((field) -> {
+                    IClassModel fieldClazz = field.getFieldType().getClassModel();
                     styleParent(systemModel, parent);
                     styleChild(systemModel, clazz);
+                    styleFieldClass(systemModel, fieldClazz);
                     styleChildParentRelationship(systemModel, clazz, parent);
-                    updateRelatedClasses(systemModel, clazz);
+                    styleChildFieldClassRelationship(systemModel, clazz, fieldClazz);
+                    updateRelatedClasses(systemModel, clazz, field, parent);
                 });
+            });
         });
     }
 
-    protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
+    private void styleChildFieldClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel fieldClazz) {
+        // TODO Auto-generated method stub
 
-    private Collection<IClassModel> getPotentialParents(IClassModel child) {
+    }
+
+    private void styleFieldClass(ISystemModel systemModel, IClassModel classModel) {
+        // TODO Auto-generated method stub
+
+    }
+
+    protected Collection<IFieldModel> getPotentialFields(IClassModel clazz, ISystemModel systemModel) {
+        Set<? extends IClassModel> classes = systemModel.getClasses();
+        Collection<IFieldModel> potentialFields = new LinkedList<>();
+        clazz.getFields().forEach((f) -> {
+            ITypeModel t = f.getFieldType();
+            if (t.getDimension() == 0 && t.getClassModel() != null && classes.contains(t.getClassModel())) {
+                potentialFields.add(f);
+            }
+        });
+        return potentialFields;
+    }
+
+    protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
         Collection<IClassModel> potentialParents = new LinkedList<>();
 
         potentialParents.add(child.getSuperClass());
@@ -43,6 +72,8 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
 
         return potentialParents;
     }
+
+    protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     /**
      * Returns if the given method is a decorated method of some parent class.
@@ -123,8 +154,12 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      * @param clazz
      *            IClassModel of the child class with possible subclasses to be
      *            updated.
+     * @param parent
+     *            the parent class in this pattern
+     * @param field
      */
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IFieldModel field,
+            IClassModel parent) {
         // Hook
     }
 
@@ -139,9 +174,11 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
      *
      * @param child
      *            IClassModel of the dependent Relation.
+     * @param field
+     *            the field for this pattern
      * @param parent
      *            IClassModel of the depended Relation.
      * @return true if the parent and child should be updated for this analyzer.
      */
-    protected abstract boolean detectPattern(IClassModel child, IClassModel parent);
+    protected abstract boolean detectPattern(IClassModel child, IFieldModel field, IClassModel parent);
 }

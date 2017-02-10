@@ -30,7 +30,7 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     }
 
     @Override
-    protected boolean detectPattern(IClassModel adapter, IClassModel parent) {
+    protected boolean detectPattern(IClassModel adapter, IFieldModel field, IClassModel parent) {
         // first make sure all methods in the interface are adapted
         System.out.println(adapter + " " + parent);
         if ("dummy.decoratorDummy.GoodDecorator dummy.decoratorDummy.Component".equals(adapter + " " + parent))
@@ -48,13 +48,13 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
             return false;
         }
         // second find the adaptee field
-        for (IFieldModel field : adapter.getFields()) {
-            ITypeModel type = field.getFieldType();
+        for (IFieldModel f : adapter.getFields()) {
+            ITypeModel type = f.getFieldType();
             if (type.getDimension() > 0 || type.getClassModel() == null || adapter.isSubClazzOf(type.getClassModel()))
                 continue;
-            if (injectedInConstructor(field.getFieldType(), adapter)
-                    && usedByAllAdaptedMethods(field, adaptedMethods)) {
-                adaptee = field.getFieldType().getClassModel();
+            if (injectedInConstructor(f.getFieldType(), adapter)
+                    && usedByAllAdaptedMethods(f, adaptedMethods)) {
+                adaptee = f.getFieldType().getClassModel();
                 return true;
             }
         }
@@ -88,7 +88,8 @@ public class AdapterDetectorAnalyzer extends AdapterDecoratorTemplate {
     }
 
     @Override
-    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz) {
+    protected void updateRelatedClasses(ISystemModel systemModel, IClassModel clazz, IFieldModel field,
+            IClassModel parent) {
         addCommonFillColor(systemModel, adaptee);
         systemModel.addClassModelSteretypes(adaptee, this.config.getRelatedClassStereotype());
     }
