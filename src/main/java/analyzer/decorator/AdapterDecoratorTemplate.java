@@ -29,18 +29,23 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         systemModel.getClasses().forEach((clazz) -> {
             Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
             Collection<IClassModel> potentialFields = getPotentialComposition(clazz, systemModel);
-            potentialParents.stream().forEach((parent) -> {
-                potentialFields.stream().forEach((compClazz) -> {
-                    Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
-                    if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
-                        styleParent(systemModel, parent);
-                        styleChild(systemModel, clazz);
-                        styleComposedClass(systemModel, compClazz);
-                        styleChildParentRelationship(systemModel, clazz, parent);
-                        styleComposedClassRelationship(systemModel, clazz, compClazz);
-                        updateRelatedClasses(systemModel, clazz, compClazz, parent);
-                    }
-                });
+            evaluateClass(systemModel, clazz, potentialParents, potentialFields);
+        });
+    }
+
+    private void evaluateClass(ISystemModel systemModel, IClassModel clazz, Collection<IClassModel> potentialParents,
+            Collection<IClassModel> potentialFields) {
+        potentialParents.stream().forEach((parent) -> {
+            potentialFields.stream().forEach((compClazz) -> {
+                Set<IMethodModel> overridingMethods = methodsMapped(clazz, compClazz, parent);
+                if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
+                    styleParent(systemModel, parent);
+                    styleChild(systemModel, clazz);
+                    styleComposedClass(systemModel, compClazz);
+                    styleChildParentRelationship(systemModel, clazz, parent);
+                    styleComposedClassRelationship(systemModel, clazz, compClazz);
+                    updateRelatedClasses(systemModel, clazz, compClazz, parent);
+                }
             });
         });
     }
@@ -64,7 +69,8 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
                 .anyMatch((type) -> type.equals(composedClazz));
     }
 
-    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz, IClassModel composedClazz) {
+    protected void styleComposedClassRelationship(ISystemModel systemModel, IClassModel clazz,
+            IClassModel composedClazz) {
 
     }
 
@@ -74,7 +80,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
 
     protected Collection<IClassModel> getPotentialComposition(IClassModel clazz, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        
+
         Collection<IClassModel> potentialComposed = new LinkedList<>();
         clazz.getFields().forEach((f) -> {
             IClassModel composeClazz = f.getClassModel();
@@ -89,7 +95,7 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
 
     protected Collection<IClassModel> getPotentialParents(IClassModel child, ISystemModel systemModel) {
         Set<? extends IClassModel> classes = systemModel.getClasses();
-        
+
         Collection<IClassModel> potentialParents = new LinkedList<>();
         addToSet(classes, potentialParents, child.getSuperClass());
         for (IClassModel intf : child.getInterfaces()) {
@@ -105,7 +111,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
             potentialParents.add(clazz);
     }
 
-    
     protected abstract IAdapterDecoratorConfiguration setupConfig(IConfiguration config);
 
     /**

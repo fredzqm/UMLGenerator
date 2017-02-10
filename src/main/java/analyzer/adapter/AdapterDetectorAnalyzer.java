@@ -9,11 +9,9 @@ import analyzer.decorator.AdapterDecoratorTemplate;
 import analyzer.decorator.IAdapterDecoratorConfiguration;
 import analyzer.relationParser.RelationHasA;
 import analyzer.utility.IClassModel;
-import analyzer.utility.IFieldModel;
 import analyzer.utility.IMethodModel;
 import analyzer.utility.ISystemModel;
 import config.IConfiguration;
-import utility.MethodType;
 
 /**
  * An Adapter Pattern Analyzer. It will highlight in some color (defaulted to
