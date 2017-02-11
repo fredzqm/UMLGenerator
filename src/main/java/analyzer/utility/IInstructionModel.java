@@ -22,4 +22,10 @@ public interface IInstructionModel {
      * @return the component it accessed
      */
     IClassComponent getAccessComponent();
+
+    /**
+     * 
+     * @return the classModel this instruction is called on
+     */
+    IClassModel getCalledOn();
 }

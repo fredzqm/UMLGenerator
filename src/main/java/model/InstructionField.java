@@ -2,6 +2,8 @@ package model;
 
 import org.objectweb.asm.tree.FieldInsnNode;
 
+import analyzer.utility.IClassModel;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +44,11 @@ public class InstructionField extends InstructionModel {
      */
     public FieldModel getAccessComponent() {
         return this.field;
+    }
+
+    @Override
+    public IClassModel getCalledOn() {
+        return calledOn.getClassModel();
     }
 
 }
