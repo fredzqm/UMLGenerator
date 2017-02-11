@@ -7,6 +7,7 @@
 	"model": {
 		"classes": [
 			"java.io.InputStreamReader",
+			"java.io.InputStream",
 			"sun.nio.cs.StreamDecoder",
 			"java.io.Reader",
 			"java.io.OutputStreamWriter",

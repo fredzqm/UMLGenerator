@@ -182,23 +182,6 @@ public class SystemTest {
         ISystemModel systemModel = engine.createSystemModel();
         engine.analyze(systemModel);
 
-        // get classes
-        Collection<? extends IClassModel> classes = systemModel.getClasses();
-        IClassModel dummyInterface = getClassFromCollection(DummyInterface.class.getName(), classes);
-        IClassModel dummyStub = getClassFromCollection(DummySubClass.class.getName(), classes);
-        IClassModel dummySuperClass = getClassFromCollection(DummySuperClas.class.getName(), classes);
-
-//        // get relations
-//        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-//        List<IRelationInfo> relFromStubToSuperClass = relations.get(new ClassPair(dummyStub, dummySuperClass));
-//        assertEquals(Collections.singletonList(new RelationExtendsClass()), relFromStubToSuperClass);
-//
-//        List<IRelationInfo> relFromStubToInterface = relations.get(new ClassPair(dummyStub, dummyInterface));
-//        assertNull(relFromStubToInterface);
-//
-//        List<IRelationInfo> relFromSuperToInterfaceClass = relations
-//                .get(new ClassPair(dummySuperClass, dummyInterface));
-//        assertEquals(Collections.singletonList(new RelationImplement()), relFromSuperToInterfaceClass);
     }
 
     @Test
@@ -223,23 +206,6 @@ public class SystemTest {
         ISystemModel systemModel = engine.createSystemModel();
         engine.analyze(systemModel);
 
-        // get classes
-        Collection<? extends IClassModel> classes = systemModel.getClasses();
-        IClassModel RelDummyManyClass = getClassFromCollection(relDummyMany, classes);
-        IClassModel RelOtherDummyClass = getClassFromCollection(relOtherDummy, classes);
-        IClassModel RelDummyClass = getClassFromCollection(relDummy, classes);
-
-        // get relations.
-//        Map<ClassPair, List<IRelationInfo>> relations = systemModel.getRelations();
-//
-//        List<IRelationInfo> relFromManyToOther = relations.get(new ClassPair(RelDummyManyClass, RelOtherDummyClass));
-//        assertEquals(1, relFromManyToOther.size());
-//        assertEquals(new RelationDependsOn(true), relFromManyToOther.get(0));
-//
-//        List<IRelationInfo> relFromOtherToRel = relations.get(new ClassPair(RelDummyManyClass, RelDummyClass));
-//        assertEquals(1, relFromOtherToRel.size());
-//        assertEquals(new RelationDependsOn(false), relFromOtherToRel.get(0));
-//
         String actual = engine.generate(systemModel);
         String expectedDependencyCardinality = String.format("\"%s\" -> \"%s\" %s", relDummyMany, relOtherDummy,
                 "[ arrowhead=\"vee\" style=\"dashed\" headlabel=\"0..*\" ];");

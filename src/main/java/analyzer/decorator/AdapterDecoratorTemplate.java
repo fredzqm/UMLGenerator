@@ -1,9 +1,10 @@
 package analyzer.decorator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import analyzer.relationParser.RelationExtendsClass;
 import analyzer.relationParser.RelationHasA;
@@ -28,84 +29,13 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
     public final void analyze(ISystemModel systemModel, IConfiguration config) {
         this.config = setupConfig(config);
         systemModel.getClasses().forEach((clazz) -> {
+            if (clazz.getName().contains("sun.nio.cs.StreamDecoder"))
+                System.out.println();
             Collection<IClassModel> potentialParents = getPotentialParents(clazz, systemModel);
             Collection<IClassModel> potentialFields = getPotentialComposition(clazz, systemModel);
             evaluateClass(systemModel, clazz, potentialParents, potentialFields);
         });
     }
-
-    private void evaluateClass(ISystemModel systemModel, IClassModel clazz, Collection<IClassModel> potentialParents,
-            Collection<IClassModel> potentialFields) {
-        potentialParents.forEach((parent) -> potentialFields.forEach((compClazz) -> {
-            Set<IMethodModel> overridingMethods = getMappedMethods(clazz, compClazz, parent);
-            if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
-                styleParent(systemModel, parent);
-                styleChild(systemModel, clazz);
-                styleComposedClass(systemModel, compClazz);
-                styleChildParentRelationship(systemModel, clazz, parent);
-                styleComposedClassRelationship(systemModel, clazz, compClazz);
-                updateRelatedClasses(systemModel, clazz, compClazz, parent);
-            }
-        }));
-    }
-
-    /**
-     * Returns a Set of IMethodModel that child class has in common with the
-     * parent class.
-     *
-     * @param child
-     *            IClassModel child in the Child-Parent in a super class
-     *            relation.
-     * @param composedClass
-     *            IFieldModel's underlying class of the child.
-     * @param parent
-     *            IClassModel parent in the Child-Parent in a super class
-     *            relation.
-     * @return Set of IMethodModel that child class has in common with the
-     *         parent class.
-     */
-    protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
-        Collection<? extends IMethodModel> overridedMethods = parent.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD).collect(Collectors.toList());
-
-        Set<IMethodModel> overridingMethods = child.getMethods().stream()
-                .filter((method) -> method.getMethodType() == MethodType.METHOD
-                        && isDecoratedMethod(method, overridedMethods) && isFieldCalled(composedClass, method))
-                .collect(Collectors.toSet());
-
-        if (overridingMethods.size() != overridedMethods.size()) {
-            return null;
-        }
-        return overridingMethods;
-    }
-
-    private boolean isFieldCalled(IClassModel composedClazz, IMethodModel method) {
-        return method.getAccessedFields().stream().map(IFieldModel::getFieldType)
-                .anyMatch((type) -> type.equals(composedClazz));
-    }
-
-    /**
-     * Evaluates a given parent class and the child class and determine whether
-     * they meet the desired pattern criteria.
-     * <p>
-     * For example: decorator detection may check if child has a field of the
-     * parent, a constructor that takes the field as an argument, and if the
-     * child overrides each of the parent's methods where the child method's
-     * body uses the field of the parent type.
-     *
-     * @param clazz
-     *            IClassModel of the dependent Relation.
-     * @param composedClazz
-     *            the field for this pattern
-     * @param parent
-     *            IClassModel of the depended Relation.
-     * @param overridingMethods
-     *            the methods of parent that gets overrided in clazz. Those
-     *            methods belong to clazz.
-     * @return true if the parent and child should be updated for this analyzer.
-     */
-    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
-            Set<IMethodModel> overridingMethods);
 
     /**
      * Returns a Collection of IClassModel that are potentially a composed
@@ -132,19 +62,6 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
 
     }
 
-    private boolean appearInConstructor(IClassModel clazz, IClassModel composeClazz) {
-        for (IMethodModel method : clazz.getMethods()) {
-            if (method.getMethodType() == MethodType.CONSTRUCTOR) {
-                for (ITypeModel args : method.getArguments()) {
-                    if (composeClazz.equals(args.getClassModel())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * Returns a Collection of IClassModel of potential parents.
      *
@@ -160,6 +77,103 @@ public abstract class AdapterDecoratorTemplate implements IAnalyzer {
         Collection<IClassModel> potentialParents = new LinkedList<>();
         addToSet(child, potentialParents, classes);
         return potentialParents;
+    }
+
+    private void evaluateClass(ISystemModel systemModel, IClassModel clazz, Collection<IClassModel> potentialParents,
+            Collection<IClassModel> potentialFields) {
+        for (IClassModel parent : potentialParents) {
+            for (IClassModel compClazz : potentialFields) {
+                Set<IMethodModel> overridingMethods = getMappedMethods(clazz, compClazz, parent);
+                if (overridingMethods != null && detectPattern(clazz, compClazz, parent, overridingMethods)) {
+                    styleParent(systemModel, parent);
+                    styleChild(systemModel, clazz);
+                    styleComposedClass(systemModel, compClazz);
+                    styleChildParentRelationship(systemModel, clazz, parent);
+                    styleComposedClassRelationship(systemModel, clazz, compClazz);
+                    updateRelatedClasses(systemModel, clazz, compClazz, parent);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns a Set of IMethodModel that child class has in common with the
+     * parent class.
+     *
+     * @param child
+     *            IClassModel child in the Child-Parent in a super class
+     *            relation.
+     * @param composedClass
+     *            IFieldModel's underlying class of the child.
+     * @param parent
+     *            IClassModel parent in the Child-Parent in a super class
+     *            relation.
+     * @return Set of IMethodModel that child class has in common with the
+     *         parent class.
+     */
+    protected Set<IMethodModel> getMappedMethods(IClassModel child, IClassModel composedClass, IClassModel parent) {
+        Collection<IMethodModel> overridedMethods = new ArrayList<>();
+        for (IMethodModel m : parent.getMethods()) {
+            if (m.getMethodType() == MethodType.METHOD)
+                overridedMethods.add(m);
+        }
+        Set<IMethodModel> overridingMethods = new HashSet<>();
+        for (IMethodModel m : child.getMethods()) {
+            if (m.getMethodType() == MethodType.METHOD) {
+                if (isDecoratedMethod(m, overridedMethods) && isFieldCalled(composedClass, m))
+                    overridingMethods.add(m);
+            }
+        }
+
+        if (overridingMethods.size() != overridedMethods.size()) {
+            return null;
+        }
+        return overridingMethods;
+    }
+
+    private boolean isFieldCalled(IClassModel composedClazz, IMethodModel method) {
+        for (IFieldModel f : method.getAccessedFields()) {
+            if (composedClazz.equals(f.getClassModel())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Evaluates a given parent class and the child class and determine whether
+     * they meet the desired pattern criteria.
+     * <p>
+     * For example: decorator detection may check if child has a field of the
+     * parent, a constructor that takes the field as an argument, and if the
+     * child overrides each of the parent's methods where the child method's
+     * body uses the field of the parent type.
+     *
+     * @param clazz
+     *            IClassModel of the dependent Relation.
+     * @param composedClazz
+     *            the field for this pattern
+     * @param parent
+     *            IClassModel of the depended Relation.
+     * @param overridingMethods
+     *            the methods of parent that gets overrided in clazz. Those
+     *            methods belong to clazz.
+     * @return true if the parent and child should be updated for this analyzer.
+     */
+    protected abstract boolean detectPattern(IClassModel clazz, IClassModel composedClazz, IClassModel parent,
+            Set<IMethodModel> overridingMethods);
+
+    private boolean appearInConstructor(IClassModel clazz, IClassModel composeClazz) {
+        for (IMethodModel method : clazz.getMethods()) {
+            if (method.getMethodType() == MethodType.CONSTRUCTOR) {
+                for (ITypeModel args : method.getArguments()) {
+                    if (composeClazz.equals(args.getClassModel())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void addToSet(IClassModel clazz, Collection<IClassModel> set, Set<? extends IClassModel> classes) {
