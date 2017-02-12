@@ -104,7 +104,7 @@ public class FavorCompositionConfiguration implements Configurable {
 ### How to add style in an analyzer
 
 You can create an class the implments the following interface:
-```
+```java
 public interface IAnalyzer {
     /**
      * Returns an Analyzed System Model.
@@ -117,7 +117,7 @@ public interface IAnalyzer {
 }
 ```
 In an analyzer, you can decorate the classModel, filter out a uneeded methods. You can also add styles to the UML through method in IystemModel.
-```
+```java
   /**
      * Set the class set of systemModel
      *
