@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * A factory method utility for type model. It basically parses the signature
- * according to jVM's definition. Each method corresponds to the a context free
- * grammar in JVM's specification
- * <p>
+ * A factory method utility for type model. It parses the type signature
+ * according to <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.4">JVM's definition</a>.
+ * Each method in this class corresponds to the a context free grammar in JVM's specification
+ * <br>
  * Check Java Virtual Machine Specification for more details.
  *
  * @author zhang
